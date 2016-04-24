@@ -26,6 +26,16 @@ public class NobilityTrack
 	 * @ordered
 	 */
 	
+	private Bonus[] BonusVector;
+	
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!--  end-user-doc  -->
+	 * @generated
+	 * @ordered
+	 */
+	
 	public NobilityTrack(Pawn[] pawn) {
 		super();
 		// TODO construct me	

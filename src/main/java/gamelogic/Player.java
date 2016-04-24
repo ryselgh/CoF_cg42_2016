@@ -88,6 +88,26 @@ public class Player
 	 * @ordered
 	 */
 	
+	private int coins;
+	
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!--  end-user-doc  -->
+	 * @generated
+	 * @ordered
+	 */
+	
+	private int score;
+	
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!--  end-user-doc  -->
+	 * @generated
+	 * @ordered
+	 */
+	
 	public Player(Emporium[] e, Assistant[] a) {
 		super();
 		// TODO construct me	

@@ -89,24 +89,6 @@ public class Map
 	 * @ordered
 	 */
 	
-	private VictoryTrack victoryTrack;
-	
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
-	
-	private CoinTrack coinTrack;
-	
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
-	
 	private City[] city;
 	
 
