@@ -14,12 +14,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 
 import gamelogic.Player;
 import model.CouncilorColor;
@@ -155,12 +151,12 @@ public class Map
         
       //importo bonus token
 	    Node poolNode = (doc).getElementsByTagName("TOKEN_POOL").item(0);
-	    NodeList tokensList = (doc).getElementsByTagName("TOKEN");
+	    NodeList tokensList = ((Element) poolNode).getElementsByTagName("TOKEN");
 	    token_pool = new BonusToken[tokensList.getLength()];
         for (int i = 0; i < tokensList.getLength(); i++) {
         	Node tokenNode = tokensList.item(i);
         	Element tokenElem = (Element) tokenNode;
-        	NodeList bonusList = (doc).getElementsByTagName("BONUS");
+        	NodeList bonusList = tokenElem.getElementsByTagName("BONUS");
         	Bonus[] tokenBonus = new Bonus[bonusList.getLength()];
         	for (int j = 0; j < bonusList.getLength(); j++) {
             	Node bonusNode = bonusList.item(j);
