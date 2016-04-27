@@ -36,7 +36,7 @@ public class Pawn
 	 * @ordered
 	 */
 	
-	public Pawn(Player p) {
+	public Pawn(Player p, String hexColor) {
 		this.p = p;
 		this.pos = 0;
 	}

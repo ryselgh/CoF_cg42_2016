@@ -4,7 +4,9 @@
 	BonusRegione e BonusColorGroup hanno un solo bonus. I Token invece ne hanno potenzialmente infiniti (DA DISCUTERNE) 
 	Bonus type disponibili: CARD, POINT, COIN, ASSISTANT, NOBILITY, MAINACTION, 
 	TOKEN, TWOTOKENS, FREECARD, BONUSCARD. Colori città disponibili: BLUE, GREY, 
-	YELLOW, RED, PURPLE. -->
+	YELLOW, RED, PURPLE. Le città devono essere 15 e le iniziali devono essere dalla 'a' alla 'o'.
+	La nobility track deve essere lunga 20 e ogni casella può avere massimo 3 bonus. Non è necessario specificare le 
+	caselle senza bonus. I colori pedine devono essere in esadecimale (senza 0x). Ci devono essere almeno 8 colori pedine.-->
 <IMPORT>
 	<TOKEN_POOL>
 		<TOKEN>
@@ -111,28 +113,15 @@
 	</NOBILITY_BONUS>
 
 
-	<POOL_CARTE_PERMESSO>
-		<CARTA>
-			<BONUS>
-				<TYPE></TYPE>
-				<AMM></AMM>
-			</BONUS>
-			<BONUS>
-				<TYPE></TYPE>
-				<AMM></AMM>
-			</BONUS>
-		</CARTA>
-
-		<CARTA>
-			<BONUS>
-				<TYPE></TYPE>
-				<AMM></AMM>
-			</BONUS>
-			<BONUS>
-				<TYPE></TYPE>
-				<AMM></AMM>
-			</BONUS>
-		</CARTA>
+	<POOL_CARTE_PERMESSO><!--i singoli bonus possibili-->
+		<BONUS>
+			<TYPE></TYPE>
+			<AMM></AMM>
+		</BONUS>
+		<BONUS>
+			<TYPE></TYPE>
+			<AMM></AMM>
+		</BONUS>
 	</POOL_CARTE_PERMESSO>
 
 	<CITY>
@@ -167,4 +156,15 @@
 		</CLOSE>
 		<REGION></REGION>
 	</CITY>
+	
+	<COLORI_PEDINE>
+	<COLORE></COLORE>
+	<COLORE></COLORE>
+	<COLORE></COLORE>
+	<COLORE></COLORE>
+	<COLORE></COLORE>
+	<COLORE></COLORE>
+	<COLORE></COLORE>
+	<COLORE></COLORE>
+	</COLORI_PEDINE>
 </IMPORT>

@@ -1,8 +1,8 @@
 package board ;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
-
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -16,11 +16,13 @@ import org.xml.sax.SAXException;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Array;
 
 import gamelogic.Player;
 import model.CouncilorColor;
 import model.CityColor;
 import model.BonusType;
+
 
 /**
  * <!-- begin-user-doc -->
@@ -103,6 +105,8 @@ public class Map
 	private NobilityTrack nobilityTrack;
 	private Bonus[][] nobilityTrackBonus;
 	private BonusToken[] token_pool;
+	private Bonus[] pool_carte_permesso;
+	private String[] colori_pedine;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!--  end-user-doc  -->
@@ -127,7 +131,7 @@ public class Map
 		this.players = p;
 		initializeMapObjects();
 		try {
-			importMap("");
+			importMap("",_default);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -143,11 +147,8 @@ public class Map
 	 * @ordered
 	 */
 	
-	public void importMap(String file) throws Exception  { //inizializza: città(+bonus token), regioni(+bonus card), color_group(+bonus card), king, nobility_track
-		//nobility track bonus
-		this.nobilityTrackBonus = new Bonus[20][2]; //DA IMPORTARE O CREARE RANDOM
-		//nobility track
-		this.nobilityTrack = new NobilityTrack(pawn,nobilityTrackBonus);
+	public void importMap(String file, boolean _default) throws Exception  { //inizializza: città(+bonus token), regioni(+bonus card), color_group(+bonus card), king, nobility_track
+		
 		
 		
 		
@@ -166,17 +167,24 @@ public class Map
 		Node regionNode = (doc).getElementsByTagName("REGION_BONUS").item(0);
 		for (int i = 0; i < 3; i++) {
 			Element rElem = (Element) ((Element) regionNode).getElementsByTagName(nomiRegioni[i]).item(0);
-			Element rBonusElem = (Element) rElem.getElementsByTagName("Bonus").item(0);
+			Element rBonusElem = (Element) rElem.getElementsByTagName("BONUS").item(0);
 			String rBonusTypeStr = rBonusElem.getElementsByTagName("TYPE").item(0).getTextContent();
 			String rBonusAmmStr = rBonusElem.getElementsByTagName("AMM").item(0).getTextContent();
 			bonusRegioni[i] = new Bonus(parseBonus(rBonusTypeStr), Integer.parseInt(rBonusAmmStr));
 		}
 		
 		
-		
-		
-		
-		
+		/// importo bonus colore
+		Bonus[] bonusColori = new Bonus[5];// ordine come nomiColori qua sotto
+		String[] nomiColori = { "BLUE", "GREY", "YELLOW", "RED", "PURPLE" };
+		Node colorNode = (doc).getElementsByTagName("REGION_BONUS").item(0);
+		for (int i = 0; i < 5; i++) {
+			Element cElem = (Element) ((Element) colorNode).getElementsByTagName(nomiColori[i]).item(0);
+			Element cBonusElem = (Element) cElem.getElementsByTagName("BONUS").item(0);
+			String cBonusTypeStr = cBonusElem.getElementsByTagName("TYPE").item(0).getTextContent();
+			String cBonusAmmStr = cBonusElem.getElementsByTagName("AMM").item(0).getTextContent();
+			bonusColori[i] = new Bonus(parseBonus(cBonusTypeStr), Integer.parseInt(cBonusAmmStr));
+		}
 		
 		
       //importo bonus token
@@ -223,10 +231,72 @@ public class Map
         	}
         	city[i] = new City(elem_name,parseColor(elem_color),closes,players.length);//da assegnare il token
         	if (validateCities(city)==false)
-        		break;
+        		;//lancia errore
         }	
         	
-        
+
+		// importo king
+		Element kingElem = (Element) (doc).getElementsByTagName("KING").item(0);
+		String kingLocationStr = kingElem.getElementsByTagName("LOCATION").item(0).getTextContent();
+		boolean presente = false;
+		for(City c: city)
+			if(kingLocationStr.equals(c.getName()))
+				presente = true;
+		if(!presente) ;//lancia errore
+		
+		
+		//importo nobility track
+		this.nobilityTrackBonus = new Bonus[20][3];//max 3 bonus per casella;
+		Node nobilityNode = (doc).getElementsByTagName("NOBILITY_BONUS").item(0);
+	    NodeList posList = ((Element) nobilityNode).getElementsByTagName("POSIZIONE");
+	    int index = 0;
+        for (int i = 0; i < posList.getLength(); i++) {
+        	Element posElem = (Element) posList.item(i);
+        	index = Integer.parseInt(posElem.getAttribute("index"));
+        	NodeList bonusList = posElem.getElementsByTagName("BONUS");
+        	for (int j = 0; j < posList.getLength(); j++) {
+            	Element bonusElem = (Element) bonusList.item(j);
+            	String bonus_type_str = bonusElem.getElementsByTagName("NAME").item(0).getTextContent();
+            	BonusType bonus_type = parseBonus(bonus_type_str);
+            	String bonus_amm_str = bonusElem.getElementsByTagName("AMM").item(0).getTextContent();
+            	int bonus_amm = Integer.parseInt(bonus_amm_str);
+            	nobilityTrackBonus[index][j]= new Bonus(bonus_type, bonus_amm);
+        	}
+        }	
+	    nobilityTrack = new NobilityTrack(pawn,nobilityTrackBonus);
+	    
+		// importo pool carte permesso
+		Element permElem =(Element) (doc).getElementsByTagName("POOL_CARTE_PERMESSO").item(0);
+		NodeList bonusList = permElem.getElementsByTagName("BONUS");
+	    pool_carte_permesso = new Bonus[bonusList.getLength()];
+		for (int i = 0; i < posList.getLength(); i++) {
+			Element bonusElem = (Element) bonusList.item(i);
+			String bonus_type_str = bonusElem.getElementsByTagName("NAME").item(0).getTextContent();
+			BonusType bonus_type = parseBonus(bonus_type_str);
+			String bonus_amm_str = bonusElem.getElementsByTagName("AMM").item(0).getTextContent();
+			int bonus_amm = Integer.parseInt(bonus_amm_str);
+			pool_carte_permesso[i] = new Bonus(bonus_type, bonus_amm);
+		}
+	
+
+		// importo colori pedine
+		Element pedElem =(Element) (doc).getElementsByTagName("COLORI_PEDINE").item(0);
+		NodeList colorList = permElem.getElementsByTagName("COLORE");
+		if(colorList.getLength()<8);//lancia errore
+	    colori_pedine = new String[colorList.getLength()];
+		for (int i = 0; i < colorList.getLength(); i++) {
+			Element colorElem = (Element) colorList.item(i);
+			colori_pedine[i] = colorElem.getTextContent();
+		}
+		pawn = new Pawn[players.length];
+		int randomNo=0;
+		for(int i=0;i<players.length;i++)
+		{		
+			do{
+				randomNo = (int)(Math.random() * ((colorList.getLength() - 1) + 1));}
+			while (colori_pedine[randomNo]!="");
+			pawn[i]=new Pawn(players[i], colori_pedine[randomNo]);
+		}
 	}
 	
 	/**
@@ -238,14 +308,6 @@ public class Map
 	
 	public void initializeMapObjects() {
 		int i,k;
-		//pedine
-		pawn = new Pawn[players.length];
-		for(i=0;i<players.length;i++)
-		{
-			pawn[i]=new Pawn(players[i]);
-		}
-		
-		
 		
 		//councilors
 		ArrayList <Councilor> councilors = new ArrayList <Councilor>();
@@ -313,7 +375,8 @@ public class Map
 	}
 	boolean validateCities(City[] c)
 	{
-		boolean[] iniziali = new boolean[13];
+		if(c.length!=15) return false; //controllo numero
+		boolean[] iniziali = new boolean[13];//controllo iniziali diverse
 		for(City cc : c)
 		{
 			char in = cc.getName().toLowerCase().charAt(0);
@@ -324,6 +387,15 @@ public class Map
 			else
 				iniziali[ascii - a_ascii]=true;
 		}
+		//controllo iniziali
+		ArrayList <Character> inits = (ArrayList<Character>) Arrays.asList('a','b','c','d','e','f','g','h','i','j','k','l','m','n','o');//controllo iniziali
+		for(int i=0;i<c.length;i++)
+		{
+			Character cha = new Character(c[i].getName().charAt(0));
+			if (!inits.contains(cha)) return false;
+			inits.remove(cha);
+		}
+		if (inits.size()>0) return false;
 		return true;
 	}
 	
