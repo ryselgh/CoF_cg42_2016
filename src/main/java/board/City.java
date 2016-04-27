@@ -38,6 +38,7 @@ public class City
 	
 	private String name;
 	
+
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!--  end-user-doc  -->
@@ -65,15 +66,15 @@ public class City
 	 * @ordered
 	 */
 	
-	public City(String n, CityColor c, String[] close, int playerNo, BonusToken t) {
+	public City(String n, CityColor c, String[] close, int playerNo) {
 		this.name = n;
 		this.color = c;
 		this.closeCities = close;
-		this.token = t;
 		this.playerNum = playerNo;
 		slot = new Emporium[playerNo];
 		
 	}
+	
 	
 	/**
 	 * <!-- begin-user-doc -->
@@ -150,6 +151,9 @@ public class City
 			return this.token;
 	}
 	
+	public void setToken(BonusToken t){
+		this.token = t;
+	}
 	
 }
 

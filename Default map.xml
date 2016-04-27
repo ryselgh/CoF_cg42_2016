@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- ISTRUZIONI I tag devono sempre essere in maiuscolo. Per bonus privi 
-	di cardinalità inserire qualsiasi valore nel campo AMM o non inserirlo affatto. 
+	di cardinalità inserire qualsiasi valore nel campo AMM o non inserirlo affatto.
+	BonusRegione e BonusColorGroup hanno un solo bonus. I Token invece ne hanno potenzialmente infiniti (DA DISCUTERNE) 
 	Bonus type disponibili: CARD, POINT, COIN, ASSISTANT, NOBILITY, MAINACTION, 
 	TOKEN, TWOTOKENS, FREECARD, BONUSCARD. Colori città disponibili: BLUE, GREY, 
 	YELLOW, RED, PURPLE. -->

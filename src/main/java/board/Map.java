@@ -116,12 +116,21 @@ public class Map
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!--  end-user-doc  -->
+	 * @throws SAXException 
+	 * @throws IOException 
+	 * @throws ParserConfigurationException 
 	 * @generated
 	 * @ordered
 	 */
 	
-	public Map(Player[] p) {//qui come parametro deve avere quasi tutto
-		this.players = p;	
+	public Map(Player[] p, boolean _default) {//da implementare default
+		this.players = p;
+		initializeMapObjects();
+		try {
+			importMap("");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	/**
@@ -134,7 +143,7 @@ public class Map
 	 * @ordered
 	 */
 	
-	public void importMap(String file) throws ParserConfigurationException, IOException, SAXException { //inizializza: città(+bonus token), regioni(+bonus card), color_group(+bonus card), king, nobility_track
+	public void importMap(String file) throws Exception  { //inizializza: città(+bonus token), regioni(+bonus card), color_group(+bonus card), king, nobility_track
 		//nobility track bonus
 		this.nobilityTrackBonus = new Bonus[20][2]; //DA IMPORTARE O CREARE RANDOM
 		//nobility track
@@ -144,11 +153,32 @@ public class Map
 		
 		File inputFile = new File(file);
         DocumentBuilderFactory dbFactory  = DocumentBuilderFactory.newInstance();
-        DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-        Document doc = (Document) dBuilder.parse(inputFile);
-        doc.getDocumentElement().normalize();
+        DocumentBuilder dBuilder;
+        Document doc;
+		dBuilder = dbFactory.newDocumentBuilder();
+		doc = (Document) dBuilder.parse(inputFile);
+		doc.getDocumentElement().normalize();
         
-        
+      
+		///importo bonus regione
+		Bonus[] bonusRegioni = new Bonus[3];//[0]=mare     [1]=colline     [2]=montagne
+		String[] nomiRegioni = {"MARE","COLLINE","MONTAGNE"};
+		Node regionNode = (doc).getElementsByTagName("REGION_BONUS").item(0);
+		for (int i = 0; i < 3; i++) {
+			Element rElem = (Element) ((Element) regionNode).getElementsByTagName(nomiRegioni[i]).item(0);
+			Element rBonusElem = (Element) rElem.getElementsByTagName("Bonus").item(0);
+			String rBonusTypeStr = rBonusElem.getElementsByTagName("TYPE").item(0).getTextContent();
+			String rBonusAmmStr = rBonusElem.getElementsByTagName("AMM").item(0).getTextContent();
+			bonusRegioni[i] = new Bonus(parseBonus(rBonusTypeStr), Integer.parseInt(rBonusAmmStr));
+		}
+		
+		
+		
+		
+		
+		
+		
+		
       //importo bonus token
 	    Node poolNode = (doc).getElementsByTagName("TOKEN_POOL").item(0);
 	    NodeList tokensList = ((Element) poolNode).getElementsByTagName("TOKEN");
@@ -174,6 +204,7 @@ public class Map
         
         
         //importo città TODO: DA INSERIRE NELLE REGIONI, ATTRIBUTO REGION NON ANCORA UTILIZZATO 
+        //TODO2: inserire il token nella città una volta importati gli oggetti, ho messo la funzione setToken(t)
 	    NodeList nList = (doc).getElementsByTagName("city");
 	    city = new City[nList.getLength()];
         for (int i = 0; i < nList.getLength(); i++) {
@@ -190,7 +221,7 @@ public class Map
         	for (int j = 0; j < closeNameList.getLength(); j++) {
         		closes[j] = closeNameList.item(j).getTextContent();
         	}
-        	city[i] = new City(elem_name,parseColor(elem_color),closes,players.length, null);//da assegnare il token
+        	city[i] = new City(elem_name,parseColor(elem_color),closes,players.length);//da assegnare il token
         	if (validateCities(city)==false)
         		break;
         }	
