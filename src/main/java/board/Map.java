@@ -22,7 +22,8 @@ import gamelogic.Player;
 import model.CouncilorColor;
 import model.CityColor;
 import model.BonusType;
-
+import model.RegionName;
+//todo: inserisci bonus città
 
 /**
  * <!-- begin-user-doc -->
@@ -48,8 +49,8 @@ public class Map
 	 * @ordered
 	 */
 	
-	private Region[] regions;
-	
+	private Region[] regions;//0 mare    1 colline     2 montagne
+	private ColorGroup[] colorgroups;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!--  end-user-doc  -->
@@ -104,7 +105,7 @@ public class Map
 	
 	private NobilityTrack nobilityTrack;
 	private Bonus[][] nobilityTrackBonus;
-	private BonusToken[] token_pool;
+	private ArrayList <BonusToken> token_pool;
 	private Bonus[] pool_carte_permesso;
 	private String[] colori_pedine;
 	/**
@@ -171,6 +172,7 @@ public class Map
 			String rBonusTypeStr = rBonusElem.getElementsByTagName("TYPE").item(0).getTextContent();
 			String rBonusAmmStr = rBonusElem.getElementsByTagName("AMM").item(0).getTextContent();
 			bonusRegioni[i] = new Bonus(parseBonus(rBonusTypeStr), Integer.parseInt(rBonusAmmStr));
+			regions[i].setBonus(new BonusCard(bonusRegioni[i]));
 		}
 		
 		
@@ -184,13 +186,14 @@ public class Map
 			String cBonusTypeStr = cBonusElem.getElementsByTagName("TYPE").item(0).getTextContent();
 			String cBonusAmmStr = cBonusElem.getElementsByTagName("AMM").item(0).getTextContent();
 			bonusColori[i] = new Bonus(parseBonus(cBonusTypeStr), Integer.parseInt(cBonusAmmStr));
+			colorgroups[i].setBonus(new BonusCard(bonusColori[i]));
 		}
 		
 		
       //importo bonus token
 	    Node poolNode = (doc).getElementsByTagName("TOKEN_POOL").item(0);
 	    NodeList tokensList = ((Element) poolNode).getElementsByTagName("TOKEN");
-	    token_pool = new BonusToken[tokensList.getLength()];
+	    token_pool = new ArrayList <BonusToken>(tokensList.getLength());
         for (int i = 0; i < tokensList.getLength(); i++) {
         	Node tokenNode = tokensList.item(i);
         	Element tokenElem = (Element) tokenNode;
@@ -206,12 +209,12 @@ public class Map
             	tokenBonus[j]= new Bonus(elem_type, elem_amm);
             	
         	}
-        	token_pool[i] = new BonusToken(tokenBonus);
+        	token_pool.add(new BonusToken(tokenBonus));
         }	
         
         
         
-        //importo città TODO: DA INSERIRE NELLE REGIONI, ATTRIBUTO REGION NON ANCORA UTILIZZATO 
+        
         //TODO2: inserire il token nella città una volta importati gli oggetti, ho messo la funzione setToken(t)
 	    NodeList nList = (doc).getElementsByTagName("city");
 	    city = new City[nList.getLength()];
@@ -229,7 +232,9 @@ public class Map
         	for (int j = 0; j < closeNameList.getLength(); j++) {
         		closes[j] = closeNameList.item(j).getTextContent();
         	}
-        	city[i] = new City(elem_name,parseColor(elem_color),closes,players.length);//da assegnare il token
+        	BonusToken bt = token_pool.remove(randomNum(0,token_pool.size()-1));
+        	city[i] = new City(elem_name,parseColor(elem_color),closes,players.length, bt);//da assegnare il token
+        	inserisciCitta(city[i], elem_region, elem_color);
         	if (validateCities(city)==false)
         		;//lancia errore
         }	
@@ -293,7 +298,7 @@ public class Map
 		for(int i=0;i<players.length;i++)
 		{		
 			do{
-				randomNo = (int)(Math.random() * ((colorList.getLength() - 1) + 1));}
+				randomNo = randomNum(0,colorList.getLength() - 1);}
 			while (colori_pedine[randomNo]!="");
 			pawn[i]=new Pawn(players[i], colori_pedine[randomNo]);
 		}
@@ -319,8 +324,7 @@ public class Map
 		
 		//balconi
 		balcony = new Balcony[3];
-		int count =0;
-		for (Balcony b : balcony) {
+		for (i=0;i< balcony.length;i++) {
 			ArrayList <Councilor> toRet = new ArrayList <Councilor>();
 			Councilor[] retArr = new Councilor[4];
 			for(i=0;i<4;i++)
@@ -329,7 +333,7 @@ public class Map
 				councilors.remove(0);
 			}
 			retArr = councilors.toArray(retArr);
-			b=new Balcony(retArr);
+			balcony[i]=new Balcony(retArr);
 		}
 		
 		//empori
@@ -347,11 +351,49 @@ public class Map
 		{
 			assistants[i]=new Assistant();
 		}
+		
+		//regioni
+		regions = new Region[3];
+		regions[0]= new Region(RegionName.SEA);
+		regions[1]= new Region(RegionName.HILL);
+		regions[2]= new Region(RegionName.MOUNTAIN);
+		
+		//color group
+		colorgroups = new ColorGroup[5];
+		colorgroups[0]= new ColorGroup(CityColor.BLUE);
+		colorgroups[1]= new ColorGroup(CityColor.GREY);
+		colorgroups[2]= new ColorGroup(CityColor.PURPLE);
+		colorgroups[3]= new ColorGroup(CityColor.RED);
+		colorgroups[4]= new ColorGroup(CityColor.YELLOW);
+	
 	}
 	
+	private void inserisciCitta(City c, String regione, String color)
+	{
+		if (regione.toLowerCase()=="sea")
+			regions[0].addCity(c);
+		else if (regione.toLowerCase()=="hill")
+			regions[1].addCity(c);
+		else if (regione.toLowerCase()=="mountain")
+			regions[2].addCity(c);
+		else
+			;//lancia errore
+		
+		switch (color.toLowerCase()) {
+        case "blue":  colorgroups[0].addCity(c);
+        case "grey":  colorgroups[1].addCity(c);
+        case "purple":  colorgroups[2].addCity(c);
+        case "red":  colorgroups[3].addCity(c);
+        case "yellow":  colorgroups[4].addCity(c);
+                 break;
+        default: break;//lancia errore
+    }
+	}
 	
-	
-	
+	private static int randomNum(int Min, int Max)
+	{
+		return Min + (int)(Math.random() * ((Max - Min) + 1));
+	}
 	CityColor parseColor(String color)
 	{
 		CityColor[] colors = CityColor.values();

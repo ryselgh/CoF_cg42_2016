@@ -6,7 +6,8 @@
 	TOKEN, TWOTOKENS, FREECARD, BONUSCARD. Colori città disponibili: BLUE, GREY, 
 	YELLOW, RED, PURPLE. Le città devono essere 15 e le iniziali devono essere dalla 'a' alla 'o'.
 	La nobility track deve essere lunga 20 e ogni casella può avere massimo 3 bonus. Non è necessario specificare le 
-	caselle senza bonus. I colori pedine devono essere in esadecimale (senza 0x). Ci devono essere almeno 8 colori pedine.-->
+	caselle senza bonus. I colori pedine devono essere in esadecimale (senza 0x). Ci devono essere almeno 8 colori pedine.
+	Nelle città l'attributo region può essere "sea" o "hill" o "mountain".-->
 <IMPORT>
 	<TOKEN_POOL>
 		<TOKEN>
@@ -30,26 +31,26 @@
 	</TOKEN_POOL>
 
 	<REGION_BONUS>
-		<MARE>
+		<SEA>
 			<BONUS>
 				<TYPE></TYPE>
 				<AMM></AMM>
 			</BONUS>
-		</MARE>
+		</SEA>
 
-		<COLLINE>
+		<HILL>
 			<BONUS>
 				<TYPE></TYPE>
 				<AMM></AMM>
 			</BONUS>
-		</COLLINE>
+		</HILL>
 
-		<MONTAGNE>
+		<MOUNTAIN>
 			<BONUS>
 				<TYPE></TYPE>
 				<AMM></AMM>
 			</BONUS>
-		</MONTAGNE>
+		</MOUNTAIN>
 	</REGION_BONUS>
 
 	<COLOR_BONUS>

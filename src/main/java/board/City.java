@@ -66,11 +66,12 @@ public class City
 	 * @ordered
 	 */
 	
-	public City(String n, CityColor c, String[] close, int playerNo) {
+	public City(String n, CityColor c, String[] close, int playerNo, BonusToken bt) {
 		this.name = n;
 		this.color = c;
 		this.closeCities = close;
 		this.playerNum = playerNo;
+		this.token = bt;
 		slot = new Emporium[playerNo];
 		
 	}

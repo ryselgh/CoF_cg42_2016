@@ -1,5 +1,7 @@
 package board ;
 
+import java.util.ArrayList;
+
 import model.RegionName;
 
 /**
@@ -26,7 +28,7 @@ public class Region
 	 * @ordered
 	 */
 	
-	private City[] cities;
+	private ArrayList <City> cities;
 	private RegionName name;
 	
 
@@ -37,10 +39,8 @@ public class Region
 	 * @ordered
 	 */
 	
-	public Region(RegionName n, City[] c, BonusCard bc) {
+	public Region(RegionName n) {
 		this.name = n;
-		this.cities = c;
-		this.bc = bc;
 	}
 	
 	/**
@@ -50,8 +50,18 @@ public class Region
 	 * @ordered
 	 */
 	
-	public City[] getCities() {
+	public ArrayList <City> getCities() {
 		return cities;	
+	}
+	
+	public void addCity(City c)
+	{
+		cities.add(c);
+	}
+	
+	public void setBonus(BonusCard b)
+	{
+		this.bc = b;
 	}
 	
 	public RegionName getName()
