@@ -17,7 +17,7 @@ public class Region
 	 * @ordered
 	 */
 	
-	private BonusToken bc;
+	private BonusCard bc;
 	
 	/**
 	 * <!-- begin-user-doc -->
@@ -27,6 +27,7 @@ public class Region
 	 */
 	
 	private City[] cities;
+	private RegionName name;
 	
 
 	/**
@@ -36,9 +37,10 @@ public class Region
 	 * @ordered
 	 */
 	
-	public Region(RegionName n, City[] c, BonusToken bc) {
-		super();
-		// TODO construct me	
+	public Region(RegionName n, City[] c, BonusCard bc) {
+		this.name = n;
+		this.cities = c;
+		this.bc = bc;
 	}
 	
 	/**
@@ -49,8 +51,17 @@ public class Region
 	 */
 	
 	public City[] getCities() {
-		// TODO implement me
-		return null;	
+		return cities;	
+	}
+	
+	public RegionName getName()
+	{
+		return this.name;
+	}
+	
+	public BonusCard getBonus()
+	{
+		return this.bc;
 	}
 	
 }

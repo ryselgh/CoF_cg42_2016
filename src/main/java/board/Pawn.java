@@ -19,7 +19,7 @@ public class Pawn
 	 */
 	
 	private Player p;
-	
+	private int pos;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!--  end-user-doc  -->
@@ -27,7 +27,6 @@ public class Pawn
 	 * @ordered
 	 */
 	
-	private Track track;
 	
 
 	/**
@@ -37,9 +36,9 @@ public class Pawn
 	 * @ordered
 	 */
 	
-	public Pawn(Player p, Track t) {
-		super();
-		// TODO construct me	
+	public Pawn(Player p) {
+		this.p = p;
+		this.pos = 0;
 	}
 	
 	/**
@@ -50,21 +49,13 @@ public class Pawn
 	 */
 	
 	public Player getPlayer() {
-		// TODO implement me
-		return null;	
+		return this.p;
+	}
+	public int getPos()
+	{
+		return this.pos;
 	}
 	
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
-	
-	public Object getTrack() {
-		// TODO implement me
-		return null;	
-	}
 	
 }
 

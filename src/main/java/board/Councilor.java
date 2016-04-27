@@ -28,8 +28,7 @@ public class Councilor
 	 */
 	
 	public Councilor(CouncilorColor cc) {
-		super();
-		// TODO construct me	
+		this.color = cc;	
 	}
 	
 	/**
@@ -41,7 +40,7 @@ public class Councilor
 	
 	public CouncilorColor getCouncilor() {
 		// TODO implement me
-		return CouncilorColor.PURPLE;	
+		return this.color;	
 	}
 	
 }

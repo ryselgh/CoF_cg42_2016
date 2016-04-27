@@ -16,7 +16,7 @@ public class BonusToken
 	 * @ordered
 	 */
 	
-	private Bonus b;
+	private Bonus[] b;
 	
 
 	/**
@@ -26,9 +26,8 @@ public class BonusToken
 	 * @ordered
 	 */
 	
-	public BonusToken(Bonus b) {
-		super();
-		// TODO construct me	
+	public BonusToken(Bonus[] b) {
+		this.b = b;	
 	}
 	
 	/**
@@ -38,9 +37,8 @@ public class BonusToken
 	 * @ordered
 	 */
 	
-	public Bonus getBonus() {
-		// TODO implement me
-		return null;	
+	public Bonus[] getBonus() {
+		return this.b;	
 	}
 	
 }

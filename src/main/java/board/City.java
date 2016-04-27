@@ -36,7 +36,7 @@ public class City
 	 * @ordered
 	 */
 	
-	private CityName name;
+	private String name;
 	
 	/**
 	 * <!-- begin-user-doc -->
@@ -45,7 +45,7 @@ public class City
 	 * @ordered
 	 */
 	
-	private City[] closeCities;
+	private String[] closeCities;
 	
 	/**
 	 * <!-- begin-user-doc -->
@@ -54,7 +54,8 @@ public class City
 	 * @ordered
 	 */
 	
-	private Bonus token;
+	private BonusToken token;
+	private int playerNum;
 	
 
 	/**
@@ -64,9 +65,14 @@ public class City
 	 * @ordered
 	 */
 	
-	public City(CityName n, CityColor c, City[] close) {
-		super();
-		// TODO construct me	
+	public City(String n, CityColor c, String[] close, int playerNo, BonusToken t) {
+		this.name = n;
+		this.color = c;
+		this.closeCities = close;
+		this.token = t;
+		this.playerNum = playerNo;
+		slot = new Emporium[playerNo];
+		
 	}
 	
 	/**
@@ -76,8 +82,17 @@ public class City
 	 * @ordered
 	 */
 	
-	public void setEmporium(Emporium e) {
-		// TODO implement me	
+	public int setEmporium(Emporium e) {
+		int i=0;
+		for(i=0; i<=playerNum;i++)
+		{
+			if(slot[i]==null)
+			{
+				slot[i]=e;
+				return 1;
+			}
+		}
+		return -1;
 	}
 	
 	/**
@@ -88,8 +103,7 @@ public class City
 	 */
 	
 	public Emporium[] getEmporium() {
-		// TODO implement me
-		return null;	
+		return slot;	
 	}
 	
 	/**
@@ -100,8 +114,7 @@ public class City
 	 */
 	
 	public CityColor getColor() {
-		// TODO implement me
-		return CityColor.BLUE;	
+		return this.color;	
 	}
 	
 	/**
@@ -111,9 +124,8 @@ public class City
 	 * @ordered
 	 */
 	
-	public City[] getCloseCity() {
-		// TODO implement me
-		return null;	
+	public String[] getCloseCity() {
+		return this.closeCities;	
 	}
 	
 	/**
@@ -124,8 +136,7 @@ public class City
 	 */
 	
 	public String getName() {
-		// TODO implement me
-		return "";	
+		return this.name;	
 	}
 	
 	/**
@@ -135,10 +146,10 @@ public class City
 	 * @ordered
 	 */
 	
-	public Bonus getBonus() {
-		// TODO implement me
-		return null;	
+	public BonusToken getBonus() {
+			return this.token;
 	}
+	
 	
 }
 

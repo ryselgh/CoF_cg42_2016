@@ -45,9 +45,10 @@ public class ColorGroup
 	 * @ordered
 	 */
 	
-	public ColorGroup(City[] c, CityColor col, BonusToken bc) {
-		super();
-		// TODO construct me	
+	public ColorGroup(City[] c, CityColor col, BonusCard bc) {
+		this.city = c;
+		this.color = col;
+		this.bonus = bc;
 	}
 	
 	/**
@@ -60,6 +61,11 @@ public class ColorGroup
 	public City[] getCity() {
 		// TODO implement me
 		return null;	
+	}
+	
+	public BonusCard getBonus()
+	{
+		return this.bonus;
 	}
 	
 }
