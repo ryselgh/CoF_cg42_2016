@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ISTRUZIONI I tag devono sempre essere in maiuscolo. Per bonus privi 
+	di cardinalità inserire qualsiasi valore nel campo AMM o non inserirlo affatto. 
+	Bonus type disponibili: CARD, POINT, COIN, ASSISTANT, NOBILITY, MAINACTION, 
+	TOKEN, TWOTOKENS, FREECARD, BONUSCARD. Colori città disponibili: BLUE, GREY, 
+	YELLOW, RED, PURPLE. -->
+<IMPORT>
+	<TOKEN_POOL>
+		<TOKEN>
+			<BONUS>
+				<TYPE>assistant</TYPE>
+				<AMM>1</AMM>
+			</BONUS>
+			<BONUS>
+				<TYPE>coin</TYPE>
+				<AMM>1</AMM>
+			</BONUS>
+		</TOKEN>
+
+		<TOKEN>
+			<BONUS>
+				<TYPE>coin</TYPE>
+				<AMM>3</AMM>
+			</BONUS>
+		</TOKEN>
+
+	</TOKEN_POOL>
+
+	<REGION_BONUS>
+		<MARE>
+			<BONUS>
+				<TYPE></TYPE>
+				<AMM></AMM>
+			</BONUS>
+		</MARE>
+
+		<COLLINE>
+			<BONUS>
+				<TYPE></TYPE>
+				<AMM></AMM>
+			</BONUS>
+		</COLLINE>
+
+		<MONTAGNE>
+			<BONUS>
+				<TYPE></TYPE>
+				<AMM></AMM>
+			</BONUS>
+		</MONTAGNE>
+	</REGION_BONUS>
+
+	<COLOR_BONUS>
+		<BLUE>
+			<BONUS>
+				<TYPE></TYPE>
+				<AMM></AMM>
+			</BONUS>
+		</BLUE>
+
+		<GREY>
+			<BONUS>
+				<TYPE></TYPE>
+				<AMM></AMM>
+			</BONUS>
+		</GREY>
+
+		<YELLOW>
+			<BONUS>
+				<TYPE></TYPE>
+				<AMM></AMM>
+			</BONUS>
+		</YELLOW>
+
+		<RED>
+			<BONUS>
+				<TYPE></TYPE>
+				<AMM></AMM>
+			</BONUS>
+		</RED>
+
+		<PURPLE>
+			<BONUS>
+				<TYPE></TYPE>
+				<AMM></AMM>
+			</BONUS>
+		</PURPLE>
+	</COLOR_BONUS>
+
+	<KING>
+		<LOCATION></LOCATION>
+	</KING>
+
+	<NOBILITY_BONUS>
+		<POSIZIONE index="2">
+			<BONUS>
+				<TYPE>point</TYPE>
+				<AMM>2</AMM>
+			</BONUS>
+		</POSIZIONE>
+		<POSIZIONE index="4">
+			<BONUS>
+				<TYPE></TYPE>
+				<AMM></AMM>
+			</BONUS>
+			<BONUS>
+				<TYPE></TYPE>
+				<AMM></AMM>
+			</BONUS>
+		</POSIZIONE>
+	</NOBILITY_BONUS>
+
+
+	<POOL_CARTE_PERMESSO>
+		<CARTA>
+			<BONUS>
+				<TYPE></TYPE>
+				<AMM></AMM>
+			</BONUS>
+			<BONUS>
+				<TYPE></TYPE>
+				<AMM></AMM>
+			</BONUS>
+		</CARTA>
+
+		<CARTA>
+			<BONUS>
+				<TYPE></TYPE>
+				<AMM></AMM>
+			</BONUS>
+			<BONUS>
+				<TYPE></TYPE>
+				<AMM></AMM>
+			</BONUS>
+		</CARTA>
+	</POOL_CARTE_PERMESSO>
+
+	<CITY>
+		<NAME></NAME>
+		<COLOR></COLOR>
+		<CLOSE>
+			<NAME></NAME>
+			<NAME></NAME>
+			<NAME></NAME>
+		</CLOSE>
+		<REGION></REGION>
+	</CITY>
+	
+	<CITY>
+		<NAME></NAME>
+		<COLOR></COLOR>
+		<CLOSE>
+			<NAME></NAME>
+			<NAME></NAME>
+			<NAME></NAME>
+		</CLOSE>
+		<REGION></REGION>
+	</CITY>
+	
+	<CITY>
+		<NAME></NAME>
+		<COLOR></COLOR>
+		<CLOSE>
+			<NAME></NAME>
+			<NAME></NAME>
+			<NAME></NAME>
+		</CLOSE>
+		<REGION></REGION>
+	</CITY>
+</IMPORT>

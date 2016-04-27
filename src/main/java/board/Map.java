@@ -177,7 +177,7 @@ public class Map
         
         
         
-        //importo città
+        //importo città TODO: DA INSERIRE NELLE REGIONI, ATTRIBUTO REGION NON ANCORA UTILIZZATO 
 	    NodeList nList = (doc).getElementsByTagName("city");
 	    city = new City[nList.getLength()];
         for (int i = 0; i < nList.getLength(); i++) {
