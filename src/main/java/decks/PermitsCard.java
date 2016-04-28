@@ -2,69 +2,82 @@ package decks ;
 
 import board.Bonus;
 import model.Letter;
+import model.RegionName;
 
-/**
- * <!-- begin-user-doc -->
- * <!--  end-user-doc  -->
- * @generated
- */
 
-public class PermitsCard
-{
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
+
+public class PermitsCard {
 	
-	private Bonus[] bonus;
 	
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
+	private Bonus[] bonuses;
+	private String[] cityLetter = {"a","b","c","d","e","f","g","h","i","l","m","n","o"};
+	private boolean faceDown=true;
+	private RegionName regionName;
 	
-	private Letter[] letters;
 	
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
-	
-	public PermitsCard(Bonus[] b, Letter[] l) {
-		super();
-		// TODO construct me	
-	}
+
 	
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
+	 * @return the bonuses of the card
 	 */
-	
 	public Bonus[] getBonus() {
-		// TODO implement me
-		return null;	
+		return this.bonuses;	
 	}
+
+
 	
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
+	 * @return the cityLetter
 	 */
-	
-	public Letter[] getLetters() {
-		// TODO implement me
-		return null;	
+	public String[] getCityLetter() {
+		return cityLetter;
 	}
+
+
+
+	/**
+	 * @return the regionName
+	 */
+	public RegionName getRegionName() {
+		return regionName;
+	}
+
+
+	/**
+	 * @return the cityLetter
+	 */
+	public PermitsCard(Bonus[] b, String[] l,RegionName r) {
+		bonuses= b;
+		cityLetter = l;
+		regionName = r;
+		
+	}
+
+
+
+	/**
+	 * @return true if the card is faced down
+	 */
+	public boolean isFaceDown() {
+		return faceDown;
+	}
+
+
+
+	/**
+	 * @param faceDown set to true when the card should be faced down
+	 */
+	public void setFaceDown(boolean faceDown) {
+		this.faceDown = faceDown;
+	}
+	 
+	
+		
+	
+	
+	
+	
 	
 }
 

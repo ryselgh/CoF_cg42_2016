@@ -1,66 +1,64 @@
 package decks ;
 
+import java.util.ArrayList;
+import java.util.Collections;
 
-/**
- * <!-- begin-user-doc -->
- * <!--  end-user-doc  -->
- * @generated
- */
+import model.CouncilorColor;
 
-public class PoliticsDeck extends Deck
-{
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
+public class PoliticsDeck extends Deck{
 	
-	private PoliticsCard[] deck;
 	
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
+	private ArrayList<PoliticsCard> politicsDeck;
+	private ArrayList<PoliticsCard> garbage;
+	private static final int CARDSQTY=20;
+	private static final int JOLLYQTY=10;
 	
-	private PoliticsCard[] garbage;
 	
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
+	public PoliticsDeck() {
 	
-	public PoliticsDeck(PoliticsCard[] d) {
-		super(d);
-		// TODO construct me	
+		politicsDeck = new ArrayList<PoliticsCard>(CARDSQTY*6+JOLLYQTY);
+		garbage = new ArrayList<PoliticsCard>(CARDSQTY*6+JOLLYQTY);
+		
+		
+		for(CouncilorColor c : CouncilorColor.values()){
+			if(c == CouncilorColor.JOLLY)
+				for(int i=CARDSQTY*6; i<CARDSQTY*6+JOLLYQTY;i++)
+					politicsDeck.set(i, new PoliticsCard(c));
+			else
+				for(int i=0; i<CARDSQTY;i++)
+					politicsDeck.set(i, new PoliticsCard(c));
+		}
+		Collections.shuffle(politicsDeck);
+		
+		
 	}
 	
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
+	
 	
 	public PoliticsCard draw() {
-		// TODO implement me
-		return null;	
+		PoliticsCard drawnCard;
+		if(politicsDeck.isEmpty()){
+			Collections.shuffle(garbage);
+			for(PoliticsCard p : garbage ){
+				politicsDeck.add(p);
+				garbage.remove(p);
+			}
+			drawnCard = politicsDeck.get(0);
+			politicsDeck.remove(0);
+			
+		} else{
+			drawnCard = politicsDeck.get(0);
+			politicsDeck.remove(0);
+		}
+		
+		return drawnCard;	
 	}
 	
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
 	
-	public void insert(PoliticsCard c) {
-		// TODO implement me	
+	
+	public void discard(PoliticsCard c) {
+		garbage.add(c);
 	}
 	
 }

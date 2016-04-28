@@ -1,46 +1,45 @@
 package decks ;
 
+import java.util.ArrayList;
 
-/**
- * <!-- begin-user-doc -->
- * <!--  end-user-doc  -->
- * @generated
- */
+import board.Bonus;
 
 public class KingBonusDeck extends Deck{
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
-	
-	private KingBonusCard[] card;
-	
+
+
+	private ArrayList<KingBonusCard> kingBonusDeck;
+	private final static int KINGQTY=5;
+
+
+
+	public KingBonusDeck(Bonus[] bonuses) {
+		kingBonusDeck = new ArrayList<KingBonusCard>(KINGQTY);
+		for (int i=0; i<KINGQTY; i++){
+			kingBonusDeck.set(i, new KingBonusCard(i+1,bonuses[i]));
+		}
+
+	}
+
+	public KingBonusCard draw(){
+		KingBonusCard drawnCard;
+		if(kingBonusDeck.isEmpty()){
+			return null;
+		}else{
+			drawnCard = kingBonusDeck.get(0);
+			kingBonusDeck.remove(0);
+			return drawnCard;
+		}
+
+	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
+	 * @return the size of the king bonus deck
 	 */
-	
-	public KingBonusDeck(KingBonusCard[] d) {
-		super(d);
-		// TODO construct me	
+	public static int getKingqty() {
+		return KINGQTY;
 	}
-	
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
-	
-	public KingBonusCard getCard() {
-		// TODO implement me
-		return null;	
-	}
-	
+
+
+
 }
 

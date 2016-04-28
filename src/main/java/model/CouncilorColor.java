@@ -7,5 +7,5 @@ package model ;
  */
 public enum CouncilorColor
 {
-	PURPLE, WHITE, BLACK, ORANGE, BLUESKY, PINK;
+	PURPLE, WHITE, BLACK, ORANGE, BLUESKY, PINK, JOLLY;
 }

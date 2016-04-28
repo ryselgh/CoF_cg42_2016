@@ -1,47 +1,30 @@
 package decks ;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
+import java.util.Collections;
 
-/**
- * <!-- begin-user-doc -->
- * <!--  end-user-doc  -->
- * @generated
- */
 
-public class Deck implements Iterator
+public abstract class Deck implements Iterator
 {
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
 	
-	protected Object deck;
 	
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
+	private ArrayList <Object> deck;
+
 	
-	public Deck(Object d) {
-		super();
-		// TODO construct me	
+	
+	public Deck() {
+		
+		deck = new ArrayList<Object>();
+		
+	}
+	static void shuffle(ArrayList<Object> deck){
+		Collections.shuffle(deck);
 	}
 	
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
 	
-	public void shuffle() {
-		// TODO implement me	
-	}
 
 	@Override
 	public boolean hasNext() {
