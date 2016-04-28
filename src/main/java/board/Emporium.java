@@ -28,8 +28,7 @@ public class Emporium
 	 */
 	
 	public Emporium(Player p) {
-		super();
-		// TODO construct me	
+		this.player = p;	
 	}
 	
 	/**
@@ -40,8 +39,7 @@ public class Emporium
 	 */
 	
 	public Player getPlayer() {
-		// TODO implement me
-		return null;	
+		return this.player;	
 	}
 	
 }

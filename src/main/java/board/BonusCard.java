@@ -27,9 +27,8 @@ public class BonusCard
 	 * @ordered
 	 */
 	
-	public BonusCard(CityColor c) {
-		super();
-		// TODO construct me	
+	public BonusCard(Bonus b) {
+		this.b = b;	
 	}
 	
 	/**
@@ -40,8 +39,7 @@ public class BonusCard
 	 */
 	
 	public Bonus getBonus() {
-		// TODO implement me
-		return null;	
+		return this.b;	
 	}
 	
 }

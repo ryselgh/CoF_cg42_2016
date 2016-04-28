@@ -37,8 +37,8 @@ public class Bonus
 	 */
 	
 	public Bonus(BonusType t, int q) {
-		super();
-		// TODO construct me	
+		this.type = t;
+		this.quantity = q;
 	}
 	
 	/**
@@ -49,8 +49,7 @@ public class Bonus
 	 */
 	
 	public BonusType getType() {
-		// TODO implement me
-		return BonusType.CARD;	
+		return this.type;	
 	}
 	
 	/**
@@ -61,8 +60,7 @@ public class Bonus
 	 */
 	
 	public int getQnt() {
-		// TODO implement me
-		return 0;	
+		return this.quantity;	
 	}
 	
 }

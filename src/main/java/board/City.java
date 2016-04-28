@@ -36,25 +36,7 @@ public class City
 	 * @ordered
 	 */
 	
-	private CityName name;
-	
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
-	
-	private City[] closeCities;
-	
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
-	
-	private Bonus token;
+	private String name;
 	
 
 	/**
@@ -64,10 +46,7 @@ public class City
 	 * @ordered
 	 */
 	
-	public City(CityName n, CityColor c, City[] close) {
-		super();
-		// TODO construct me	
-	}
+	private String[] closeCities;
 	
 	/**
 	 * <!-- begin-user-doc -->
@@ -76,8 +55,46 @@ public class City
 	 * @ordered
 	 */
 	
-	public void setEmporium(Emporium e) {
-		// TODO implement me	
+	private BonusToken token;
+	private int playerNum;
+	
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!--  end-user-doc  -->
+	 * @generated
+	 * @ordered
+	 */
+	
+	public City(String n, CityColor c, String[] close, int playerNo, BonusToken bt) {
+		this.name = n;
+		this.color = c;
+		this.closeCities = close;
+		this.playerNum = playerNo;
+		this.token = bt;
+		slot = new Emporium[playerNo];
+		
+	}
+	
+	
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!--  end-user-doc  -->
+	 * @generated
+	 * @ordered
+	 */
+	
+	public int setEmporium(Emporium e) {
+		int i=0;
+		for(i=0; i<=playerNum;i++)
+		{
+			if(slot[i]==null)
+			{
+				slot[i]=e;
+				return 1;
+			}
+		}
+		return -1;
 	}
 	
 	/**
@@ -88,8 +105,7 @@ public class City
 	 */
 	
 	public Emporium[] getEmporium() {
-		// TODO implement me
-		return null;	
+		return slot;	
 	}
 	
 	/**
@@ -100,8 +116,7 @@ public class City
 	 */
 	
 	public CityColor getColor() {
-		// TODO implement me
-		return CityColor.BLUE;	
+		return this.color;	
 	}
 	
 	/**
@@ -111,9 +126,8 @@ public class City
 	 * @ordered
 	 */
 	
-	public City[] getCloseCity() {
-		// TODO implement me
-		return null;	
+	public String[] getCloseCity() {
+		return this.closeCities;	
 	}
 	
 	/**
@@ -124,8 +138,7 @@ public class City
 	 */
 	
 	public String getName() {
-		// TODO implement me
-		return "";	
+		return this.name;	
 	}
 	
 	/**
@@ -135,9 +148,12 @@ public class City
 	 * @ordered
 	 */
 	
-	public Bonus getBonus() {
-		// TODO implement me
-		return null;	
+	public BonusToken getBonus() {
+			return this.token;
+	}
+	
+	public void setToken(BonusToken t){
+		this.token = t;
 	}
 	
 }
