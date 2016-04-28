@@ -23,98 +23,22 @@ import model.CouncilorColor;
 import model.CityColor;
 import model.BonusType;
 import model.RegionName;
-//todo: inserisci bonus città
-
-/**
- * <!-- begin-user-doc -->
- * <!--  end-user-doc  -->
- * @generated
- */
 
 public class Map
 {
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
-	
 	private Player[] players;
-	
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
-	
 	private Region[] regions;//0 mare    1 colline     2 montagne
 	private ColorGroup[] colorgroups;
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
-	
 	private ArrayList <Councilor> councilors;
-	
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
-	
 	private Balcony[] balcony;
-	
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
-	
 	private Assistant[] assistants;
-	
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
-	
 	private Emporium[] emporiums;
-	
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
-	
 	private Pawn[] pawn;
-	
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
-	
 	private NobilityTrack nobilityTrack;
 	private Bonus[][] nobilityTrackBonus;
 	private ArrayList <BonusToken> token_pool;
 	private Bonus[] pool_carte_permesso;
 	private String[] colori_pedine;
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
-	
 	private City[] city;
 	
 
@@ -127,12 +51,12 @@ public class Map
 	 * @generated
 	 * @ordered
 	 */
-	
-	public Map(Player[] p, boolean _default) {//da implementare default
+
+	public Map(Player[] p, boolean _default, String file) {//da implementare default
 		this.players = p;
 		initializeMapObjects();
 		try {
-			importMap("",_default);
+			importMap(file,_default);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -148,7 +72,7 @@ public class Map
 	 * @ordered
 	 */
 	
-	public void importMap(String file, boolean _default) throws Exception  { //inizializza: città(+bonus token), regioni(+bonus card), color_group(+bonus card), king, nobility_track
+	public int importMap(String file, boolean _default) throws Exception  { //inizializza: città(+bonus token), regioni(+bonus card), color_group(+bonus card), king, nobility_track
 		
 		
 		
@@ -236,7 +160,7 @@ public class Map
         	city[i] = new City(elem_name,parseColor(elem_color),closes,players.length, bt);//da assegnare il token
         	inserisciCitta(city[i], elem_region, elem_color);
         	if (validateCities(city)==false)
-        		;//lancia errore
+        		return -1;//lancia errore
         }	
         	
 
@@ -247,7 +171,7 @@ public class Map
 		for(City c: city)
 			if(kingLocationStr.equals(c.getName()))
 				presente = true;
-		if(!presente) ;//lancia errore
+		if(!presente) return -2;//lancia errore
 		
 		
 		//importo nobility track
@@ -268,7 +192,7 @@ public class Map
             	nobilityTrackBonus[index][j]= new Bonus(bonus_type, bonus_amm);
         	}
         }	
-	    nobilityTrack = new NobilityTrack(pawn,nobilityTrackBonus);
+	    this.nobilityTrack = new NobilityTrack(pawn,nobilityTrackBonus);
 	    
 		// importo pool carte permesso
 		Element permElem =(Element) (doc).getElementsByTagName("POOL_CARTE_PERMESSO").item(0);
@@ -286,8 +210,8 @@ public class Map
 
 		// importo colori pedine
 		Element pedElem =(Element) (doc).getElementsByTagName("COLORI_PEDINE").item(0);
-		NodeList colorList = permElem.getElementsByTagName("COLORE");
-		if(colorList.getLength()<8);//lancia errore
+		NodeList colorList = pedElem.getElementsByTagName("COLORE");
+		if(colorList.getLength()<8) return -3;//lancia errore
 	    colori_pedine = new String[colorList.getLength()];
 		for (int i = 0; i < colorList.getLength(); i++) {
 			Element colorElem = (Element) colorList.item(i);
@@ -300,8 +224,14 @@ public class Map
 			do{
 				randomNo = randomNum(0,colorList.getLength() - 1);}
 			while (colori_pedine[randomNo]!="");
+			colori_pedine[randomNo]="";
 			pawn[i]=new Pawn(players[i], colori_pedine[randomNo]);
 		}
+		
+		
+		
+		
+		return 1;
 	}
 	
 	/**
@@ -315,7 +245,8 @@ public class Map
 		int i,k;
 		
 		//councilors
-		ArrayList <Councilor> councilors = new ArrayList <Councilor>();
+		int councNum = CouncilorColor.values().length*4;
+		councilors = new ArrayList <Councilor>(councNum);
 		for (CouncilorColor c : CouncilorColor.values()) {
 		    for(i=0;i<4;i++)
 		    	councilors.add(new Councilor(c));
