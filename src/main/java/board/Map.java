@@ -90,7 +90,7 @@ public class Map
 		Bonus[] bonusRegioni = new Bonus[3];//[0]=mare     [1]=colline     [2]=montagne
 		String[] nomiRegioni = {"MARE","COLLINE","MONTAGNE"};
 		Node regionNode = (doc).getElementsByTagName("REGION_BONUS").item(0);
-		for (int i = 0; i < 3; i++) {
+		for (int i = 0; i < nomiRegioni.length; i++) {
 			Element rElem = (Element) ((Element) regionNode).getElementsByTagName(nomiRegioni[i]).item(0);
 			Element rBonusElem = (Element) rElem.getElementsByTagName("BONUS").item(0);
 			String rBonusTypeStr = rBonusElem.getElementsByTagName("TYPE").item(0).getTextContent();
@@ -104,7 +104,7 @@ public class Map
 		Bonus[] bonusColori = new Bonus[5];// ordine come nomiColori qua sotto
 		String[] nomiColori = { "BLUE", "GREY", "YELLOW", "RED", "PURPLE" };
 		Node colorNode = (doc).getElementsByTagName("REGION_BONUS").item(0);
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < nomiColori.length; i++) {
 			Element cElem = (Element) ((Element) colorNode).getElementsByTagName(nomiColori[i]).item(0);
 			Element cBonusElem = (Element) cElem.getElementsByTagName("BONUS").item(0);
 			String cBonusTypeStr = cBonusElem.getElementsByTagName("TYPE").item(0).getTextContent();
@@ -139,7 +139,7 @@ public class Map
         
         
         
-        //TODO2: inserire il token nella città una volta importati gli oggetti, ho messo la funzione setToken(t)
+        
 	    NodeList nList = (doc).getElementsByTagName("city");
 	    city = new City[nList.getLength()];
         for (int i = 0; i < nList.getLength(); i++) {
@@ -157,7 +157,7 @@ public class Map
         		closes[j] = closeNameList.item(j).getTextContent();
         	}
         	BonusToken bt = token_pool.remove(randomNum(0,token_pool.size()-1));
-        	city[i] = new City(elem_name,parseColor(elem_color),closes,players.length, bt);//da assegnare il token
+        	city[i] = new City(elem_name,parseColor(elem_color),closes,players.length, bt);
         	inserisciCitta(city[i], elem_region, elem_color);
         	if (validateCities(city)==false)
         		return -1;//lancia errore
@@ -223,7 +223,7 @@ public class Map
 		{		
 			do{
 				randomNo = randomNum(0,colorList.getLength() - 1);}
-			while (colori_pedine[randomNo]!="");
+			while (colori_pedine[randomNo]=="");
 			colori_pedine[randomNo]="";
 			pawn[i]=new Pawn(players[i], colori_pedine[randomNo]);
 		}
@@ -299,7 +299,7 @@ public class Map
 	
 	}
 	
-	private void inserisciCitta(City c, String regione, String color)
+	private int inserisciCitta(City c, String regione, String color)
 	{
 		if (regione.toLowerCase()=="sea")
 			regions[0].addCity(c);
@@ -308,7 +308,7 @@ public class Map
 		else if (regione.toLowerCase()=="mountain")
 			regions[2].addCity(c);
 		else
-			;//lancia errore
+			return -1;//lancia errore
 		
 		switch (color.toLowerCase()) {
         case "blue":  colorgroups[0].addCity(c);
@@ -317,15 +317,16 @@ public class Map
         case "red":  colorgroups[3].addCity(c);
         case "yellow":  colorgroups[4].addCity(c);
                  break;
-        default: break;//lancia errore
-    }
+        default: return -2;//lancia errore
+        }
+		return 1;
 	}
 	
 	private static int randomNum(int Min, int Max)
 	{
 		return Min + (int)(Math.random() * ((Max - Min) + 1));
 	}
-	CityColor parseColor(String color)
+	private CityColor parseColor(String color)
 	{
 		CityColor[] colors = CityColor.values();
 		for(CityColor c: colors)
@@ -336,7 +337,7 @@ public class Map
 		return null;
 	}
 	
-	BonusType parseBonus(String b)
+	private BonusType parseBonus(String b)
 	{
 		BonusType[] types = BonusType.values();
 		for(BonusType t: types)
