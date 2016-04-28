@@ -1,5 +1,7 @@
 package board ;
 
+import java.util.ArrayList;
+
 import model.CityColor;
 
 /**
@@ -17,7 +19,7 @@ public class ColorGroup
 	 * @ordered
 	 */
 	
-	private City[] city;
+	private ArrayList <City> cities;
 	
 	/**
 	 * <!-- begin-user-doc -->
@@ -35,7 +37,7 @@ public class ColorGroup
 	 * @ordered
 	 */
 	
-	private BonusCard bonus;
+	private BonusCard bc;
 	
 
 	/**
@@ -45,9 +47,8 @@ public class ColorGroup
 	 * @ordered
 	 */
 	
-	public ColorGroup(City[] c, CityColor col, BonusToken bc) {
-		super();
-		// TODO construct me	
+	public ColorGroup(CityColor col) {
+		this.color = col;
 	}
 	
 	/**
@@ -57,9 +58,23 @@ public class ColorGroup
 	 * @ordered
 	 */
 	
-	public City[] getCity() {
-		// TODO implement me
-		return null;	
+	public ArrayList <City> getCity() {
+		return cities;	
+	}
+	
+	public void addCity(City c)
+	{
+		cities.add(c);
+	}
+	
+	public void setBonus(BonusCard b)
+	{
+		this.bc = b;
+	}
+	
+	public BonusCard getBonus()
+	{
+		return this.bc;
 	}
 	
 }

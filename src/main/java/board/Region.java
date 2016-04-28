@@ -1,5 +1,7 @@
 package board ;
 
+import java.util.ArrayList;
+
 import model.RegionName;
 
 /**
@@ -17,7 +19,7 @@ public class Region
 	 * @ordered
 	 */
 	
-	private BonusToken bc;
+	private BonusCard bc;
 	
 	/**
 	 * <!-- begin-user-doc -->
@@ -26,7 +28,8 @@ public class Region
 	 * @ordered
 	 */
 	
-	private City[] cities;
+	private ArrayList <City> cities;
+	private RegionName name;
 	
 
 	/**
@@ -36,9 +39,8 @@ public class Region
 	 * @ordered
 	 */
 	
-	public Region(RegionName n, City[] c, BonusToken bc) {
-		super();
-		// TODO construct me	
+	public Region(RegionName n) {
+		this.name = n;
 	}
 	
 	/**
@@ -48,9 +50,28 @@ public class Region
 	 * @ordered
 	 */
 	
-	public City[] getCities() {
-		// TODO implement me
-		return null;	
+	public ArrayList <City> getCities() {
+		return cities;	
+	}
+	
+	public void addCity(City c)
+	{
+		cities.add(c);
+	}
+	
+	public void setBonus(BonusCard b)
+	{
+		this.bc = b;
+	}
+	
+	public RegionName getName()
+	{
+		return this.name;
+	}
+	
+	public BonusCard getBonus()
+	{
+		return this.bc;
 	}
 	
 }

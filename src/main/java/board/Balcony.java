@@ -27,8 +27,7 @@ public class Balcony
 	 */
 	
 	public Balcony(Councilor[] c) {
-		super();
-		// TODO construct me	
+		this.councilor = c;	
 	}
 	
 	/**
@@ -39,8 +38,7 @@ public class Balcony
 	 */
 	
 	public Councilor[] getBalcony() {
-		// TODO implement me
-		return null;	
+		return this.councilor;	
 	}
 	
 }

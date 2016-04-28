@@ -27,8 +27,7 @@ public class King
 	 */
 	
 	public King(City c) {
-		super();
-		// TODO construct me	
+		this.location = c;	
 	}
 	
 	/**
@@ -39,8 +38,7 @@ public class King
 	 */
 	
 	public City getLocation() {
-		// TODO implement me
-		return null;	
+		return this.location;	
 	}
 	
 	/**
@@ -51,7 +49,7 @@ public class King
 	 */
 	
 	public void setLocation(City l) {
-		// TODO implement me	
+		this.location = l;	
 	}
 	
 }
