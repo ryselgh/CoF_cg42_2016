@@ -13,18 +13,95 @@
 		<TOKEN>
 			<BONUS>
 				<TYPE>assistant</TYPE>
+				<AMM>2</AMM>
+			</BONUS>
+			<BONUS>
+				<TYPE>card</TYPE>
 				<AMM>1</AMM>
 			</BONUS>
+			<BONUS>
+				<TYPE>point</TYPE>
+				<AMM>1</AMM>
+			</BONUS>
+		</TOKEN>
+		<TOKEN>
+			<BONUS>
+				<TYPE>coin</TYPE>
+				<AMM>2</AMM>
+			</BONUS>
+		</TOKEN>
+		<TOKEN>
+			<BONUS>
+				<TYPE>card</TYPE>
+				<AMM>1</AMM>
+			</BONUS>
+		</TOKEN>
+		<TOKEN>
+			<BONUS>
+				<TYPE>nobility</TYPE>
+				<AMM>1</AMM>
+			</BONUS>
+		</TOKEN>
+		<TOKEN>
+			<BONUS>
+				<TYPE>nobility</TYPE>
+				<AMM>1</AMM>
+			</BONUS>
+		</TOKEN>
+		<TOKEN>
+			<BONUS>
+				<TYPE>coin</TYPE>
+				<AMM>1</AMM>
+			</BONUS>
+			<BONUS>
+				<TYPE>assistant</TYPE>
+				<AMM>1</AMM>
+			</BONUS>
+		</TOKEN>
+		<TOKEN>
+			<BONUS>
+				<TYPE>assistant</TYPE>
+				<AMM>1</AMM>
+			</BONUS>
+		</TOKEN>
+		<TOKEN>
+			<BONUS>
+				<TYPE>point</TYPE>
+				<AMM>3</AMM>
+			</BONUS>
+		</TOKEN>
+		<TOKEN>
+			<BONUS>
+				<TYPE>point</TYPE>
+				<AMM>1</AMM>
+			</BONUS>
+		</TOKEN>
+		<TOKEN>
+			<BONUS>
+				<TYPE>point</TYPE>
+				<AMM>2</AMM>
+			</BONUS>
+		</TOKEN>
+		<TOKEN>
 			<BONUS>
 				<TYPE>coin</TYPE>
 				<AMM>1</AMM>
 			</BONUS>
 		</TOKEN>
-
 		<TOKEN>
 			<BONUS>
 				<TYPE>coin</TYPE>
 				<AMM>3</AMM>
+			</BONUS>
+		</TOKEN>
+		<TOKEN>
+			<BONUS>
+				<TYPE>card</TYPE>
+				<AMM>1</AMM>
+			</BONUS>
+			<BONUS>
+				<TYPE>assistant</TYPE>
+				<AMM>1</AMM>
 			</BONUS>
 		</TOKEN>
 
@@ -33,22 +110,22 @@
 	<REGION_BONUS>
 		<SEA>
 			<BONUS>
-				<TYPE></TYPE>
-				<AMM></AMM>
+				<TYPE>point</TYPE>
+				<AMM>5</AMM>
 			</BONUS>
 		</SEA>
 
 		<HILL>
 			<BONUS>
-				<TYPE></TYPE>
-				<AMM></AMM>
+				<TYPE>point</TYPE>
+				<AMM>5</AMM>
 			</BONUS>
 		</HILL>
 
 		<MOUNTAIN>
 			<BONUS>
-				<TYPE></TYPE>
-				<AMM></AMM>
+				<TYPE>point</TYPE>
+				<AMM>5</AMM>
 			</BONUS>
 		</MOUNTAIN>
 	</REGION_BONUS>
@@ -56,37 +133,33 @@
 	<COLOR_BONUS>
 		<BLUE>
 			<BONUS>
-				<TYPE></TYPE>
-				<AMM></AMM>
+				<TYPE>point</TYPE>
+				<AMM>5</AMM>
 			</BONUS>
 		</BLUE>
 
 		<GREY>
 			<BONUS>
-				<TYPE></TYPE>
-				<AMM></AMM>
+				<TYPE>point</TYPE>
+				<AMM>12</AMM>
 			</BONUS>
 		</GREY>
 
 		<YELLOW>
 			<BONUS>
-				<TYPE></TYPE>
-				<AMM></AMM>
+				<TYPE>point</TYPE>
+				<AMM>20</AMM>
 			</BONUS>
 		</YELLOW>
 
 		<RED>
 			<BONUS>
-				<TYPE></TYPE>
-				<AMM></AMM>
+				<TYPE>point</TYPE>
+				<AMM>8</AMM>
 			</BONUS>
 		</RED>
 
 		<PURPLE>
-			<BONUS>
-				<TYPE></TYPE>
-				<AMM></AMM>
-			</BONUS>
 		</PURPLE>
 	</COLOR_BONUS>
 
@@ -100,30 +173,388 @@
 				<TYPE>point</TYPE>
 				<AMM>2</AMM>
 			</BONUS>
+			<BONUS>
+			<TYPE>coin</TYPE>
+			<AMM>2</AMM>
+			</BONUS>
 		</POSIZIONE>
 		<POSIZIONE index="4">
 			<BONUS>
-				<TYPE></TYPE>
-				<AMM></AMM>
+				<TYPE>token</TYPE>
+				<AMM>1</AMM>
 			</BONUS>
-			<BONUS>
-				<TYPE></TYPE>
-				<AMM></AMM>
-			</BONUS>
+		</POSIZIONE index="6">
+		<POSIZIONE>
+		<BONUS>
+			<TYPE>mainaction</TYPE>
+			<AMM>1</AMM>
+		</BONUS>
+		</POSIZIONE>
+		<POSIZIONE>
+		<BONUS>
+			<TYPE>card</TYPE>
+			<AMM>1</AMM>
+		</BONUS>
+		<BONUS>
+		<TYPE>point</TYPE>
+		<AMM>3</AMM>
+		</BONUS>
+		</POSIZIONE>
+		<POSIZIONE index="10">
+		<BONUS>
+			<TYPE>freecard</TYPE>
+			<AMM>1</AMM>
+		</BONUS>
+		</POSIZIONE>
+		<POSIZIONE index="12">
+		<BONUS>
+			<TYPE>assistant</TYPE>
+			<AMM>1</AMM>
+		</BONUS>
+		<BONUS>
+		<TYPE>point</TYPE>
+		<AMM>5</AMM>
+		</BONUS>
+		</POSIZIONE>
+		<POSIZIONE index="14">
+		<BONUS>
+			<TYPE>bonuscard</TYPE>
+			<AMM>1</AMM>
+		</BONUS>
+		</POSIZIONE>
+		<POSIZIONE index="16">
+		<BONUS>
+			<TYPE>twotokens</TYPE>
+			<AMM>1</AMM>
+		</BONUS>
+		</POSIZIONE>
+		<POSIZIONE index="18">
+		<BONUS>
+			<TYPE>point</TYPE>
+			<AMM>8</AMM>
+		</BONUS>
+		</POSIZIONE>
+		<POSIZIONE index="19">
+		<BONUS>
+			<TYPE>point</TYPE>
+			<AMM>2</AMM>
+		</BONUS>
+		</POSIZIONE>
+		<POSIZIONE index="20">
+		<BONUS>
+			<TYPE>point</TYPE>
+			<AMM>3</AMM>
+		</BONUS>
 		</POSIZIONE>
 	</NOBILITY_BONUS>
 
+	<KING_BONUS>
+		<BONUS>
+			<TYPE>point</TYPE>
+			<AMM>25</AMM>
+		</BONUS>
+		<BONUS>
+			<TYPE>point</TYPE>
+			<AMM>18</AMM>
+		</BONUS>
+		<BONUS>
+			<TYPE>point</TYPE>
+			<AMM>12</AMM>
+		</BONUS>
+		<BONUS>
+			<TYPE>point</TYPE>
+			<AMM>7</AMM>
+		</BONUS>
+		<BONUS>
+			<TYPE>point</TYPE>
+			<AMM>3</AMM>
+		</BONUS>
+	</KING_BONUS>
 
-	<POOL_CARTE_PERMESSO><!--i singoli bonus possibili-->
+	<!--i singoli bonus possibili-->
+	 <!-- comment>  <POOL_CARTE_PERMESSO>
 		<BONUS>
-			<TYPE></TYPE>
-			<AMM></AMM>
+			<TYPE>assistant</TYPE>
+			<AMM>1</AMM>
+			</BONUS>
+			<BONUS>
+			<TYPE>coin</TYPE>
+			<AMM>1</AMM>
 		</BONUS>
 		<BONUS>
-			<TYPE></TYPE>
-			<AMM></AMM>
+			<TYPE>card</TYPE>
+			<AMM>1</AMM>
+			</BONUS>
+			<BONUS>
+			<TYPE>point</TYPE>
+			<AMM>1</AMM>
 		</BONUS>
-	</POOL_CARTE_PERMESSO>
+		<BONUS>
+			<TYPE>nobility</TYPE>
+			<AMM>1</AMM>
+			</BONUS>
+			<BONUS>
+			<TYPE>victory</TYPE>
+			<AMM>1</AMM>
+		</BONUS>
+		<BONUS>
+			<TYPE>victory</TYPE>
+			<AMM>3</AMM>
+		</BONUS>
+		<BONUS>
+			<TYPE>card</TYPE>
+			<AMM>1</AMM>
+			</BONUS>
+			<BONUS>
+			<TYPE>coin</TYPE>
+			<AMM>3</AMM>
+		</BONUS>
+		<BONUS>
+			<TYPE>card</TYPE>
+			<AMM>3</AMM>
+		</BONUS>
+		<BONUS>
+			<TYPE>mainaction</TYPE>
+			<AMM>1</AMM>
+		</BONUS>
+		<BONUS>
+			<TYPE>card</TYPE>
+			<AMM>1</AMM>
+			</BONUS>
+			<BONUS>
+			<TYPE>assistant</TYPE>
+			<AMM>2</AMM>
+		</BONUS>
+		<BONUS>
+			<TYPE>card</TYPE>
+			<AMM>2</AMM>
+			</BONUS>
+			<BONUS>
+			<TYPE>nobility</TYPE>
+			<AMM>1</AMM>
+		</BONUS>
+		<BONUS>
+			<TYPE>point</TYPE>
+			<AMM>2</AMM>
+			</BONUS>
+			<BONUS>
+			<TYPE>card</TYPE>
+			<AMM>2</AMM>
+		</BONUS>
+		<BONUS>
+			<TYPE>coin</TYPE>
+			<AMM>1</AMM>
+			</BONUS>
+			<BONUS>
+			<TYPE>assistant</TYPE>
+			<AMM>3</AMM>
+		</BONUS>
+		<BONUS>
+			<TYPE>coin</TYPE>
+			<AMM>7</AMM>
+		</BONUS>
+		<BONUS>
+			<TYPE>card</TYPE>
+			<AMM>3</AMM>
+			</BONUS>
+			<BONUS>
+			<TYPE>nobility</TYPE>
+			<AMM>1</AMM>
+		</BONUS>
+		<BONUS>
+			<TYPE>card</TYPE>
+			<AMM>4</AMM>
+		</BONUS>
+		<BONUS>
+			<TYPE>point</TYPE>
+			<AMM>5</AMM>
+			</BONUS>
+			<BONUS>
+			<TYPE>nobility</TYPE>
+			<AMM>1</AMM>
+		</BONUS>
+		<BONUS>
+			<TYPE>assistant</TYPE>
+			<AMM>1</AMM>
+			</BONUS>
+			<BONUS>
+			<TYPE>nobility</TYPE>
+			<AMM>1</AMM>
+		</BONUS>
+		<BONUS>
+			<TYPE>card</TYPE>
+			<AMM>2</AMM>
+		</BONUS>
+		<BONUS>
+			<TYPE>card</TYPE>
+			<AMM>1</AMM>
+			</BONUS>
+			<BONUS>
+			<TYPE>assistant</TYPE>
+			<AMM>1</AMM>
+		</BONUS>
+		<BONUS>
+			<TYPE>coin</TYPE>
+			<AMM>2</AMM>
+			</BONUS>
+			<BONUS>
+			<TYPE>point</TYPE>
+			<AMM>1</AMM>
+		</BONUS>
+		<BONUS>
+			<TYPE>nobility</TYPE>
+			<AMM>1</AMM>
+			</BONUS>
+			<BONUS>
+			<TYPE>coin</TYPE>
+			<AMM>1</AMM>
+		</BONUS>
+		<BONUS>
+			<TYPE>point</TYPE>
+			<AMM>5</AMM>
+		</BONUS>
+		<BONUS>
+			<TYPE>assistant</TYPE>
+			<AMM>2</AMM>
+			</BONUS>
+			<BONUS>
+			<TYPE>coin</TYPE>
+			<AMM>1</AMM>
+		</BONUS>
+		<BONUS>
+			<TYPE>assistant</TYPE>
+			<AMM>3</AMM>
+		</BONUS>
+		<BONUS>
+			<TYPE>coin</TYPE>
+			<AMM>5</AMM>
+		</BONUS>
+		<BONUS>
+			<TYPE>card</TYPE>
+			<AMM>2</AMM>
+			</BONUS>
+			<BONUS>
+			<TYPE>nobility</TYPE>
+			<AMM>1</AMM>
+		</BONUS>
+		<BONUS>
+			<TYPE>assistant</TYPE>
+			<AMM>4</AMM>
+		</BONUS>
+		<BONUS>
+			<TYPE>card</TYPE>
+			<AMM>2</AMM>
+			</BONUS>
+			<BONUS>
+			<TYPE>coin</TYPE>
+			<AMM>4</AMM>
+		</BONUS>
+		<BONUS>
+			<TYPE>card</TYPE>
+			<AMM>2</AMM>
+			</BONUS>
+			<BONUS>
+			<TYPE>assistant</TYPE>
+			<AMM>2</AMM>
+		</BONUS>
+		<BONUS>
+			<TYPE>mainaction</TYPE>
+			<AMM>1</AMM>
+			<TYPE>point</TYPE>
+			<AMM>2</AMM>
+		</BONUS>
+		<BONUS>
+			<TYPE>assistant</TYPE>
+			<AMM>2</AMM>
+			<TYPE>point</TYPE>
+			<AMM>2</AMM>
+			<TYPE>nobility</TYPE>
+			<AMM>1</AMM>
+		</BONUS>
+		<BONUS>
+			<TYPE>assistant</TYPE>
+			<AMM>1</AMM>
+			<TYPE>point</TYPE>
+			<AMM>1</AMM>
+		</BONUS>
+		<BONUS>
+			<TYPE>coin</TYPE>
+			<AMM>3</AMM>
+		</BONUS>
+		<BONUS>
+			<TYPE>coin</TYPE>
+			<AMM>1</AMM>
+			<TYPE>point</TYPE>
+			<AMM>2</AMM>
+		</BONUS>
+		<BONUS>
+			<TYPE>assistant</TYPE>
+			<AMM>2</AMM>
+		</BONUS>
+		<BONUS>
+			<TYPE>card</TYPE>
+			<AMM>1</AMM>
+			<TYPE>nobility</TYPE>
+			<AMM>1</AMM>
+		</BONUS>
+		<BONUS>
+			<TYPE>point</TYPE>
+			<AMM>3</AMM>
+			<TYPE>coin</TYPE>
+			<AMM>3</AMM>
+		</BONUS>
+		<BONUS>
+			<TYPE>point</TYPE>
+			<AMM>3</AMM>
+			<TYPE>assistant</TYPE>
+			<AMM>1</AMM>
+		</BONUS>
+		<BONUS>
+			<TYPE>nobility</TYPE>
+			<AMM>2</AMM>
+		</BONUS>
+		<BONUS>
+			<TYPE>point</TYPE>
+			<AMM>3</AMM>
+			<TYPE>assistant</TYPE>
+			<AMM>1</AMM>
+		</BONUS>
+		<BONUS>
+			<TYPE>coin</TYPE>
+			<AMM>3</AMM>
+			<TYPE>card</TYPE>
+			<AMM>1</AMM>
+		</BONUS>
+		<BONUS>
+			<TYPE>card</TYPE>
+			<AMM>3</AMM>
+			<TYPE>assistant</TYPE>
+			<AMM>1</AMM>
+		</BONUS>
+		<BONUS>
+			<TYPE>mainaction</TYPE>
+			<AMM>1</AMM>
+			<TYPE>coin</TYPE>
+			<AMM>2</AMM>
+		</BONUS>
+		<BONUS>
+			<TYPE>point</TYPE>
+			<AMM>7</AMM>
+		</BONUS>
+		<BONUS>
+			<TYPE>point</TYPE>
+			<AMM>4</AMM>
+			<TYPE>coin</TYPE>
+			<AMM>3</AMM>
+		</BONUS>
+		<BONUS>
+			<TYPE>assistant</TYPE>
+			<AMM>2</AMM>
+			<TYPE>coin</TYPE>
+			<AMM>3</AMM>
+		</BONUS>
+	</POOL_CARTE_PERMESSO>  </comment-->
+	
 
 	<CITY>
 		<NAME></NAME>
@@ -137,7 +568,7 @@
 	</CITY>
 	
 	<CITY>
-		<NAME></NAME>
+		<NAME>mmm</NAME>
 		<COLOR></COLOR>
 		<CLOSE>
 			<NAME></NAME>
