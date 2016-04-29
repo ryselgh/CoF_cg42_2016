@@ -47,9 +47,7 @@ public class Player {
 	 */
 
 	public void addAssistant(int qty) {
-		for (int i = 0; i < qty; i++) {
-			availableAssistants.add(Map.getAssistant());
-		}
+			availableAssistants.addAll(Map.getAssistant(qty));
 	}
 
 	/**
@@ -71,7 +69,7 @@ public class Player {
 	 * @return player's color
 	 */
 
-	public PawnColor getColor() {
+	public String getColor() {
 		return this.getPawn().getColor();
 	}
 

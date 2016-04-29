@@ -14,22 +14,26 @@ public class Game {
 	private static final int MAXPLAYERS = 8;
 	private static final int COINOFFSET = 10;
 	private static final int ASSISTOFFSET = 1;
+	private static final int INITIALCARDS = 6;
 	private ArrayList<Player> players;
 	private int playersQty;
 	private Map map;
 	private Market market;
 	private Player actualPlayer;
 	private boolean finalTurn;
+	private boolean defaultMap;
 	
 	/**
 	 * Constructs a new object of type Game
 	 * @param playersQty how many players are playing
 	 * @param map the map of the game
+	 * @param defaultMap set to true if you want to load the default map
 	 * @throws Exception if the number of players is less than 2 or greater than {@value #MAXPLAYERS}
 	 */
 	
-	public Game(int playersQty) {
+	public Game(int playersQty, boolean defaultMap) {
 		this.playersQty = playersQty;
+		this.defaultMap = defaultMap;
 		this.initializeObjects();
 		
 		//exception
@@ -38,7 +42,7 @@ public class Game {
 	}
 	
 	/**
-	 * Initializes all the objects needed for the map
+	 * Initializes all the objects needed for the game
 	 */
 	
 	private void initializeObjects() {
@@ -52,7 +56,10 @@ public class Game {
 		actualPlayer = players.get(0);
 		
 		//Map
-		map = new Map(players);
+		if(defaultMap)
+			map = new Map(players.toArray(new Player[players.size()]),defaultMap,"");
+		//else
+			//to be implemented
 		
 		//Player construction
 		for(int i=0; i<playersQty; i++){
@@ -60,10 +67,11 @@ public class Game {
 				players.get(i).setCoins(i+(COINOFFSET-(playersQty-4)/2));
 			else
 				players.get(i).setCoins(i+COINOFFSET);
-			players.get(i).setAvailableEmporiums(map.getPlayerEmporiums());
+			players.get(i).setAvailableEmporiums(map.getPlayerEmporiums(i));
 			players.get(i).setScore(0);
 			players.get(i).addAssistant(i+ASSISTOFFSET);
-			players.get(i).addPolitics(map.getPoliticsDeck().draw(6));
+			for(int j=0;j<INITIALCARDS;j++)
+				players.get(i).addPolitics(map.getPoliticsDeck().draw());
 		}
 		
 	}
