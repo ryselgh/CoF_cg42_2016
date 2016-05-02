@@ -1,6 +1,5 @@
 package board ;
 
-import model.CityColor;
 
 /**
  * <!-- begin-user-doc -->

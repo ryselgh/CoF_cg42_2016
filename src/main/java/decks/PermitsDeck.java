@@ -1,6 +1,7 @@
 package decks ;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import model.RegionName;
 
@@ -16,18 +17,14 @@ public class PermitsDeck extends Deck{
 
 	private ArrayList<PermitsCard> permitsDeck;
 	private PermitsCard[] slot = new PermitsCard[1];
-	private RegionName regionName;
+	private int regionCode;//più facile per i confronti
 
 
 
-	public PermitsDeck(/*file*/ RegionName r) {
-		permitsDeck = new ArrayList<PermitsCard>();
-		regionName = r;
-		//TODO inizializzare il file
-		//		costruisce le carte permesso basandosi sul file
-		//		costruire tre permitsDeck usando la descriminante delle regioni
-		//		funzione di shuffle sul mazzo
-		//		girare le prime due carte da mettere in slot 1,2 e settarle Faced Up
+	public PermitsDeck(PermitsCard[] p, int r) {
+		permitsDeck = new ArrayList<PermitsCard> (Arrays.asList(p));
+		regionCode = r;
+		this.draw();
 
 	}
 
@@ -65,17 +62,12 @@ public class PermitsDeck extends Deck{
 
 
 	public void draw() {
-		if(permitsDeck.isEmpty()){
+		if(permitsDeck.isEmpty())
 			throw new NullPointerException("Cards are over");
-		}
-		if (slot[0] == null){
-			slot[0]= permitsDeck.get(0);
-			permitsDeck.remove(0);
-		}else if(slot[1]==null){
-			slot[1]=permitsDeck.get(0);
-			permitsDeck.remove(0);
-
-		}
+		if (slot[0] == null)
+			slot[0]= permitsDeck.remove(0);
+		else if(slot[1]==null)
+			slot[1]=permitsDeck.remove(0);
 
 	}
 

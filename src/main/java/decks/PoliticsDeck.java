@@ -10,8 +10,8 @@ public class PoliticsDeck extends Deck{
 	
 	private ArrayList<PoliticsCard> politicsDeck;
 	private ArrayList<PoliticsCard> garbage;
-	private static final int CARDSQTY=20;
-	private static final int JOLLYQTY=10;
+	private static final int CARDSQTY=13;
+	private static final int JOLLYQTY=12;
 	
 	
 
@@ -44,13 +44,10 @@ public class PoliticsDeck extends Deck{
 				politicsDeck.add(p);
 				garbage.remove(p);
 			}
-			drawnCard = politicsDeck.get(0);
-			politicsDeck.remove(0);
+			drawnCard = politicsDeck.remove(0);
 			
-		} else{
-			drawnCard = politicsDeck.get(0);
-			politicsDeck.remove(0);
-		}
+		} else
+			drawnCard = politicsDeck.remove(0);
 		
 		return drawnCard;	
 	}

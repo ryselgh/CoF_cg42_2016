@@ -70,8 +70,8 @@ public class NobilityTrack {
 	 * @ordered
 	 */
 
-//	public Bonus getBonus(Pawn p) {		// COS'E'
-//		return BonusVector[p.getPos()]; // QUESTA
-//	}									// ROBA???
+	public Bonus[] getBonus(Pawn p) {		
+		return BonusVector[p.getPos()]; 
+	}									
 
 }

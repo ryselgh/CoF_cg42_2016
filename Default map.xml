@@ -7,7 +7,9 @@
 	YELLOW, RED, PURPLE. Le città devono essere 15 e le iniziali devono essere dalla 'a' alla 'o'.
 	La nobility track deve essere lunga 20 e ogni casella può avere massimo 3 bonus. Non è necessario specificare le 
 	caselle senza bonus. I colori pedine devono essere in esadecimale (senza 0x). Ci devono essere almeno 8 colori pedine.
-	Nelle città l'attributo region può essere "sea" o "hill" o "mountain".-->
+	Nelle città l'attributo region può essere "sea" o "hill" o "mountain".
+	In ogni carta permesso le lettere devono riferirsi a città della stessa regione.
+	-->
 <IMPORT>
 	<TOKEN_POOL>
 		<TOKEN>
@@ -165,6 +167,14 @@
 
 	<KING>
 		<LOCATION></LOCATION>
+		<BONUS>
+			<TYPE></TYPE>
+			<AMM></AMM>
+		</BONUS>
+		<BONUS>
+			<TYPE></TYPE>
+			<AMM></AMM>
+		</BONUS>
 	</KING>
 
 	<NOBILITY_BONUS>
@@ -183,8 +193,8 @@
 				<TYPE>token</TYPE>
 				<AMM>1</AMM>
 			</BONUS>
-		</POSIZIONE index="6">
-		<POSIZIONE>
+		</POSIZIONE >
+		<POSIZIONE index="6">
 		<BONUS>
 			<TYPE>mainaction</TYPE>
 			<AMM>1</AMM>
@@ -272,7 +282,20 @@
 	</KING_BONUS>
 
 	<!--i singoli bonus possibili-->
-	 <!-- comment>  <POOL_CARTE_PERMESSO>
+	 <!-- comment>  
+	 <POOL_CARTE_PERMESSO>
+	 <CARTA>
+		<BONUS>
+			<TYPE>assistant</TYPE>
+			<AMM>1</AMM>
+		</BONUS>
+		<LETTER>a</LETTER>
+	</CARTA>
+	 
+	 
+	 
+	 
+	 
 		<BONUS>
 			<TYPE>assistant</TYPE>
 			<AMM>1</AMM>

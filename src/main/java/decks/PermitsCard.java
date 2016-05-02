@@ -11,8 +11,6 @@ public class PermitsCard {
 	
 	private Bonus[] bonuses;
 	private String[] cityLetter = {"a","b","c","d","e","f","g","h","i","l","m","n","o"};
-	private boolean faceDown=true;
-	private RegionName regionName;
 	
 	
 
@@ -39,18 +37,14 @@ public class PermitsCard {
 	/**
 	 * @return the regionName
 	 */
-	public RegionName getRegionName() {
-		return regionName;
-	}
 
 
 	/**
 	 * @return the cityLetter
 	 */
-	public PermitsCard(Bonus[] b, String[] l,RegionName r) {
+	public PermitsCard(Bonus[] b, String[] l) {
 		bonuses= b;
 		cityLetter = l;
-		regionName = r;
 		
 	}
 
@@ -59,18 +53,12 @@ public class PermitsCard {
 	/**
 	 * @return true if the card is faced down
 	 */
-	public boolean isFaceDown() {
-		return faceDown;
-	}
 
 
 
 	/**
 	 * @param faceDown set to true when the card should be faced down
 	 */
-	public void setFaceDown(boolean faceDown) {
-		this.faceDown = faceDown;
-	}
 	 
 	
 		
