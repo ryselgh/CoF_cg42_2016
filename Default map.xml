@@ -843,36 +843,145 @@
 
 
 	<CITY>
-		<NAME></NAME>
-		<COLOR></COLOR>
+		<NAME>Arkon</NAME>
+		<COLOR>yellow</COLOR>
 		<CLOSE>
-			<NAME></NAME>
-			<NAME></NAME>
-			<NAME></NAME>
+			<NAME>Castrum</NAME>
 		</CLOSE>
-		<REGION></REGION>
+		<REGION>sea</REGION>
 	</CITY>
 
 	<CITY>
-		<NAME>mmm</NAME>
-		<COLOR></COLOR>
+		<NAME>Burgen</NAME>
+		<COLOR>red</COLOR>
 		<CLOSE>
-			<NAME></NAME>
-			<NAME></NAME>
-			<NAME></NAME>
+			<NAME>Esti</NAME>
 		</CLOSE>
-		<REGION></REGION>
+		<REGION>sea</REGION>
 	</CITY>
 
 	<CITY>
-		<NAME></NAME>
-		<COLOR></COLOR>
+		<NAME>Castrum</NAME>
+		<COLOR>grey</COLOR>
 		<CLOSE>
-			<NAME></NAME>
-			<NAME></NAME>
-			<NAME></NAME>
+			<NAME>Dorful</NAME>
+			<NAME>Arkon</NAME>
+			<NAME>Framek</NAME>
 		</CLOSE>
-		<REGION></REGION>
+		<REGION>sea</REGION>
+	</CITY>
+	<CITY>
+		<NAME>Dorful</NAME>
+		<COLOR>blue</COLOR>
+		<CLOSE>
+			<NAME>Castrum</NAME>
+			<NAME>Graden</NAME>
+		</CLOSE>
+		<REGION>sea</REGION>
+	</CITY>
+	<CITY>
+		<NAME>Esti</NAME>
+		<COLOR>grey</COLOR>
+		<CLOSE>
+			<NAME>Burgen</NAME>
+			<NAME>Hellar</NAME>
+		</CLOSE>
+		<REGION>sea</REGION>
+	</CITY>
+	<CITY>
+		<NAME>Framek</NAME>
+		<COLOR>yellow</COLOR>
+		<CLOSE>
+			<NAME>Castrum</NAME>
+			<NAME>Indur</NAME>
+		</CLOSE>
+		<REGION>hill</REGION>
+	</CITY>
+	<CITY>
+		<NAME>Graden</NAME>
+		<COLOR>grey</COLOR>
+		<CLOSE>
+			<NAME>Juvelar</NAME>
+			<NAME>Dorful</NAME>
+		</CLOSE>
+		<REGION>hill</REGION>
+	</CITY>
+	<CITY>
+		<NAME>Hellar</NAME>
+		<COLOR>yellow</COLOR>
+		<CLOSE>
+			<NAME>Juvelar</NAME>
+			<NAME>Esti</NAME>
+			<NAME>Merkatim</NAME>
+		</CLOSE>
+		<REGION>hill</REGION>
+	</CITY>
+	<CITY>
+		<NAME>Indur</NAME>
+		<COLOR>red</COLOR>
+		<CLOSE>
+			<NAME>Kultos</NAME>
+			<NAME>Juvelar</NAME>
+			<NAME>Framek</NAME>
+		</CLOSE>
+		<REGION>hill</REGION>
+	</CITY>
+	<CITY>
+		<NAME>Juvelar</NAME>
+		<COLOR>purple</COLOR>
+		<CLOSE>
+			<NAME>Indur</NAME>
+			<NAME>Hellar</NAME>
+			<NAME>Graden</NAME>
+			<NAME>Lyram</NAME>
+		</CLOSE>
+		<REGION>hill</REGION>
+	</CITY>
+	<CITY>
+		<NAME>Kultos</NAME>
+		<COLOR>yellow</COLOR>
+		<CLOSE>
+			<NAME>Indur</NAME>
+			<NAME>Naris</NAME>
+		</CLOSE>
+		<REGION>mountain</REGION>
+	</CITY>
+	<CITY>
+		<NAME>Lyram</NAME>
+		<COLOR>grey</COLOR>
+		<CLOSE>
+			<NAME>Juvelar</NAME>
+			<NAME>Osium</NAME>
+		</CLOSE>
+		<REGION>mountain</REGION>
+	</CITY>
+	<CITY>
+		<NAME>Merkatim</NAME>
+		<COLOR>blue</COLOR>
+		<CLOSE>
+			<NAME>Osium</NAME>
+			<NAME>Hellar</NAME>
+		</CLOSE>
+		<REGION>mountain</REGION>
+	</CITY>
+	<CITY>
+		<NAME>Naris</NAME>
+		<COLOR>red</COLOR>
+		<CLOSE>
+			<NAME>Osium</NAME>
+			<NAME>Kultos</NAME>
+		</CLOSE>
+		<REGION>mountain</REGION>
+	</CITY>
+	<CITY>
+		<NAME>Osium</NAME>
+		<COLOR>yellow</COLOR>
+		<CLOSE>
+			<NAME>Merkatim</NAME>
+			<NAME>Osium</NAME>
+			<NAME>Naris</NAME>
+		</CLOSE>
+		<REGION>mountain</REGION>
 	</CITY>
 
 	<COLORI_PEDINE>
