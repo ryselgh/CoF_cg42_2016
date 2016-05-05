@@ -126,6 +126,13 @@ public class Game {
 	public boolean isFinalTurn() {
 		return this.finalTurn;
 	}
+
+	/**
+	 * @return the map
+	 */
+	public Map getMap() {
+		return map;
+	}
 	
 }
 
