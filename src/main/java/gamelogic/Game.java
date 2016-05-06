@@ -22,6 +22,8 @@ public class Game {
 	private Player actualPlayer;
 	private boolean finalTurn;
 	private boolean defaultMap;
+	private MainAction mainAction;
+	private SpeedAction speedAction;
 	
 	/**
 	 * Constructs a new object of type Game
@@ -34,6 +36,8 @@ public class Game {
 	public Game(int playersQty, boolean defaultMap) {
 		this.playersQty = playersQty;
 		this.defaultMap = defaultMap;
+		mainAction = new MainAction(this);
+		speedAction = new SpeedAction(this);
 		this.initializeObjects();
 		
 		//exception
@@ -132,6 +136,20 @@ public class Game {
 	 */
 	public Map getMap() {
 		return map;
+	}
+	
+	/**
+	 * @return the mainAction
+	 */
+	public MainAction getMainAction() {
+		return mainAction;
+	}
+
+	/**
+	 * @return the speedAction
+	 */
+	public SpeedAction getSpeedAction() {
+		return speedAction;
 	}
 	
 }

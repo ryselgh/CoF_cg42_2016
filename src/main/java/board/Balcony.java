@@ -1,23 +1,10 @@
-package board ;
-
-
-/**
- * <!-- begin-user-doc -->
- * <!--  end-user-doc  -->
- * @generated
- */
+package board;
 
 public class Balcony
 {
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
 	
 	private Councilor[] councilor;
-	
+	//private Region region;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -28,18 +15,23 @@ public class Balcony
 	
 	public Balcony(Councilor[] c) {
 		this.councilor = c;	
+		//this.region = region;
 	}
 	
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
+	 * @return the councilors in that balcony
 	 */
 	
 	public Councilor[] getBalcony() {
 		return this.councilor;	
 	}
+
+	/**
+	 * @return the region
+	 */
+//	public Region getRegion() {
+//		return region;
+//	}
 	
 }
 

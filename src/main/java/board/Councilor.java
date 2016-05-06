@@ -38,7 +38,7 @@ public class Councilor
 	 * @ordered
 	 */
 	
-	public CouncilorColor getCouncilor() {
+	public CouncilorColor getCouncilorColor() {
 		// TODO implement me
 		return this.color;	
 	}

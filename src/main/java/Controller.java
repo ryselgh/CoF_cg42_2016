@@ -52,16 +52,16 @@ public class Controller {
 	public void mainAction(int selection){
 		switch(selection){
 			case 1:
-				this.game.getActualPlayer().getMainAction().obtainPermit();
+				this.game.getMainAction().canObtainPermit(null, null);
 				break;
 			case 2:
-				this.game.getActualPlayer().getMainAction().satisfyKing();
+				this.game.getMainAction().satisfyKing();
 				break;
 			case 3:
-				this.game.getActualPlayer().getMainAction().shiftCouncil();
+				this.game.getMainAction().shiftCouncil();
 				break;
 			case 4:
-				this.game.getActualPlayer().getMainAction().build();
+				this.game.getMainAction().build();
 				break;
 		}
 				
@@ -75,16 +75,16 @@ public class Controller {
 	public void speedAction(int selection){
 		switch(selection){
 			case 1:
-				this.game.getActualPlayer().getSpeedAction().buyAssistant();
+				this.game.getSpeedAction().buyAssistant();
 				break;
 			case 2:
-				this.game.getActualPlayer().getSpeedAction().changePermitsCards();
+				this.game.getSpeedAction().changePermitsCards();
 				break;
 			case 3:
-				this.game.getActualPlayer().getSpeedAction().shiftCouncil();
+				this.game.getSpeedAction().shiftCouncil();
 				break;
 			case 4:
-				this.game.getActualPlayer().getSpeedAction().buyMainAction();
+				this.game.getSpeedAction().buyMainAction();
 				break;
 		}
 	}
