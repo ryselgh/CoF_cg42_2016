@@ -31,18 +31,19 @@ public class PermitsDeck extends Deck{
 	/**
 	 * @return the slot1
 	 */
-	public PermitsCard getSlot1() {
-		return this.slot[0];
+	public PermitsCard getSlot(int index, boolean pesca) {
+		if(!pesca)
+			return this.slot[index];
+		else
+		{
+			PermitsCard tmp = this.slot[index];
+			this.slot[index] = null;
+			draw();
+			return tmp;
+		}
 	}
 
 
-
-	/**
-	 * @return the slot2
-	 */
-	public PermitsCard getSlot2() {
-		return this.slot[1];
-	}
 
 	/**
 	 * @param slot the slot to set
@@ -72,8 +73,8 @@ public class PermitsDeck extends Deck{
 	}
 
 	public void changeCards(){
-		permitsDeck.add(getSlot1());
-		permitsDeck.add(getSlot2());
+		permitsDeck.add(getSlot(0,false));
+		permitsDeck.add(getSlot(1,false));
 		setSlot1(null);
 		setSlot2(null);
 		draw();

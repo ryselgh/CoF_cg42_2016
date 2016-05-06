@@ -1,5 +1,7 @@
 package clientserverlogic ;
 
+import board.Map;
+import gamelogic.Player;
 
 /**
  * <!-- begin-user-doc -->
@@ -39,7 +41,11 @@ public class Main
 	 */
 	
 	public static void main(String[] args) {
-		// TODO implement me	
+		Player pl1 = new Player();
+		Player pl2 = new Player();
+		Player[] pp = {pl1,pl2};
+		Map mmm = new Map(pp, true,"");
+		
 	}
 	
 }

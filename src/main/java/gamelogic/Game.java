@@ -22,6 +22,7 @@ public class Game {
 	private Player actualPlayer;
 	private boolean finalTurn;
 	private boolean defaultMap;
+	private String mapDir;
 	
 	/**
 	 * Constructs a new object of type Game
@@ -31,9 +32,10 @@ public class Game {
 	 * @throws Exception if the number of players is less than 2 or greater than {@value #MAXPLAYERS}
 	 */
 	
-	public Game(int playersQty, boolean defaultMap) {
+	public Game(int playersQty, boolean defaultMap, String fileDir) {
 		this.playersQty = playersQty;
 		this.defaultMap = defaultMap;
+		this.mapDir = fileDir;
 		this.initializeObjects();
 		
 		//exception
@@ -56,10 +58,8 @@ public class Game {
 		actualPlayer = players.get(0);
 		
 		//Map
-		if(defaultMap)
-			map = new Map(players.toArray(new Player[players.size()]),defaultMap,"");
-		//else
-			//to be implemented
+		map = new Map(players.toArray(new Player[players.size()]),defaultMap,"");
+		
 		
 		//Player construction
 		for(int i=0; i<playersQty; i++){

@@ -42,7 +42,8 @@ public class Map {
 	 * @throws IOException 
 	 * @throws ParserConfigurationException
 	 */
-
+	
+	
 	public Map(Player[] p, boolean _default, String file) {//default: to be implemented
 		this.players = p;
 		initializeMapObjects();
@@ -59,7 +60,7 @@ public class Map {
 		
 		Bonus[] bonusRegioni = reader.getRegionBonus();
 		for(int i=0;i<3;i++)
-			regions[i].setBonus(new BonusCard(bonusRegioni[i]));
+			regions[i].setBonus(new BonusCard(bonusRegioni[i]));//-----------------------------
 		Bonus[] bonusColori = reader.getColorBonus();
 		for(int i=0;i<3;i++)
 			colorGroups[i].setBonus(new BonusCard(bonusColori[i]));	
@@ -97,11 +98,11 @@ public class Map {
 		Collections.shuffle(councilors);    	
 
 		//balconi
-		balcony = new Balcony[3];
+		balcony = new Balcony[4];
 		for (int i=0;i< balcony.length;i++) {
 			ArrayList <Councilor> toRet = new ArrayList <Councilor>();
 			Councilor[] retArr = new Councilor[4];
-			for(i=0;i<4;i++)
+			for(int j=0;j<4;j++)
 			{
 				toRet.add(councilors.get(0));
 				councilors.remove(0);
@@ -156,9 +157,13 @@ public class Map {
 
 		switch (color.toLowerCase()) {
 		case "blue":  colorGroups[0].addCity(c);
+		break;
 		case "grey":  colorGroups[1].addCity(c);
+		break;
 		case "purple":  colorGroups[2].addCity(c);
+		break;
 		case "red":  colorGroups[3].addCity(c);
+		break;
 		case "yellow":  colorGroups[4].addCity(c);
 		break;
 		default: return -2;//lancia errore
@@ -199,6 +204,10 @@ public class Map {
 			assistantsToGive.add(getAssistantsArray().remove(0));
 		return assistantsToGive;
 	}
-
+	
+	public PermitsDeck getPermitsDeck(int index)
+	{
+		return permitsDeck[index];
+	}
 }
 

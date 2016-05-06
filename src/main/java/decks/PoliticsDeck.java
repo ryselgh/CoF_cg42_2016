@@ -16,18 +16,19 @@ public class PoliticsDeck extends Deck{
 	
 
 	public PoliticsDeck() {
-	
-		politicsDeck = new ArrayList<PoliticsCard>(CARDSQTY*6+JOLLYQTY);
-		garbage = new ArrayList<PoliticsCard>(CARDSQTY*6+JOLLYQTY);
+		
+		int dim = CARDSQTY * CouncilorColor.values().length +JOLLYQTY;
+		politicsDeck = new ArrayList<PoliticsCard>(dim);
+		garbage = new ArrayList<PoliticsCard>(dim);
 		
 		
 		for(CouncilorColor c : CouncilorColor.values()){
 			if(c == CouncilorColor.JOLLY)
-				for(int i=CARDSQTY*6; i<CARDSQTY*6+JOLLYQTY;i++)
-					politicsDeck.set(i, new PoliticsCard(c));
+				for(int i=0; i<JOLLYQTY;i++)
+					politicsDeck.add(new PoliticsCard(c));
 			else
 				for(int i=0; i<CARDSQTY;i++)
-					politicsDeck.set(i, new PoliticsCard(c));
+					politicsDeck.add(new PoliticsCard(c));
 		}
 		Collections.shuffle(politicsDeck);
 		

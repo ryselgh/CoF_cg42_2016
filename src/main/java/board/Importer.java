@@ -41,7 +41,7 @@ public class Importer {
 		this.players = p;
 		this.mapInst = m;
 		if (def)
-			this.location = "default location";
+			this.location = "Default map.xml";
 		else
 			this.location = loc;
 
@@ -56,9 +56,11 @@ public class Importer {
 	public int startImport() {
 		/// importo bonus regione
 		Bonus[] bonusRegioni = new Bonus[3];// [0]=mare [1]=colline [2]=montagne
-		String[] nomiRegioni = { "MARE", "COLLINE", "MONTAGNE" };
+		String[] nomiRegioni = { "SEA", "HILL", "MOUNTAIN" };
+		NodeList tmp = doc.getElementsByTagName("REGION_BONUS");
 		Node regionNode = (doc).getElementsByTagName("REGION_BONUS").item(0);
 		for (int i = 0; i < nomiRegioni.length; i++) {
+			tmp = ((Element) regionNode).getElementsByTagName(nomiRegioni[i]);
 			Element rElem = (Element) ((Element) regionNode).getElementsByTagName(nomiRegioni[i]).item(0);
 			Element rBonusElem = (Element) rElem.getElementsByTagName("BONUS").item(0);
 			String rBonusTypeStr = rBonusElem.getElementsByTagName("TYPE").item(0).getTextContent();
@@ -69,13 +71,21 @@ public class Importer {
 		/// importo bonus colore
 		Bonus[] colorBonus = new Bonus[5];// ordine come nomiColori qua sotto
 		String[] nomiColori = { "BLUE", "GREY", "YELLOW", "RED", "PURPLE" };
-		Node colorNode = (doc).getElementsByTagName("REGION_BONUS").item(0);
+		Node colorNode = (doc).getElementsByTagName("COLOR_BONUS").item(0);
 		for (int i = 0; i < nomiColori.length; i++) {
 			Element cElem = (Element) ((Element) colorNode).getElementsByTagName(nomiColori[i]).item(0);
 			Element cBonusElem = (Element) cElem.getElementsByTagName("BONUS").item(0);
-			String cBonusTypeStr = cBonusElem.getElementsByTagName("TYPE").item(0).getTextContent();
-			String cBonusAmmStr = cBonusElem.getElementsByTagName("AMM").item(0).getTextContent();
-			colorBonus[i] = new Bonus(parseBonus(cBonusTypeStr), Integer.parseInt(cBonusAmmStr));
+			if(cBonusElem == null)
+			{
+				colorBonus[i] = null;
+				break;
+			}
+			else
+			{
+				String cBonusTypeStr = cBonusElem.getElementsByTagName("TYPE").item(0).getTextContent();
+				String cBonusAmmStr = cBonusElem.getElementsByTagName("AMM").item(0).getTextContent();
+				colorBonus[i] = new Bonus(parseBonus(cBonusTypeStr), Integer.parseInt(cBonusAmmStr));
+			}
 		}
 
 		// importo bonus token -> usati in importa città
@@ -90,7 +100,7 @@ public class Importer {
 			for (int j = 0; j < bonusList.getLength(); j++) {
 				Node bonusNode = bonusList.item(j);
 				Element bonusElem = (Element) bonusNode;
-				String elem_type_str = bonusElem.getElementsByTagName("NAME").item(0).getTextContent();
+				String elem_type_str = bonusElem.getElementsByTagName("TYPE").item(0).getTextContent();
 				BonusType elem_type = parseBonus(elem_type_str);
 				String elem_amm_str = bonusElem.getElementsByTagName("AMM").item(0).getTextContent();
 				int elem_amm = Integer.parseInt(elem_amm_str);
@@ -99,9 +109,12 @@ public class Importer {
 			}
 			tokenPool.add(new BonusToken(tokenBonus));
 		}
-
+		//importo king
+		Element kingElem = (Element) (doc).getElementsByTagName("KING").item(0);
+		String kingLocationStr = kingElem.getElementsByTagName("LOCATION").item(0).getTextContent().toLowerCase();
+		
 		//importa città
-		NodeList nList = (doc).getElementsByTagName("city");
+		NodeList nList = (doc).getElementsByTagName("CITY");
 		city = new City[nList.getLength()];
 		for (int i = 0; i < nList.getLength(); i++) {
 			Node nNode = nList.item(i);
@@ -117,26 +130,34 @@ public class Importer {
 			for (int j = 0; j < closeNameList.getLength(); j++) {
 				closes[j] = closeNameList.item(j).getTextContent();
 			}
-			BonusToken bt = tokenPool.remove(randomNum(0, tokenPool.size() - 1));
+			BonusToken bt;
+			if(!elem_name.toLowerCase().equals(kingLocationStr))
+			{
+				int ran = randomNum(0, tokenPool.size() - 1);
+				bt = tokenPool.remove(ran);
+			}
+			else
+				bt=null;
 			city[i] = new City(elem_name, parseColor(elem_color), closes, players.length, bt);
 			mapInst.insertCity(city[i], elem_region, elem_color);
-			if (!validateCities(city))
-				return -1;// lancia errore
 		}
+		if (!validateCities(city))
+			return -1;// lancia errore
 
-		// importo king e bonus del re
-		Element kingElem = (Element) (doc).getElementsByTagName("KING").item(0);
-		String kingLocationStr = kingElem.getElementsByTagName("LOCATION").item(0).getTextContent().toLowerCase();
+		// importo bonus del re
+		
+		City temp = city[0];
 		for(City c: city)
-			if(c.getName().toLowerCase()==kingLocationStr)
+			if(c.getName().toLowerCase().equals(kingLocationStr))
 				k = new King(c);
 		if(k==null) return -2;
 		
 		NodeList bonList = kingElem.getElementsByTagName("BONUS");
+		kingBonus = new ArrayList<Bonus>(bonList.getLength());
 		for (int i = 0; i < bonList.getLength(); i++) {
 			Node bonusNode = bonList.item(i);
 			Element bonusElem = (Element) bonusNode;
-			String elem_type_str = bonusElem.getElementsByTagName("NAME").item(0).getTextContent();
+			String elem_type_str = bonusElem.getElementsByTagName("TYPE").item(0).getTextContent();
 			BonusType elem_type = parseBonus(elem_type_str);
 			String elem_amm_str = bonusElem.getElementsByTagName("AMM").item(0).getTextContent();
 			int elem_amm = Integer.parseInt(elem_amm_str);
@@ -144,7 +165,7 @@ public class Importer {
 		}
 
 		// importo nobility track
-		this.nobilityTrackBonus = new Bonus[20][3];// max 3 bonus per casella;
+		this.nobilityTrackBonus = new Bonus[21][3];// max 3 bonus per casella;
 		Node nobilityNode = (doc).getElementsByTagName("NOBILITY_BONUS").item(0);
 		NodeList posList = ((Element) nobilityNode).getElementsByTagName("POSIZIONE");
 		int index = 0;
@@ -152,9 +173,9 @@ public class Importer {
 			Element posElem = (Element) posList.item(i);
 			index = Integer.parseInt(posElem.getAttribute("index"));
 			NodeList bonusList = posElem.getElementsByTagName("BONUS");
-			for (int j = 0; j < posList.getLength(); j++) {
+			for (int j = 0; j < bonusList.getLength(); j++) {
 				Element bonusElem = (Element) bonusList.item(j);
-				String bonus_type_str = bonusElem.getElementsByTagName("NAME").item(0).getTextContent();
+				String bonus_type_str = bonusElem.getElementsByTagName("TYPE").item(0).getTextContent();
 				BonusType bonus_type = parseBonus(bonus_type_str);
 				String bonus_amm_str = bonusElem.getElementsByTagName("AMM").item(0).getTextContent();
 				int bonus_amm = Integer.parseInt(bonus_amm_str);
@@ -180,8 +201,8 @@ public class Importer {
 			do {
 				randomNo = randomNum(0, colorList.getLength() - 1);
 			} while (pawnColors[randomNo] == "");
-			pawnColors[randomNo] = "";
 			pawn[i] = new Pawn(players[i], pawnColors[randomNo]);
+			pawnColors[randomNo] = "";
 		}
 		
 		//importo carte permesso
@@ -194,13 +215,13 @@ public class Importer {
 			Element cardElem = (Element) cardList.item(i);
 			NodeList bonusList = cardElem.getElementsByTagName("BONUS");
 			bonusBuff = new Bonus[bonusList.getLength()];
-			for (int j = 0; j < cardList.getLength(); j++) {
+			for (int j = 0; j < bonusList.getLength(); j++) {
 				Element bonusElem = (Element) bonusList.item(j);
-				String bonus_type_str = bonusElem.getElementsByTagName("NAME").item(0).getTextContent();
+				String bonus_type_str = bonusElem.getElementsByTagName("TYPE").item(0).getTextContent();
 				BonusType bonus_type = parseBonus(bonus_type_str);
 				String bonus_amm_str = bonusElem.getElementsByTagName("AMM").item(0).getTextContent();
 				int bonus_amm = Integer.parseInt(bonus_amm_str);
-				bonusBuff[i] = new Bonus(bonus_type, bonus_amm);
+				bonusBuff[j] = new Bonus(bonus_type, bonus_amm);
 			}
 			NodeList letterList = cardElem.getElementsByTagName("LETTER");
 			letterBuff = new String[letterList.getLength()];
@@ -245,7 +266,7 @@ public class Importer {
 	boolean validateCities(City[] c) {
 		if (c.length != 15)
 			return false; // controllo numero
-		boolean[] iniziali = new boolean[13];// controllo iniziali diverse
+		boolean[] iniziali = new boolean[c.length];// controllo iniziali diverse
 		for (City cc : c) {
 			char in = cc.getName().toLowerCase().charAt(0);
 			int ascii = (int) in;
@@ -256,10 +277,9 @@ public class Importer {
 				iniziali[ascii - a_ascii] = true;
 		}
 		// controllo iniziali
-		ArrayList<Character> inits = (ArrayList<Character>) Arrays.asList('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i',
-				'j', 'k', 'l', 'm', 'n', 'o');// controllo iniziali
+		ArrayList<Character> inits = new ArrayList<Character>(Arrays.asList('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o'));// controllo iniziali
 		for (int i = 0; i < c.length; i++) {
-			Character cha = new Character(c[i].getName().charAt(0));
+			Character cha = new Character(c[i].getName().toLowerCase().charAt(0));
 			if (!inits.contains(cha))
 				return false;
 			inits.remove(cha);
