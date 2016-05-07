@@ -62,6 +62,20 @@ public class Player {
 	}
 
 	/**
+	 * @return the availableAssistants
+	 */
+	public ArrayList<Assistant> getAvailableAssistants() {
+		return availableAssistants;
+	}
+
+	/**
+	 * @param availableAssistants the availableAssistants to set
+	 */
+	public void setAvailableAssistants(ArrayList<Assistant> availableAssistants) {
+		this.availableAssistants = availableAssistants;
+	}
+
+	/**
 	 * @return player's color
 	 */
 

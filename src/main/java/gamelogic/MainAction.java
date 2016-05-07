@@ -30,8 +30,17 @@ public class MainAction {
 	 * @param c is the number of actions you want to set. Default is 1, should be set when there is a condition that gives another Action to the player in the same turn
 	 */
 	
-	public void setActionCounter(int c) {
+	public void setActionCounter(int c){
 		this.actionCounter = c;	
+	}
+	
+	/**
+	 * Adds an action
+	 * @param i the amount of actions you want to add
+	 */
+	
+	public void addActionCounter(int i){
+		this.actionCounter += i;
 	}
 	
 	private int parseRegion(String reg){
@@ -149,6 +158,7 @@ public class MainAction {
 	
 	public void shiftCouncil(int selection, Councilor councilor) {
 		ArrayList<Councilor> tmpBalcony = new ArrayList<Councilor>(Arrays.asList(game.getMap().getBalcony(selection).getCouncilors()));
+		game.getMap().getCouncilorsPool().add(tmpBalcony.get(0));
 		tmpBalcony.remove(0);
 		tmpBalcony.add(councilor);
 		game.getMap().getCouncilorsPool().remove(councilor);
