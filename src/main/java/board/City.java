@@ -3,67 +3,27 @@ package board ;
 import model.CityColor;
 import model.CityName;
 
-/**
- * <!-- begin-user-doc -->
- * <!--  end-user-doc  -->
- * @generated
- */
+
 
 public class City
 {
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
+	
 	
 	private Emporium[] slot;
-	
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
-	
 	private CityColor color;
-	
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
-	
 	private String name;
-	
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
-	
 	private String[] closeCities;
-	
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
-	
 	private BonusToken token;
 	private int playerNum;
 	
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
+	 * constructor of the city
+	 * @param n n is the name of the city
+	 * @param c c is the color of the city
+	 * @param close close is the array of the cities near the city
+	 * @param playerNo pn is the number of the player
+	 * @param bt bt is the bonus token on the city
 	 */
 	
 	public City(String n, CityColor c, String[] close, int playerNo, BonusToken bt) {
@@ -78,10 +38,8 @@ public class City
 	
 	
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
+	 * put an emporium in a free slot
+	 * @param e e is an emporium
 	 */
 	
 	public int setEmporium(Emporium e) {
@@ -98,10 +56,7 @@ public class City
 	}
 	
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
+	 * @return the slot of the emporium
 	 */
 	
 	public Emporium[] getEmporium() {
@@ -109,10 +64,7 @@ public class City
 	}
 	
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
+	 * @return the color of the city 
 	 */
 	
 	public CityColor getColor() {
@@ -120,16 +72,18 @@ public class City
 	}
 	
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
+	 * @return the cities next to the called one
 	 */
 	
 	public String[] getCloseCity() {
 		return this.closeCities;	
 	}
 	
+	/**
+	 * check if two cities are nearby, (for all the cities)
+	 * @param city we want to know the cities close CITY
+	 * @return true is two cities are near
+	 */
 	public boolean isCloseCityOf(City city){
 		for(String c: getCloseCity()){
 			if(c.equals(city))
@@ -139,10 +93,7 @@ public class City
 	}
 	
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
+	 * @return the name of the city
 	 */
 	
 	public String getName() {
@@ -150,16 +101,16 @@ public class City
 	}
 	
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
+	 * @return the bonus on the token
 	 */
 	
 	public BonusToken getBonus() {
 			return this.token;
 	}
-	
+	/**
+	 * set the bonus on the bonus token
+	 * @param t is the bonus to set
+	 */
 	public void setToken(BonusToken t){
 		this.token = t;
 	}

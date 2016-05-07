@@ -2,29 +2,17 @@ package board ;
 
 import model.CouncilorColor;
 
-/**
- * <!-- begin-user-doc -->
- * <!--  end-user-doc  -->
- * @generated
- */
 
 public class Councilor
 {
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
+	
 	
 	private CouncilorColor color;
 	
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
+	 * the constructor of the councilor
+	 * @param cc cc is the color of the councilor
 	 */
 	
 	public Councilor(CouncilorColor cc) {
@@ -32,14 +20,10 @@ public class Councilor
 	}
 	
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
+	 * @return the color of the councilor
 	 */
 	
 	public CouncilorColor getCouncilorColor() {
-		// TODO implement me
 		return this.color;	
 	}
 	

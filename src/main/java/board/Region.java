@@ -4,39 +4,20 @@ import java.util.ArrayList;
 
 import model.RegionName;
 
-/**
- * <!-- begin-user-doc -->
- * <!--  end-user-doc  -->
- * @generated
- */
+
 
 public class Region
 {
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
+	
 	
 	private BonusCard bc;
-	
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
-	
 	private ArrayList <City> cities;
 	private RegionName name;
 	
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
+	 * constructor of the region
+	 * @param n n is the name of the region
 	 */
 	
 	public Region(RegionName n) {
@@ -44,30 +25,42 @@ public class Region
 	}
 	
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
+	 * @return the cities in a region
 	 */
 	
 	public ArrayList <City> getCities() {
 		return cities;	
 	}
+	/**
+	 * add a city in a region
+	 * @param c c is the city to add
+	 */
 	
 	public void addCity(City c)
 	{
 		cities.add(c);
 	}
 	
+	/**
+	 * set the bonus for each region
+	 * @param b b is the bonus for each region
+	 */
 	public void setBonus(BonusCard b)
 	{
 		this.bc = b;
 	}
 	
+	/**
+	 * @return the name of the region
+	 */
 	public RegionName getName()
 	{
 		return this.name;
 	}
+	
+	/**
+	 * @return the bonus in each region
+	 */
 	
 	public BonusCard getBonus()
 	{

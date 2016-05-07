@@ -2,29 +2,18 @@ package board ;
 
 import gamelogic.Player;
 
-/**
- * <!-- begin-user-doc -->
- * <!--  end-user-doc  -->
- * @generated
- */
+
 
 public class Emporium
 {
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
+	
 	
 	private Player player;
 	
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
+	 * the constructor of the emporium
+	 * @param p p is the player
 	 */
 	
 	public Emporium(Player p) {
@@ -32,10 +21,7 @@ public class Emporium
 	}
 	
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
+	 * @return the player of the emporium 
 	 */
 	
 	public Player getPlayer() {

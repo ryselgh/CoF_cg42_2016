@@ -1,29 +1,18 @@
 package board ;
 
 
-/**
- * <!-- begin-user-doc -->
- * <!--  end-user-doc  -->
- * @generated
- */
+
 
 public class BonusCard
 {
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
+	
 	
 	private Bonus b;
 	
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
+	 * constructor of the bonus card 
+	 * @param b b is the bonus on the bonus card
 	 */
 	
 	public BonusCard(Bonus b) {
@@ -31,10 +20,7 @@ public class BonusCard
 	}
 	
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
+	 * @return the nìbonus on the bonus card
 	 */
 	
 	public Bonus getBonus() {

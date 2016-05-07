@@ -2,38 +2,19 @@ package board ;
 
 import model.BonusType;
 
-/**
- * <!-- begin-user-doc -->
- * <!--  end-user-doc  -->
- * @generated
- */
 
 public class Bonus
 {
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
+	
 	
 	private BonusType type;
-	
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
-	
 	private int quantity;
 	
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
+	 * constructor  of the bonus
+	 * @param t t is the bonus type
+	 * @param q q is the quantity of the bonus
 	 */
 	
 	public Bonus(BonusType t, int q) {
@@ -42,10 +23,7 @@ public class Bonus
 	}
 	
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
+	 * @return the type of the bonus
 	 */
 	
 	public BonusType getType() {
@@ -53,10 +31,7 @@ public class Bonus
 	}
 	
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
+	 * @return the quantity of the bonus
 	 */
 	
 	public int getQnt() {

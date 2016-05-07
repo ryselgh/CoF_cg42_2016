@@ -4,30 +4,16 @@ import gamelogic.Player;
 import model.PawnColor;
 import model.Track;
 
-/**
- * <!-- begin-user-doc -->
- * <!--  end-user-doc  -->
- * @generated
- */
+
 
 public class Pawn
 {
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
+	
 	
 	private Player p;
 	private int pos;
 	private String hexColor;
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
+	
 	
 	
 
@@ -54,6 +40,8 @@ public class Pawn
 	public Player getPlayer() {
 		return this.p;
 	}
+	
+	
 	public int getPos()
 	{
 		return this.pos;

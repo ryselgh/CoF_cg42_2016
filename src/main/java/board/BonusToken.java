@@ -1,29 +1,18 @@
 package board ;
 
 
-/**
- * <!-- begin-user-doc -->
- * <!--  end-user-doc  -->
- * @generated
- */
+
 
 public class BonusToken
 {
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
+	
 	
 	private Bonus[] b;
 	
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
+	 * constructor  of the token
+	 * @param b b is the bonus on the token
 	 */
 	
 	public BonusToken(Bonus[] b) {
@@ -31,10 +20,7 @@ public class BonusToken
 	}
 	
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
+	 * @return the bonus on token
 	 */
 	
 	public Bonus[] getBonus() {

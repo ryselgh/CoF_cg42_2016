@@ -2,36 +2,18 @@ package board;
 
 import java.util.ArrayList;
 
-/**
- * <!-- begin-user-doc --> <!-- end-user-doc -->
- * 
- * @generated
- */
+
 
 public class NobilityTrack {
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 * @ordered
-	 */
+	
 
 	private Pawn[] pawns;
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 * @ordered
-	 */
-
 	private Bonus[][] BonusVector;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 * @ordered
+	 * constructor of the nobility track
+	 * @param pawn pawn element
+	 * @param BonusVector one array for the position, another for the bonus in each position
 	 */
 
 	public NobilityTrack(Pawn[] pawn, Bonus[][] BonusVector) {
@@ -40,10 +22,10 @@ public class NobilityTrack {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
+	 * go on for a number av of steps and get the bonus you pass on
+	 * @param p p is the pawn
+	 * @param av av tells you how many step you have to do
+	 * @return all the bonus you get during your progress
 	 */
 	
 	public Bonus[] advance(Pawn p, int av) {
@@ -64,10 +46,8 @@ public class NobilityTrack {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 * @ordered
+	 * @return the bonus in the position
+	 * @param p p is the pawn in that position
 	 */
 
 	public Bonus[] getBonus(Pawn p) {		

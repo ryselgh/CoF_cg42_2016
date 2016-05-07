@@ -4,47 +4,21 @@ import java.util.ArrayList;
 
 import model.CityColor;
 
-/**
- * <!-- begin-user-doc -->
- * <!--  end-user-doc  -->
- * @generated
- */
+
 
 public class ColorGroup
 {
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
+	
 	
 	private ArrayList <City> cities;
-	
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
-	
-	private CityColor color;
-	
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
-	
-	private BonusCard bc;
+    private CityColor color;
+    private BonusCard bc;
 	
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
+	 * constructor of the citycolor group
+	 *@param col col is the color of the city
+	 
 	 */
 	
 	public ColorGroup(CityColor col) {
@@ -52,25 +26,36 @@ public class ColorGroup
 	}
 	
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
+	 * @return the list of the cities which have the same color
 	 */
 	
 	public ArrayList <City> getCity() {
 		return cities;	
 	}
 	
+	/**
+	 * add a city in the list 
+	 * @param c c is the city to add
+	 */
+	
 	public void addCity(City c)
 	{
 		cities.add(c);
 	}
 	
+	/**
+	 * 
+	 * @param b b is the bonus for every colorgropu satisfied
+	 */
 	public void setBonus(BonusCard b)
 	{
 		this.bc = b;
 	}
+	
+	/**
+	 * 
+	 * @return the bonus based on the color group
+	 */
 	
 	public BonusCard getBonus()
 	{

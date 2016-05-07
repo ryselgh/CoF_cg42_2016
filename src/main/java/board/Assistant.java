@@ -1,18 +1,12 @@
 package board ;
 
 
-/**
- * <!-- begin-user-doc -->
- * <!--  end-user-doc  -->
- * @generated
- */
+
 
 public class Assistant
 {
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
+	 *the constructor of the assistant
 	 */
 	public Assistant(){
 		super();

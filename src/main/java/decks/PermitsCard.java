@@ -10,7 +10,8 @@ public class PermitsCard {
 	
 	
 	private Bonus[] bonuses;
-	private String[] cityLetter = {"a","b","c","d","e","f","g","h","i","l","m","n","o"};
+	private String[] cityLetter;
+	private boolean faceDown=true;
 	
 	
 
@@ -46,6 +47,22 @@ public class PermitsCard {
 		cityLetter = l;
 		
 	}
+	
+	/**
+	 * @return true if the card is faced down
+	 */
+	public boolean isFaceDown() {
+		return faceDown;
+	}
+
+
+
+	/**
+	 * @param faceDown set to true when the card should be faced down
+	 */
+	public void setFaceDown(boolean faceDown) {
+		this.faceDown = faceDown;
+ 	}
 
 	
 		
