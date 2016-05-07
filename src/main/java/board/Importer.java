@@ -36,6 +36,14 @@ public class Importer {
 	private Map mapInst;
 	private King k;
 	
+	/**
+	 * 
+	 * @param loc
+	 * @param def
+	 * @param m
+	 * @param p
+	 * @throws Exception
+	 */
 	
 	public Importer(String loc, boolean def, Map m, Player[] p) throws Exception {
 		this.players = p;
@@ -52,6 +60,11 @@ public class Importer {
 		doc = (Document) dBuilder.parse(inputFile);
 		doc.getDocumentElement().normalize();
 	}
+	
+	/**
+	 * 
+	 * @return
+	 */
 
 	public int startImport() {
 		/// importo bonus regione
@@ -238,12 +251,24 @@ public class Importer {
 		}
 		return 1;
 	}
+	
+	/**
+	 * 
+	 * @param Min
+	 * @param Max
+	 * @return a random number between min max
+	 */
 
 
 	private static int randomNum(int Min, int Max) {
 		return Min + (int) (Math.random() * ((Max - Min) + 1));
 	}
 
+	/**
+	 * convert a string to a member of the enum
+	 * @param color
+	 * 
+	 */
 	private CityColor parseColor(String color) {
 		CityColor[] colors = CityColor.values();
 		for (CityColor c : colors) {
@@ -252,7 +277,11 @@ public class Importer {
 		}
 		return null;
 	}
-
+	/**
+	 * convert a stirng to a member of the enum
+	 * @param b
+	 * 
+	 */
 	private BonusType parseBonus(String b) {
 		BonusType[] types = BonusType.values();
 		for (BonusType t : types) {
@@ -262,7 +291,11 @@ public class Importer {
 		return null;
 	}
 	
-
+/**
+ * check if the city has been created right
+ * @param c
+ * @return
+ */
 	boolean validateCities(City[] c) {
 		if (c.length != 15)
 			return false; // controllo numero
@@ -288,6 +321,12 @@ public class Importer {
 			return false;
 		return true;
 	}
+	
+	/**
+	 * associate the letter at the region
+	 * @param letter is the letter in input
+	 * @return the number of the city based on the letter
+	 */
 
 	int letterToRegion(String letter)
 	{
@@ -298,42 +337,83 @@ public class Importer {
 				return i;
 		return -1;
 	}
+	
+	/**
+	 * 
+	 * @return the pawn array
+	 */
 	public Pawn[] getPawn() {
 		return pawn;
 	}
+	/**
+	 * 
+	 * @return the region and the deck
+	 */
 
 	public PermitsCard[][] getPermitsCardPool() {
 		return permitsCardPool;
 	}
+	/**
+	 * 
+	 * @return the nobility track
+	 */
 
 	public NobilityTrack getNobilityTrack() {
 		return nobilityTrack;
 	}
+	/**
+	 * 
+	 * @return the city array
+	 */
 
 	public City[] getCity() {
 		return city;
 	}
+	/**
+	 * 
+	 * @return  the bonus array
+	 */
 	
 	public Bonus[] getColorBonus() {
 		return colorBonus;
 	}
+	/**
+	 * 
+	 * @return the arraylist of king bonus cards
+	 */
 
 	public ArrayList<Bonus> getKingBonus() {
 		return kingBonus;
 	}
+	/**
+	 * 
+	 * @return the king bonus deck
+	 */
 	
 	public ArrayList<Bonus> getKingBonusDeck() {
 		return kingBonus;
 	}
+	/**
+	 * 
+	 * @return the permits deck
+	 */
 
 
 	public PermitsDeck getPermitsDeck() {
 		return permitsDeck;
 	}
+	/**
+	 * 
+	 * @return the regionbonus
+	 */
 	
 	public Bonus[] getRegionBonus() {
 		return regionBonus;
 	}
+	/**
+	 * 
+	 * @return the king
+	 */
 	
 	public King getKing() {
 		return k;
