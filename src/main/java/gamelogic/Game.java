@@ -23,8 +23,6 @@ public class Game {
 	private boolean finalTurn;
 	private boolean defaultMap;
 	private String mapDir;
-	private MainAction mainAction;
-	private SpeedAction speedAction;
 	
 	/**
 	 * Constructs a new object of type Game
@@ -38,8 +36,6 @@ public class Game {
 		this.playersQty = playersQty;
 		this.defaultMap = defaultMap;
 		this.mapDir = fileDir;
-		mainAction = new MainAction(this);
-		speedAction = new SpeedAction(this);
 		this.initializeObjects();
 		
 		//exception
@@ -62,7 +58,8 @@ public class Game {
 		actualPlayer = players.get(0);
 		
 		//Map
-			map = new Map(players.toArray(new Player[players.size()]),defaultMap,"");
+		map = new Map(players.toArray(new Player[players.size()]),defaultMap,"");
+		
 		
 		//Player construction
 		for(int i=0; i<playersQty; i++){
@@ -129,27 +126,5 @@ public class Game {
 	public boolean isFinalTurn() {
 		return this.finalTurn;
 	}
-
-	/**
-	 * @return the map
-	 */
-	public Map getMap() {
-		return map;
-	}
-	
-	/**
-	 * @return the mainAction
-	 */
-	public MainAction getMainAction() {
-		return mainAction;
-	}
-
-	/**
-	 * @return the speedAction
-	 */
-	public SpeedAction getSpeedAction() {
-		return speedAction;
-	}
 	
 }
-
