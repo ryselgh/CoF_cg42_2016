@@ -18,8 +18,6 @@ public class Player {
 	private ArrayList<PermitsCard> permits;
 	private ArrayList<PoliticsCard> hand;
 	private Pawn pawn;
-	private MainAction mainAction;
-	private SpeedAction speedAction;
 	private int coins;
 	private int score;
 
@@ -35,8 +33,6 @@ public class Player {
 	 */
 
 	public Player() {
-		mainAction = new MainAction();
-		speedAction = new SpeedAction();
 	}
 
 	/**
@@ -151,20 +147,6 @@ public class Player {
 
 	public void addPermits(PermitsCard pec) {
 		permits.add(pec);
-	}
-
-	/**
-	 * @return the mainAction
-	 */
-	public MainAction getMainAction() {
-		return mainAction;
-	}
-
-	/**
-	 * @return the speedAction
-	 */
-	public SpeedAction getSpeedAction() {
-		return speedAction;
 	}
 
 	

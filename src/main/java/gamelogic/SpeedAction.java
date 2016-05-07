@@ -23,7 +23,7 @@ public class SpeedAction
 	 * <!--  end-user-doc  -->
 	 * @generated
 	 */
-	public SpeedAction(){
+	public SpeedAction(Game game){
 		super();
 	}
 
