@@ -98,11 +98,11 @@ public class Map {
 		Collections.shuffle(councilors);    	
 
 		//balconi
-		balcony = new Balcony[3];
+		balcony = new Balcony[4];
 		for (int i=0;i< balcony.length;i++) {
 			ArrayList <Councilor> toRet = new ArrayList <Councilor>();
-			Councilor[] retArr = new Councilor[3];
-			for(int j=0;j<3;j++)
+			Councilor[] retArr = new Councilor[4];
+			for(int j=0;j<4;j++)
 			{
 				toRet.add(councilors.get(0));
 				councilors.remove(0);

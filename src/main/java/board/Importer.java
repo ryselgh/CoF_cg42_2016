@@ -55,7 +55,7 @@ public class Importer {
 
 	public int startImport() {
 		/// importo bonus regione
-		Bonus[] bonusRegioni = new Bonus[3];// [0]=mare [1]=colline [2]=montagne
+		regionBonus = new Bonus[3];// [0]=mare [1]=colline [2]=montagne
 		String[] nomiRegioni = { "SEA", "HILL", "MOUNTAIN" };
 		NodeList tmp = doc.getElementsByTagName("REGION_BONUS");
 		Node regionNode = (doc).getElementsByTagName("REGION_BONUS").item(0);
@@ -65,11 +65,11 @@ public class Importer {
 			Element rBonusElem = (Element) rElem.getElementsByTagName("BONUS").item(0);
 			String rBonusTypeStr = rBonusElem.getElementsByTagName("TYPE").item(0).getTextContent();
 			String rBonusAmmStr = rBonusElem.getElementsByTagName("AMM").item(0).getTextContent();
-			bonusRegioni[i] = new Bonus(parseBonus(rBonusTypeStr), Integer.parseInt(rBonusAmmStr));
+			regionBonus[i] = new Bonus(parseBonus(rBonusTypeStr), Integer.parseInt(rBonusAmmStr));
 		}
 
 		/// importo bonus colore
-		Bonus[] colorBonus = new Bonus[5];// ordine come nomiColori qua sotto
+		colorBonus = new Bonus[5];// ordine come nomiColori qua sotto
 		String[] nomiColori = { "BLUE", "GREY", "YELLOW", "RED", "PURPLE" };
 		Node colorNode = (doc).getElementsByTagName("COLOR_BONUS").item(0);
 		for (int i = 0; i < nomiColori.length; i++) {

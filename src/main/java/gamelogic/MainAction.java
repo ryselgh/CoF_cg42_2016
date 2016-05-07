@@ -57,14 +57,13 @@ public class MainAction {
 		int counter = 0;
 		int jollycnt = 0;
 		ArrayList<Councilor> tmpBalcony = new ArrayList<Councilor>(Arrays.asList(balcony.getBalcony()));
-		ArrayList<PoliticsCard> tmpPolitics = new ArrayList<PoliticsCard>(Arrays.asList(politics));
-		for(PoliticsCard p: tmpPolitics){
+		for(PoliticsCard p: politics){
 			for(Councilor c: tmpBalcony){
 				if(c.getCouncilorColor().equals(p.getColor()))
 					{
 						tmpBalcony.remove(c);
-						tmpPolitics.remove(p);
 						counter++;
+						break;
 					}
 			}
 			if(p.getColor().equals(CouncilorColor.JOLLY)){

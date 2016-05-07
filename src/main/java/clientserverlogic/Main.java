@@ -45,7 +45,6 @@ public class Main
 		Player pl2 = new Player();
 		Player[] pp = {pl1,pl2};
 		Map mmm = new Map(pp, true,"");
-		
 	}
 	
 }
