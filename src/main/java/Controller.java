@@ -8,7 +8,7 @@ public class Controller {
 	private int turn;
 	
 	public Controller(){
-		this.setGame(new Game(4,true));
+		this.setGame(new Game(4,true, null));
 		this.setTurn(0);
 	}
 
