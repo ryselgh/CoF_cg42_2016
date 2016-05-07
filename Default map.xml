@@ -18,6 +18,8 @@
 				<TYPE>assistant</TYPE>
 				<AMM>2</AMM>
 			</BONUS>
+		</TOKEN>
+		<TOKEN>
 			<BONUS>
 				<TYPE>card</TYPE>
 				<AMM>1</AMM>
@@ -213,7 +215,7 @@
 				<AMM>1</AMM>
 			</BONUS>
 		</POSIZIONE>
-		<POSIZIONE>
+		<POSIZIONE index="8">
 			<BONUS>
 				<TYPE>card</TYPE>
 				<AMM>1</AMM>
