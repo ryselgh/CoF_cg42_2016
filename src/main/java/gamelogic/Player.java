@@ -62,6 +62,20 @@ public class Player {
 	}
 
 	/**
+	 * @return the availableAssistants
+	 */
+	public ArrayList<Assistant> getAvailableAssistants() {
+		return availableAssistants;
+	}
+
+	/**
+	 * @param availableAssistants the availableAssistants to set
+	 */
+	public void setAvailableAssistants(ArrayList<Assistant> availableAssistants) {
+		this.availableAssistants = availableAssistants;
+	}
+
+	/**
 	 * @return player's color
 	 */
 
@@ -93,11 +107,17 @@ public class Player {
 	}
 
 	/**
-	 * @param coins
-	 *            the coins to set
+	 * @param coins the coins to set
 	 */
 	public void setCoins(int coins) {
 		this.coins = coins;
+	}
+	
+	/**
+	 * @param coins the coins to add
+	 */
+	public void addCoins(int coins) {
+		this.coins += coins;
 	}
 
 	/**
@@ -186,5 +206,5 @@ public class Player {
 	}
 	
 	// <--------- MARKET END ---------->
-
+	
 }

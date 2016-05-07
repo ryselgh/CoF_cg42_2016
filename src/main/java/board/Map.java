@@ -67,7 +67,7 @@ public class Map {
 		setCity(reader.getCity()); //in questo metodo Importer accede al metodo Map.inserisciCittà per inserire le città (alla creazione) nelle regioni e nei cologroup, le cui istanze sono qui su Map perchè create non in questo metodo
 		setKing(reader.getKing());
 		nobilityTrack = reader.getNobilityTrack();
-		pawn = reader.getPawn();
+		setPawn(reader.getPawn());
 		kingBonus = reader.getKingBonus();
 		
 		PermitsCard[][] pool = reader.getPermitsCardPool();
@@ -98,11 +98,11 @@ public class Map {
 		Collections.shuffle(councilors);    	
 
 		//balconi
-		balcony = new Balcony[3];
+		balcony = new Balcony[4];
 		for (int i=0;i< balcony.length;i++) {
 			ArrayList <Councilor> toRet = new ArrayList <Councilor>();
-			Councilor[] retArr = new Councilor[3];
-			for(int j=0;j<3;j++)
+			Councilor[] retArr = new Councilor[4];
+			for(int j=0;j<4;j++)
 			{
 				toRet.add(councilors.get(0));
 				councilors.remove(0);
@@ -209,7 +209,23 @@ public class Map {
 	{
 		return permitsDeck[index];
 	}
-
+	
+	/*private boolean isColorAvailable(CouncilorColor c)
+	{
+		for(Councilor cc: councilors)
+			if(cc.getCouncilorColor().equals(c))
+				return true;
+		return false;
+	}*/
+	
+	public ArrayList<CouncilorColor> getAvailableColors()
+	{
+		ArrayList<CouncilorColor> availables = new ArrayList<CouncilorColor>();
+		for(Councilor c: councilors)
+			if(!availables.contains(c.getCouncilorColor()))
+				availables.add(c.getCouncilorColor());
+		return availables;
+	}
 	/**
 	 * Get a balcony from map
 	 * @param selection 0: sea balcony, 1: hill balcony, 2: mountain balcony, 3: king balcony
@@ -287,6 +303,13 @@ public class Map {
 	 */
 	public void setCity(City[] city) {
 		this.city = city;
+	}
+
+	/**
+	 * @return the councilors
+	 */
+	public ArrayList<Councilor> getCouncilorsPool() {
+		return councilors;
 	}
 }
 

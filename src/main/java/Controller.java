@@ -1,20 +1,68 @@
 import board.Balcony;
+import board.Councilor;
 import decks.PoliticsCard;
 import gamelogic.Game;
+import java.io.Console;
+import java.util.ArrayList;
 
+import model.CouncilorColor;
+/*AZIONI: 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ */
 public class Controller {
 	
 	private Game game;
 	private int turn;
+	private Console cnsl;
+	private int mainBonus;
+	private CLI cli;
 	
 	public Controller(){
 		this.setGame(new Game(4,true, null));
 		this.setTurn(0);
+		cli = new CLI();
+		
 	}
-
+	
+	
+	
+	private void turnCycle()
+	{
+		int action = cli.getAction(turn);
+		mainBonus=0;
+		
+		switch(action){
+		case 1:
+			cli.mainAction();
+			break;
+		case 2:
+			cli.speedAction(game.getMap().getAvailableColors());
+			break;
+		}
+		while(mainBonus !=0)
+		{
+			cli.mainAction();
+			mainBonus--;
+		}
+	
+	}
 	/**
 	 * @return the game
 	 */
+	
+	
 	private Game getGame() {
 		return game;
 	}
@@ -32,7 +80,11 @@ public class Controller {
 	public int getTurn() {
 		return turn;
 	}
-
+	
+	public void addMainBonus()
+	{
+		mainBonus++;
+	}
 	/**
 	 * @param turn the turn to set
 	 */
@@ -51,46 +103,15 @@ public class Controller {
 	 * Do the main action
 	 * @param selection int from 1 to 4, identify the main action (1: obtain a permit 2: satisfy the king 3: shift a council 4: build an emporium)
 	 */
-	public void mainAction(int selection){
-		
-		PoliticsCard[] chosenPolitics = null; //temporary
-		Balcony chosenBalcony = null; //temporary
-		switch(selection){
-			case 1:
-				this.game.getMainAction().canObtainPermit(chosenPolitics, chosenBalcony);
-				break;
-			case 2:
-				this.game.getMainAction().canSatisfyKing(chosenPolitics);
-				break;
-			case 3:
-				this.game.getMainAction().shiftCouncil();
-				break;
-			case 4:
-				this.game.getMainAction().build();
-				break;
-		}
-				
-	}
+	
 	
 	/**
 	 * Do the speed action
 	 * @param selection int from 1 to 4, identify the speed action (1: buy an assistant 2: change permits on the ground 3: shift a council 4: build an emporium)
 	 */
 	
-	public void speedAction(int selection){
-		switch(selection){
-			case 1:
-				this.game.getSpeedAction().buyAssistant();
-				break;
-			case 2:
-				this.game.getSpeedAction().changePermitsCards();
-				break;
-			case 3:
-				this.game.getSpeedAction().shiftCouncil();
-				break;
-			case 4:
-				this.game.getSpeedAction().buyMainAction();
-				break;
-		}
+	
 	}
-}
+	
+	
+
