@@ -1,53 +1,39 @@
 package gamelogic;
 
+public class SpeedAction {
 
-/**
- * <!-- begin-user-doc -->
- * <!--  end-user-doc  -->
- * @generated
- */
-
-public class SpeedAction
-{
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
 	
 	private int actionCounter;
 	
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
+	 * Constructs the speed action
+	 * @param the main game
 	 */
 	public SpeedAction(Game game){
-		super();
+		
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
+	 * 
 	 */
 	
 	public void setActionCounter(int c) {
 		// TODO implement me	
 	}
 	
+	/*----------------------- 1st Main Action ----------------------*/
+	
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
+	 * Verify
 	 */
 	
 	public void buyAssistant() {
 		// TODO implement me	
 	}
+	
+	/*------------------- END OF 1st Main Action -------------------*/
+	
+	/*----------------------- 2nd Main Action ----------------------*/
 	
 	/**
 	 * <!-- begin-user-doc -->
@@ -60,6 +46,10 @@ public class SpeedAction
 		// TODO implement me	
 	}
 	
+	/*------------------- END OF 2nd Main Action -------------------*/
+	
+	/*----------------------- 3rd Main Action ----------------------*/
+	
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!--  end-user-doc  -->
@@ -71,6 +61,10 @@ public class SpeedAction
 		// TODO implement me	
 	}
 	
+	/*------------------- END OF 3rd Main Action -------------------*/
+	
+	/*----------------------- 4th Main Action ----------------------*/
+	
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!--  end-user-doc  -->
@@ -81,6 +75,8 @@ public class SpeedAction
 	public void buyMainAction() {
 		// TODO implement me	
 	}
+	
+	/*------------------- END OF 4th Main Action -------------------*/
 	
 }
 

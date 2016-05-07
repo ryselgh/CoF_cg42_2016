@@ -18,10 +18,10 @@ public class MainAction {
 	
 	
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
+	 * Construct the main action
+	 * @param the main game
 	 */
+	
 	public MainAction(Game game){
 		this.game = game;
 	}
