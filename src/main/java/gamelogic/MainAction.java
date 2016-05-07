@@ -18,10 +18,10 @@ public class MainAction {
 	
 	
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
+	 * Construct the main action
+	 * @param the main game
 	 */
+	
 	public MainAction(Game game){
 		this.game = game;
 	}
@@ -30,8 +30,17 @@ public class MainAction {
 	 * @param c is the number of actions you want to set. Default is 1, should be set when there is a condition that gives another Action to the player in the same turn
 	 */
 	
-	public void setActionCounter(int c) {
+	public void setActionCounter(int c){
 		this.actionCounter = c;	
+	}
+	
+	/**
+	 * Adds an action
+	 * @param i the amount of actions you want to add
+	 */
+	
+	public void addActionCounter(int i){
+		this.actionCounter += i;
 	}
 	
 	private int parseRegion(String reg){
@@ -57,14 +66,13 @@ public class MainAction {
 		int counter = 0;
 		int jollycnt = 0;
 		ArrayList<Councilor> tmpBalcony = new ArrayList<Councilor>(Arrays.asList(balcony.getCouncilors()));
-		ArrayList<PoliticsCard> tmpPolitics = new ArrayList<PoliticsCard>(Arrays.asList(politics));
-		for(PoliticsCard p: tmpPolitics){
+		for(PoliticsCard p: politics){
 			for(Councilor c: tmpBalcony){
 				if(c.getCouncilorColor().equals(p.getColor()))
 					{
 						tmpBalcony.remove(c);
-						tmpPolitics.remove(p);
 						counter++;
+						break;
 					}
 			}
 			if(p.getColor().equals(CouncilorColor.JOLLY)){
@@ -111,6 +119,13 @@ public class MainAction {
 		return this.canObtainPermit(politics, game.getMap().getBalcony(3));
 	}
 	
+	/**
+	 * Verify if the player can move the king in an adiacent
+	 * @param fromCity the city where the king is actually placed
+	 * @param toCity where you want to place the king
+	 * @return true if you can move the king there, false if not
+	 */
+	
 	public boolean canMoveKing(City fromCity, City toCity){
 		if(
 			game.getMap().getKing().getLocation().equals(fromCity) &&
@@ -122,6 +137,11 @@ public class MainAction {
 			return false;
 	}
 	
+	/**
+	 * Moves the king
+	 * @param toCity the city where you want to place the king
+	 */
+	
 	public void moveKing(City toCity){
 		game.getMap().getKing().setLocation(toCity);
 	}
@@ -131,14 +151,20 @@ public class MainAction {
 	/*----------------------- 3rd Main Action ----------------------*/
 	
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
+	 * Shift a council and earn 4 coins
+	 * @param selection the balcony you want to shift
+	 * @param councilor the councilor chosen from the pool in the map
 	 */
 	
-	public void shiftCouncil() {
-		// TODO implement me	
+	public void shiftCouncil(int selection, Councilor councilor) {
+		ArrayList<Councilor> tmpBalcony = new ArrayList<Councilor>(Arrays.asList(game.getMap().getBalcony(selection).getCouncilors()));
+		game.getMap().getCouncilorsPool().add(tmpBalcony.get(0));
+		tmpBalcony.remove(0);
+		tmpBalcony.add(councilor);
+		game.getMap().getCouncilorsPool().remove(councilor);
+		Councilor[] c = new Councilor[4];
+		game.getMap().getBalcony(selection).setCouncilor(tmpBalcony.toArray(c));
+		game.getActualPlayer().addCoins(4);
 	}
 	
 	/*------------------- END OF 3rd Main Action -------------------*/
@@ -146,14 +172,26 @@ public class MainAction {
 	/*----------------------- 4th Main Action ----------------------*/
 	
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
+	 * Verify if you have the right permit to build in the selected city
+	 * @param city the city where you want to build
+	 * @param permit the permit you want to use
 	 */
 	
-	public void build() {
-		// TODO implement me	
+	public boolean canBuild(City city, PermitsCard permit){
+		for(String l: permit.getCityLetter())
+			if(l.equals(Character.toString(city.getName().toLowerCase().charAt(0))))
+				return true;
+		return false;
+	}
+	
+	/**
+	 * Build an emporium in the specified city
+	 * @param city the city where you want to build
+	 */
+	
+	public void build(City city) {
+		city.setEmporium(game.getActualPlayer().getAvailableEmporiums().get(0));
+		game.getActualPlayer().getAvailableEmporiums().remove(0);
 	}
 	
 	/*------------------- END OF 4th Main Action -------------------*/

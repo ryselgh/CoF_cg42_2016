@@ -86,7 +86,7 @@ public class City
 	 */
 	public boolean isCloseCityOf(City city){
 		for(String c: getCloseCity()){
-			if(c.equals(city))
+			if(c.toLowerCase().equals(city.getName().toLowerCase()))
 				return true;
 		}
 		return false;
