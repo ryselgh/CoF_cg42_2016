@@ -60,7 +60,7 @@ public class Controller {
 				this.game.getMainAction().canObtainPermit(chosenPolitics, chosenBalcony);
 				break;
 			case 2:
-				this.game.getMainAction().satisfyKing();
+				this.game.getMainAction().canSatisfyKing(chosenPolitics);
 				break;
 			case 3:
 				this.game.getMainAction().shiftCouncil();

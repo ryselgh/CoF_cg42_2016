@@ -32,9 +32,9 @@ public class Map {
 	private Pawn[] pawn;
 	private NobilityTrack nobilityTrack;
 	private City[] city;
-	private PoliticsDeck politicsDeck;//to initialize
-	private ArrayList<Bonus> kingBonus;//to initialize
-	private PermitsDeck[] permitsDeck;//to initialize
+	private PoliticsDeck politicsDeck;
+	private ArrayList<Bonus> kingBonus;
+	private PermitsDeck[] permitsDeck;
 	private King king;
 
 	/**
@@ -64,8 +64,8 @@ public class Map {
 		Bonus[] bonusColori = reader.getColorBonus();
 		for(int i=0;i<3;i++)
 			colorGroups[i].setBonus(new BonusCard(bonusColori[i]));	
-		city = reader.getCity(); //in questo metodo Importer accede al metodo Map.inserisciCittà per inserire le città (alla creazione) nelle regioni e nei cologroup, le cui istanze sono qui su Map perchè create non in questo metodo
-		king = reader.getKing();
+		setCity(reader.getCity()); //in questo metodo Importer accede al metodo Map.inserisciCittà per inserire le città (alla creazione) nelle regioni e nei cologroup, le cui istanze sono qui su Map perchè create non in questo metodo
+		setKing(reader.getKing());
 		nobilityTrack = reader.getNobilityTrack();
 		pawn = reader.getPawn();
 		kingBonus = reader.getKingBonus();
@@ -98,11 +98,11 @@ public class Map {
 		Collections.shuffle(councilors);    	
 
 		//balconi
-		balcony = new Balcony[4];
+		balcony = new Balcony[3];
 		for (int i=0;i< balcony.length;i++) {
 			ArrayList <Councilor> toRet = new ArrayList <Councilor>();
-			Councilor[] retArr = new Councilor[4];
-			for(int j=0;j<4;j++)
+			Councilor[] retArr = new Councilor[3];
+			for(int j=0;j<3;j++)
 			{
 				toRet.add(councilors.get(0));
 				councilors.remove(0);
@@ -208,6 +208,85 @@ public class Map {
 	public PermitsDeck getPermitsDeck(int index)
 	{
 		return permitsDeck[index];
+	}
+
+	/**
+	 * Get a balcony from map
+	 * @param selection 0: sea balcony, 1: hill balcony, 2: mountain balcony, 3: king balcony
+	 * @return the selected balcony
+	 */
+	public Balcony getBalcony(int selection) {
+		return this.balcony[selection];
+	}
+
+	/**
+	 * @return the king
+	 */
+	public King getKing() {
+		return king;
+	}
+
+	/**
+	 * @param king the king to set
+	 */
+	private void setKing(King king) {
+		this.king = king;
+	}
+
+	/**
+	 * @return the pawn
+	 */
+	public Pawn[] getPawn() {
+		return pawn;
+	}
+
+	/**
+	 * @param pawn the pawn to set
+	 */
+	public void setPawn(Pawn[] pawn) {
+		this.pawn = pawn;
+	}
+
+	/**
+	 * @return the nobilityTrack
+	 */
+	public NobilityTrack getNobilityTrack() {
+		return nobilityTrack;
+	}
+
+	/**
+	 * @param nobilityTrack the nobilityTrack to set
+	 */
+	public void setNobilityTrack(NobilityTrack nobilityTrack) {
+		this.nobilityTrack = nobilityTrack;
+	}
+
+	/**
+	 * @return the kingBonus
+	 */
+	public ArrayList<Bonus> getKingBonus() {
+		return kingBonus;
+	}
+
+	/**
+	 * @param kingBonus the kingBonus to set
+	 */
+	public void setKingBonus(ArrayList<Bonus> kingBonus) {
+		this.kingBonus = kingBonus;
+	}
+
+	/**
+	 * @return the city
+	 */
+	public City[] getCity() {
+		return city;
+	}
+
+	/**
+	 * @param city the city to set
+	 */
+	public void setCity(City[] city) {
+		this.city = city;
 	}
 }
 

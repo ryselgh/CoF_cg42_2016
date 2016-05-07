@@ -31,8 +31,8 @@ public class Importer {
 	private Bonus[] colorBonus;
 	private String[] pawnColors;
 	private City[] city;
-	private ArrayList<Bonus> kingBonus;// to initialize
-	private PermitsDeck permitsDeck;// to initialize
+	private ArrayList<Bonus> kingBonus;
+	private PermitsDeck permitsDeck;
 	private Map mapInst;
 	private King k;
 	

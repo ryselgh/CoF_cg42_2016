@@ -130,6 +130,14 @@ public class City
 		return this.closeCities;	
 	}
 	
+	public boolean isCloseCityOf(City city){
+		for(String c: getCloseCity()){
+			if(c.equals(city))
+				return true;
+		}
+		return false;
+	}
+	
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!--  end-user-doc  -->
