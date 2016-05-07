@@ -7,10 +7,8 @@ public class Balcony
 	//private Region region;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
+	 * constructor of the balcony
+	 * @param c c is the array of the councilors
 	 */
 	
 	public Balcony(Councilor[] c) {
@@ -22,13 +20,11 @@ public class Balcony
 	 * @return the councilors in that balcony
 	 */
 	
-	public Councilor[] getBalcony() {
+	public Councilor[] getCouncilors() {
 		return this.councilor;	
 	}
 
-	/**
-	 * @return the region
-	 */
+	
 //	public Region getRegion() {
 //		return region;
 //	}

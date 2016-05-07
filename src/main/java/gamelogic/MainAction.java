@@ -56,7 +56,7 @@ public class MainAction {
 	public boolean canObtainPermit(PoliticsCard[] politics, Balcony balcony) {
 		int counter = 0;
 		int jollycnt = 0;
-		ArrayList<Councilor> tmpBalcony = new ArrayList<Councilor>(Arrays.asList(balcony.getBalcony()));
+		ArrayList<Councilor> tmpBalcony = new ArrayList<Councilor>(Arrays.asList(balcony.getCouncilors()));
 		ArrayList<PoliticsCard> tmpPolitics = new ArrayList<PoliticsCard>(Arrays.asList(politics));
 		for(PoliticsCard p: tmpPolitics){
 			for(Councilor c: tmpBalcony){
