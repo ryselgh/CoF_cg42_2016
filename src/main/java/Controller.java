@@ -57,16 +57,16 @@ public class Controller {
 		Balcony chosenBalcony = null; //temporary
 		switch(selection){
 			case 1:
-				this.game.getMainAction().canObtainPermit(chosenPolitics, chosenBalcony);
+				//this.game.getMainAction().canObtainPermit(chosenPolitics, chosenBalcony);
 				break;
 			case 2:
-				this.game.getMainAction().canSatisfyKing(chosenPolitics);
+				//this.game.getMainAction().canSatisfyKing(chosenPolitics);
 				break;
 			case 3:
-				this.game.getMainAction().shiftCouncil();
+				//this.game.getMainAction().shiftCouncil();
 				break;
 			case 4:
-				this.game.getMainAction().build();
+				//this.game.getMainAction().build();
 				break;
 		}
 				
@@ -80,16 +80,16 @@ public class Controller {
 	public void speedAction(int selection){
 		switch(selection){
 			case 1:
-				this.game.getSpeedAction().buyAssistant();
+				//this.game.getSpeedAction().buyAssistant();
 				break;
 			case 2:
-				this.game.getSpeedAction().changePermitsCards();
+				//this.game.getSpeedAction().changePermitsCards();
 				break;
 			case 3:
-				this.game.getSpeedAction().shiftCouncil();
+				//this.game.getSpeedAction().shiftCouncil();
 				break;
 			case 4:
-				this.game.getSpeedAction().buyMainAction();
+				//this.game.getSpeedAction().buyMainAction();
 				break;
 		}
 	}

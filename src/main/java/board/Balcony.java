@@ -22,7 +22,7 @@ public class Balcony
 	 * @return the councilors in that balcony
 	 */
 	
-	public Councilor[] getBalcony() {
+	public Councilor[] getCouncilors() {
 		return this.councilor;	
 	}
 

@@ -56,7 +56,7 @@ public class MainAction {
 	public boolean canObtainPermit(PoliticsCard[] politics, Balcony balcony) {
 		int counter = 0;
 		int jollycnt = 0;
-		ArrayList<Councilor> tmpBalcony = new ArrayList<Councilor>(Arrays.asList(balcony.getBalcony()));
+		ArrayList<Councilor> tmpBalcony = new ArrayList<Councilor>(Arrays.asList(balcony.getCouncilors()));
 		for(PoliticsCard p: politics){
 			for(Councilor c: tmpBalcony){
 				if(c.getCouncilorColor().equals(p.getColor()))
@@ -110,6 +110,13 @@ public class MainAction {
 		return this.canObtainPermit(politics, game.getMap().getBalcony(3));
 	}
 	
+	/**
+	 * Verify if the player can move the king in an adiacent
+	 * @param fromCity the city where the king is actually placed
+	 * @param toCity where you want to place the king
+	 * @return true if you can move the king there, false if not
+	 */
+	
 	public boolean canMoveKing(City fromCity, City toCity){
 		if(
 			game.getMap().getKing().getLocation().equals(fromCity) &&
@@ -121,6 +128,11 @@ public class MainAction {
 			return false;
 	}
 	
+	/**
+	 * Moves the king
+	 * @param toCity the city where you want to place the king
+	 */
+	
 	public void moveKing(City toCity){
 		game.getMap().getKing().setLocation(toCity);
 	}
@@ -130,14 +142,13 @@ public class MainAction {
 	/*----------------------- 3rd Main Action ----------------------*/
 	
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
+	 * Shift a council and earn 4 coins
+	 * @param selection the balcony you want to shift
+	 * @param councilor the councilor chosen from the pool in the map
 	 */
 	
-	public void shiftCouncil() {
-		// TODO implement me	
+	public void shiftCouncil(int selection, Councilor councilor) {
+		ArrayList<Councilor> tmpBalcony = new ArrayList<Councilor>(game.getMap().getBalcony(selection).getCouncilors().length);
 	}
 	
 	/*------------------- END OF 3rd Main Action -------------------*/
