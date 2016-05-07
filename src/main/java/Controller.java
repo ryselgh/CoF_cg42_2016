@@ -1,3 +1,5 @@
+import board.Balcony;
+import decks.PoliticsCard;
 import gamelogic.Game;
 
 public class Controller {
@@ -50,9 +52,12 @@ public class Controller {
 	 * @param selection int from 1 to 4, identify the main action (1: obtain a permit 2: satisfy the king 3: shift a council 4: build an emporium)
 	 */
 	public void mainAction(int selection){
+		
+		PoliticsCard[] chosenPolitics = null; //temporary
+		Balcony chosenBalcony = null; //temporary
 		switch(selection){
 			case 1:
-				this.game.getMainAction().canObtainPermit(null, null);
+				this.game.getMainAction().canObtainPermit(chosenPolitics, chosenBalcony);
 				break;
 			case 2:
 				this.game.getMainAction().satisfyKing();
