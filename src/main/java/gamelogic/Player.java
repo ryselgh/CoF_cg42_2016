@@ -93,11 +93,17 @@ public class Player {
 	}
 
 	/**
-	 * @param coins
-	 *            the coins to set
+	 * @param coins the coins to set
 	 */
 	public void setCoins(int coins) {
 		this.coins = coins;
+	}
+	
+	/**
+	 * @param coins the coins to add
+	 */
+	public void addCoins(int coins) {
+		this.coins += coins;
 	}
 
 	/**

@@ -2,36 +2,39 @@ package board;
 
 public class Balcony
 {
-	
+
 	private Councilor[] councilor;
 	//private Region region;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
+	 * constructor of the balcony
+	 * @param c c is the array of the councilors
 	 */
-	
+
 	public Balcony(Councilor[] c) {
-		this.councilor = c;	
+		this.councilor = c; 
 		//this.region = region;
-	}
-	
-	/**
-	 * @return the councilors in that balcony
-	 */
-	
-	public Councilor[] getCouncilors() {
-		return this.councilor;	
 	}
 
 	/**
-	 * @return the region
+	 * @return the councilors in that balcony
 	 */
-//	public Region getRegion() {
-//		return region;
-//	}
-	
+
+	public Councilor[] getCouncilors() {
+		return this.councilor; 
+	}
+
+	/**
+	 * @param councilor the councilor to set
+	 */
+	public void setCouncilor(Councilor[] councilor) {
+		this.councilor = councilor;
+	}
+
+
+	// public Region getRegion() {
+	//  return region;
+	// }
+
 }
 

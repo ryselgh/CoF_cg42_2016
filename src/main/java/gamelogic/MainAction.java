@@ -148,7 +148,13 @@ public class MainAction {
 	 */
 	
 	public void shiftCouncil(int selection, Councilor councilor) {
-		ArrayList<Councilor> tmpBalcony = new ArrayList<Councilor>(game.getMap().getBalcony(selection).getCouncilors().length);
+		ArrayList<Councilor> tmpBalcony = new ArrayList<Councilor>(Arrays.asList(game.getMap().getBalcony(selection).getCouncilors()));
+		tmpBalcony.remove(0);
+		tmpBalcony.add(councilor);
+		game.getMap().getCouncilorsPool().remove(councilor);
+		Councilor[] c = new Councilor[4];
+		game.getMap().getBalcony(selection).setCouncilor(tmpBalcony.toArray(c));
+		game.getActualPlayer().addCoins(4);
 	}
 	
 	/*------------------- END OF 3rd Main Action -------------------*/
@@ -156,14 +162,26 @@ public class MainAction {
 	/*----------------------- 4th Main Action ----------------------*/
 	
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
+	 * Verify if you have the right permit to build in the selected city
+	 * @param city the city where you want to build
+	 * @param permit the permit you want to use
 	 */
 	
-	public void build() {
-		// TODO implement me	
+	public boolean canBuild(City city, PermitsCard permit){
+		for(String l: permit.getCityLetter())
+			if(l.equals(Character.toString(city.getName().toLowerCase().charAt(0))))
+				return true;
+		return false;
+	}
+	
+	/**
+	 * Build an emporium in the specified city
+	 * @param city the city where you want to build
+	 */
+	
+	public void build(City city) {
+		city.setEmporium(game.getActualPlayer().getAvailableEmporiums().get(0));
+		game.getActualPlayer().getAvailableEmporiums().remove(0);
 	}
 	
 	/*------------------- END OF 4th Main Action -------------------*/

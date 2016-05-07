@@ -288,5 +288,12 @@ public class Map {
 	public void setCity(City[] city) {
 		this.city = city;
 	}
+
+	/**
+	 * @return the councilors
+	 */
+	public ArrayList<Councilor> getCouncilorsPool() {
+		return councilors;
+	}
 }
 

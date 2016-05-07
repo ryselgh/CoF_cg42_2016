@@ -10,7 +10,7 @@ public class PermitsCard {
 	
 	
 	private Bonus[] bonuses;
-	private String[] cityLetter = {"a","b","c","d","e","f","g","h","i","l","m","n","o"};
+	private String[] cityLetter;
 	
 	
 
