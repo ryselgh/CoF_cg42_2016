@@ -1,9 +1,7 @@
 package model ;
 
 /**
- * <!-- begin-user-doc -->
- * <!--  end-user-doc  -->
- * @generated
+ * the pawn color list
  */
 public enum PawnColor
 {

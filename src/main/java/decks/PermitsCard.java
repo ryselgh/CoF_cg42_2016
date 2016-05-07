@@ -34,13 +34,12 @@ public class PermitsCard {
 
 
 
-	/**
-	 * @return the regionName
-	 */
 
 
 	/**
-	 * @return the cityLetter
+	 * constructor of the permitscard
+	 * @param b  the bonus on the card
+	 * @param l the letter of the city
 	 */
 	public PermitsCard(Bonus[] b, String[] l) {
 		bonuses= b;
@@ -48,18 +47,6 @@ public class PermitsCard {
 		
 	}
 
-
-
-	/**
-	 * @return true if the card is faced down
-	 */
-
-
-
-	/**
-	 * @param faceDown set to true when the card should be faced down
-	 */
-	 
 	
 		
 	

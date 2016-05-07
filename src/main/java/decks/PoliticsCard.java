@@ -11,7 +11,10 @@ public class PoliticsCard
 	private CouncilorColor color;
 	
 	
-
+/**
+ * constructor of the politicscard
+ * @param c is the color of card
+ */
 	
 	
 	public PoliticsCard(CouncilorColor c) {
@@ -19,7 +22,10 @@ public class PoliticsCard
 
 	}
 	
-	
+	/**
+	 * 
+	 * @return the color of the card
+	 */
 	
 	public CouncilorColor getColor() {
 		

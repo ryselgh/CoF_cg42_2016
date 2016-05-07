@@ -13,13 +13,19 @@ public abstract class Deck implements Iterator
 
 	private ArrayList <Object> deck;
 
-	
+	/**
+	 * constructor of the deck
+	 */
 	
 	public Deck() {
 		
 		deck = new ArrayList<Object>();
 		
 	}
+	/**
+	 * when it's called shuffle every deck
+	 * @param deck deck is the deck you want to shuffle
+	 */
 	static void shuffle(ArrayList<Object> deck){
 		Collections.shuffle(deck);
 	}
