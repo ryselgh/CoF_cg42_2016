@@ -209,7 +209,23 @@ public class Map {
 	{
 		return permitsDeck[index];
 	}
-
+	
+	/*private boolean isColorAvailable(CouncilorColor c)
+	{
+		for(Councilor cc: councilors)
+			if(cc.getCouncilorColor().equals(c))
+				return true;
+		return false;
+	}*/
+	
+	public ArrayList<CouncilorColor> getAvailableColors()
+	{
+		ArrayList<CouncilorColor> availables = new ArrayList<CouncilorColor>();
+		for(Councilor c: councilors)
+			if(!availables.contains(c.getCouncilorColor()))
+				availables.add(c.getCouncilorColor());
+		return availables;
+	}
 	/**
 	 * Get a balcony from map
 	 * @param selection 0: sea balcony, 1: hill balcony, 2: mountain balcony, 3: king balcony
