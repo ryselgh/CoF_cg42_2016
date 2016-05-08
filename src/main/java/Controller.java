@@ -28,15 +28,23 @@ public class Controller {
 	private Console cnsl;
 	private int mainBonus;
 	private CLI cli;
+	private ArrayList<CouncilorColor> CouncilorColorPool;
 	
 	public Controller(){
 		this.setGame(new Game(4,true, null));
 		this.setTurn(0);
+		CouncilorColorPool = new ArrayList<CouncilorColor>(4*(CouncilorColor.values().length-1)); //sme nota il -1 è per escludere il jolly, l'hai fatto anche con l'importer?		
 		cli = new CLI();
 		
 	}
 	
-	
+	private void updateAvailableCouncilors(){
+		ArrayList<CouncilorColor> availables = new ArrayList<CouncilorColor>();
+		for(Councilor c: game.getMap().getCouncilorsPool())
+			if(!availables.contains(c.getCouncilorColor()))
+				availables.add(c.getCouncilorColor());
+		this.CouncilorColorPool = availables;
+	}
 	
 	private void turnCycle()
 	{
@@ -45,7 +53,7 @@ public class Controller {
 		
 		switch(action){
 		case 1:
-			cli.mainAction();
+			cli.mainAction(CouncilorColorPool);
 			break;
 		case 2:
 			cli.speedAction(game.getMap().getAvailableColors());
@@ -53,7 +61,7 @@ public class Controller {
 		}
 		while(mainBonus !=0)
 		{
-			cli.mainAction();
+			cli.mainAction(CouncilorColorPool);
 			mainBonus--;
 		}
 	

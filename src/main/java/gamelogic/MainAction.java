@@ -35,6 +35,13 @@ public class MainAction {
 	}
 	
 	/**
+	 * @return the actionCounter
+	 */
+	public int getActionCounter() {
+		return actionCounter;
+	}
+
+	/**
 	 * Adds an action
 	 * @param i the amount of actions you want to add
 	 */
