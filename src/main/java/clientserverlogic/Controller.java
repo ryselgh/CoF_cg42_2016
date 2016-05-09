@@ -1,5 +1,7 @@
 package clientserverlogic;
+import board.Assistant;
 import board.Balcony;
+import board.Bonus;
 import board.City;
 import board.Councilor;
 import decks.PermitsCard;
@@ -9,6 +11,7 @@ import java.io.Console;
 import java.util.ArrayList;
 
 import model.CouncilorColor;
+import model.BonusType;
 /*AZIONI: 
  * 
  * 
@@ -98,7 +101,7 @@ public class Controller {
 					mainCount--;
 					break;
 				case 4:
-					int permitIndex = cli.getPermitIndex(game.getPlayers().get(turn).getPermits());
+					int permitIndex = cli.getPermitIndex(game.getPlayers().get(turn).getPermits()) - 1;//'-1' perchè l'user input è base 1
 					PermitsCard pc = game.getPlayers().get(turn).getPermits().get(permitIndex);
 					ArrayList<City> validCities = new ArrayList<City>();
 					for(City c : game.getMap().getCity())
@@ -150,6 +153,44 @@ public class Controller {
 			passTurn();
 			turnCycle();
 			}
+	}
+	
+	private void collectBonus(Bonus b)//NOTA: AGISCE SUL GIOCATORE CHE STA GIOCANDO IL TURNO
+	{
+		switch (b.getType()) {
+		case CARD:
+			playerDrawsPoliticsCard();
+			break;
+		case POINT:
+			int oldScore = game.getPlayers().get(turn).getScore();
+			game.getPlayers().get(turn).setScore(oldScore + b.getQnt());
+			break;
+		case COIN:
+			int oldCoin = game.getPlayers().get(turn).getCoins();
+			game.getPlayers().get(turn).setCoins(oldCoin + b.getQnt());
+			break;
+		case ASSISTANT:
+			ArrayList<Assistant> ass = game.getMap().getAssistant(b.getQnt());
+			game.getPlayers().get(turn).addAssistant(ass);
+			break;
+		case NOBILITY:
+			Bonus[] bGained = game.getMap().getNobilityTrack().advance(turn, b.getQnt());
+			if(bGained!=null)
+				for(Bonus bo : bGained)
+					collectBonus(bo);
+			break;
+		case MAINACTION:
+			break;
+		case TOKEN:
+			break;
+		case TWOTOKENS:
+			break;
+		case FREECARD:
+			break;
+		case BONUSCARD:
+			break;
+
+		}
 	}
 	/**
 	 * @return the game

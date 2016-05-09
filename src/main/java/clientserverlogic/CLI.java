@@ -169,13 +169,13 @@ public class CLI {
 	{
 		for(int i=0; i<cards.size();i++)
 		{
-			out.print((i+1) + "st CARD:\nBonus:\n");
+			out.print((i+1) + "° CARD:\nBonus:\n");
 			for(Bonus b: cards.get(i).getBonus())
 			{
 				out.print("Type: "+ b.getType().toString() + "\nAmmount: "+ b.getQnt()+ "\n");
 			}
 		}
-		return waitCorrectIntInput("\nInsert the index of the card you want to use.\n",1,5);
+		return waitCorrectIntInput("\nInsert the index of the card you want to use.\n",1,cards.size());
 	}
 	
 	public int getInputCities(City[] cities)

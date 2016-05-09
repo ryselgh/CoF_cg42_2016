@@ -28,7 +28,8 @@ public class NobilityTrack {
 	 * @return all the bonus you get during your progress
 	 */
 	
-	public Bonus[] advance(Pawn p, int av) {
+	public Bonus[] advance(int pawnIndex, int av) {
+		Pawn p = this.pawns[pawnIndex];
 		int start = p.getPos(), i=0;
 		ArrayList <Bonus> ret = new ArrayList <Bonus>();
 		for(i=start;i<=start + av;i++)
