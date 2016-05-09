@@ -172,6 +172,10 @@ public class Player {
 	public void addPermits(PermitsCard pec) {
 		permits.add(pec);
 	}
+	
+	public ArrayList<PermitsCard> getPermits() {
+		return permits;
+	}
 
 	
 	// <--------- MARKET BEGIN ---------->

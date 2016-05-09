@@ -48,7 +48,9 @@ public class Controller {
 		ArrayList<CouncilorColor> avail = getAvailableCouncilors();
 		mainCount = 1;
 		speedCount = 1;
-		int action;
+		int action, choice;
+		ArrayList<PoliticsCard> inCards;
+		
 		while (mainCount > 0 || speedCount > 0) {
 			if(mainCount==0)
 				action = 2;
@@ -60,28 +62,52 @@ public class Controller {
 			int regIndex;
 			switch (action) {
 			case 1://MAIN ACTION WIP
+				choice = cli.mainActionChoice();
+				switch (choice) {// non c'è il default perchè non ci arriverà comunque
+				case 1:
+					regIndex = cli.getTargetRegion(0);
+					inCards = cli.waitInputCards(game.getPlayers().get(turn).getHand());
+					//soddisfa consiglio di regIndex
+					mainCount--;
+					break;
+				case 2:
+					inCards = cli.waitInputCards(game.getPlayers().get(turn).getHand());
+					//soddisfa consiglio del re
+					//DA SCEGLIERE LA CITTA'
+					mainCount--;
+					break;
+				case 3:
+					regIndex = cli.getTargetRegion(1);
+					int colIndex = cli.getColorIndex(avail);
+					//shifta consiglio
+					mainCount--;
+					break;
+				case 4:
+					int permitIndex = cli.getPermitIndex(game.getPlayers().get(turn).getPermits());
+					//costruisci
+					//DA SCEGLIERE LA CITTA'
+					mainCount--;
+					break;
+				case 5:
+					break;//torna indietro
+				}
 
-
-				
-				
-				
-				
-				break;
+			break;
 			case 2:// SPEED ACTION
-				int choice = cli.speedActionChoice();
+				choice = cli.speedActionChoice();
 				switch (choice) {// non c'è il default perchè non ci arriverà comunque
 				case 1:
 					// compra aiutante
 					speedCount--;
 					break;
 				case 2:
-					regIndex = cli.speedActionSubChoice(choice, avail)[0];
+					regIndex = cli.getTargetRegion(0);
 					// cambia permessi
 					speedCount--;
 					break;
 				case 3:
-					regIndex = cli.speedActionSubChoice(choice, avail)[0];
-					int colIndex = cli.speedActionSubChoice(choice, avail)[1];
+					regIndex = cli.getTargetRegion(1);
+					int colIndex = cli.getColorIndex(avail);
 					// shifta consigliere
 					speedCount--;
 					break;
@@ -92,6 +118,7 @@ public class Controller {
 				case 5:
 					break;//torna indietro
 				}
+			break;
 			}
 		}
 	}
