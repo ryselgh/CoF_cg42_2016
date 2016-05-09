@@ -64,7 +64,8 @@ public class Map {
 			regions[i].setBonus(new BonusCard(bonusRegioni[i]));//-----------------------------
 		Bonus[] bonusColori = reader.getColorBonus();
 		for(int i=0;i<colorGroups.length;i++)
-			colorGroups[i].setBonus(new BonusCard(bonusColori[i]));	
+			if(bonusColori[i]!=null)
+				colorGroups[i].setBonus(new BonusCard(bonusColori[i]));	
 		setCity(reader.getCity()); //in questo metodo Importer accede al metodo Map.inserisciCittà per inserire le città (alla creazione) nelle regioni e nei cologroup, le cui istanze sono qui su Map perchè create non in questo metodo
 		setKing(reader.getKing());
 		nobilityTrack = reader.getNobilityTrack();
