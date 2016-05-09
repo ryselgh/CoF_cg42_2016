@@ -14,9 +14,11 @@ import board.Region;
 import decks.PermitsCard;
 import decks.PoliticsCard;
 import gamelogic.Game;
+import gamelogic.Player;
 import model.CityColor;
 import model.CouncilorColor;
 import model.RegionName;
+import utils.TableBuilder;
 
 public class CLI {
 	private static Scanner in;
@@ -195,6 +197,26 @@ public class CLI {
 		this.printRegionBonuses(game);
 		this.printColorBonuses(game);
 		this.printKingBonuses(game);
+		this.printPlayersStatus(game);
+	}
+	
+	public void printPlayersStatus(Game game){
+		TableBuilder tb = new TableBuilder();
+		tb.addRow("Player", "Emporiums", "Assistants", "Coins", "Points", "Cards", "Active permits", "Used permits", "King Bonus");
+		tb.addRow("--------------","--------------", "--------------", "--------------", "--------------", "--------------", "--------------", "--------------", "--------------");
+		for(Player p: game.getPlayers()){
+			int usedPermits = 0;
+			ArrayList<PermitsCard> activePermits = new ArrayList<PermitsCard>();
+			for(PermitsCard pc: p.getPermits())
+				if(pc.isFaceDown())
+					usedPermits++;
+				else
+					activePermits.add(pc);
+			tb.addRow(Integer.toString(p.getID()), Integer.toString(p.getAvailableEmporiums().size()),
+						Integer.toString(p.getAvailableAssistants().size()), Integer.toString(p.getCoins()),
+						Integer.toString(p.getScore()), Integer.toString(p.getHand().size()), activePermits.toString(), Integer.toString(usedPermits), p.getBonusCards().toString());
+		}
+		out.print("\n\nPlayers status:\n"+tb.toString()+"\n\n");
 	}
 	
 	/*--------------------------------------END OF OUTPUTS------------------------------------------*/

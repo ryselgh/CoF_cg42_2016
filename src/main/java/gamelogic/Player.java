@@ -2,6 +2,7 @@ package gamelogic;
 
 import java.util.ArrayList;
 import board.Assistant;
+import board.BonusCard;
 import board.Emporium;
 import board.Map;
 import board.Pawn;
@@ -17,6 +18,7 @@ public class Player {
 	private ArrayList<Assistant> availableAssistants;
 	private ArrayList<PermitsCard> permits;
 	private ArrayList<PoliticsCard> hand;
+	private ArrayList<BonusCard> bonusCards;
 	private Pawn pawn;
 	private int coins;
 	private int score;
@@ -36,6 +38,7 @@ public class Player {
 	public Player(int ID) {
 		availableEmporiums = new ArrayList<Emporium>(10);
 		availableAssistants = new ArrayList<Assistant>();
+		bonusCards = new ArrayList<BonusCard>();
 		permits = new ArrayList<PermitsCard>();
 		hand = new ArrayList<PoliticsCard>();
 		playerID = ID;
@@ -220,6 +223,20 @@ public class Player {
 
 	public void sellPermitsCard(PermitsCard perc) {
 		// TODO implement me
+	}
+
+	/**
+	 * @return the bonusCards
+	 */
+	public ArrayList<BonusCard> getBonusCards() {
+		return bonusCards;
+	}
+
+	/**
+	 * @param bonusCards the bonusCards to add
+	 */
+	public void addBonusCards(ArrayList<BonusCard> bonusCards) {
+		this.bonusCards.addAll(bonusCards);
 	}
 	
 	// <--------- MARKET END ---------->

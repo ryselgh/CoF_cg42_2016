@@ -57,14 +57,10 @@ public class Main
 	 */
 	
 	public static void main(String[] args) {
-		game = new Game(2, true, "");
+		game = new Game(8, true, "");
 		//Controller controller = new Controller();
 		cli = new CLI();
-		graph = new GraphMap(game.getMap());
-		int cost;
-		cost = graph.shortestPathCost(game.getMap().getCity()[9]);
-		System.out.println("From Juvelar to "+ game.getMap().getCity()[9].getName() + " you have to pay: ");
-		System.out.print(Integer.toString(cost));
+		cli.printGameStatus(game);
 		/*Player pl1 = new Player();
 		Player pl2 = new Player();
 		Player[] pp = {pl1,pl2};
