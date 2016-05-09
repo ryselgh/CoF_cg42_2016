@@ -55,7 +55,8 @@ public class Main
 	 */
 	
 	public static void main(String[] args) {
-		game = new Game(2, true, "");
+		//game = new Game(2, true, "");
+		Controller controller = new Controller();
 		cli = new CLI();
 		cli.printGameStatus(game);
 		/*Player pl1 = new Player();

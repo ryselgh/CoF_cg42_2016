@@ -143,21 +143,28 @@ public class CLI {
 		this.printAssistantPool(game);
 		this.printPermitsDecks(game);
 	}
-		
-	public void welcomeMsg(int pl)
-	{
-		out.print("Hi there player" + pl + "\n");
-	}
+	
 	/*--------------------------------------END OF OUTPUTS------------------------------------------*/
 	
 	/*-----------------------------------------INPUTS-----------------------------------------------*/
 
-	public int getAction(int plIndex){
-		return waitCorrectIntInput("Hi there player" + plIndex + ", insert 1 for Main Action, insert 2 for Speed Action.\n",1,2);
+	public int getAction(int plIndex, boolean main, boolean speed){
+		out.print("Hi there player" + plIndex + ", ");
+		if(main)
+			out.print("insert 1 for Main Action, ");
+		if(speed)
+			out.print("insert 2 for Speed Action, ");
+		int resp = waitCorrectIntInput("insert 3 to pass\n",1,3);
+		if((resp==1 && !main) || (resp==2 && !speed))
+		{
+			out.print("Selection inavailable. Try again\n");
+			return getAction(plIndex, main, speed);
+		}
+		return resp;
 	}
 	
 	public int mainActionChoice(){
-		return waitCorrectIntInput("\nInsert the number related to your action:\n"
+		return waitCorrectIntInput("\nMAIN ACTION\nInsert the number related to your action:\n"
 				+ "1-Satisfy a council. Earn: permit* Needed: min 1 politics card\n"
 				+ "2-Satisfy the king's council. Build instantly. Needed: min 1 politics card*\n"
 				+ "3-Shift Council. Earn: 4 coins\n"
@@ -176,20 +183,20 @@ public class CLI {
 				out.print("Type: "+ b.getType().toString() + "\nAmmount: "+ b.getQnt()+ "\n");
 			}
 		}
-		return waitCorrectIntInput("\nInsert the index of the card you want to use.\n",1,cards.size());
+		return waitCorrectIntInput("\nInsert the index of the card you want to use.\n",1,cards.size()) - 1;
 	}
 	
 	public int getInputCities(City[] cities)
 	{
 		out.print("\nInsert the indexes of the cities:\n");
 		for(int i=0; i< cities.length;i++)
-			out.print(i + "-" + cities[i].getName() + "\n");
-		return waitCorrectIntInput("",1,cities.length);
+			out.print(i+1 + "-" + cities[i].getName() + "\n");
+		return waitCorrectIntInput("",1,cities.length) - 1;
 	}
 	
 	
 	public int speedActionChoice(){
-		return waitCorrectIntInput("\nInsert the number related to your action:\n"
+		return waitCorrectIntInput("\nSPEED ACTION \nInsert the number related to your action:\n"
 						+ "1-Buy an assistant. Pay: 3 coins\n"
 						+ "2-Change permits card on the ground in a region. Pay: 1 assistant\n"
 						+ "3-Shift a councilor. Pay: 1 assistant\n"
@@ -215,19 +222,9 @@ public class CLI {
 		return waitCorrectIntInput(messages[msg],1,3) - 1;
 	}
 	
-	public int getPermitToPick(PermitsCard[] pc)
-	{
-		out.print("Select the permit card you want to pick:\n");
-		for(int i=0;i<pc.length;i++)
-		{
-			out.print(i + "° CARD:\n");
-			for(Bonus b : pc[i].getBonus())
-				out.print("Bonus: [Type=" + b.getType().toString() + ", Amm= " + b.getQnt() + "\n");
-			out.print("\n");
-		}
-		return waitCorrectIntInput("",1,pc.length) -1;//-1 perchè l'user input è in base 1
+	
 		
-	}
+	
 	public BonusToken[] getTokenBonus(BonusToken[] bts, int amm)
 	{
 		if(amm==1)
@@ -272,10 +269,10 @@ public class CLI {
 	public int getColorIndex(ArrayList<CouncilorColor> availableCouncColor)
 	{
 		for(int i=0;i<availableCouncColor.size();i++){
-			out.print(i + "-" + availableCouncColor.get(i).toString() + "\n");
+			out.print(i+1 + "-" + availableCouncColor.get(i).toString() + "\n");
 		}
 		out.print("Insert the index of the color:\n");
-		return waitCorrectIntInput("",1,availableCouncColor.size());
+		return waitCorrectIntInput("",1,availableCouncColor.size()) -1;
 	}
 	
 	private int waitCorrectIntInput(String msg, int min, int max){
@@ -283,7 +280,7 @@ public class CLI {
 		do {
 			String resp = getInput(msg);
 			respInt = parseNum(resp, min,max);
-		} while (respInt != -1);
+		} while (respInt == -1);
 		return respInt;
 	}
 
