@@ -62,8 +62,8 @@ public class Main
 		cli = new CLI();
 		graph = new GraphMap(game.getMap());
 		int cost;
-		cost = graph.shortestPathCost(game.getMap().getCity()[4]);
-		System.out.println("From Juvelar to "+ game.getMap().getCity()[4].getName() + " you have to pay: ");
+		cost = graph.shortestPathCost(game.getMap().getCity()[9]);
+		System.out.println("From Juvelar to "+ game.getMap().getCity()[9].getName() + " you have to pay: ");
 		System.out.print(Integer.toString(cost));
 		/*Player pl1 = new Player();
 		Player pl2 = new Player();

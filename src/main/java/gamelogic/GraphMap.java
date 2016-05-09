@@ -19,7 +19,7 @@ public class GraphMap {
 	private ArrayList<City> cities;
 	private Map map;
 	private UndirectedGraph<String, DefaultEdge> g;
-	
+
 	public GraphMap(Map map){
 		this.map = map;
 		this.g = new SimpleGraph<String, DefaultEdge>     (DefaultEdge.class);
@@ -47,21 +47,14 @@ public class GraphMap {
 		}
 		for(City c:cities)
 			for(int i=0;i<c.getCloseCity().length;i++)
-					g.addEdge(c.getName(), c.getCloseCity()[i]);
+				g.addEdge(c.getName(), c.getCloseCity()[i]);
 
 
 	}
 
-		public int shortestPathCost(City arrivalCity){
-			int cost = 0;
-			shortestPath.findPathBetween(g, map.getKing().getLocation().getName(), arrivalCity.getName());
-			cost = Integer.parseInt(Double.toString(shortestPath.getPathLength()));
-			return cost*2;
-		}
+	public int shortestPathCost(City arrivalCity){
+		List<DefaultEdge> path = shortestPath.findPathBetween(g, map.getKing().getLocation().getName(), arrivalCity.getName());
+		return path.size()*2;
+	}
 
 }
-
-
-
-
-
