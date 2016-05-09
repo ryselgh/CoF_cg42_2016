@@ -25,6 +25,7 @@ public class Game {
 	private String mapDir;
 	private MainAction mainAction;
 	private SpeedAction speedAction;
+	private GraphMap graphMap;
 	
 	/**
 	 * Constructs a new object of type Game
@@ -63,6 +64,8 @@ public class Game {
 		
 		//Map
 		map = new Map(players.toArray(new Player[players.size()]),defaultMap,"");
+		graphMap = new GraphMap(map);
+		
 		
 		//Player construction
 		for(int i=0; i<playersQty; i++){
@@ -154,6 +157,13 @@ public class Game {
 	 */
 	public SpeedAction getSpeedAction() {
 		return speedAction;
+	}
+
+	/**
+	 * @return the graphMap
+	 */
+	public GraphMap getGraphMap() {
+		return graphMap;
 	}
 	
 }

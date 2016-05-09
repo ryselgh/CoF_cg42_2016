@@ -128,17 +128,12 @@ public class MainAction {
 	
 	/**
 	 * Verify if the player can move the king in an adiacent
-	 * @param fromCity the city where the king is actually placed
-	 * @param toCity where you want to place the king
+	 * @param destination the location where you want to move the king
 	 * @return true if you can move the king there, false if not
 	 */
 	
-	public boolean canMoveKing(City fromCity, City toCity){
-		if(
-			game.getMap().getKing().getLocation().equals(fromCity) &&
-			toCity.isCloseCityOf(fromCity) &&
-			game.getActualPlayer().getCoins()>=2
-		  )
+	public boolean canMoveKing(City destination){
+		if(game.getGraphMap().shortestPathCost(destination)<=game.getActualPlayer().getCoins())
 			return true;
 		else
 			return false;
@@ -186,7 +181,8 @@ public class MainAction {
 	
 	public boolean canBuild(City city, PermitsCard permit){
 		for(String l: permit.getCityLetter())
-			if(l.equals(Character.toString(city.getName().toLowerCase().charAt(0))))
+			if(l.equals(Character.toString(city.getName().toLowerCase().charAt(0))) &&
+				game.getActualPlayer().getAvailableAssistants().size()>=city.getEmporium().length)
 				return true;
 		return false;
 	}
