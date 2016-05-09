@@ -45,14 +45,9 @@ public class GraphMap {
 		for (City c: cities){
 			g.addVertex(c.getName());
 		}
-		for(City c:cities){
-			for(City p:cities){
-				if(p.isCloseCityOf(c))
-					g.addEdge(c.getName(), p.getName());
-			}
-
-
-		}
+		for(City c:cities)
+			for(int i=0;i<c.getCloseCity().length;i++)
+					g.addEdge(c.getName(), c.getCloseCity()[i]);
 
 
 	}

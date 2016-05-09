@@ -13,6 +13,7 @@ import board.Councilor;
 import board.Map;
 import decks.PoliticsCard;
 import gamelogic.Game;
+import gamelogic.GraphMap;
 import gamelogic.Player;
 
 /**
@@ -35,6 +36,7 @@ public class Main
 	private static PrintStream out = System.out;
 	private static Game game;
 	private static CLI cli;
+	private static GraphMap graph;
 	
 
 	/**
@@ -55,10 +57,14 @@ public class Main
 	 */
 	
 	public static void main(String[] args) {
-		//game = new Game(2, true, "");
-		Controller controller = new Controller();
+		game = new Game(2, true, "");
+		//Controller controller = new Controller();
 		cli = new CLI();
-		cli.printGameStatus(game);
+		graph = new GraphMap(game.getMap());
+		int cost;
+		cost = graph.shortestPathCost(game.getMap().getCity()[4]);
+		System.out.println("From Juvelar to "+ game.getMap().getCity()[4].getName() + " you have to pay: ");
+		System.out.print(Integer.toString(cost));
 		/*Player pl1 = new Player();
 		Player pl2 = new Player();
 		Player[] pp = {pl1,pl2};
