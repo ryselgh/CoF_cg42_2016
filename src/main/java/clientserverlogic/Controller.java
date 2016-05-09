@@ -1,6 +1,8 @@
 package clientserverlogic;
 import board.Balcony;
+import board.City;
 import board.Councilor;
+import decks.PermitsCard;
 import decks.PoliticsCard;
 import gamelogic.Game;
 import java.io.Console;
@@ -50,6 +52,8 @@ public class Controller {
 		speedCount = 1;
 		int action, choice;
 		ArrayList<PoliticsCard> inCards;
+		int cityIndex;
+		City toBuild;
 		
 		while (mainCount > 0 || speedCount > 0) {
 			if(mainCount==0)
@@ -72,8 +76,9 @@ public class Controller {
 					break;
 				case 2:
 					inCards = cli.waitInputCards(game.getPlayers().get(turn).getHand());
+					cityIndex = cli.getInputCities(game.getMap().getCity());
+					toBuild = game.getMap().getCity()[cityIndex];
 					//soddisfa consiglio del re
-					//DA SCEGLIERE LA CITTA'
 					mainCount--;
 					break;
 				case 3:
@@ -84,6 +89,16 @@ public class Controller {
 					break;
 				case 4:
 					int permitIndex = cli.getPermitIndex(game.getPlayers().get(turn).getPermits());
+					PermitsCard pc = game.getPlayers().get(turn).getPermits().get(permitIndex);
+					ArrayList<City> validCities = new ArrayList<City>();
+					for(City c : game.getMap().getCity())
+						for(String lett: pc.getCityLetter())
+							if(lett.toLowerCase().equals(c.getName().toLowerCase().charAt(0)))
+								validCities.add(c);
+					City[] validCitiesArr = validCities.toArray(new City[0]);
+					cityIndex = cli.getInputCities(validCitiesArr);
+					toBuild = game.getMap().getCity()[cityIndex];
+
 					//costruisci
 					//DA SCEGLIERE LA CITTA'
 					mainCount--;

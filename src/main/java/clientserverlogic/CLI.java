@@ -54,17 +54,12 @@ public class CLI {
 		return waitCorrectIntInput("\nInsert the index of the card you want to use.\n",1,5);
 	}
 	
-	public City[] getInputCities(String msg, boolean[] checkRegion, Region[] regs)//WIP NON TOCCARE
+	public int getInputCities(City[] cities)//WIP NON TOCCARE
 	{
 		out.print("\nInsert the indexes of the cities:\n");
-		for(int i=0;i<regs.length;i++)
-		{
-			if(checkRegion[i])
-			{
-				
-			}
-		}
-		return null;
+		for(int i=0; i< cities.length;i++)
+			out.print(i + "-" + cities[i].getName() + "\n");
+		return waitCorrectIntInput("",1,cities.length);
 	}
 	
 	
