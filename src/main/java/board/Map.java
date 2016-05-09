@@ -147,11 +147,11 @@ public class Map {
 
 	public int insertCity(City c, String regione, String color)
 	{
-		if (regione.toLowerCase()=="sea")
+		if (regione.toLowerCase().equals("sea"))
 			regions[0].addCity(c);
-		else if (regione.toLowerCase()=="hill")
+		else if (regione.toLowerCase().equals("hill"))
 			regions[1].addCity(c);
-		else if (regione.toLowerCase()=="mountain")
+		else if (regione.toLowerCase().equals("mountain"))
 			regions[2].addCity(c);
 		else
 			return -1;//lancia errore

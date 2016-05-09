@@ -27,45 +27,73 @@ public class Controller {
 	private Game game;
 	private int turn;
 	private Console cnsl;
-	private int mainBonus;
+	private int mainCount, speedCount;
 	private CLI cli;
-	private ArrayList<CouncilorColor> CouncilorColorPool;
 	
 	public Controller(){
 		this.setGame(new Game(4,true, null));
 		this.setTurn(0);
-		CouncilorColorPool = new ArrayList<CouncilorColor>(4*(CouncilorColor.values().length-1)); //sme nota il -1 è per escludere il jolly, l'hai fatto anche con l'importer?		
 		cli = new CLI();
-		
 	}
 	
-	private void updateAvailableCouncilors(){
+	private ArrayList<CouncilorColor> getAvailableCouncilors(){
 		ArrayList<CouncilorColor> availables = new ArrayList<CouncilorColor>();
 		for(Councilor c: game.getMap().getCouncilorsPool())
 			if(!availables.contains(c.getCouncilorColor()))
 				availables.add(c.getCouncilorColor());
-		this.CouncilorColorPool = availables;
+		return availables;
 	}
-	
-	private void turnCycle()
-	{
-		int action = cli.getAction(turn);
-		mainBonus=0;
-		
-		switch(action){
-		case 1:
-			//cli.mainAction(CouncilorColorPool);
-			break;
-		case 2:
-			//cli.speedAction(game.getMap().getAvailableColors());
-			break;
+
+	private void turnCycle() {
+		ArrayList<CouncilorColor> avail = getAvailableCouncilors();
+		mainCount = 1;
+		speedCount = 1;
+		int action;
+		while (mainCount > 0 || speedCount > 0) {
+			if(mainCount==0)
+				action = 2;
+			else if(speedCount==0)
+				action = 1;
+			else
+				action = cli.getAction(turn);
+			
+			int regIndex;
+			switch (action) {
+			case 1://MAIN ACTION WIP
+
+
+				
+				
+				
+				
+				break;
+			case 2:// SPEED ACTION
+				int choice = cli.speedActionChoice();
+				switch (choice) {// non c'è il default perchè non ci arriverà comunque
+				case 1:
+					// compra aiutante
+					speedCount--;
+					break;
+				case 2:
+					regIndex = cli.speedActionSubChoice(choice, avail)[0];
+					// cambia permessi
+					speedCount--;
+					break;
+				case 3:
+					regIndex = cli.speedActionSubChoice(choice, avail)[0];
+					int colIndex = cli.speedActionSubChoice(choice, avail)[1];
+					// shifta consigliere
+					speedCount--;
+					break;
+				case 4:
+					// compra mainaction
+					speedCount--;
+					break;
+				case 5:
+					break;//torna indietro
+				}
+			}
 		}
-		while(mainBonus !=0)
-		{
-			//cli.mainAction(CouncilorColorPool);
-			mainBonus--;
-		}
-	
 	}
 	/**
 	 * @return the game
@@ -92,7 +120,7 @@ public class Controller {
 	
 	public void addMainBonus()
 	{
-		mainBonus++;
+		mainCount++;
 	}
 	/**
 	 * @param turn the turn to set

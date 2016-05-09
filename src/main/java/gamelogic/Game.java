@@ -62,7 +62,7 @@ public class Game {
 		actualPlayer = players.get(0);
 		
 		//Map
-			map = new Map(players.toArray(new Player[players.size()]),defaultMap,"");
+		map = new Map(players.toArray(new Player[players.size()]),defaultMap,"");
 		
 		//Player construction
 		for(int i=0; i<playersQty; i++){

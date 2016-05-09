@@ -23,6 +23,7 @@ public class ColorGroup
 	
 	public ColorGroup(CityColor col) {
 		this.color = col;
+		this.cities = new ArrayList <City>();
 	}
 	
 	/**

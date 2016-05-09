@@ -58,6 +58,10 @@ public class Main
 		game = new Game(2, true, "");
 		cli = new CLI();
 		cli.printGameStatus(game);
+		/*Player pl1 = new Player();
+		Player pl2 = new Player();
+		Player[] pp = {pl1,pl2};
+		Map mmm = new Map(pp,true,"");*/
 	}
 }
 

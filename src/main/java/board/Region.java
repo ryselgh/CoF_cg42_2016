@@ -22,6 +22,7 @@ public class Region
 	
 	public Region(RegionName n) {
 		this.name = n;
+		this.cities = new ArrayList <City>();
 	}
 	
 	/**

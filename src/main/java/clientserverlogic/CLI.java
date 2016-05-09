@@ -30,20 +30,14 @@ public class CLI {
 		return waitCorrectIntInput("Hi there player" + plIndex + ", insert 1 for Main Action, insert 2 for Speed Action.\n",1,2);
 	}
 	
-	public void mainActionMsg(int selection){
+	public int mainActionSubChoice(int selection){//WIP NON TOCCARE
 	
 		switch(selection){
-			case 0: 
-				out.print("\nInsert the number related to your action:\n"
-						+ "1-Satisfy a council. Earn: permit* Needed: min 1 politics card\n"
-						+ "2-Satisfy the king's council. Build instantly. Needed: min 1 politics card*\n"
-						+ "3-Shift Council. Earn: 4 coins\n"
-						+ "4-Build an emporium in a city. Needed: permit\n\n"
-						+ "5-Go back\n");
-				break;
 			case 1:
-				out.print("\nSelect a council:\n1-Sea\n2-Hill\n3-Mountain");
-				break;
+				return waitCorrectIntInput("\nInsert the index of the region containing the council you want to satisfy:\n"
+						+ "1-Sea\n"
+						+ "2-Hill\n"
+						+ "3-Mountain\n",1,3);//da continuare in controller che chiederà le carte
 			case 2:
 				out.print("\nSelect the cards you want to use (insert '*' for instructions)");
 				break;
@@ -60,35 +54,55 @@ public class CLI {
 				out.print("\nsomething went wrong\n");
 				break;
 		}
+		return 0;
 	}
 	
-	public void speedActionMsg(int selection){
-		
-		switch(selection){
-			case 0: 
-				out.print("\nInsert the number related to your action:\n"
+	public City[] getCities(String msg, boolean[] checkRegion)//WIP NON TOCCARE
+	{
+		return null;
+	}
+	public int mainActionChoice(){
+		return waitCorrectIntInput("\nInsert the number related to your action:\n"
+				+ "1-Satisfy a council. Earn: permit* Needed: min 1 politics card\n"
+				+ "2-Satisfy the king's council. Build instantly. Needed: min 1 politics card*\n"
+				+ "3-Shift Council. Earn: 4 coins\n"
+				+ "4-Build an emporium in a city. Needed: permit\n\n"
+				+ "5-Go back\n",1,5);
+	}
+	
+	public int speedActionChoice(){
+		return waitCorrectIntInput("\nInsert the number related to your action:\n"
 						+ "1-Buy an assistant. Pay: 3 coins\n"
 						+ "2-Change permits card on the ground in a region. Pay: 1 assistant\n"
 						+ "3-Shift a councilor. Pay: 1 assistant\n"
 						+ "4-Buy a main action. Pay: 3 assistants\n\n"
-						+ "5-Go back\n");
-				break;
-			case 2:
-				out.print("\nSelect the cards you want to use (insert '*' for instructions)");
-				break;
-			case 3:
-				out.print("\nInsert the index of the region containing the councilors you want to shift:\n"
+						+ "5-Go back\n",1,5);
+	}
+	
+	public int[] speedActionSubChoice(int selection, ArrayList<CouncilorColor> availableCouncColor)
+	{
+		switch(selection){
+		case 2:
+			return new int[] {waitCorrectIntInput("\nInsert the index of the region related to the permits card you want to change:\n"
 					+ "1-Sea\n"
 					+ "2-Hill\n"
-					+ "3-Mountain\n");
-				break;
-			case 4:
-				out.print("\nInsert the index of the color:\n");
-				break;
-			default:
-				out.print("\nsomething went wrong\n");
-				break;
-		}
+					+ "3-Mountain\n",1,3)};
+		case 3:
+			int regIndex = waitCorrectIntInput("\nInsert the index of the region containing the councilors you want to shift:\n"
+					+ "1-Sea\n"
+					+ "2-Hill\n"
+					+ "3-Mountain\n",1,3);
+			for(int i=0;i<availableCouncColor.size();i++){
+				out.print(i + "-" + availableCouncColor.get(i).toString() + "\n");
+			}
+			out.print("Insert the index of the color:\n");
+			int colIndex = waitCorrectIntInput("",1,availableCouncColor.size());
+			return new int[] {regIndex,colIndex};
+		default:
+			out.print("\nsomething went wrong\n");//non dovrebbe mai arrivarci qui, non è in collegamento diretto con l'user input
+			break;
+	}
+		return new int[] {0};
 	}
 	
 	public void printMap(){
@@ -304,7 +318,7 @@ public class CLI {
 					return resp.toLowerCase();
 				}
 			out.print("Wrong input. Try Again.\n");
-		}while(respString != -1);
+		}while(respString != -1);//while(1) va bene, tanto esci col return
 		return "-1";
 	}
 	
