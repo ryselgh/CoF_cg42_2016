@@ -57,7 +57,7 @@ public class Game {
 				
 		//Players initialize
 		for(int i=0; i<playersQty; i++){
-			players.add(new Player());
+			players.add(new Player(i+1));
 		}
 		actualPlayer = players.get(0);
 		

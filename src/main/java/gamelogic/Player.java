@@ -20,6 +20,7 @@ public class Player {
 	private Pawn pawn;
 	private int coins;
 	private int score;
+	private int playerID;
 
 	/**
 	 * Constructs an object of type Player
@@ -32,11 +33,12 @@ public class Player {
 	 *            The chosen color of the player
 	 */
 
-	public Player() {
+	public Player(int ID) {
 		availableEmporiums = new ArrayList<Emporium>(10);
 		availableAssistants = new ArrayList<Assistant>();
 		permits = new ArrayList<PermitsCard>();
 		hand = new ArrayList<PoliticsCard>();
+		playerID = ID;
 	}
 
 	/**
@@ -137,6 +139,13 @@ public class Player {
 	 */
 	public void setScore(int score) {
 		this.score = score;
+	}
+
+	/**
+	 * @return the playerID
+	 */
+	public int getID() {
+		return playerID;
 	}
 
 	/**

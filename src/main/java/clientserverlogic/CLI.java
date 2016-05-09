@@ -14,6 +14,7 @@ import board.Region;
 import decks.PermitsCard;
 import decks.PoliticsCard;
 import gamelogic.Game;
+import model.CityColor;
 import model.CouncilorColor;
 import model.RegionName;
 
@@ -80,7 +81,7 @@ public class CLI {
 	}
 	
 	public void printKingLocation(Game game){
-		out.println("\nKing's location: " + game.getMap().getKing().getLocation().getName());
+		out.println("\n\nKing's location: " + game.getMap().getKing().getLocation().getName());
 	}
 	
 	public void printPermitsDecks(Game game){
@@ -120,31 +121,85 @@ public class CLI {
 	}
 	
 	public void printNobilityTrack(Game game){
-		game.getMap().getNobilityTrack().getBonusVector();
+		//Provisoional solution
+		out.println("\nNobility Track:\n 1	2	    3		4	5	6	 7	    8		9	    10	     11	       12		13	    14		15	16	 17	   18	   19	   	20	  21");
+		for(int i=0;i<21;i++){
+			boolean hasBonus = false;
+			out.print("[");
+			for(int j=0;j<game.getMap().getNobilityTrack().getBonusVector()[i].length;j++){
+				if(game.getMap().getNobilityTrack().getBonusVector()[i][j] != null){
+					hasBonus = true;
+					out.print("("+game.getMap().getNobilityTrack().getBonusVector()[i][j].getType()+"x");
+					out.print(game.getMap().getNobilityTrack().getBonusVector()[i][j].getQnt()+")");	
+				}
+				else if(!hasBonus)
+					out.print(" ");
+			}
+			out.print("]");
+		}
 	}
 	
 	public void printRegionBonuses(Game game){
-		game.getMap().getNobilityTrack().getBonusVector();
+		out.print("\nRegion Bonus:\n    ");
+		for(int i=0;i<3;i++){
+			if(game.getMap().getRegion(i).getBonus().getBonus() != null)
+				out.print(RegionName.values()[i].toString() + ": " 
+				+game.getMap().getRegion(i).getBonus().getBonus().getType().toString()
+				+"x"+ Integer.toString(game.getMap().getRegion(i).getBonus().getBonus().getQnt()));
+			out.print("\n    ");
+		}
 	}
 	
 	public void printColorBonuses(Game game){
-		game.getMap().getNobilityTrack().getBonusVector();
+		out.print("\nColor Bonus:\n    ");
+		for(int i=0;i<CityColor.values().length-1;i++){
+			out.print(CityColor.values()[i].toString() + " cities: " );
+			if(game.getMap().getColorGroup(i).getBonus() != null)
+				out.print(game.getMap().getColorGroup(i).getBonus().getBonus().getType().toString()
+				+"x"+ Integer.toString(game.getMap().getColorGroup(i).getBonus().getBonus().getQnt()));
+			out.print("\n    ");
+		}
 	}
 	
 	public void printKingBonuses(Game game){
-		game.getMap().getNobilityTrack().getBonusVector();
+		out.print("\nKing Bonus:");
+		int i = 0;
+		for(Bonus b: game.getMap().getKingBonus()){
+			out.print("\n  "+Integer.toString(i+1)+"°: " + b.getType().toString() + "x" + Integer.toString(b.getQnt()));
+			i++;
+		}
+	}
+	
+	public void printPlacedEmporiums(Game game){
+		out.print("\nPlaced emporiums:\n");
+		for(int i=0;i<game.getMap().getCity().length;i++){
+			out.print(game.getMap().getCity()[i].getName()+": {");
+			for(int j=0;j<game.getMap().getCity()[i].getEmporium().length;j++){
+				if(game.getMap().getCity()[i].getEmporium()[j] != null){
+					out.print("["+Integer.toString(game.getMap().getCity()[i].getEmporium()[j].getPlayer().getID())+"]");
+				}
+			}
+			out.print("}\n");
+		}
 	}
 	
 	public void printGameStatus(Game game){
 		this.printMap();
 		this.printCouncils(game);
+		this.printPlacedEmporiums(game);
+		this.printNobilityTrack(game);
 		this.printKingLocation(game);
 		this.printCouncilorPool(game);
 		this.printAssistantPool(game);
 		this.printPermitsDecks(game);
+		this.printRegionBonuses(game);
+		this.printColorBonuses(game);
+		this.printKingBonuses(game);
 	}
 	
 	/*--------------------------------------END OF OUTPUTS------------------------------------------*/
+	
+	
 	
 	/*-----------------------------------------INPUTS-----------------------------------------------*/
 

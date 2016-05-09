@@ -83,7 +83,7 @@ public class Importer {
 
 		/// importo bonus colore
 		colorBonus = new Bonus[5];// ordine come nomiColori qua sotto
-		String[] nomiColori = { "BLUE", "GREY", "YELLOW", "RED", "PURPLE" };
+		String[] nomiColori = { "BLUE", "RED", "GREY", "YELLOW", "PURPLE" };
 		Node colorNode = (doc).getElementsByTagName("COLOR_BONUS").item(0);
 		for (int i = 0; i < nomiColori.length; i++) {
 			Element cElem = (Element) ((Element) colorNode).getElementsByTagName(nomiColori[i]).item(0);

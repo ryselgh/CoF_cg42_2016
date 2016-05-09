@@ -136,10 +136,10 @@ public class Map {
 		//color group
 		colorGroups = new ColorGroup[5];
 		colorGroups[0]= new ColorGroup(CityColor.BLUE);
-		colorGroups[1]= new ColorGroup(CityColor.GREY);
-		colorGroups[2]= new ColorGroup(CityColor.PURPLE);
-		colorGroups[3]= new ColorGroup(CityColor.RED);
-		colorGroups[4]= new ColorGroup(CityColor.YELLOW);
+		colorGroups[1]= new ColorGroup(CityColor.RED);
+		colorGroups[2]= new ColorGroup(CityColor.GREY);
+		colorGroups[3]= new ColorGroup(CityColor.YELLOW);
+		colorGroups[4]= new ColorGroup(CityColor.PURPLE);
 		
 		//deck carte politica
 		politicsDeck = new PoliticsDeck();
