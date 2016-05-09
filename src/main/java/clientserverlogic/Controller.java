@@ -1,3 +1,4 @@
+package clientserverlogic;
 import board.Balcony;
 import board.Councilor;
 import decks.PoliticsCard;
@@ -10,13 +11,13 @@ import model.CouncilorColor;
  * 
  * 
  * 
+ * SME
+ * Il controller dovrà gestire le azioni in questo modo:
+ * - L'utente deve vedere qualcosa -> cli.metodiDiOutput();
+ * - L'utente vuole fare qualcosa -> cli.outputScelte(); | cli.inputSceltaFatta(); | game.faiAzione(input_dalla_cli);
+ * ... e così via
  * 
- * 
- * 
- * 
- * 
- * 
- * 
+ * cerca di essere leggibile, NON SCRIVERE IN ITALIAN, BITCH.
  * 
  * 
  * 
@@ -53,15 +54,15 @@ public class Controller {
 		
 		switch(action){
 		case 1:
-			cli.mainAction(CouncilorColorPool);
+			//cli.mainAction(CouncilorColorPool);
 			break;
 		case 2:
-			cli.speedAction(game.getMap().getAvailableColors());
+			//cli.speedAction(game.getMap().getAvailableColors());
 			break;
 		}
 		while(mainBonus !=0)
 		{
-			cli.mainAction(CouncilorColorPool);
+			//cli.mainAction(CouncilorColorPool);
 			mainBonus--;
 		}
 	

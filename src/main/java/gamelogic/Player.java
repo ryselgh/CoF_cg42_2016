@@ -33,6 +33,10 @@ public class Player {
 	 */
 
 	public Player() {
+		availableEmporiums = new ArrayList<Emporium>(10);
+		availableAssistants = new ArrayList<Assistant>();
+		permits = new ArrayList<PermitsCard>();
+		hand = new ArrayList<PoliticsCard>();
 	}
 
 	/**
@@ -42,8 +46,8 @@ public class Player {
 	 *            The quantity of assistants you want to add to this player
 	 */
 
-	public void addAssistant(int qty) {
-			availableAssistants.addAll(Map.getAssistant(qty));
+	public void addAssistant(ArrayList<Assistant> assistants) {
+			availableAssistants.addAll(assistants);
 	}
 
 	/**

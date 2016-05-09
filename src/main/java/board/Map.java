@@ -1,6 +1,7 @@
 package board ;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -194,14 +195,16 @@ public class Map {
 	/**
 	 * @return an ArrayList of assistants
 	 */
-	private static ArrayList<Assistant> getAssistantsArray() {
+	public ArrayList<Assistant> getAssistantsPool() {
 		return assistants;
 	}
 
-	public static ArrayList<Assistant> getAssistant(int qty) {
+	public ArrayList<Assistant> getAssistant(int qty) {
 		ArrayList<Assistant> assistantsToGive = new ArrayList<Assistant>(qty);
-		for(int i=0;i<qty;i++)
-			assistantsToGive.add(getAssistantsArray().remove(0));
+		for(int i=0;i<qty;i++){
+			assistantsToGive.add(getAssistantsPool().get(0));
+			getAssistantsPool().remove(0);
+		}
 		return assistantsToGive;
 	}
 	

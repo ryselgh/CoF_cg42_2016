@@ -2,6 +2,7 @@ package decks ;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 import model.RegionName;
 
@@ -12,7 +13,7 @@ public class PermitsDeck extends Deck{
 
 
 	private ArrayList<PermitsCard> permitsDeck;
-	private PermitsCard[] slot = new PermitsCard[1];
+	private PermitsCard[] slot = new PermitsCard[2];
 	private int regionCode;//più facile per i confronti
 
 	/**
@@ -24,6 +25,7 @@ public class PermitsDeck extends Deck{
 	public PermitsDeck(PermitsCard[] p, int r) {
 		permitsDeck = new ArrayList<PermitsCard> (Arrays.asList(p));
 		regionCode = r;
+		Collections.shuffle(permitsDeck);
 		this.draw();
 
 	}
@@ -31,10 +33,10 @@ public class PermitsDeck extends Deck{
 	/**
 	 * @return the slot. can be 0,1 
 	 * @param index index is the number of the slot
-	 * @param pesca is a boolen if true the slot is full else is empty
+	 * @param draw is a boolen if true the slot is full else is empty
 	 */
-	public PermitsCard getSlot(int index, boolean pesca) {
-		if(!pesca)
+	public PermitsCard getSlot(int index, boolean draw) {
+		if(!draw)
 			return this.slot[index];
 		else
 		{
@@ -69,11 +71,14 @@ public class PermitsDeck extends Deck{
 	public void draw() {
 		if(permitsDeck.isEmpty())
 			throw new NullPointerException("Cards are over");
-		if (slot[0] == null)
-			slot[0]= permitsDeck.remove(0);
-		if(slot[1]==null)
-			slot[1]=permitsDeck.remove(0);
-
+		if (slot[0] == null){
+			slot[0] = permitsDeck.get(0);
+			permitsDeck.remove(0);
+		}
+		if(slot[1] == null){
+			slot[1] = permitsDeck.get(0);
+			permitsDeck.remove(0);
+		}
 	}
 
 	/**

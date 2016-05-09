@@ -72,7 +72,7 @@ public class Game {
 				players.get(i).setCoins(i+COINOFFSET);
 			players.get(i).setAvailableEmporiums(map.getPlayerEmporiums(i));
 			players.get(i).setScore(0);
-			players.get(i).addAssistant(i+ASSISTOFFSET);
+			players.get(i).addAssistant(this.getMap().getAssistant(i+ASSISTOFFSET));
 			for(int j=0;j<INITIALCARDS;j++)
 				players.get(i).addPolitics(map.getPoliticsDeck().draw());
 		}

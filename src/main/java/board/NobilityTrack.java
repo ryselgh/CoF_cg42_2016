@@ -52,6 +52,13 @@ public class NobilityTrack {
 
 	public Bonus[] getBonus(Pawn p) {		
 		return BonusVector[p.getPos()]; 
+	}
+
+	/**
+	 * @return the bonusVector
+	 */
+	public Bonus[][] getBonusVector() {
+		return BonusVector;
 	}									
 
 }

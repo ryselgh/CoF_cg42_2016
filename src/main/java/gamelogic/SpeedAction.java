@@ -72,7 +72,7 @@ public class SpeedAction {
 	public void buyAssistant() {
 		if(canBuyAssistant()){
 			game.getActualPlayer().addCoins(-3);
-			game.getActualPlayer().addAssistant(1);
+			game.getActualPlayer().addAssistant(game.getMap().getAssistant(1));
 		}
 	}
 	

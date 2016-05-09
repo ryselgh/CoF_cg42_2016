@@ -104,7 +104,7 @@ public class City
 	 * @return the bonus on the token
 	 */
 	
-	public BonusToken getBonus() {
+	public BonusToken getBonusToken() {
 			return this.token;
 	}
 	/**

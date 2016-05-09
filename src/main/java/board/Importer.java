@@ -150,7 +150,7 @@ public class Importer {
 				bt = tokenPool.remove(ran);
 			}
 			else
-				bt=null;
+				bt = new BonusToken(new Bonus[1]);
 			city[i] = new City(elem_name, parseColor(elem_color), closes, players.length, bt);
 			mapInst.insertCity(city[i], elem_region, elem_color);
 		}
@@ -221,7 +221,7 @@ public class Importer {
 		//importo carte permesso
 		Element permElem = (Element) (doc).getElementsByTagName("POOL_CARTE_PERMESSO").item(0);
 		NodeList cardList = permElem.getElementsByTagName("CARTA");
-		permitsCardPool = new PermitsCard[3][cardList.getLength()];
+		permitsCardPool = new PermitsCard[3][cardList.getLength()/3];
 		Bonus[] bonusBuff;
 		String[] letterBuff;
 		for (int i = 0; i < cardList.getLength(); i++) {
@@ -247,7 +247,7 @@ public class Importer {
 				else //non necessario se resta il return sopra
 					regionCode = regionCodeTmp;
 			}
-			permitsCardPool[regionCode][i] = new PermitsCard(bonusBuff,letterBuff);
+			permitsCardPool[regionCode][i%15] = new PermitsCard(bonusBuff,letterBuff);
 		}
 		return 1;
 	}
