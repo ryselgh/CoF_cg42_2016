@@ -38,5 +38,13 @@ public class Bonus
 		return this.quantity;	
 	}
 	
+	public static boolean hasNobilityBonus(Bonus[] b)
+	{
+		for(Bonus bo: b)
+			if(bo.getType().equals(BonusType.NOBILITY))
+					return true;
+		return false;
+			
+	}
 }
 

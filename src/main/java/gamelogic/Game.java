@@ -137,6 +137,11 @@ public class Game {
 		return map;
 	}
 	
+	public void setActualPlayer(int index)
+	{
+		this.actualPlayer = this.players.get(index);
+	}
+	
 	/**
 	 * @return the mainAction
 	 */

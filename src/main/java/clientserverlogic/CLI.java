@@ -7,6 +7,7 @@ import java.util.Scanner;
 
 import board.Balcony;
 import board.Bonus;
+import board.BonusToken;
 import board.City;
 import board.Councilor;
 import board.Region;
@@ -206,10 +207,68 @@ public class CLI {
 				"\nInsert the index of the region containing the councilors you want to shift:\n"
 						+ "1-Sea\n"
 						+ "2-Hill\n"
-						+ "3-Mountain\n"};
-		return waitCorrectIntInput(messages[msg],1,3);
+						+ "3-Mountain\n",
+						"\nInsert the index of the region containing the permit card you want to pick:\n"
+								+ "1-Sea\n"
+								+ "2-Hill\n"
+								+ "3-Mountain\n"};
+		return waitCorrectIntInput(messages[msg],1,3) - 1;
 	}
 	
+	public int getPermitToPick(PermitsCard[] pc)
+	{
+		out.print("Select the permit card you want to pick:\n");
+		for(int i=0;i<pc.length;i++)
+		{
+			out.print(i + "° CARD:\n");
+			for(Bonus b : pc[i].getBonus())
+				out.print("Bonus: [Type=" + b.getType().toString() + ", Amm= " + b.getQnt() + "\n");
+			out.print("\n");
+		}
+		return waitCorrectIntInput("",1,pc.length) -1;//-1 perchè l'user input è in base 1
+		
+	}
+	public BonusToken[] getTokenBonus(BonusToken[] bts, int amm)
+	{
+		if(amm==1)
+			out.print("\nInsert the index of the BonusToken you want:\n");
+		else
+			out.print("\nInsert the indexes of the BonusTokens you want, separated each other by a comma:\n");
+		for(int i=0;i<bts.length;i++)
+		{
+			out.print(i+"° BonusToken:\n");
+			for(Bonus b : bts[i].getBonus())
+				out.print("Bonus: [Type=" + b.getType().toString() + ", Amm= " + b.getQnt() + "\n");
+			out.print("\n");
+		}
+		if(amm==1)
+			return new BonusToken[] {bts[waitCorrectIntInput("",1,bts.length) - 1]};
+		else {
+			boolean convError = false;
+			do {
+				try {
+					convError = false;
+					ArrayList<BonusToken> toRet = new ArrayList<BonusToken>();
+					String resp = in.nextLine();
+					String[] tks = resp.split(",");
+					for (String tk : tks)
+						{
+							int parsed = Integer.parseInt(tk);
+							if(parsed>0 && parsed <= bts.length)
+								toRet.add(bts[parsed]);
+							else
+								convError = true;
+						}
+					if(!convError)
+						return Arrays.copyOf(toRet.toArray(new BonusToken[0]),amm);
+				} catch (NumberFormatException e) {
+					convError = true;
+					out.print("\nWrong input format, try again\n");
+				}
+			} while (convError == true);
+		}
+		return null;//non dovrebbe mai essere eseguito
+	}
 	public int getColorIndex(ArrayList<CouncilorColor> availableCouncColor)
 	{
 		for(int i=0;i<availableCouncColor.size();i++){

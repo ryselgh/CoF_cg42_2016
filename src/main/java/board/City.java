@@ -1,5 +1,6 @@
 package board ;
 
+import gamelogic.Player;
 import model.CityColor;
 import model.CityName;
 
@@ -115,5 +116,12 @@ public class City
 		this.token = t;
 	}
 	
+	public boolean hasEmporium(Player p)
+	{
+		for(Emporium e : slot)
+			if(e.getPlayer().equals(p))
+				return true;
+		return false;
+	}
 }
 

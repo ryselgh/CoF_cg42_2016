@@ -171,7 +171,16 @@ public class Map {
 		}
 		return 1;
 	}
-
+	
+	public Region getRegion(int index)
+	{
+		return regions[index];
+	}
+	
+	public ColorGroup getColorGroup(int index)
+	{
+		return colorGroups[index];
+	}
 
 	/**
 	 * 

@@ -63,5 +63,10 @@ public class ColorGroup
 		return this.bc;
 	}
 	
+	public CityColor getColor()
+	{
+		return this.color;
+	}
+	
 }
 

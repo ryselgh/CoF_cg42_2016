@@ -2,6 +2,7 @@ package clientserverlogic;
 import board.Assistant;
 import board.Balcony;
 import board.Bonus;
+import board.BonusToken;
 import board.City;
 import board.Councilor;
 import decks.PermitsCard;
@@ -9,6 +10,7 @@ import decks.PoliticsCard;
 import gamelogic.Game;
 import java.io.Console;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import model.CouncilorColor;
 import model.BonusType;
@@ -53,9 +55,15 @@ public class Controller {
 	private void passTurn()
 	{
 		if(getTurn()==game.getPlayers().size()-1)
-			setTurn(0);
+			{
+				setTurn(0);
+				game.setActualPlayer(0);
+			}
 		else
+			{
 			setTurn(getTurn()+1);
+		game.setActualPlayer(getTurn()+1);
+			};
 	}
 	private void turnCycle() {
 		boolean win= false;//dovremo mettere un check vittoria che la setta a true così non riparte turnCycle()
@@ -157,6 +165,7 @@ public class Controller {
 	
 	private void collectBonus(Bonus b)//NOTA: AGISCE SUL GIOCATORE CHE STA GIOCANDO IL TURNO
 	{
+		BonusToken[] selected = null;
 		switch (b.getType()) {
 		case CARD:
 			playerDrawsPoliticsCard();
@@ -180,14 +189,26 @@ public class Controller {
 					collectBonus(bo);
 			break;
 		case MAINACTION:
+			mainCount++;
 			break;
-		case TOKEN:
+		case TOKEN: 
+			selected = cli.getTokenBonus(getAvailableTokens(), 1);
+			for(Bonus bo: selected[0].getBonus())
+				collectBonus(bo);
 			break;
 		case TWOTOKENS:
+			selected = cli.getTokenBonus(getAvailableTokens(), 2);
+			for(BonusToken bt : selected)
+				for(Bonus bo: bt.getBonus())
+					collectBonus(bo);
 			break;
-		case FREECARD:
+		case FREECARD: //tessera permesso in unoi slot senza pagare
+			int regIndex = cli.getTargetRegion(2);
+			PermitsCard[] slots = new PermitsCard[] {game.getMap().getPermitsDeck(regIndex).getSlot(0, false),game.getMap().getPermitsDeck(regIndex).getSlot(1, false)};
+			int permIndex = cli.getPermitIndex(new ArrayList<PermitsCard>(Arrays.asList(slots)));
+			
 			break;
-		case BONUSCARD:
+		case BONUSCARD://bonus di una carta permesso in tuo possesso usata o meno
 			break;
 
 		}
@@ -196,7 +217,14 @@ public class Controller {
 	 * @return the game
 	 */
 	
-	
+	private BonusToken[] getAvailableTokens()
+	{
+		ArrayList<BonusToken> bts = new ArrayList<BonusToken>();
+		for(City c : game.getMap().getCity())
+			if(c.hasEmporium(game.getPlayers().get(turn)) && c.getBonusToken()!=null && !Bonus.hasNobilityBonus(c.getBonusToken().getBonus()))
+				bts.add(c.getBonusToken());
+		return bts.toArray(new BonusToken[0]);
+	}
 	private Game getGame() {
 		return game;
 	}
