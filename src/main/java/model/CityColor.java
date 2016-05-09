@@ -5,5 +5,5 @@ package model ;
  */
 public enum CityColor
 {
-	BLUE, GREY, YELLOW, RED, PURPLE;
+	BLUE, RED, GREY, YELLOW, PURPLE;
 }

@@ -63,7 +63,7 @@ public class Map {
 		for(int i=0;i<3;i++)
 			regions[i].setBonus(new BonusCard(bonusRegioni[i]));//-----------------------------
 		Bonus[] bonusColori = reader.getColorBonus();
-		for(int i=0;i<3;i++)
+		for(int i=0;i<colorGroups.length;i++)
 			colorGroups[i].setBonus(new BonusCard(bonusColori[i]));	
 		setCity(reader.getCity()); //in questo metodo Importer accede al metodo Map.inserisciCittà per inserire le città (alla creazione) nelle regioni e nei cologroup, le cui istanze sono qui su Map perchè create non in questo metodo
 		setKing(reader.getKing());
@@ -135,10 +135,10 @@ public class Map {
 		//color group
 		colorGroups = new ColorGroup[5];
 		colorGroups[0]= new ColorGroup(CityColor.BLUE);
-		colorGroups[1]= new ColorGroup(CityColor.GREY);
-		colorGroups[2]= new ColorGroup(CityColor.PURPLE);
-		colorGroups[3]= new ColorGroup(CityColor.RED);
-		colorGroups[4]= new ColorGroup(CityColor.YELLOW);
+		colorGroups[1]= new ColorGroup(CityColor.RED);
+		colorGroups[2]= new ColorGroup(CityColor.GREY);
+		colorGroups[3]= new ColorGroup(CityColor.YELLOW);
+		colorGroups[4]= new ColorGroup(CityColor.PURPLE);
 		
 		//deck carte politica
 		politicsDeck = new PoliticsDeck();
