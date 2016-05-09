@@ -36,6 +36,7 @@ public class Controller {
 		this.setGame(new Game(4,true, null));
 		this.setTurn(0);
 		cli = new CLI();
+		turnCycle();
 	}
 	
 	private ArrayList<CouncilorColor> getAvailableCouncilors(){
@@ -45,8 +46,16 @@ public class Controller {
 				availables.add(c.getCouncilorColor());
 		return availables;
 	}
-
+	
+	private void passTurn()
+	{
+		if(getTurn()==game.getPlayers().size()-1)
+			setTurn(0);
+		else
+			setTurn(getTurn()+1);
+	}
 	private void turnCycle() {
+		boolean win= false;//dovremo mettere un check vittoria che la setta a true così non riparte turnCycle()
 		ArrayList<CouncilorColor> avail = getAvailableCouncilors();
 		mainCount = 1;
 		speedCount = 1;
@@ -55,6 +64,7 @@ public class Controller {
 		int cityIndex;
 		City toBuild;
 		
+		cli.welcomeMsg(turn);
 		while (mainCount > 0 || speedCount > 0) {
 			if(mainCount==0)
 				action = 2;
@@ -136,6 +146,10 @@ public class Controller {
 			break;
 			}
 		}
+		if(!win){
+			passTurn();
+			turnCycle();
+			}
 	}
 	/**
 	 * @return the game

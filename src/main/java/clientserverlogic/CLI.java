@@ -27,73 +27,7 @@ public class CLI {
 	
 	/*------------------------------------------OUTPUTS---------------------------------------------*/
 	
-	public int getAction(int plIndex){
-		return waitCorrectIntInput("Hi there player" + plIndex + ", insert 1 for Main Action, insert 2 for Speed Action.\n",1,2);
-	}
 	
-	public int mainActionChoice(){
-		return waitCorrectIntInput("\nInsert the number related to your action:\n"
-				+ "1-Satisfy a council. Earn: permit* Needed: min 1 politics card\n"
-				+ "2-Satisfy the king's council. Build instantly. Needed: min 1 politics card*\n"
-				+ "3-Shift Council. Earn: 4 coins\n"
-				+ "4-Build an emporium in a city. Needed: permit\n\n"
-				+ "5-Go back\n",1,5);
-	}
-	
-	
-	public int getPermitIndex(ArrayList<PermitsCard> cards)
-	{
-		for(int i=0; i<cards.size();i++)
-		{
-			out.print((i+1) + "st CARD:\nBonus:\n");
-			for(Bonus b: cards.get(i).getBonus())
-			{
-				out.print("Type: "+ b.getType().toString() + "\nAmmount: "+ b.getQnt()+ "\n");
-			}
-		}
-		return waitCorrectIntInput("\nInsert the index of the card you want to use.\n",1,5);
-	}
-	
-	public int getInputCities(City[] cities)//WIP NON TOCCARE
-	{
-		out.print("\nInsert the indexes of the cities:\n");
-		for(int i=0; i< cities.length;i++)
-			out.print(i + "-" + cities[i].getName() + "\n");
-		return waitCorrectIntInput("",1,cities.length);
-	}
-	
-	
-	public int speedActionChoice(){
-		return waitCorrectIntInput("\nInsert the number related to your action:\n"
-						+ "1-Buy an assistant. Pay: 3 coins\n"
-						+ "2-Change permits card on the ground in a region. Pay: 1 assistant\n"
-						+ "3-Shift a councilor. Pay: 1 assistant\n"
-						+ "4-Buy a main action. Pay: 3 assistants\n\n"
-						+ "5-Go back\n",1,5);
-	}
-	
-	
-	public int getTargetRegion(int msg)
-	{
-		String messages[] = {"\nInsert the index of the region related to the permits card you want to change:\n"
-				+ "1-Sea\n"
-				+ "2-Hill\n"
-				+ "3-Mountain\n",
-				"\nInsert the index of the region containing the councilors you want to shift:\n"
-						+ "1-Sea\n"
-						+ "2-Hill\n"
-						+ "3-Mountain\n"};
-		return waitCorrectIntInput(messages[msg],1,3);
-	}
-	
-	public int getColorIndex(ArrayList<CouncilorColor> availableCouncColor)
-	{
-		for(int i=0;i<availableCouncColor.size();i++){
-			out.print(i + "-" + availableCouncColor.get(i).toString() + "\n");
-		}
-		out.print("Insert the index of the color:\n");
-		return waitCorrectIntInput("",1,availableCouncColor.size());
-	}
 	public void printMap(){
 		out.print("\n.......................................................................\n" +
 					"|       ~ SEA ~        |       ᴖ HILL ᴖ        |     ^ MOUNTAIN ^     |\n" +
@@ -185,23 +119,19 @@ public class CLI {
 	}
 	
 	public void printNobilityTrack(Game game){
-		//game.getMap().getNobilityTrack().getBonusVector();
-		//TODO: RISOLVERE GLI ATTRIBUTI NULL IN MAP!
+		game.getMap().getNobilityTrack().getBonusVector();
 	}
 	
 	public void printRegionBonuses(Game game){
-		//game.getMap().getNobilityTrack().getBonusVector();
-		//TODO: RISOLVERE GLI ATTRIBUTI NULL IN MAP!
+		game.getMap().getNobilityTrack().getBonusVector();
 	}
 	
 	public void printColorBonuses(Game game){
-		//game.getMap().getNobilityTrack().getBonusVector();
-		//TODO: RISOLVERE GLI ATTRIBUTI NULL IN MAP!
+		game.getMap().getNobilityTrack().getBonusVector();
 	}
 	
 	public void printKingBonuses(Game game){
-		//game.getMap().getNobilityTrack().getBonusVector();
-		//TODO: RISOLVERE GLI ATTRIBUTI NULL IN MAP!
+		game.getMap().getNobilityTrack().getBonusVector();
 	}
 	
 	public void printGameStatus(Game game){
@@ -213,81 +143,82 @@ public class CLI {
 		this.printPermitsDecks(game);
 	}
 		
-
-//	public void mainAction(ArrayList<CouncilorColor> availables){
-//		int regIndex=0;
-//		PoliticsCard[] chosenCards;
-//		switch(selection){
-//
-//		case 0: return "Insert the number related to your action:\n"
-//				+ "1-Satisfy a council. Earn: permit* Needed: min 1 politics card\n"
-//				+ "2-Satisfy the king's council. Build instantly. Needed: min 1 politics card*\n"
-//				+ "3-Shift Council. Earn: 4 coins\n"
-//				+ "4-Build an emporium in a city. Needed: permit\n\n"
-//				+ "5-Go back\n";
-//		case 1:
-//			regIndex = waitCorrectIntInput("Select a council:\n1-Sea\n2-Hill\n3-Mountain",1,3);
-//			chosenCards = waitInputCards();	
-//			break;
-//		case 2:
-//			regIndex = waitCorrectIntInput("Select the cards you want to use",1,9999);
-//			break;
-//		case 3://PURPLE, WHITE, BLACK, ORANGE, BLUESKY, PINK, JOLLY;
-//			regIndex = waitCorrectIntInput("Insert the index of the region containing the councilors you want to shift:\n"
-//					+ "1-Sea\n"
-//					+ "2-Hill\n"
-//					+ "3-Mountain\n",1,3);
-//			for(int i=0;i<availables.size();i++){
-//				cnsl.printf(i + "-" + availables.get(i).toString() + "\n");
-//			}
-//			cnsl.printf("Insert the index of the color:\n");
-//			int colIndex = waitCorrectIntInput("",1,availables.size());
-//			break;
-//		case 4:
-//			//notificare controller
-//			break;
-//		}
-//
-//	}
-
-//	public void speedAction(ArrayList<CouncilorColor> availables){
-//		int selection = waitCorrectIntInput("Insert the number related to your action:\n"
-//				+ "1-Buy an assistant. Pay: 3 coins\n"
-//				+ "2-Change permits card on the ground in a region. Pay: 1 assistant\n"
-//				+ "3-Shift a council. Pay: 1 assistant\n"
-//				+ "4-Buy a main action. Pay: 3 assistants\n\n"
-//				+ "5-Go back\n",1,5);
-//		int regIndex=0;
-//
-//		switch(selection){
-//		case 1:
-//			//int assAmm = waitCorrectInput("Insert the ammount of assistants you want to buy:\n",1,99); <-- non serve, ne può acquistare solo uno
-//			//notificare controller
-//			break;
-//		case 2:
-//			regIndex = waitCorrectIntInput("Insert the index of the region containing the cards you want to change:\n1-Sea\n2-Hill\n3-Mountain\n",1,3);
-//			break;
-//		case 3://PURPLE, WHITE, BLACK, ORANGE, BLUESKY, PINK, JOLLY;
-//			regIndex = waitCorrectIntInput("Insert the index of the region containing the councilors you want to shift:\n"
-//					+ "1-Sea\n"
-//					+ "2-Hill\n"
-//					+ "3-Mountain\n",1,3);
-//			for(int i=0;i<availables.size();i++){
-//				out.print(i + "-" + availables.get(i).toString() + "\n");
-//			}
-//			out.print("Insert the index of the color:\n");
-//			int colIndex = waitCorrectIntInput("",1,availables.size());
-//			break;
-//		case 4:
-//			//notificare controller
-//			break;
-//		}
-//	}
-	
+	public void welcomeMsg(int pl)
+	{
+		out.print("Hi there player" + pl + "\n");
+	}
 	/*--------------------------------------END OF OUTPUTS------------------------------------------*/
 	
 	/*-----------------------------------------INPUTS-----------------------------------------------*/
 
+	public int getAction(int plIndex){
+		return waitCorrectIntInput("Hi there player" + plIndex + ", insert 1 for Main Action, insert 2 for Speed Action.\n",1,2);
+	}
+	
+	public int mainActionChoice(){
+		return waitCorrectIntInput("\nInsert the number related to your action:\n"
+				+ "1-Satisfy a council. Earn: permit* Needed: min 1 politics card\n"
+				+ "2-Satisfy the king's council. Build instantly. Needed: min 1 politics card*\n"
+				+ "3-Shift Council. Earn: 4 coins\n"
+				+ "4-Build an emporium in a city. Needed: permit\n\n"
+				+ "5-Go back\n",1,5);
+	}
+	
+	
+	public int getPermitIndex(ArrayList<PermitsCard> cards)
+	{
+		for(int i=0; i<cards.size();i++)
+		{
+			out.print((i+1) + "st CARD:\nBonus:\n");
+			for(Bonus b: cards.get(i).getBonus())
+			{
+				out.print("Type: "+ b.getType().toString() + "\nAmmount: "+ b.getQnt()+ "\n");
+			}
+		}
+		return waitCorrectIntInput("\nInsert the index of the card you want to use.\n",1,5);
+	}
+	
+	public int getInputCities(City[] cities)
+	{
+		out.print("\nInsert the indexes of the cities:\n");
+		for(int i=0; i< cities.length;i++)
+			out.print(i + "-" + cities[i].getName() + "\n");
+		return waitCorrectIntInput("",1,cities.length);
+	}
+	
+	
+	public int speedActionChoice(){
+		return waitCorrectIntInput("\nInsert the number related to your action:\n"
+						+ "1-Buy an assistant. Pay: 3 coins\n"
+						+ "2-Change permits card on the ground in a region. Pay: 1 assistant\n"
+						+ "3-Shift a councilor. Pay: 1 assistant\n"
+						+ "4-Buy a main action. Pay: 3 assistants\n\n"
+						+ "5-Go back\n",1,5);
+	}
+	
+	
+	public int getTargetRegion(int msg)
+	{
+		String messages[] = {"\nInsert the index of the region related to the permits card you want to change:\n"
+				+ "1-Sea\n"
+				+ "2-Hill\n"
+				+ "3-Mountain\n",
+				"\nInsert the index of the region containing the councilors you want to shift:\n"
+						+ "1-Sea\n"
+						+ "2-Hill\n"
+						+ "3-Mountain\n"};
+		return waitCorrectIntInput(messages[msg],1,3);
+	}
+	
+	public int getColorIndex(ArrayList<CouncilorColor> availableCouncColor)
+	{
+		for(int i=0;i<availableCouncColor.size();i++){
+			out.print(i + "-" + availableCouncColor.get(i).toString() + "\n");
+		}
+		out.print("Insert the index of the color:\n");
+		return waitCorrectIntInput("",1,availableCouncColor.size());
+	}
+	
 	private int waitCorrectIntInput(String msg, int min, int max){
 		int respInt = -1;
 		do {
