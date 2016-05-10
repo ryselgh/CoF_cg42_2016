@@ -119,7 +119,7 @@ public class CLI {
 			out.print(game.getMap().getBalcony(3).getCouncilors()[k].getCouncilorColor().toString());
 			if(k<3) out.print(",");
 		}
-		out.print("]<-\n");
+		out.print("]<-\n\n");
 	}
 	
 	public void printNobilityTrack(Game game){
@@ -185,21 +185,6 @@ public class CLI {
 		}
 	}
 	
-	public void printGameStatus(Game game){
-		this.printMap();
-		this.printCouncils(game);
-		this.printPlacedEmporiums(game);
-		this.printNobilityTrack(game);
-		this.printKingLocation(game);
-		this.printCouncilorPool(game);
-		this.printAssistantPool(game);
-		this.printPermitsDecks(game);
-		this.printRegionBonuses(game);
-		this.printColorBonuses(game);
-		this.printKingBonuses(game);
-		this.printPlayersStatus(game);
-	}
-	
 	public void printPlayersStatus(Game game){
 		TableBuilder tb = new TableBuilder();
 		tb.addRow("Player", "Emporiums", "Assistants", "Coins", "Points", "Cards", "Active permits", "Used permits", "King Bonus");
@@ -219,23 +204,49 @@ public class CLI {
 		out.print("\n\nPlayers status:\n"+tb.toString()+"\n\n");
 	}
 	
+	public void printPlayerHand(Player player){
+		out.print("Your politics cards: ");
+		for(PoliticsCard pc: player.getHand())
+			out.print("["+pc.getColor().toString()+"]");
+		out.print("\n\n");
+	}
+	
+	public void printMsg(String msg){
+		out.println(msg);
+	}
+	
+	public void printGameStatus(Game game){
+		this.printMap();
+		this.printCouncils(game);
+		this.printPlayerHand(game.getActualPlayer());
+		this.printPlacedEmporiums(game);
+		this.printNobilityTrack(game);
+		this.printKingLocation(game);
+		this.printCouncilorPool(game);
+		this.printAssistantPool(game);
+		this.printPermitsDecks(game);
+		this.printRegionBonuses(game);
+		this.printColorBonuses(game);
+		this.printKingBonuses(game);
+		this.printPlayersStatus(game);
+	}
+	
 	/*--------------------------------------END OF OUTPUTS------------------------------------------*/
 	
 	
 	
 	/*-----------------------------------------INPUTS-----------------------------------------------*/
 
-	public int getAction(int plIndex, boolean main, boolean speed){
-		out.print("Hi there player" + plIndex + ", ");
+	public int getAction(boolean main, boolean speed){
 		if(main)
-			out.print("insert 1 for Main Action, ");
+			out.print("Insert 1 for Main Action, ");
 		if(speed)
 			out.print("insert 2 for Speed Action, ");
 		int resp = waitCorrectIntInput("insert 3 to pass\n",1,3);
 		if((resp==1 && !main) || (resp==2 && !speed))
 		{
 			out.print("Selection inavailable. Try again\n");
-			return getAction(plIndex, main, speed);
+			return getAction(main, speed);
 		}
 		return resp;
 	}
@@ -361,7 +372,7 @@ public class CLI {
 		return respInt;
 	}
 
-	private String waitCorrectStringInput(String msg, String[] possibilities){
+	public String waitCorrectStringInput(String msg, ArrayList<String> possibilities){
 		int respString = -1;
 		out.print(msg);
 		do{
@@ -389,7 +400,7 @@ public class CLI {
 	}
 	
 	public ArrayList<PoliticsCard> waitInputCards(ArrayList<PoliticsCard> hand){
-		out.print("Select the cards you want to use to satisfy the council\n");
+		out.print("Select the cards you want to use to satisfy the council (Enter '*' for instructions)\n");
 		String resp = in.nextLine();
 		if(resp.equals("*")){ //Instructions
 			out.print("Count the cards in your hand from left to right and select the numbers you want to use.\n\n"
@@ -403,12 +414,11 @@ public class CLI {
 		if(checkInputCards(choice, hand)){
 			ArrayList<PoliticsCard> chosenCards = new ArrayList<PoliticsCard>(choice.size());
 			for(String c: choice){
-				chosenCards.add(hand.get(Integer.parseInt(c)));
-				hand.remove(Integer.parseInt(c));
+				chosenCards.add(hand.get(Integer.parseInt(c)-1));
 			}
+			hand.removeAll(chosenCards);
 			return chosenCards;
-		}else
-		{
+		}else{
 			out.print("Wrong input or some of the selected cards are not in your hand. Try again\n");
 			return waitInputCards(hand);
 		}

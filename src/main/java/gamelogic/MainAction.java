@@ -69,7 +69,7 @@ public class MainAction {
 	 * @param the balcony you want to satisfy
 	 */
 	
-	public boolean canObtainPermit(PoliticsCard[] politics, Balcony balcony) {
+	public boolean canObtainPermit(Balcony balcony, ArrayList<PoliticsCard> politics) {
 		int counter = 0;
 		int jollycnt = 0;
 		ArrayList<Councilor> tmpBalcony = new ArrayList<Councilor>(Arrays.asList(balcony.getCouncilors()));
@@ -88,7 +88,7 @@ public class MainAction {
 			}
 		}
 		if( /* you have the right cards and enough money */
-			counter == politics.length && (
+			counter == politics.size() && (
 				(counter==1 && game.getActualPlayer().getCoins()>=(10 + jollycnt)) ||
 				(counter==2 && game.getActualPlayer().getCoins()>=(7 + jollycnt)) ||
 				(counter==3 && game.getActualPlayer().getCoins()>=(4 + jollycnt)) ||
@@ -122,8 +122,8 @@ public class MainAction {
 	 * @param politics the cards you want to use to satisfy the king's council
 	 */
 	
-	public boolean canSatisfyKing(PoliticsCard[] politics) {
-		return this.canObtainPermit(politics, game.getMap().getBalcony(3));
+	public boolean canSatisfyKing(ArrayList<PoliticsCard> politics) {
+		return this.canObtainPermit(game.getMap().getBalcony(3), politics);
 	}
 	
 	/**

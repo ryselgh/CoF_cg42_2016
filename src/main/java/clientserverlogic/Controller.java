@@ -9,6 +9,9 @@ import board.Councilor;
 import decks.PermitsCard;
 import decks.PoliticsCard;
 import gamelogic.Game;
+import gamelogic.MainAction;
+import gamelogic.SpeedAction;
+
 import java.io.Console;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,26 +19,10 @@ import java.util.Arrays;
 import model.CouncilorColor;
 import model.BonusType;
 
-/*AZIONI: 
- * 
- * 
- * 
- * SME
- * Il controller dovrà gestire le azioni in questo modo:
- * - L'utente deve vedere qualcosa -> cli.metodiDiOutput();
- * - L'utente vuole fare qualcosa -> cli.outputScelte(); | cli.inputSceltaFatta(); | game.faiAzione(input_dalla_cli);
- * ... e così via
- * 
- * cerca di essere leggibile, NON SCRIVERE IN ITALIAN, BITCH.
- * 
- * 
- * 
- */
 public class Controller {
 
 	private Game game;
 	private int turn;
-	private Console cnsl;
 	private int mainCount, speedCount;
 	private CLI cli;
 
@@ -43,7 +30,7 @@ public class Controller {
 		this.setGame(new Game(4, true, null));
 		this.setTurn(0);
 		cli = new CLI();
-		turnCycle();
+		turnCycleBegin();
 	}
 
 	private ArrayList<CouncilorColor> getAvailableCouncilors() {
@@ -60,29 +47,41 @@ public class Controller {
 			game.setActualPlayer(0);
 		} else {
 			setTurn(getTurn() + 1);
-			game.setActualPlayer(getTurn() + 1);
+			game.setActualPlayer(getTurn());
 		}
 		;
 	}
-
-	private void turnCycle() {
-		boolean win = false;// dovremo mettere un check vittoria che la setta a
-							// true così non riparte turnCycle()
-		ArrayList<CouncilorColor> avail = getAvailableCouncilors();
+	
+	private void turnCycleBegin(){
 		mainCount = 1;
 		speedCount = 1;
-		int action, choice;
-		ArrayList<PoliticsCard> inCards;
-		int cityIndex;
-		City toBuild;
-
 		game.getActualPlayer().addPolitics(game.getMap().getPoliticsDeck().draw());
-		boolean m = false, s = false;
+		cli.printGameStatus(game);
+		cli.printMsg("You drew this card: ["+game.getActualPlayer().getHand().get(game.getActualPlayer().getHand().size()-1).getColor().toString()+"]\n");
+		cli.printPlayerHand(game.getActualPlayer());
+		cli.printMsg("Hi there player"+Integer.toString(game.getActualPlayer().getID())+"!");
+		turnCycle();
+	}
+
+	private void turnCycle() {
+		boolean m = false;
+		boolean s = false;
+		
 		if (mainCount > 0)
 			m = true;
 		if (speedCount > 0)
 			s = true;
-		action = cli.getAction(turn, m, s);
+		
+		boolean win = false;// dovremo mettere un check vittoria che la setta a
+							// true così non riparte turnCycle()
+		ArrayList<CouncilorColor> avail = getAvailableCouncilors();
+		int action, choice;
+		ArrayList<PoliticsCard> inCards;
+		int cityIndex;
+		City toBuild;
+		ArrayList<String> possibilities = new ArrayList<String>();
+		
+		action = cli.getAction(m, s);
 		if (action != 3)// non passa
 			while (mainCount > 0 || speedCount > 0) {
 				int regIndex;
@@ -93,16 +92,32 @@ public class Controller {
 										// arriverà comunque
 					case 1:
 						regIndex = cli.getTargetRegion(0);
-						inCards = cli.waitInputCards(game.getPlayers().get(turn).getHand());
-						// soddisfa consiglio di regIndex
-						mainCount--;
+						if(game.getMainAction().canObtainPermit(game.getMap().getBalcony(regIndex), cli.waitInputCards(game.getActualPlayer().getHand()))){
+							possibilities.add("1");
+							possibilities.add("2");
+							game.getActualPlayer().addPermits(game.getMap().getPermitsDeck(regIndex).getSlot(Integer.parseInt(cli.waitCorrectStringInput("\nSelect the card (Slot 1 or 2)\n",possibilities))-1,true));
+							possibilities.clear();
+							mainCount--;
+							turnCycle();
+						}
 						break;
 					case 2:
-						inCards = cli.waitInputCards(game.getPlayers().get(turn).getHand());
-						cityIndex = cli.getInputCities(game.getMap().getCity());
-						toBuild = game.getMap().getCity()[cityIndex];
-						// soddisfa consiglio del re
-						mainCount--;
+						inCards = cli.waitInputCards(game.getActualPlayer().getHand());
+						if(game.getMainAction().canSatisfyKing(inCards)){
+							game.getActualPlayer().getHand().removeAll(inCards);
+							cityIndex = cli.getInputCities(game.getMap().getCity());
+							if(game.getMainAction().canMoveKing(game.getMap().getCity()[cityIndex])){
+								game.getMainAction().moveKing(game.getMap().getCity()[cityIndex]);
+								mainCount--;
+							}
+							else{
+								cli.printMsg("\n\nYou are poor.\n\n");
+								turnCycle();
+							}
+						}else{
+							cli.printMsg("\n\nYou can't satisfy the King's council with those cards or you haven't enough money.\n\n");
+							turnCycle();
+						}
 						break;
 					case 3:
 						regIndex = cli.getTargetRegion(1);
@@ -112,10 +127,10 @@ public class Controller {
 						break;
 					case 4:
 						int permitIndex = cli.getPermitIndex(game.getPlayers().get(turn).getPermits());
-						PermitsCard pc = game.getPlayers().get(turn).getPermits().get(permitIndex);
+						PermitsCard perm = game.getPlayers().get(turn).getPermits().get(permitIndex);
 						ArrayList<City> validCities = new ArrayList<City>();
 						for (City c : game.getMap().getCity())
-							for (String lett : pc.getCityLetter())
+							for (String lett : perm.getCityLetter())
 								if (lett.toLowerCase().equals(Character.toString(c.getName().toLowerCase().charAt(0))))
 									validCities.add(c);
 						City[] validCitiesArr = validCities.toArray(new City[0]);
@@ -129,7 +144,6 @@ public class Controller {
 					case 5:
 						break;// torna indietro
 					}
-
 					break;
 				case 2:// SPEED ACTION
 					choice = cli.speedActionChoice();
@@ -162,11 +176,11 @@ public class Controller {
 			}
 		else {
 			passTurn();
-			turnCycle();
+			turnCycleBegin();
 		}
 		if (!win) {
 			passTurn();
-			turnCycle();
+			turnCycleBegin();
 		}
 	}
 
