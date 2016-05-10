@@ -130,7 +130,7 @@ public class Controller {
 						ArrayList<City> validCities = new ArrayList<City>();
 						for (City c : game.getMap().getCity())
 							for (String lett : pc.getCityLetter())
-								if (lett.toLowerCase().equals(c.getName().toLowerCase().charAt(0)))
+								if (lett.toLowerCase().equals(Character.toString(c.getName().toLowerCase().charAt(0))))
 									validCities.add(c);
 						City[] validCitiesArr = validCities.toArray(new City[0]);
 						cityIndex = cli.getInputCities(validCitiesArr);

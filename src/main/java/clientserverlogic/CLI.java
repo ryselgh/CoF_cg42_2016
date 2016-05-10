@@ -201,7 +201,7 @@ public class CLI {
 				else{
 					singlePermit.addAll(Arrays.asList(pc.getCityLetter()));
 					activePermits.add(singlePermit.toString());
-					singlePermit.removeAll(singlePermit);
+//					singlePermit.removeAll(singlePermit);
 				}
 			int nobilityPos = game.getMap().getNobilityTrack().getPawn()[i].getPos();
 			tb.addRow(Integer.toString(p.getID()), Integer.toString(p.getAvailableEmporiums().size()),
