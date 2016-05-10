@@ -6,6 +6,7 @@ import java.util.Arrays;
 import board.Balcony;
 import board.City;
 import board.Councilor;
+import board.Region;
 import decks.PermitsCard;
 import decks.PoliticsCard;
 import model.CouncilorColor;
@@ -107,9 +108,8 @@ public class MainAction {
 	 * @param the balcony you want to satisfy
 	 */
 	
-	public PermitsCard obtainPermit(String region, String slot) {
-		
-		return game.getMap().getPermitsDeck(parseRegion(region)).getSlot(Integer.parseInt(slot),true);
+	public PermitsCard obtainPermit(int regionIndex, int slot) {
+		return game.getMap().getPermitsDeck(regionIndex).getSlot(slot,true);
 		
 	}
 	

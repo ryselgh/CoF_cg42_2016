@@ -149,8 +149,7 @@ public class SpeedAction {
 	 * Buy an additional main action
 	 */
 	
-	public void buyMainAction() {
-		game.getMainAction().addActionCounter(1);
+	public void buyMainAction() {//il counter di mainAction è settato dal controller nel controller
 		for(int i=0;i<3;i++)
 			game.getActualPlayer().getAvailableAssistants().remove(0);
 	}

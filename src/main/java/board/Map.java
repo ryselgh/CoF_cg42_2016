@@ -324,5 +324,16 @@ public class Map {
 	public ArrayList<Councilor> getCouncilorsPool() {
 		return councilors;
 	}
+	
+	public Councilor getCouncilor(CouncilorColor col)
+	{
+		for(Councilor c : councilors)
+			if(c.getCouncilorColor().equals(col))
+				{
+				councilors.remove(c);
+				return c;
+				}
+		return null;
+	}
 }
 

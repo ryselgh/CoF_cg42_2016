@@ -148,14 +148,14 @@ public class CLI {
 	
 	/*-----------------------------------------INPUTS-----------------------------------------------*/
 
-	public int getAction(int plIndex, boolean main, boolean speed){
+	public int getAction(int plIndex, int main, int speed){
 		out.print("Hi there player" + plIndex + ", ");
-		if(main)
+		if(main>0)
 			out.print("insert 1 for Main Action, ");
-		if(speed)
+		if(speed>0)
 			out.print("insert 2 for Speed Action, ");
 		int resp = waitCorrectIntInput("insert 3 to pass\n",1,3);
-		if((resp==1 && !main) || (resp==2 && !speed))
+		if((resp==1 && main<=0) || (resp==2 && speed<=0))
 		{
 			out.print("Selection inavailable. Try again\n");
 			return getAction(plIndex, main, speed);
@@ -226,7 +226,14 @@ public class CLI {
 		return waitCorrectIntInput(messages[msg],1,3) - 1;
 	}
 	
-	
+	public int getTargetBalcony()
+	{
+		return waitCorrectIntInput("Select the balcony:\n"
+				+ "1-Sea\n"
+				+ "2-Hill\n"
+				+ "3-Mountain\n"
+				+ "4-King\n",1,4)-1;
+	}
 		
 	
 	public BonusToken[] getTokenBonus(BonusToken[] bts, int amm)

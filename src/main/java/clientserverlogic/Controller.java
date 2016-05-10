@@ -9,6 +9,9 @@ import board.Councilor;
 import decks.PermitsCard;
 import decks.PoliticsCard;
 import gamelogic.Game;
+import gamelogic.MainAction;
+import gamelogic.SpeedAction;
+
 import java.io.Console;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,11 +26,15 @@ public class Controller {
 	private Console cnsl;
 	private int mainCount, speedCount;
 	private CLI cli;
+	private MainAction mainAction;
+	private SpeedAction speedAction;
 
 	public Controller() {
 		this.setGame(new Game(4, true, null));
 		this.setTurn(0);
 		cli = new CLI();
+		mainAction = new MainAction(this.getGame());
+		speedAction = new SpeedAction(this.getGame());
 		turnCycle();
 	}
 
@@ -66,13 +73,8 @@ public class Controller {
 		
 			while (mainCount > 0 || speedCount > 0) {
 				int regIndex;
-				boolean m = false, s = false;
 				pass= false;
-				if (mainCount > 0)
-					m = true;
-				if (speedCount > 0)
-					s = true;
-				action = cli.getAction(turn, m, s);
+				action = cli.getAction(turn, mainCount, speedCount);
 				switch (action) {
 				case 1:// MAIN ACTION WIP
 					choice = cli.mainActionChoice();
@@ -82,6 +84,14 @@ public class Controller {
 						regIndex = cli.getTargetRegion(0);
 						inCards = cli.waitInputCards(game.getPlayers().get(turn).getHand());
 						// soddisfa consiglio di regIndex
+						if(mainAction.canObtainPermit(inCards.toArray(new PoliticsCard[0]), game.getMap().getBalcony(regIndex)))
+						{
+							ArrayList<PermitsCard> tmpSlots = new ArrayList<PermitsCard>();
+							tmpSlots.add(game.getMap().getPermitsDeck(regIndex).getSlot(0, false));
+							tmpSlots.add(game.getMap().getPermitsDeck(regIndex).getSlot(1, false));
+							int slot = cli.getPermitIndex(tmpSlots);
+							mainAction.obtainPermit(regIndex, slot);
+						}
 						mainCount--;
 						break;
 					case 2:
@@ -89,12 +99,14 @@ public class Controller {
 						cityIndex = cli.getInputCities(game.getMap().getCity());
 						toBuild = game.getMap().getCity()[cityIndex];
 						// soddisfa consiglio del re
+						
 						mainCount--;
 						break;
 					case 3:
-						regIndex = cli.getTargetRegion(1);
+						int balIndex = cli.getTargetBalcony();
 						int colIndex = cli.getColorIndex(avail);
 						// shifta consiglio
+						mainAction.shiftCouncil(balIndex, game.getMap().getCouncilor(CouncilorColor.values()[colIndex]));
 						mainCount--;
 						break;
 					case 4:
@@ -108,9 +120,8 @@ public class Controller {
 						City[] validCitiesArr = validCities.toArray(new City[0]);
 						cityIndex = cli.getInputCities(validCitiesArr);
 						toBuild = game.getMap().getCity()[cityIndex];
-
-						// costruisci
-						// DA SCEGLIERE LA CITTA'
+						if(mainAction.canBuild(toBuild, pc))
+							mainAction.build(toBuild);
 						mainCount--;
 						break;
 					case 5:
@@ -123,22 +134,30 @@ public class Controller {
 					switch (choice) {// non c'è il default perchè non ci
 										// arriverà comunque
 					case 1:
-						// compra aiutante
+						if(speedAction.canBuyAssistant())
+							speedAction.buyAssistant();
 						speedCount--;
 						break;
 					case 2:
 						regIndex = cli.getTargetRegion(0);
-						// cambia permessi
+						if(speedAction.canChangeCards())
+							speedAction.changePermitsCards(regIndex);
 						speedCount--;
 						break;
 					case 3:
 						regIndex = cli.getTargetRegion(1);
 						int colIndex = cli.getColorIndex(avail);
 						// shifta consigliere
+						speedAction.shiftCouncil(regIndex, game.getMap().getCouncilor(CouncilorColor.values()[colIndex]));
 						speedCount--;
 						break;
 					case 4:
 						// compra mainaction
+						if(speedAction.canBuyMainAction())
+						{
+							speedAction.buyMainAction();
+							this.mainCount++;
+						}
 						speedCount--;
 						break;
 					case 5:

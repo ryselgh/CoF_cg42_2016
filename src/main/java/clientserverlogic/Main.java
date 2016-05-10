@@ -55,14 +55,8 @@ public class Main
 	 */
 	
 	public static void main(String[] args) {
-		//game = new Game(2, true, "");
 		Controller controller = new Controller();
-		cli = new CLI();
-		cli.printGameStatus(game);
-		/*Player pl1 = new Player();
-		Player pl2 = new Player();
-		Player[] pp = {pl1,pl2};
-		Map mmm = new Map(pp,true,"");*/
+		//ebbasta di istanziare roba, si occupa di tutto il controller
 	}
 }
 
