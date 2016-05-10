@@ -322,8 +322,9 @@ public class Map {
 		for(Councilor c : councilors)
 			if(c.getCouncilorColor().equals(col))
 				{
+				Councilor tmp = c;
 				councilors.remove(c);
-				return c;
+				return tmp;
 				}
 		return null;
 	}

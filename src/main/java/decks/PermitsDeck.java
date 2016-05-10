@@ -73,11 +73,13 @@ public class PermitsDeck extends Deck{
 			throw new NullPointerException("Cards are over");
 		if (slot[0] == null){
 			slot[0] = permitsDeck.get(0);
+			slot[0].setFaceDown(false);
 			permitsDeck.remove(0);
 		}
 		if(slot[1] == null){
 			slot[1] = permitsDeck.get(0);
 			permitsDeck.remove(0);
+			slot[1].setFaceDown(false);
 		}
 	}
 

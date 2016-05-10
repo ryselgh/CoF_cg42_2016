@@ -96,7 +96,7 @@ public class SpeedAction {
 	
 	public void changePermitsCards(int selection) {
 		game.getMap().getPermitsDeck(selection).changeCards();
-		game.getActualPlayer().getAvailableAssistants().remove(0);
+		game.getMap().getAssistantsPool().add(game.getActualPlayer().getAvailableAssistants().remove(0));
 	}
 	
 	/*------------------- END OF 2nd Speed Action -------------------*/
@@ -126,7 +126,7 @@ public class SpeedAction {
 		game.getMap().getCouncilorsPool().remove(councilor);
 		Councilor[] c = new Councilor[4];
 		game.getMap().getBalcony(selection).setCouncilor(tmpBalcony.toArray(c));
-		game.getActualPlayer().getAvailableAssistants().remove(0);
+		game.getMap().getAssistantsPool().add(game.getActualPlayer().getAvailableAssistants().remove(0));
 	}
 	
 	/*------------------- END OF 3rd Speed Action -------------------*/
@@ -152,7 +152,7 @@ public class SpeedAction {
 	public void buyMainAction() {
 //		game.getMainAction().addActionCounter(1);
 		for(int i=0;i<3;i++)
-			game.getActualPlayer().getAvailableAssistants().remove(0);
+			game.getMap().getAssistantsPool().add(game.getActualPlayer().getAvailableAssistants().remove(0));
 	}
 	
 	/*------------------- END OF 4th Speed Action -------------------*/

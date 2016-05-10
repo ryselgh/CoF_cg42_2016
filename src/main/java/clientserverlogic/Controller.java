@@ -99,8 +99,10 @@ public class Controller {
 						for (Bonus b : pc.getBonus())
 							this.collectBonus(b);
 						mainCount--;
-					} else
+					} else{
+						game.getActualPlayer().getHand().addAll(inCards);
 						cli.unavailableOptions();
+					}
 					break;
 				case 2:
 					inCards = cli.waitInputCards(game.getPlayers().get(turn).getHand());
@@ -135,6 +137,7 @@ public class Controller {
 						toBuild = game.getMap().getCity()[cityIndex];
 						if (mainAction.canBuild(toBuild, pc)) {
 							mainAction.build(toBuild);
+							pc.setFaceDown(true);
 							mainCount--;
 						} else
 							cli.unavailableOptions();

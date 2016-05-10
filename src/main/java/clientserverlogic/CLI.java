@@ -1,4 +1,5 @@
 package clientserverlogic;
+import java.awt.List;
 import java.io.Console;
 import java.io.PrintStream;
 import java.util.ArrayList;
@@ -192,12 +193,16 @@ public class CLI {
 		for(int i=0; i<game.getPlayers().size();i++){
 			Player p= game.getPlayers().get(i);
 			int usedPermits = 0;
-			ArrayList<PermitsCard> activePermits = new ArrayList<PermitsCard>();
+			ArrayList<String> activePermits = new ArrayList<String>();
+			ArrayList<String> singlePermit = new ArrayList<String>();
 			for(PermitsCard pc: p.getPermits())
 				if(pc.isFaceDown())
 					usedPermits++;
-				else
-					activePermits.add(pc);
+				else{
+					singlePermit.addAll(Arrays.asList(pc.getCityLetter()));
+					activePermits.add(singlePermit.toString());
+					singlePermit.removeAll(singlePermit);
+				}
 			int nobilityPos = game.getMap().getNobilityTrack().getPawn()[i].getPos();
 			tb.addRow(Integer.toString(p.getID()), Integer.toString(p.getAvailableEmporiums().size()),
 						Integer.toString(p.getAvailableAssistants().size()), Integer.toString(p.getCoins()),
