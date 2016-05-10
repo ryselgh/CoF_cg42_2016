@@ -237,16 +237,17 @@ public class CLI {
 	
 	/*-----------------------------------------INPUTS-----------------------------------------------*/
 
-	public int getAction(boolean main, boolean speed){
-		if(main)
-			out.print("Insert 1 for Main Action, ");
-		if(speed)
+	public int getAction(int plIndex, int main, int speed){
+		out.print("Hi there player" + plIndex + ", ");
+		if(main>0)
+			out.print("insert 1 for Main Action, ");
+		if(speed>0)
 			out.print("insert 2 for Speed Action, ");
 		int resp = waitCorrectIntInput("insert 3 to pass\n",1,3);
-		if((resp==1 && !main) || (resp==2 && !speed))
+		if((resp==1 && main<=0) || (resp==2 && speed<=0))
 		{
 			out.print("Selection inavailable. Try again\n");
-			return getAction(main, speed);
+			return getAction(plIndex, main, speed);
 		}
 		return resp;
 	}
@@ -265,11 +266,12 @@ public class CLI {
 	{
 		for(int i=0; i<cards.size();i++)
 		{
-			out.print((i+1) + "° CARD:\nBonus:\n");
+			out.print((i+1) + "° CARD:\nBonus: ");
 			for(Bonus b: cards.get(i).getBonus())
 			{
-				out.print("Type: "+ b.getType().toString() + "\nAmmount: "+ b.getQnt()+ "\n");
+				out.print("["+ b.getType().toString() + "x"+ b.getQnt()+ "]");
 			}
+			out.print("\n");
 		}
 		return waitCorrectIntInput("\nInsert the index of the card you want to use.\n",1,cards.size()) - 1;
 	}
@@ -306,11 +308,22 @@ public class CLI {
 						"\nInsert the index of the region containing the permit card you want to pick:\n"
 								+ "1-Sea\n"
 								+ "2-Hill\n"
-								+ "3-Mountain\n"};
+								+ "3-Mountain\n",
+								"\nInsert the index of the region containing the council you want to satisfy:\n"
+										+ "1-Sea\n"
+										+ "2-Hill\n"
+										+ "3-Mountain\n"};
 		return waitCorrectIntInput(messages[msg],1,3) - 1;
 	}
 	
-	
+	public int getTargetBalcony()
+	{
+		return waitCorrectIntInput("Select the balcony:\n"
+				+ "1-Sea\n"
+				+ "2-Hill\n"
+				+ "3-Mountain\n"
+				+ "4-King\n",1,4)-1;
+	}
 		
 	
 	public BonusToken[] getTokenBonus(BonusToken[] bts, int amm)
@@ -372,7 +385,7 @@ public class CLI {
 		return respInt;
 	}
 
-	public String waitCorrectStringInput(String msg, ArrayList<String> possibilities){
+	private String waitCorrectStringInput(String msg, String[] possibilities){
 		int respString = -1;
 		out.print(msg);
 		do{
@@ -391,8 +404,8 @@ public class CLI {
 		for(String c: choice){
 			if(Integer.parseInt(c) == 0)
 				return false;
-			if(Integer.parseInt(c)>compare)
-				compare = Integer.parseInt(c);
+			if(Integer.parseInt(c)-1>compare)
+				compare = Integer.parseInt(c)-1;
 		}
 		if(compare>=hand.size())
 			return false;

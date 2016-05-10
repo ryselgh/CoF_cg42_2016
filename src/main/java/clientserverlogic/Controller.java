@@ -23,14 +23,19 @@ public class Controller {
 
 	private Game game;
 	private int turn;
+	private Console cnsl;
 	private int mainCount, speedCount;
 	private CLI cli;
+	private MainAction mainAction;
+	private SpeedAction speedAction;
 
 	public Controller() {
 		this.setGame(new Game(4, true, null));
 		this.setTurn(0);
 		cli = new CLI();
-		turnCycleBegin();
+		mainAction = new MainAction(this.getGame());
+		speedAction = new SpeedAction(this.getGame());
+		turnCycle();
 	}
 
 	private ArrayList<CouncilorColor> getAvailableCouncilors() {
@@ -51,40 +56,28 @@ public class Controller {
 		}
 		;
 	}
-	
-	private void turnCycleBegin(){
-		mainCount = 1;
-		speedCount = 1;
-		game.getActualPlayer().addPolitics(game.getMap().getPoliticsDeck().draw());
-		cli.printGameStatus(game);
-		cli.printMsg("You drew this card: ["+game.getActualPlayer().getHand().get(game.getActualPlayer().getHand().size()-1).getColor().toString()+"]\n");
-		cli.printPlayerHand(game.getActualPlayer());
-		cli.printMsg("Hi there player"+Integer.toString(game.getActualPlayer().getID())+"!");
-		turnCycle();
-	}
 
 	private void turnCycle() {
-		boolean m = false;
-		boolean s = false;
-		
-		if (mainCount > 0)
-			m = true;
-		if (speedCount > 0)
-			s = true;
-		
-		boolean win = false;// dovremo mettere un check vittoria che la setta a
+		boolean win = false, pass = false;// dovremo mettere un check vittoria che la setta a
 							// true così non riparte turnCycle()
 		ArrayList<CouncilorColor> avail = getAvailableCouncilors();
+		mainCount = 1;
+		speedCount = 1;
 		int action, choice;
 		ArrayList<PoliticsCard> inCards;
 		int cityIndex;
 		City toBuild;
-		ArrayList<String> possibilities = new ArrayList<String>();
+
+		game.getActualPlayer().addPolitics(game.getMap().getPoliticsDeck().draw());
 		
-		action = cli.getAction(m, s);
-		if (action != 3)// non passa
+		
 			while (mainCount > 0 || speedCount > 0) {
 				int regIndex;
+				pass= false;
+				cli.printGameStatus(game);
+				cli.printMsg("You drew this card: ["+game.getActualPlayer().getHand().get(game.getActualPlayer().getHand().size()-1).getColor().toString()+"]\n");
+				cli.printPlayerHand(game.getActualPlayer());
+				action = cli.getAction(turn+1, mainCount, speedCount);
 				switch (action) {
 				case 1:// MAIN ACTION WIP
 					choice = cli.mainActionChoice();
@@ -92,95 +85,102 @@ public class Controller {
 										// arriverà comunque
 					case 1:
 						regIndex = cli.getTargetRegion(0);
-						if(game.getMainAction().canObtainPermit(game.getMap().getBalcony(regIndex), cli.waitInputCards(game.getActualPlayer().getHand()))){
-							possibilities.add("1");
-							possibilities.add("2");
-							game.getActualPlayer().addPermits(game.getMap().getPermitsDeck(regIndex).getSlot(Integer.parseInt(cli.waitCorrectStringInput("\nSelect the card (Slot 1 or 2)\n",possibilities))-1,true));
-							possibilities.clear();
-							mainCount--;
-							turnCycle();
+						inCards = cli.waitInputCards(game.getPlayers().get(turn).getHand());
+						// soddisfa consiglio di regIndex
+						if(mainAction.canObtainPermit(inCards.toArray(new PoliticsCard[0]), game.getMap().getBalcony(regIndex)))
+						{
+							ArrayList<PermitsCard> tmpSlots = new ArrayList<PermitsCard>();
+							tmpSlots.add(game.getMap().getPermitsDeck(regIndex).getSlot(0, false));
+							tmpSlots.add(game.getMap().getPermitsDeck(regIndex).getSlot(1, false));
+							int slot = cli.getPermitIndex(tmpSlots);
+							mainAction.obtainPermit(regIndex, slot);
+							for(Bonus b: game.getActualPlayer().getPermits().get(game.getActualPlayer().getPermits().size()-1).getBonus())
+							this.collectBonus(b);
 						}
+						mainCount--;
 						break;
 					case 2:
-						inCards = cli.waitInputCards(game.getActualPlayer().getHand());
-						if(game.getMainAction().canSatisfyKing(inCards)){
-							game.getActualPlayer().getHand().removeAll(inCards);
-							cityIndex = cli.getInputCities(game.getMap().getCity());
-							if(game.getMainAction().canMoveKing(game.getMap().getCity()[cityIndex])){
-								game.getMainAction().moveKing(game.getMap().getCity()[cityIndex]);
-								mainCount--;
-							}
-							else{
-								cli.printMsg("\n\nYou are poor.\n\n");
-								turnCycle();
-							}
-						}else{
-							cli.printMsg("\n\nYou can't satisfy the King's council with those cards or you haven't enough money.\n\n");
-							turnCycle();
+						inCards = cli.waitInputCards(game.getPlayers().get(turn).getHand());
+						cityIndex = cli.getInputCities(game.getMap().getCity());
+						toBuild = game.getMap().getCity()[cityIndex];
+						if(mainAction.canMoveKing(game.getMap().getCity()[cityIndex])){
+							mainAction.moveKing(game.getMap().getCity()[cityIndex]);
+							mainAction.build(game.getMap().getCity()[cityIndex]);
+							mainCount--;
 						}
 						break;
 					case 3:
-						regIndex = cli.getTargetRegion(1);
+						int balIndex = cli.getTargetBalcony();
 						int colIndex = cli.getColorIndex(avail);
 						// shifta consiglio
+						mainAction.shiftCouncil(balIndex, game.getMap().getCouncilor(CouncilorColor.values()[colIndex]));
 						mainCount--;
 						break;
 					case 4:
 						int permitIndex = cli.getPermitIndex(game.getPlayers().get(turn).getPermits());
-						PermitsCard perm = game.getPlayers().get(turn).getPermits().get(permitIndex);
+						PermitsCard pc = game.getPlayers().get(turn).getPermits().get(permitIndex);
 						ArrayList<City> validCities = new ArrayList<City>();
 						for (City c : game.getMap().getCity())
-							for (String lett : perm.getCityLetter())
-								if (lett.toLowerCase().equals(Character.toString(c.getName().toLowerCase().charAt(0))))
+							for (String lett : pc.getCityLetter())
+								if (lett.toLowerCase().equals(c.getName().toLowerCase().charAt(0)))
 									validCities.add(c);
 						City[] validCitiesArr = validCities.toArray(new City[0]);
 						cityIndex = cli.getInputCities(validCitiesArr);
 						toBuild = game.getMap().getCity()[cityIndex];
-
-						// costruisci
-						// DA SCEGLIERE LA CITTA'
+						if(mainAction.canBuild(toBuild, pc))
+							mainAction.build(toBuild);
 						mainCount--;
 						break;
 					case 5:
 						break;// torna indietro
 					}
+
 					break;
 				case 2:// SPEED ACTION
 					choice = cli.speedActionChoice();
 					switch (choice) {// non c'è il default perchè non ci
 										// arriverà comunque
 					case 1:
-						// compra aiutante
+						if(speedAction.canBuyAssistant())
+							speedAction.buyAssistant();
 						speedCount--;
 						break;
 					case 2:
 						regIndex = cli.getTargetRegion(0);
-						// cambia permessi
+						if(speedAction.canChangeCards())
+							speedAction.changePermitsCards(regIndex);
 						speedCount--;
 						break;
 					case 3:
 						regIndex = cli.getTargetRegion(1);
 						int colIndex = cli.getColorIndex(avail);
 						// shifta consigliere
+						speedAction.shiftCouncil(regIndex, game.getMap().getCouncilor(CouncilorColor.values()[colIndex]));
 						speedCount--;
 						break;
 					case 4:
 						// compra mainaction
+						if(speedAction.canBuyMainAction())
+						{
+							speedAction.buyMainAction();
+							this.mainCount++;
+						}
 						speedCount--;
 						break;
 					case 5:
 						break;// torna indietro
 					}
 					break;
+				case 3:
+					pass = true;
+					break;
 				}
+				if(pass)
+					break;
 			}
-		else {
-			passTurn();
-			turnCycleBegin();
-		}
 		if (!win) {
 			passTurn();
-			turnCycleBegin();
+			turnCycle();
 		}
 	}
 

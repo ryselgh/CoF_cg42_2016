@@ -150,7 +150,7 @@ public class SpeedAction {
 	 */
 	
 	public void buyMainAction() {
-		game.getMainAction().addActionCounter(1);
+//		game.getMainAction().addActionCounter(1);
 		for(int i=0;i<3;i++)
 			game.getActualPlayer().getAvailableAssistants().remove(0);
 	}
