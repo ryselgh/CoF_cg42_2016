@@ -108,7 +108,7 @@ public class Map {
 				toRet.add(councilors.get(0));
 				councilors.remove(0);
 			}
-			retArr = councilors.toArray(retArr);
+			retArr = toRet.toArray(new Councilor[0]);
 			balcony[i]=new Balcony(retArr);
 		}
 

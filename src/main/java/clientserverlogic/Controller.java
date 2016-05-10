@@ -95,6 +95,7 @@ public class Controller {
 						tmpSlots.add(game.getMap().getPermitsDeck(regIndex).getSlot(1, false));
 						int slot = cli.getPermitIndex(tmpSlots);
 						PermitsCard pc = mainAction.obtainPermit(regIndex, slot);
+						game.getActualPlayer().addPermits(pc);
 						for (Bonus b : pc.getBonus())
 							this.collectBonus(b);
 						mainCount--;
@@ -116,10 +117,11 @@ public class Controller {
 					int balIndex = cli.getTargetBalcony();
 					int colIndex = cli.getColorIndex(avail);
 					// shifta consiglio
-					mainAction.shiftCouncil(balIndex, game.getMap().getCouncilor(CouncilorColor.values()[colIndex]));
+					Councilor toInsert = game.getMap().getCouncilor(avail.get(colIndex));
+					mainAction.shiftCouncil(balIndex, toInsert);
 					mainCount--;
 					break;
-				case 4:
+				case 4://da settare facedown
 					if (game.getActualPlayer().hasUncoveredPermits()) {
 						int permitIndex = cli.getPermitIndex(game.getPlayers().get(turn).getPermits());
 						PermitsCard pc = game.getPlayers().get(turn).getPermits().get(permitIndex);

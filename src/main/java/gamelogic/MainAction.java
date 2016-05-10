@@ -179,13 +179,14 @@ public class MainAction {
 	 */
 	
 	public void shiftCouncil(int selection, Councilor councilor) {
-		ArrayList<Councilor> tmpBalcony = new ArrayList<Councilor>(Arrays.asList(game.getMap().getBalcony(selection).getCouncilors()));
+		ArrayList<Councilor> tmpBalcony = new ArrayList<Councilor>();
+		Councilor[] temp = game.getMap().getBalcony(selection).getCouncilors();
+		tmpBalcony.addAll(Arrays.asList(temp));
 		game.getMap().getCouncilorsPool().add(tmpBalcony.get(0));
 		tmpBalcony.remove(0);
 		tmpBalcony.add(councilor);
 		game.getMap().getCouncilorsPool().remove(councilor);
-		Councilor[] c = new Councilor[4];
-		game.getMap().getBalcony(selection).setCouncilor(tmpBalcony.toArray(c));
+		game.getMap().getBalcony(selection).setCouncilor(tmpBalcony.toArray(new Councilor[0]));
 		game.getActualPlayer().addCoins(4);
 	}
 	
