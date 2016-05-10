@@ -16,21 +16,6 @@ import java.util.Arrays;
 import model.CouncilorColor;
 import model.BonusType;
 
-/*AZIONI: 
- * 
- * 
- * 
- * SME
- * Il controller dovrà gestire le azioni in questo modo:
- * - L'utente deve vedere qualcosa -> cli.metodiDiOutput();
- * - L'utente vuole fare qualcosa -> cli.outputScelte(); | cli.inputSceltaFatta(); | game.faiAzione(input_dalla_cli);
- * ... e così via
- * 
- * cerca di essere leggibile, NON SCRIVERE IN ITALIAN, BITCH.
- * 
- * 
- * 
- */
 public class Controller {
 
 	private Game game;
@@ -66,7 +51,7 @@ public class Controller {
 	}
 
 	private void turnCycle() {
-		boolean win = false;// dovremo mettere un check vittoria che la setta a
+		boolean win = false, pass = false;// dovremo mettere un check vittoria che la setta a
 							// true così non riparte turnCycle()
 		ArrayList<CouncilorColor> avail = getAvailableCouncilors();
 		mainCount = 1;
@@ -77,15 +62,17 @@ public class Controller {
 		City toBuild;
 
 		game.getActualPlayer().addPolitics(game.getMap().getPoliticsDeck().draw());
-		boolean m = false, s = false;
-		if (mainCount > 0)
-			m = true;
-		if (speedCount > 0)
-			s = true;
-		action = cli.getAction(turn, m, s);
-		if (action != 3)// non passa
+		
+		
 			while (mainCount > 0 || speedCount > 0) {
 				int regIndex;
+				boolean m = false, s = false;
+				pass= false;
+				if (mainCount > 0)
+					m = true;
+				if (speedCount > 0)
+					s = true;
+				action = cli.getAction(turn, m, s);
 				switch (action) {
 				case 1:// MAIN ACTION WIP
 					choice = cli.mainActionChoice();
@@ -158,12 +145,13 @@ public class Controller {
 						break;// torna indietro
 					}
 					break;
+				case 3:
+					pass = true;
+					break;
 				}
+				if(pass)
+					break;
 			}
-		else {
-			passTurn();
-			turnCycle();
-		}
 		if (!win) {
 			passTurn();
 			turnCycle();

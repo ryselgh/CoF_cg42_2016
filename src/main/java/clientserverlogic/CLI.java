@@ -218,7 +218,11 @@ public class CLI {
 						"\nInsert the index of the region containing the permit card you want to pick:\n"
 								+ "1-Sea\n"
 								+ "2-Hill\n"
-								+ "3-Mountain\n"};
+								+ "3-Mountain\n",
+								"\nInsert the index of the region containing the council you want to satisfy:\n"
+										+ "1-Sea\n"
+										+ "2-Hill\n"
+										+ "3-Mountain\n"};
 		return waitCorrectIntInput(messages[msg],1,3) - 1;
 	}
 	
