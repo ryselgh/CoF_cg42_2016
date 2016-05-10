@@ -187,9 +187,10 @@ public class CLI {
 	
 	public void printPlayersStatus(Game game){
 		TableBuilder tb = new TableBuilder();
-		tb.addRow("Player", "Emporiums", "Assistants", "Coins", "Points", "Cards", "Active permits", "Used permits", "King Bonus");
-		tb.addRow("--------------","--------------", "--------------", "--------------", "--------------", "--------------", "--------------", "--------------", "--------------");
-		for(Player p: game.getPlayers()){
+		tb.addRow("Player", "Emporiums", "Assistants", "Coins", "Points", "Cards", "Active permits", "Used permits", "King Bonus", "Nobility");
+		tb.addRow("--------------","--------------","--------------", "--------------", "--------------", "--------------", "--------------", "--------------", "--------------", "--------------");
+		for(int i=0; i<game.getPlayers().size();i++){
+			Player p= game.getPlayers().get(i);
 			int usedPermits = 0;
 			ArrayList<PermitsCard> activePermits = new ArrayList<PermitsCard>();
 			for(PermitsCard pc: p.getPermits())
@@ -197,9 +198,10 @@ public class CLI {
 					usedPermits++;
 				else
 					activePermits.add(pc);
+			int nobilityPos = game.getMap().getNobilityTrack().getPawn()[i].getPos();
 			tb.addRow(Integer.toString(p.getID()), Integer.toString(p.getAvailableEmporiums().size()),
 						Integer.toString(p.getAvailableAssistants().size()), Integer.toString(p.getCoins()),
-						Integer.toString(p.getScore()), Integer.toString(p.getHand().size()), activePermits.toString(), Integer.toString(usedPermits), p.getBonusCards().toString());
+						Integer.toString(p.getScore()), Integer.toString(p.getHand().size()), activePermits.toString(), Integer.toString(usedPermits), p.getBonusCards().toString(), String.valueOf(nobilityPos));
 		}
 		out.print("\n\nPlayers status:\n"+tb.toString()+"\n\n");
 	}
@@ -213,6 +215,11 @@ public class CLI {
 	
 	public void printMsg(String msg){
 		out.println(msg);
+	}
+	
+	public void printBonusCollectionMsg(String type, int amm)
+	{
+		out.print("Collecting bonus: type= " + type.toString() + ", amm= "+ amm + "\n");
 	}
 	
 	public void printGameStatus(Game game){
@@ -325,7 +332,10 @@ public class CLI {
 				+ "4-King\n",1,4)-1;
 	}
 		
-	
+	public void unavailableOptions()
+	{
+		out.print("\nUnavailable option. Chose another action.\n");
+	}
 	public BonusToken[] getTokenBonus(BonusToken[] bts, int amm)
 	{
 		if(amm==1)

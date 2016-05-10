@@ -69,7 +69,6 @@ public class Map {
 		setCity(reader.getCity()); //in questo metodo Importer accede al metodo Map.inserisciCittà per inserire le città (alla creazione) nelle regioni e nei cologroup, le cui istanze sono qui su Map perchè create non in questo metodo
 		setKing(reader.getKing());
 		nobilityTrack = reader.getNobilityTrack();
-		setPawn(reader.getPawn());
 		kingBonus = reader.getKingBonus();
 		
 		PermitsCard[][] pool = reader.getPermitsCardPool();
@@ -265,17 +264,10 @@ public class Map {
 	/**
 	 * @return the pawn
 	 */
-	public Pawn[] getPawn() {
-		return pawn;
-	}
 
 	/**
 	 * @param pawn the pawn to set
 	 */
-	public void setPawn(Pawn[] pawn) {
-		this.pawn = pawn;
-	}
-
 	/**
 	 * @return the nobilityTrack
 	 */

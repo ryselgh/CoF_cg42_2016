@@ -70,37 +70,54 @@ public class MainAction {
 	 */
 	
 	public boolean canObtainPermit(PoliticsCard[] politics, Balcony balcony) {
-		int counter = 0;
-		int jollycnt = 0;
-		ArrayList<Councilor> tmpBalcony = new ArrayList<Councilor>(Arrays.asList(balcony.getCouncilors()));
-		for(PoliticsCard p: politics){
-			for(Councilor c: tmpBalcony){
-				if(c.getCouncilorColor().equals(p.getColor()))
-					{
-						tmpBalcony.remove(c);
-						counter++;
-						break;
-					}
-			}
-			if(p.getColor().equals(CouncilorColor.JOLLY)){
-				counter++;
-				jollycnt++;
-			}
-		}
-		if( /* you have the right cards and enough money */
-			counter == politics.length && (
-				(counter==1 && game.getActualPlayer().getCoins()>=(10 + jollycnt)) ||
-				(counter==2 && game.getActualPlayer().getCoins()>=(7 + jollycnt)) ||
-				(counter==3 && game.getActualPlayer().getCoins()>=(4 + jollycnt)) ||
-				(counter==4 && game.getActualPlayer().getCoins()>=(0 + jollycnt))
-			)
-		)
-			return true;
-		else
-			return false;
-	}
-	
-	
+	    int counter = 0;
+	    int jollycnt = 0;
+	    ArrayList<Councilor> tmpBalcony = new ArrayList<Councilor>(Arrays.asList(balcony.getCouncilors()));
+	    for(PoliticsCard p: politics){
+	      for(Councilor c: tmpBalcony){
+	        if(c.getCouncilorColor().equals(p.getColor()))
+	          {
+	            tmpBalcony.remove(c);
+	            counter++;
+	            break;
+	          }
+	      }
+	      if(p.getColor().equals(CouncilorColor.JOLLY)){
+	        counter++;
+	        jollycnt++;
+	      }
+	    }
+	    if( /* you have the right cards and enough money */
+	      counter == politics.length && (
+	        (counter==1 && game.getActualPlayer().getCoins()>=(10 + jollycnt)) ||
+	        (counter==2 && game.getActualPlayer().getCoins()>=(7 + jollycnt)) ||
+	        (counter==3 && game.getActualPlayer().getCoins()>=(4 + jollycnt)) ||
+	        (counter==4 && game.getActualPlayer().getCoins()>=(0 + jollycnt))
+	      )
+	    ){
+	      payCards(counter, jollycnt);
+	      return true;
+	    }
+	    else
+	      return false;
+	  }
+	  
+	  public void payCards(int cards, int jolly) {
+	    switch(cards){
+	      case 1:
+	        game.getActualPlayer().addCoins(-(10+jolly));
+	        break;
+	      case 2:
+	        game.getActualPlayer().addCoins(-(7+jolly));
+	        break;
+	      case 3:
+	        game.getActualPlayer().addCoins(-(4+jolly));
+	        break;
+	      case 4:
+	        game.getActualPlayer().addCoins(-(0+jolly));
+	        break;
+	    }
+	  }
 	/**
 	 * Obtain a permit by satisfying a council
 	 * @param politics the cards you want to use to satisfy the council
@@ -144,7 +161,10 @@ public class MainAction {
 	 */
 	
 	public void moveKing(City toCity){
+		int oldCoin = game.getActualPlayer().getCoins();
+		int toPay = game.getGraphMap().shortestPathCost(toCity);
 		game.getMap().getKing().setLocation(toCity);
+		game.getActualPlayer().setCoins(oldCoin - toPay);
 	}
 	
 	/*------------------- END OF 2nd Main Action -------------------*/

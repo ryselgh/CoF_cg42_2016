@@ -119,7 +119,7 @@ public class City
 	public boolean hasEmporium(Player p)
 	{
 		for(Emporium e : slot)
-			if(e.getPlayer().equals(p))
+			if(e!= null && e.getPlayer().equals(p))
 				return true;
 		return false;
 	}

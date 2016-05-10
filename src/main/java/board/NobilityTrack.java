@@ -31,6 +31,7 @@ public class NobilityTrack {
 	public Bonus[] advance(int pawnIndex, int av) {
 		Pawn p = this.pawns[pawnIndex];
 		int start = p.getPos(), i=0;
+		p.setPos(start + av);
 		ArrayList <Bonus> ret = new ArrayList <Bonus>();
 		for(i=start;i<=start + av;i++)
 		{
@@ -60,6 +61,11 @@ public class NobilityTrack {
 	 */
 	public Bonus[][] getBonusVector() {
 		return BonusVector;
-	}									
+	}				
+	
+	public Pawn[] getPawn()
+	{
+		return this.pawns;
+	}
 
 }

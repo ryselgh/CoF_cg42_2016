@@ -173,6 +173,13 @@ public class Player {
 		hand.remove(index);
 	}
 
+	public boolean hasUncoveredPermits()
+	{
+		for(PermitsCard pc : this.permits)
+			if(!pc.isFaceDown())
+				return true;
+		return false;
+	}
 	/**
 	 * Assigns a permit card to the player
 	 * 

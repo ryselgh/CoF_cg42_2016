@@ -58,8 +58,9 @@ public class Controller {
 	}
 
 	private void turnCycle() {
-		boolean win = false, pass = false;// dovremo mettere un check vittoria che la setta a
-							// true così non riparte turnCycle()
+		boolean win = false, pass = false;// dovremo mettere un check vittoria
+											// che la setta a
+		// true così non riparte turnCycle()
 		ArrayList<CouncilorColor> avail = getAvailableCouncilors();
 		mainCount = 1;
 		speedCount = 1;
@@ -69,54 +70,57 @@ public class Controller {
 		City toBuild;
 
 		game.getActualPlayer().addPolitics(game.getMap().getPoliticsDeck().draw());
-		
-		
-			while (mainCount > 0 || speedCount > 0) {
-				int regIndex;
-				pass= false;
-				cli.printGameStatus(game);
-				cli.printMsg("You drew this card: ["+game.getActualPlayer().getHand().get(game.getActualPlayer().getHand().size()-1).getColor().toString()+"]\n");
-				cli.printPlayerHand(game.getActualPlayer());
-				action = cli.getAction(turn+1, mainCount, speedCount);
-				switch (action) {
-				case 1:// MAIN ACTION WIP
-					choice = cli.mainActionChoice();
-					switch (choice) {// non c'è il default perchè non ci
-										// arriverà comunque
-					case 1:
-						regIndex = cli.getTargetRegion(0);
-						inCards = cli.waitInputCards(game.getPlayers().get(turn).getHand());
-						// soddisfa consiglio di regIndex
-						if(mainAction.canObtainPermit(inCards.toArray(new PoliticsCard[0]), game.getMap().getBalcony(regIndex)))
-						{
-							ArrayList<PermitsCard> tmpSlots = new ArrayList<PermitsCard>();
-							tmpSlots.add(game.getMap().getPermitsDeck(regIndex).getSlot(0, false));
-							tmpSlots.add(game.getMap().getPermitsDeck(regIndex).getSlot(1, false));
-							int slot = cli.getPermitIndex(tmpSlots);
-							mainAction.obtainPermit(regIndex, slot);
-							for(Bonus b: game.getActualPlayer().getPermits().get(game.getActualPlayer().getPermits().size()-1).getBonus())
+
+		while (mainCount > 0 || speedCount > 0) {
+			int regIndex;
+			pass = false;
+			cli.printGameStatus(game);
+			cli.printMsg("You drew this card: [" + game.getActualPlayer().getHand()
+					.get(game.getActualPlayer().getHand().size() - 1).getColor().toString() + "]\n");
+			cli.printPlayerHand(game.getActualPlayer());
+			action = cli.getAction(turn + 1, mainCount, speedCount);
+			switch (action) {
+			case 1:// MAIN ACTION WIP
+				choice = cli.mainActionChoice();
+				switch (choice) {// non c'è il default perchè non ci
+									// arriverà comunque
+				case 1:
+					regIndex = cli.getTargetRegion(0);
+					inCards = cli.waitInputCards(game.getPlayers().get(turn).getHand());
+					// soddisfa consiglio di regIndex
+					if (mainAction.canObtainPermit(inCards.toArray(new PoliticsCard[0]),
+							game.getMap().getBalcony(regIndex))) {
+						ArrayList<PermitsCard> tmpSlots = new ArrayList<PermitsCard>();
+						tmpSlots.add(game.getMap().getPermitsDeck(regIndex).getSlot(0, false));
+						tmpSlots.add(game.getMap().getPermitsDeck(regIndex).getSlot(1, false));
+						int slot = cli.getPermitIndex(tmpSlots);
+						PermitsCard pc = mainAction.obtainPermit(regIndex, slot);
+						for (Bonus b : pc.getBonus())
 							this.collectBonus(b);
-						}
 						mainCount--;
-						break;
-					case 2:
-						inCards = cli.waitInputCards(game.getPlayers().get(turn).getHand());
-						cityIndex = cli.getInputCities(game.getMap().getCity());
-						toBuild = game.getMap().getCity()[cityIndex];
-						if(mainAction.canMoveKing(game.getMap().getCity()[cityIndex])){
-							mainAction.moveKing(game.getMap().getCity()[cityIndex]);
-							mainAction.build(game.getMap().getCity()[cityIndex]);
-							mainCount--;
-						}
-						break;
-					case 3:
-						int balIndex = cli.getTargetBalcony();
-						int colIndex = cli.getColorIndex(avail);
-						// shifta consiglio
-						mainAction.shiftCouncil(balIndex, game.getMap().getCouncilor(CouncilorColor.values()[colIndex]));
-						mainCount--;
-						break;
-					case 4:
+					} else
+						cli.unavailableOptions();
+					break;
+				case 2:
+					inCards = cli.waitInputCards(game.getPlayers().get(turn).getHand());
+		            cityIndex = cli.getInputCities(game.getMap().getCity());
+		            toBuild = game.getMap().getCity()[cityIndex];
+		            if(mainAction.canMoveKing(game.getMap().getCity()[cityIndex]) && mainAction.canSatisfyKing(inCards.toArray(new PoliticsCard[0]))){
+		              mainAction.moveKing(game.getMap().getCity()[cityIndex]);
+		              mainAction.build(game.getMap().getCity()[cityIndex]);
+		              mainCount--;
+		            } else
+						cli.unavailableOptions();
+					break;
+				case 3:
+					int balIndex = cli.getTargetBalcony();
+					int colIndex = cli.getColorIndex(avail);
+					// shifta consiglio
+					mainAction.shiftCouncil(balIndex, game.getMap().getCouncilor(CouncilorColor.values()[colIndex]));
+					mainCount--;
+					break;
+				case 4:
+					if (game.getActualPlayer().hasUncoveredPermits()) {
 						int permitIndex = cli.getPermitIndex(game.getPlayers().get(turn).getPermits());
 						PermitsCard pc = game.getPlayers().get(turn).getPermits().get(permitIndex);
 						ArrayList<City> validCities = new ArrayList<City>();
@@ -127,61 +131,75 @@ public class Controller {
 						City[] validCitiesArr = validCities.toArray(new City[0]);
 						cityIndex = cli.getInputCities(validCitiesArr);
 						toBuild = game.getMap().getCity()[cityIndex];
-						if(mainAction.canBuild(toBuild, pc))
+						if (mainAction.canBuild(toBuild, pc)) {
 							mainAction.build(toBuild);
-						mainCount--;
-						break;
-					case 5:
-						break;// torna indietro
-					}
-
+							mainCount--;
+						} else
+							cli.unavailableOptions();
+					} else
+						cli.unavailableOptions();
 					break;
-				case 2:// SPEED ACTION
-					choice = cli.speedActionChoice();
-					switch (choice) {// non c'è il default perchè non ci
-										// arriverà comunque
-					case 1:
-						if(speedAction.canBuyAssistant())
-							speedAction.buyAssistant();
+				case 5:
+					break;// torna indietro
+				}
+
+				break;
+			case 2:// SPEED ACTION
+				choice = cli.speedActionChoice();
+				switch (choice) {// non c'è il default perchè non ci
+									// arriverà comunque
+				case 1:
+					if (speedAction.canBuyAssistant()) {
+						speedAction.buyAssistant();
 						speedCount--;
-						break;
-					case 2:
-						regIndex = cli.getTargetRegion(0);
-						if(speedAction.canChangeCards())
-							speedAction.changePermitsCards(regIndex);
+					} else
+						cli.unavailableOptions();
+					break;
+				case 2:
+					regIndex = cli.getTargetRegion(0);
+					if (speedAction.canChangeCards()) {
+						speedAction.changePermitsCards(regIndex);
 						speedCount--;
-						break;
-					case 3:
-						regIndex = cli.getTargetRegion(1);
-						int colIndex = cli.getColorIndex(avail);
-						// shifta consigliere
-						speedAction.shiftCouncil(regIndex, game.getMap().getCouncilor(CouncilorColor.values()[colIndex]));
-						speedCount--;
-						break;
-					case 4:
-						// compra mainaction
-						if(speedAction.canBuyMainAction())
-						{
-							speedAction.buyMainAction();
-							this.mainCount++;
-						}
-						speedCount--;
-						break;
-					case 5:
-						break;// torna indietro
-					}
+					} else
+						cli.unavailableOptions();
 					break;
 				case 3:
-					pass = true;
+					regIndex = cli.getTargetRegion(1);
+					int colIndex = cli.getColorIndex(avail);
+					// shifta consigliere
+					speedAction.shiftCouncil(regIndex, game.getMap().getCouncilor(CouncilorColor.values()[colIndex]));
+					speedCount--;
 					break;
+				case 4:
+					// compra mainaction
+					if (speedAction.canBuyMainAction()) {
+						speedAction.buyMainAction();
+						this.mainCount++;
+						speedCount--;
+					} else
+						cli.unavailableOptions();
+					break;
+				case 5:
+					break;// torna indietro
 				}
-				if(pass)
-					break;
+				break;
+			case 3:
+				pass = true;
+				break;
 			}
-		if (!win) {
+			if (pass)
+				break;
+
+		}
+		if (!checkWin()) {
 			passTurn();
 			turnCycle();
-		}
+		} else
+			;// VITTORIA
+	}
+
+	private boolean checkWin() {
+		return game.getActualPlayer().getAvailableEmporiums().isEmpty();
 	}
 
 	private void collectBonus(Bonus b)// NOTA: AGISCE SUL GIOCATORE CHE STA
@@ -189,9 +207,11 @@ public class Controller {
 	{
 		BonusToken[] selected = null;
 		int permIndex;
+		cli.printBonusCollectionMsg(b.getType().toString(), b.getQnt());
 		switch (b.getType()) {
 		case CARD:
-			playerDrawsPoliticsCard();
+			for(int i=0;i<b.getQnt();i++)
+				playerDrawsPoliticsCard();
 			break;
 		case POINT:
 			int oldScore = game.getPlayers().get(turn).getScore();
@@ -215,9 +235,14 @@ public class Controller {
 			mainCount++;
 			break;
 		case TOKEN:
-			selected = cli.getTokenBonus(getAvailableTokens(), 1);
+			BonusToken[] btTmp = getAvailableTokens();
+			if(btTmp.length>0)
+			{selected = cli.getTokenBonus(btTmp, 1);
 			for (Bonus bo : selected[0].getBonus())
 				collectBonus(bo);
+			}
+			else
+				cli.printMsg("You have no available tokens\n");
 			break;
 		case TWOTOKENS:
 			selected = cli.getTokenBonus(getAvailableTokens(), 2);

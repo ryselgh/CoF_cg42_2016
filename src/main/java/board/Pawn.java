@@ -51,6 +51,10 @@ public class Pawn
 		return this.hexColor;
 	}
 	
+	public void setPos(int pos)
+	{
+		this.pos = pos;
+	}
 	
 }
 

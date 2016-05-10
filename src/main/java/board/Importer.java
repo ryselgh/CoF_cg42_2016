@@ -177,6 +177,28 @@ public class Importer {
 			kingBonus.add(new Bonus(elem_type, elem_amm));
 		}
 
+		
+		// importo colori pedine e creo pedine
+				Element pedElem = (Element) (doc).getElementsByTagName("COLORI_PEDINE").item(0);
+				NodeList colorList = pedElem.getElementsByTagName("COLORE");
+				if (colorList.getLength() < 8)
+					return -3;// lancia errore
+				pawnColors = new String[colorList.getLength()];
+				for (int i = 0; i < colorList.getLength(); i++) {
+					Element colorElem = (Element) colorList.item(i);
+					pawnColors[i] = colorElem.getTextContent();
+				}
+				pawn = new Pawn[players.length];
+				int randomNo = 0;
+				for (int i = 0; i < players.length; i++) {
+					do {
+						randomNo = randomNum(0, colorList.getLength() - 1);
+					} while (pawnColors[randomNo] == "");
+					pawn[i] = new Pawn(players[i], pawnColors[randomNo]);
+					pawnColors[randomNo] = "";
+				}
+				
+				
 		// importo nobility track
 		this.nobilityTrackBonus = new Bonus[21][3];// max 3 bonus per casella;
 		Node nobilityNode = (doc).getElementsByTagName("NOBILITY_BONUS").item(0);
@@ -198,25 +220,7 @@ public class Importer {
 		this.nobilityTrack = new NobilityTrack(pawn, nobilityTrackBonus);
 
 		
-		// importo colori pedine e creo pedine
-		Element pedElem = (Element) (doc).getElementsByTagName("COLORI_PEDINE").item(0);
-		NodeList colorList = pedElem.getElementsByTagName("COLORE");
-		if (colorList.getLength() < 8)
-			return -3;// lancia errore
-		pawnColors = new String[colorList.getLength()];
-		for (int i = 0; i < colorList.getLength(); i++) {
-			Element colorElem = (Element) colorList.item(i);
-			pawnColors[i] = colorElem.getTextContent();
-		}
-		pawn = new Pawn[players.length];
-		int randomNo = 0;
-		for (int i = 0; i < players.length; i++) {
-			do {
-				randomNo = randomNum(0, colorList.getLength() - 1);
-			} while (pawnColors[randomNo] == "");
-			pawn[i] = new Pawn(players[i], pawnColors[randomNo]);
-			pawnColors[randomNo] = "";
-		}
+		
 		
 		//importo carte permesso
 		Element permElem = (Element) (doc).getElementsByTagName("POOL_CARTE_PERMESSO").item(0);
