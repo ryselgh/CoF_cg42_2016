@@ -6,6 +6,7 @@ import java.util.Arrays;
 import board.Balcony;
 import board.City;
 import board.Councilor;
+import board.Emporium;
 import decks.PermitsCard;
 import decks.PoliticsCard;
 import model.CouncilorColor;
@@ -201,8 +202,11 @@ public class MainAction {
 	public boolean canBuild(City city, PermitsCard permit){
 		for(String l: permit.getCityLetter())
 			if(l.equals(Character.toString(city.getName().toLowerCase().charAt(0))) &&
-				game.getActualPlayer().getAvailableAssistants().size()>=city.getEmporium().length)
+				game.getActualPlayer().getAvailableAssistants().size()>=city.getEmporium().length){
+				for(Emporium e: city.getEmporium())
+					game.getActualPlayer().getAvailableAssistants().remove(0);
 				return true;
+			}
 		return false;
 	}
 	
