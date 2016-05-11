@@ -249,19 +249,31 @@ public class CLI {
 	
 	/*-----------------------------------------INPUTS-----------------------------------------------*/
 
-	public int getAction(int plIndex, int main, int speed){
+	public int getAction(int plIndex, int main, int speed, boolean marketAvailable){
 		out.print("Hi there player" + plIndex + ", ");
 		if(main>0)
 			out.print("insert 1 for Main Action, ");
 		if(speed>0)
 			out.print("insert 2 for Speed Action, ");
-		int resp = waitCorrectIntInput("insert 3 to pass\n",1,3);
+		if(marketAvailable)
+			out.print("insert 3 to open the market, ");
+		int resp = waitCorrectIntInput("insert 4 to pass\n",1,4);
 		if((resp==1 && main<=0) || (resp==2 && speed<=0))
 		{
 			out.print("Selection inavailable. Try again\n");
-			return getAction(plIndex, main, speed);
+			return getAction(plIndex, main, speed, marketAvailable);
 		}
 		return resp;
+	}
+	
+	public int getSellType()
+	{
+		return waitCorrectIntInput("Insert the index of the category of the item you want to sell: \n1-PoliticCard\n2-PermitCard\n3-Assistant\n",1,3);
+	}
+	
+	public int getSellPrice()
+	{
+		return waitCorrectIntInput("Insert the price of the item you are selling\n",1,100);
 	}
 	
 	public int mainActionChoice(){
@@ -271,6 +283,21 @@ public class CLI {
 				+ "3-Shift Council. Earn: 4 coins\n"
 				+ "4-Build an emporium in a city. Needed: permit\n\n"
 				+ "5-Go back\n",1,5);
+	}
+	
+	public int getPoliticsCardIndex(int size, int playerIndex)
+	{
+		return waitCorrectIntInput("\nHi Player" + playerIndex + ", insert the index of the PoliticCard you want to sell. Insert 0 to go back.\n",0,size) - 1;
+	}
+	
+	public int getPermitsCardIndex(int size, int playerIndex)
+	{
+		return waitCorrectIntInput("\nHi Player" + playerIndex + ", insert the index of the PermitsCard you want to sell. Insert 0 to go back.\n",0,size) - 1;
+	}
+	
+	public int getObjectToBuyIndex(int size, int playerIndex)
+	{
+		return waitCorrectIntInput("\nHi Player" + playerIndex + ", insert the index of the item you want to buy on the market. Insert 0 to pass.\n",0,size) - 1;
 	}
 	
 	

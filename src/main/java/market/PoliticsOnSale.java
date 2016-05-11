@@ -19,7 +19,8 @@ public class PoliticsOnSale extends OnSale
 	 */
 	
 	private PoliticsCard politicsCard;
-	
+	private int price;
+	private Player seller;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -29,8 +30,26 @@ public class PoliticsOnSale extends OnSale
 	 */
 	
 	public PoliticsOnSale(Player pl, PoliticsCard pc, int pr) {
-		super(pl, obj);
-		// TODO construct me	
+		this.politicsCard=pc;
+		this.price = pr;
+		this.seller = pl;
+	}
+	
+	public void obtain(Player buyer)
+	{
+		buyer.setCoins(buyer.getCoins() - this.price);
+		buyer.addPolitics(this.politicsCard);
+		seller.setCoins(seller.getCoins() + this.price);
+		seller.removePolitics(this.politicsCard);
+	}
+	
+	public int getPrice(){
+		return this.price;
+	};
+	
+	public String printDetails()
+	{
+		return "Politic card: [Color= "+ this.politicsCard.getColor().toString() + "]\nPrice= " + Integer.toString(price) + "\n\n";
 	}
 	
 	/**
@@ -40,10 +59,6 @@ public class PoliticsOnSale extends OnSale
 	 * @ordered
 	 */
 	
-	public PoliticsCard obtain(Player buyer) {
-		// TODO implement me
-		return null;	
-	}
 	
 }
 

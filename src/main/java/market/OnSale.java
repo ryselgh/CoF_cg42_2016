@@ -45,10 +45,16 @@ public class OnSale
 	 * @ordered
 	 */
 	
-	public OnSale(Player p, Object o) {
-		super();
-		// TODO construct me	
+	public OnSale(Player p, Object o, int pr) {
+		this.seller = p;
+		this.obj = o;
+		this.price = pr;
 	}
+	public OnSale(){};
+	
+	public void obtain(Player buyer){};
+	public int getPrice(){return 0;};
+	public String printDetails(){return "";};
 	
 }
 

@@ -54,6 +54,16 @@ public class Player {
 	public void addAssistant(ArrayList<Assistant> assistants) {
 			availableAssistants.addAll(assistants);
 	}
+	
+	public void addAssistant(Assistant ass) {
+		availableAssistants.add(ass);
+	}
+	
+	public void removeAssistant(Assistant ass){
+		for(Assistant a : availableAssistants)
+			if(a.equals(ass))
+				availableAssistants.remove(a);
+	}
 
 	/**
 	 * @return the available emporiums
@@ -171,6 +181,19 @@ public class Player {
 
 	public void removePolitics(int index) {
 		hand.remove(index);
+	}
+	
+	public void removePolitics(PoliticsCard pc) {
+		for(PoliticsCard p : hand)
+			if(p.equals(pc))
+				hand.remove(p);
+	}
+	
+	public void removePermit(PermitsCard pc)
+	{
+		for(PermitsCard p : permits)
+			if(p.equals(pc))
+				permits.remove(p);
 	}
 
 	public boolean hasUncoveredPermits()

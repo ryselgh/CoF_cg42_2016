@@ -19,6 +19,8 @@ public class AssistantOnSale extends OnSale
 	 */
 	
 	private Assistant assistant;
+	private Player seller;
+	private int price;
 	
 
 	/**
@@ -29,8 +31,9 @@ public class AssistantOnSale extends OnSale
 	 */
 	
 	public AssistantOnSale(Player pl, Assistant a, int pr) {
-		super(pl, obj);
-		// TODO construct me	
+		this.assistant=a;
+		this.price = pr;
+		this.seller = pl;
 	}
 	
 	/**
@@ -40,10 +43,22 @@ public class AssistantOnSale extends OnSale
 	 * @ordered
 	 */
 	
-	public Assistant obtain(Player buyer) {
-		// TODO implement me
-		return null;	
+	public void obtain(Player buyer)
+	{
+		buyer.setCoins(buyer.getCoins() - this.price);
+		buyer.addAssistant(this.assistant);
+		seller.setCoins(seller.getCoins() + this.price);
+		buyer.removeAssistant(this.assistant);
 	}
 	
+	public int getPrice(){
+		return this.price;
+	};
+	
+
+	public String printDetails()
+	{
+		return "Assistant\nPrice= " + Integer.toString(price) + "\n\n";
+	}
 }
 

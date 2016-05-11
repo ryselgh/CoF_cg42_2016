@@ -1,5 +1,6 @@
 package market ;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
@@ -17,7 +18,7 @@ public class Market implements Iterator
 	 * @ordered
 	 */
 	
-	private OnSale[] objectsOnSale;
+	private ArrayList<OnSale> objectsOnSale;
 	
 
 	/**
@@ -28,8 +29,7 @@ public class Market implements Iterator
 	 */
 	
 	public Market() {
-		super();
-		// TODO construct me	
+		objectsOnSale = new ArrayList<OnSale>();	
 	}
 	
 	/**
@@ -40,10 +40,23 @@ public class Market implements Iterator
 	 */
 	
 	public OnSale getObjOnSale(int arrayPointer) {
-		// TODO implement me
-		return null;	
+			return objectsOnSale.get(arrayPointer);	
 	}
 
+	public void addObj(OnSale o)
+	{
+		objectsOnSale.add(o);
+	}
+	
+	public void removeObj(int o)
+	{
+		objectsOnSale.remove(o);
+	}
+	
+	public int getObjNumber()
+	{
+		return objectsOnSale.size();
+	}
 	@Override
 	public boolean hasNext() {
 		// TODO Auto-generated method stub
