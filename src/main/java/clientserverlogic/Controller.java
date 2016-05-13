@@ -14,6 +14,7 @@ import gamelogic.SpeedAction;
 import market.AssistantOnSale;
 import market.Market;
 import market.OnSale;
+import market.OnSaleInterface;
 import market.PermitOnSale;
 import market.PoliticsOnSale;
 
@@ -164,7 +165,7 @@ public class Controller {
 			if (politicIndex == -1)
 				break;// go back
 			price = cli.getSellPrice();
-			OnSale polSale = new PoliticsOnSale(game.getActualPlayer(),
+			OnSaleInterface polSale = new PoliticsOnSale(game.getActualPlayer(),
 					game.getActualPlayer().getHand().get(politicIndex), price);
 			market.addObj(polSale);
 			marketAvailable = false;
@@ -186,7 +187,7 @@ public class Controller {
 				} while (facedown);
 
 			price = cli.getSellPrice();
-			OnSale permSale = new PermitOnSale(game.getActualPlayer(),
+			OnSaleInterface permSale = new PermitOnSale(game.getActualPlayer(),
 					game.getActualPlayer().getPermits().get(permIndex), price);
 			market.addObj(permSale);
 			marketAvailable = false;
@@ -197,7 +198,7 @@ public class Controller {
 				break;
 			}
 			price = cli.getSellPrice();
-			OnSale assSale = new AssistantOnSale(game.getActualPlayer(),
+			OnSaleInterface assSale = new AssistantOnSale(game.getActualPlayer(),
 					game.getActualPlayer().getAvailableAssistants().get(0), price);
 			market.addObj(assSale);
 			marketAvailable = false;

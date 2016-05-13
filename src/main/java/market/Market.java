@@ -18,7 +18,7 @@ public class Market implements Iterator
 	 * @ordered
 	 */
 	
-	private ArrayList<OnSale> objectsOnSale;
+	private ArrayList<OnSaleInterface> objectsOnSale;
 	
 
 	/**
@@ -29,7 +29,7 @@ public class Market implements Iterator
 	 */
 	
 	public Market() {
-		objectsOnSale = new ArrayList<OnSale>();	
+		objectsOnSale = new ArrayList<OnSaleInterface>();	
 	}
 	
 	/**
@@ -39,11 +39,11 @@ public class Market implements Iterator
 	 * @ordered
 	 */
 	
-	public OnSale getObjOnSale(int arrayPointer) {
+	public OnSaleInterface getObjOnSale(int arrayPointer) {
 			return objectsOnSale.get(arrayPointer);	
 	}
 
-	public void addObj(OnSale o)
+	public void addObj(OnSaleInterface o)
 	{
 		objectsOnSale.add(o);
 	}

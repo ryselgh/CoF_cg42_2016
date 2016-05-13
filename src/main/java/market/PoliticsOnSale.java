@@ -9,7 +9,7 @@ import gamelogic.Player;
  * @generated
  */
 
-public class PoliticsOnSale extends OnSale
+public class PoliticsOnSale implements OnSaleInterface
 {
 	/**
 	 * <!-- begin-user-doc -->

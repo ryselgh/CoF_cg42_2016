@@ -184,9 +184,9 @@ public class Player {
 	}
 	
 	public void removePolitics(PoliticsCard pc) {
-		for(PoliticsCard p : hand)
-			if(p.equals(pc))
-				hand.remove(p);
+		for(int i=0;i<hand.size();i++)
+			if(hand.get(i)!= null && hand.get(i).equals(pc))
+				hand.remove(i);
 	}
 	
 	public void removePermit(PermitsCard pc)

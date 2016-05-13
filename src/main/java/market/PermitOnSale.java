@@ -10,7 +10,7 @@ import gamelogic.Player;
  * @generated
  */
 
-public class PermitOnSale extends OnSale
+public class PermitOnSale implements OnSaleInterface
 {
 	/**
 	 * <!-- begin-user-doc -->

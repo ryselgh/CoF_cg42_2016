@@ -9,7 +9,7 @@ import gamelogic.Player;
  * @generated
  */
 
-public class AssistantOnSale extends OnSale
+public class AssistantOnSale implements OnSaleInterface
 {
 	/**
 	 * <!-- begin-user-doc -->
