@@ -152,7 +152,7 @@ public class Controller {
 
 	}
 
-	private void marketSellLoop() {
+	private void marketSellLoop() {//ggggggg
 		int price;
 		int choice = cli.getSellType();
 		switch (choice) {
