@@ -3,6 +3,8 @@ package com.server.model.board ;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -27,7 +29,7 @@ public class Map {
 	private ColorGroup[] colorGroups;
 	private ArrayList <Councilor> councilors;
 	private Balcony[] balcony;
-	private static ArrayList<Assistant> assistants;
+	private ArrayList<Assistant> assistants;
 	private Emporium[] emporiums;
 	private Pawn[] pawn;
 	private NobilityTrack nobilityTrack;
@@ -36,6 +38,7 @@ public class Map {
 	private ArrayList<Bonus> kingBonus;
 	private PermitsDeck[] permitsDeck;
 	private King king;
+	private Logger logger;
 
 	/**
 	 * @throws SAXException 
@@ -44,17 +47,17 @@ public class Map {
 	 */
 	
 	
-	public Map(Player[] p, boolean _default, String file) {//default: to be implemented
+	public Map(Player[] p, boolean _default, String file) {
 		this.players = p;
 		initializeMapObjects();
 		try {
 			importMap(file,_default);
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE, "Something went wrong while importing the map", e);
 		}
 	}
 
-	public int importMap(String file, boolean _default) throws Exception  {
+	public int importMap(String file, boolean _default) throws ParserConfigurationException, SAXException, IOException{
 		Importer reader = new Importer(file,_default, this, players);
 		reader.startImport();
 		

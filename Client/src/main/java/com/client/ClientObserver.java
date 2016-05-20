@@ -1,6 +1,6 @@
 package com.client;
 
-public interface Observer {
+public interface ClientObserver {
 
 	public void update();
 

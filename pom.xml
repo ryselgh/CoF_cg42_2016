@@ -10,8 +10,13 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<!-- Sonar -->
 		<sonar.language>java</sonar.language>
 		<sonar.host.url> http://localhost:9000/ </sonar.host.url>
+		<sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
+		<sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
+		<sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
+		<!-- Sonar end -->
 	</properties>
 	<description>Prova Finale Ingegneria del software</description>
 	<dependencies>
@@ -53,7 +58,9 @@
 				<artifactId>jacoco-maven-plugin</artifactId>
 				<version>0.7.6.201602180812</version>
 				<configuration>
-					<destFile>target/jacoco.exec</destFile>
+					<!-- <destFile>target/jacoco.exec</destFile> -->
+					<destFile>${sonar.jacoco.reportPath}</destFile>
+					<append>true</append>
 					<dataFile>target/jacoco.exec</dataFile>
 				</configuration>
 				<executions>
