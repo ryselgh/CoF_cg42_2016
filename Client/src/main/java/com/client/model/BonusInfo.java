@@ -6,6 +6,12 @@ public class BonusInfo{
 	
 	private String type;
 	private int quantity;
+	
+	/**
+	 * is the constructor of the class BonusInfo
+	 * @param type is the type of the bonus 
+	 * @param quantity is the quantity of the bonus
+	 */
 
 	private BonusInfo(String type, int quantity){
 		this.type = type;
