@@ -4,30 +4,42 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import com.server.model.board.Balcony;
+import com.server.model.board.City;
 import com.server.model.board.Councilor;
-import com.server.model.decks.PermitsCard;
 import com.server.model.decks.PoliticsCard;
 import com.server.model.gamelogic.Game;
 import com.server.values.CouncilorColor;
 
-public class ObtainPermit extends Action {
-	
+public class SatisfyKing extends Action {
+	/**
+	 * Verify if you can satisfy the king's balcony
+	 * @param politics the cards you want to use to satisfy the king's council
+	 */
+	private PoliticsCard[] politics; 
+	private City destination;
 	private Game game;
-	private PoliticsCard[] politics;
-	private int regionIndex;
-    private int slot;
 	int counter = 0;
     int jollycnt = 0;
-    
-    
-	public ObtainPermit(PoliticsCard[] politics, int regionIndex, int slot){
+	
+	public SatisfyKing(PoliticsCard[] politics, City destination){
 		this.politics = politics;
-		this.regionIndex = regionIndex;
-		this.slot = slot;
+		this.destination=destination;
 	}
 	
 	public void setGame(Game game){
 		this.game = game;
+	}
+	
+	
+	
+	/**
+	 * Moves the king
+	 * @param toCity the city where you want to place the king
+	 */
+	
+	public void execute(){
+		payCards();
+		game.getMap().getKing().setLocation(destination);
 	}
 	
 	public boolean isValid(){
@@ -52,7 +64,12 @@ public class ObtainPermit extends Action {
 	}
 	
 	private boolean isOperationValid() {
-	    Balcony chosenBalcony = game.getMap().getBalcony(regionIndex);
+		int tempCoin = 0;
+		if(game.getGraphMap().shortestPathCost(destination)>game.getActualPlayer().getCoins())
+			return false;
+		else
+			tempCoin = game.getActualPlayer().getCoins() - game.getGraphMap().shortestPathCost(destination);
+	    Balcony chosenBalcony = game.getMap().getBalcony(3);
 	    ArrayList<Councilor> tmpBalcony = new ArrayList<Councilor>(Arrays.asList(chosenBalcony.getCouncilors()));
 	    for(PoliticsCard p: politics){
 	      for(Councilor c: tmpBalcony){
@@ -70,41 +87,31 @@ public class ObtainPermit extends Action {
 	    }
 	    if( /* you have the right cards and enough money */
 	      counter == politics.length && (
-	        (counter==1 && game.getActualPlayer().getCoins()>=(10 + jollycnt)) ||
-	        (counter==2 && game.getActualPlayer().getCoins()>=(7 + jollycnt)) ||
-	        (counter==3 && game.getActualPlayer().getCoins()>=(4 + jollycnt)) ||
-	        (counter==4 && game.getActualPlayer().getCoins()>=(0 + jollycnt))
+	        (counter==1 && tempCoin>=(10 + jollycnt)) ||
+	        (counter==2 && tempCoin>=(7 + jollycnt)) ||
+	        (counter==3 && tempCoin>=(4 + jollycnt)) ||
+	        (counter==4 && tempCoin>=(0 + jollycnt))
 	      )
 	    )
 	      return true;
 	   return false;
 	  }
 	  
-	  private void payCards(int cards, int jolly) {
-	    switch(cards){
+	  private void payCards() {
+		  int pathCost = game.getGraphMap().shortestPathCost(destination);
+	    switch(counter){
 	      case 1:
-	        game.getActualPlayer().addCoins(-(10+jolly));
+	        game.getActualPlayer().addCoins(-(10+jollycnt+pathCost));
 	        break;
 	      case 2:
-	        game.getActualPlayer().addCoins(-(7+jolly));
+	        game.getActualPlayer().addCoins(-(7+jollycnt+pathCost));
 	        break;
 	      case 3:
-	        game.getActualPlayer().addCoins(-(4+jolly));
+	        game.getActualPlayer().addCoins(-(4+jollycnt+pathCost));
 	        break;
 	      case 4:
-	        game.getActualPlayer().addCoins(-(0+jolly));
+	        game.getActualPlayer().addCoins(-(0+jollycnt+pathCost));
 	        break;
 	    }
 	  }
-	/**
-	 * Obtain a permit by satisfying a council
-	 * @param politics the cards you want to use to satisfy the council
-	 * @param the balcony you want to satisfy
-	 */
-	
-	public void execute() {//il client una volta ricevuto l'ack deve eliminare le carte politica dalla mano
-	    payCards(counter, jollycnt);
-		PermitsCard card = game.getMap().getPermitsDeck(regionIndex).getSlot(slot,true);
-		game.getActualPlayer().addPermits(card);
-	}
 }
