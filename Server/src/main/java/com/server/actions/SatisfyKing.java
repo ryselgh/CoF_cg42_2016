@@ -18,12 +18,16 @@ public class SatisfyKing extends Action {
 	private PoliticsCard[] politics; 
 	private City destination;
 	private Game game;
-	int counter = 0;
-    int jollycnt = 0;
-	
+	private int counter = 0;
+    private int jollycnt = 0;
+    private ArrayList<String> errors;
+    private boolean disable;
+    
+  //ActionReturn(boolean success, String error, boolean disable, boolean addMainBonus)
 	public SatisfyKing(PoliticsCard[] politics, City destination){
 		this.politics = politics;
 		this.destination=destination;
+		errors = new ArrayList<String>();
 	}
 	
 	public void setGame(Game game){
@@ -37,16 +41,21 @@ public class SatisfyKing extends Action {
 	 * @param toCity the city where you want to place the king
 	 */
 	
-	public void execute(){
+	public ActionReturn execute(){
 		payCards();
 		game.getMap().getKing().setLocation(destination);
+		return new ActionReturn(true,"",false,false);
 	}
 	
 	public boolean isValid(){
-		return isInputDataValid() && isOperationValid();
+		isInputDataValid();
+		isOperationValid();
+		if(errors.size()>0)
+			return false;
+		return true;
 	}
 	
-	private boolean isInputDataValid(){
+	private void isInputDataValid(){
 		ArrayList<PoliticsCard> tempHand = game.getActualPlayer().getHand();
 		boolean found;
 		for(PoliticsCard c: politics){
@@ -58,15 +67,14 @@ public class SatisfyKing extends Action {
 					break;
 				}
 			if(found==false)
-				return false;
+				errors.add("Invalid input cards");//anche questa da levare quando certi che funziona
 		}
-		return true;
 	}
 	
-	private boolean isOperationValid() {
+	private void isOperationValid() {
 		int tempCoin = 0;
 		if(game.getGraphMap().shortestPathCost(destination)>game.getActualPlayer().getCoins())
-			return false;
+			errors.add("You have not enought money");
 		else
 			tempCoin = game.getActualPlayer().getCoins() - game.getGraphMap().shortestPathCost(destination);
 	    Balcony chosenBalcony = game.getMap().getBalcony(3);
@@ -85,16 +93,14 @@ public class SatisfyKing extends Action {
 	        jollycnt++;
 	      }
 	    }
-	    if( /* you have the right cards and enough money */
-	      counter == politics.length && (
-	        (counter==1 && tempCoin>=(10 + jollycnt)) ||
+	    /* you have the right cards and enough money */
+	    if(!(counter == politics.length))
+	    	errors.add("Invalid input cards");
+	    else if(!(counter==1 && tempCoin>=(10 + jollycnt)) ||
 	        (counter==2 && tempCoin>=(7 + jollycnt)) ||
 	        (counter==3 && tempCoin>=(4 + jollycnt)) ||
-	        (counter==4 && tempCoin>=(0 + jollycnt))
-	      )
-	    )
-	      return true;
-	   return false;
+	        (counter==4 && tempCoin>=(0 + jollycnt)))
+	    		errors.add("You have not enought money");
 	  }
 	  
 	  private void payCards() {

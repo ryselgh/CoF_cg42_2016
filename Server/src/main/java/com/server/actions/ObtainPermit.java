@@ -18,12 +18,15 @@ public class ObtainPermit extends Action {
     private int slot;
 	int counter = 0;
     int jollycnt = 0;
+    private ArrayList<String> errors;
+	private boolean disable = false;
     
     
 	public ObtainPermit(PoliticsCard[] politics, int regionIndex, int slot){
 		this.politics = politics;
 		this.regionIndex = regionIndex;
 		this.slot = slot;
+		errors = new ArrayList<String>();
 	}
 	
 	public void setGame(Game game){
@@ -31,10 +34,14 @@ public class ObtainPermit extends Action {
 	}
 	
 	public boolean isValid(){
-		return isInputDataValid() && isOperationValid();
+		isInputDataValid();
+		isOperationValid();
+		if(errors.size()>0)
+			return false;
+		return true;
 	}
 	
-	private boolean isInputDataValid(){
+	private void isInputDataValid(){
 		ArrayList<PoliticsCard> tempHand = game.getActualPlayer().getHand();
 		boolean found;
 		for(PoliticsCard c: politics){
@@ -46,12 +53,11 @@ public class ObtainPermit extends Action {
 					break;
 				}
 			if(found==false)
-				return false;
+				errors.add("Invalid input cards");
 		}
-		return true;
 	}
 	
-	private boolean isOperationValid() {
+	private void isOperationValid() {
 	    Balcony chosenBalcony = game.getMap().getBalcony(regionIndex);
 	    ArrayList<Councilor> tmpBalcony = new ArrayList<Councilor>(Arrays.asList(chosenBalcony.getCouncilors()));
 	    for(PoliticsCard p: politics){
@@ -68,16 +74,14 @@ public class ObtainPermit extends Action {
 	        jollycnt++;
 	      }
 	    }
-	    if( /* you have the right cards and enough money */
-	      counter == politics.length && (
-	        (counter==1 && game.getActualPlayer().getCoins()>=(10 + jollycnt)) ||
+	    /* you have the right cards and enough money */
+	    if(!(counter == politics.length))
+	    	errors.add("Invalid input cards");
+	    else if(!(counter==1 && game.getActualPlayer().getCoins()>=(10 + jollycnt)) ||
 	        (counter==2 && game.getActualPlayer().getCoins()>=(7 + jollycnt)) ||
 	        (counter==3 && game.getActualPlayer().getCoins()>=(4 + jollycnt)) ||
-	        (counter==4 && game.getActualPlayer().getCoins()>=(0 + jollycnt))
-	      )
-	    )
-	      return true;
-	   return false;
+	        (counter==4 && game.getActualPlayer().getCoins()>=(0 + jollycnt)))
+	    		errors.add("You have not enought money");
 	  }
 	  
 	  private void payCards(int cards, int jolly) {
@@ -102,9 +106,10 @@ public class ObtainPermit extends Action {
 	 * @param the balcony you want to satisfy
 	 */
 	
-	public void execute() {//il client una volta ricevuto l'ack deve eliminare le carte politica dalla mano
+	public ActionReturn execute() {//il client una volta ricevuto l'ack deve eliminare le carte politica dalla mano
 	    payCards(counter, jollycnt);
 		PermitsCard card = game.getMap().getPermitsDeck(regionIndex).getSlot(slot,true);
 		game.getActualPlayer().addPermits(card);
+		return new ActionReturn(true,"",false,false);
 	}
 }

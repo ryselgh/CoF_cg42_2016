@@ -11,10 +11,13 @@ public class ShiftCouncilSpeed extends Action{
 	private Game game;
 	private int balconyIndex;
 	private Councilor councilor;
+	private ArrayList<String> errors;
+	private boolean disable = false;
 	
 	public ShiftCouncilSpeed(int balconyIndex, Councilor councilor){
 		this.balconyIndex = balconyIndex;
 		this.councilor = councilor;
+		errors = new ArrayList<String>();
 	}
 	public void setGame(Game game){
 		this.game = game;
@@ -27,9 +30,10 @@ public class ShiftCouncilSpeed extends Action{
 				return true;
 			}
 		}
+		errors.add("Invalid input councilor");
 		return false;
 	}
-	public void execute() {
+	public ActionReturn execute() {
 		ArrayList<Councilor> tmpBalcony = new ArrayList<Councilor>();
 		Councilor[] temp = game.getMap().getBalcony(balconyIndex).getCouncilors();
 		tmpBalcony.addAll(Arrays.asList(temp));
@@ -39,6 +43,7 @@ public class ShiftCouncilSpeed extends Action{
 		game.getMap().getCouncilorsPool().remove(councilor);
 		game.getMap().getBalcony(balconyIndex).setCouncilor(tmpBalcony.toArray(new Councilor[0]));
 		game.getMap().getAssistantsPool().add(game.getActualPlayer().getAvailableAssistants().remove(0));
+		return new ActionReturn(true,"",false,false);
 		
 	}
 }
