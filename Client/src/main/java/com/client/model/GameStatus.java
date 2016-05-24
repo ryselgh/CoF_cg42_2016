@@ -2,7 +2,9 @@ package com.client.model;
 
 import java.util.ArrayList;
 
-public class GameStatus {
+import com.client.ClientObservable;
+
+public class GameStatus extends ClientObservable{
 
 	
 	/*Game Status*/
@@ -23,9 +25,12 @@ public class GameStatus {
 	private ArrayList<ArrayList<BonusInfo>> PlayerKingBonus;
 	private ArrayList<ArrayList<String>> hand;
 	private String drawnCard;
-	//BonusToken?
 	
 	/*Map Status*/
+	private String[][] map = new String[15][5];
+	private ArrayList<String> cityNames;
+	private ArrayList<ArrayList<String>> closeCities;
+	private ArrayList<ArrayList<BonusInfo>> cityTokens;
 	private ArrayList<ArrayList<Integer>> cityEmporiums; // Cities: A = 1, B = 2, ..., O = 15; Emporium's owner: Player1 = 1, etc...
 	private ArrayList<ArrayList<String>> balcony; //Sea:0, Hill:1, Mountain:2, King:3; 2nd dimentsion: from 0 to 3 strings that identify the color	
 	private int kingLocation; //A-O -> 1-15
@@ -41,7 +46,56 @@ public class GameStatus {
 	private ArrayList<Integer> ItemPrice;
 	
 	
+	public GameStatus(){
+		//importer method
+		constructMap();
+	}
 	
+	
+	private void constructMap() {
+		String[] initialsRowOne = {"A","C","F","I","K","N"};
+		String[] initialsRowTwo = {"B","D","G","J","L","O"};
+		String[] initialsRowThree = {"E"," ","H"," ","M"," "};
+		
+		//Region separators
+		for(int i=0;i<15;i++){
+			for(int j=0;j<5;j++){
+				if(i==4 || i==10)
+					map[i][j] = "|";
+			}
+		}
+		
+		//Cities
+		for(int i=0;i<15;i++){
+			for(int j=0;j<5;j++){
+				switch(j){
+					case 1:
+						if(i%2==0 && !map[i][j].equals("|"))
+							map[i][j]=initialsRowOne[i/2];
+						break;
+					case 2:
+						if(i%2==0 && !map[i][j].equals("|"))
+							map[i][j]=initialsRowTwo[i/2];
+						break;
+					case 3:
+						if(i%2==0 && !map[i][j].equals("|"))
+							map[i][j]=initialsRowThree[i/2];
+						break;
+				}
+			}
+		}
+		
+		//Fill empty spaces
+		for(int i=0;i<15;i++){
+			for(int j=0;j<5;j++){
+				if(map[i][j].equals(null))
+					map[i][j] = " ";
+			}
+		}
+		
+	}
+
+
 	/**
 	 * @return the playersQty
 	 */
@@ -353,6 +407,54 @@ public class GameStatus {
 	 */
 	public void setItemPrice(ArrayList<Integer> itemPrice) {
 		ItemPrice = itemPrice;
+	}
+
+
+	/**
+	 * @return the closeCities
+	 */
+	public ArrayList<ArrayList<String>> getCloseCities() {
+		return closeCities;
+	}
+
+
+	/**
+	 * @param closeCities the closeCities to set
+	 */
+	public void setCloseCities(ArrayList<ArrayList<String>> closeCities) {
+		this.closeCities = closeCities;
+	}
+
+
+	/**
+	 * @return the cityNames
+	 */
+	public ArrayList<String> getCityNames() {
+		return cityNames;
+	}
+
+
+	/**
+	 * @param cityNames the cityNames to set
+	 */
+	public void setCityNames(ArrayList<String> cityNames) {
+		this.cityNames = cityNames;
+	}
+
+
+	/**
+	 * @return the cityTokens
+	 */
+	public ArrayList<ArrayList<BonusInfo>> getCityTokens() {
+		return cityTokens;
+	}
+
+
+	/**
+	 * @param cityTokens the cityTokens to set
+	 */
+	public void setCityTokens(ArrayList<ArrayList<BonusInfo>> cityTokens) {
+		this.cityTokens = cityTokens;
 	}
 	
 	

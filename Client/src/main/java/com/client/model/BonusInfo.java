@@ -28,7 +28,7 @@ public class BonusInfo{
 	/**
 	 * @return the quantity
 	 */
-	public int getQuantity() {
+	public int getQnt() {
 		return quantity;
 	}
 	
