@@ -15,7 +15,7 @@ import com.server.values.RegionName;
 public class MainAction {
 
 	private int actionCounter;
-	private Game game;
+	protected Game game;
 	
 	
 	/**
@@ -49,17 +49,6 @@ public class MainAction {
 	
 	public void addActionCounter(int i){
 		this.actionCounter += i;
-	}
-	
-	private int parseRegion(String reg){
-		for(int i=0;i<RegionName.values().length;i++){
-			if(reg.toLowerCase().equals(RegionName.values()[i].toString().toLowerCase()))
-			{
-				return i;
-			}
-		}
-		return -1;
-			
 	}
 	
 	/*----------------------- 1st Main Action ----------------------*/
@@ -162,10 +151,9 @@ public class MainAction {
 	 */
 	
 	public void moveKing(City toCity){
-		int oldCoin = game.getActualPlayer().getCoins();
-		int toPay = game.getGraphMap().shortestPathCost(toCity);
+		int cost = game.getGraphMap().shortestPathCost(toCity);
 		game.getMap().getKing().setLocation(toCity);
-		game.getActualPlayer().setCoins(oldCoin - toPay);
+		game.getActualPlayer().addCoins(-cost);
 	}
 	
 	/*------------------- END OF 2nd Main Action -------------------*/

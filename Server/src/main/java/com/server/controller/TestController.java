@@ -67,7 +67,7 @@ public class TestController {
 	}
 
 	private void turnLoop() {// rappresenta un giro completo di turni, sia di
-								// gioco che di market
+		// gioco che di market
 		while (true) {
 			market = new Market();
 			boolean victory = false, bought = false;
@@ -210,7 +210,7 @@ public class TestController {
 		int regIndex;
 		int choice = cli.speedActionChoice();
 		switch (choice) {// non c'è il default perchè non ci
-							// arriverà comunque
+		// arriverà comunque
 		case 1:
 			if (speedAction.canBuyAssistant()) {
 				speedAction.buyAssistant();
@@ -254,7 +254,7 @@ public class TestController {
 		int regIndex;
 		int choice = cli.mainActionChoice();
 		switch (choice) {// non c'è il default perchè non ci
-							// arriverà comunque
+		// arriverà comunque
 		case 1:
 			regIndex = cli.getTargetRegion(0);
 			inCards = cli.waitInputCards(game.getPlayers().get(turn).getHand());
@@ -325,7 +325,7 @@ public class TestController {
 	}
 
 	private void collectBonus(Bonus b)// NOTA: AGISCE SUL GIOCATORE CHE STA
-										// GIOCANDO IL TURNO
+	// GIOCANDO IL TURNO
 	{
 		BonusToken[] selected = null;
 		int permIndex;
@@ -379,7 +379,7 @@ public class TestController {
 			game.getActualPlayer().addPermits(game.getMap().getPermitsDeck(regIndex).getSlot(permIndex, true));
 			break;
 		case BONUSCARD:// bonus di una carta permesso in tuo possesso usata o
-						// meno
+			// meno
 			ArrayList<PermitsCard> pcOwned = game.getActualPlayer().getPermits();
 			permIndex = cli.getPermitIndex(pcOwned);
 			for (Bonus bo : pcOwned.get(permIndex).getBonus())
@@ -397,7 +397,7 @@ public class TestController {
 		ArrayList<BonusToken> bts = new ArrayList<BonusToken>();
 		for (City c : game.getMap().getCity())
 			if (c.hasEmporium(game.getPlayers().get(turn)) && c.getBonusToken() != null
-					&& !Bonus.hasNobilityBonus(c.getBonusToken().getBonus()))
+			&& !Bonus.hasNobilityBonus(c.getBonusToken().getBonus()))
 				bts.add(c.getBonusToken());
 		return bts.toArray(new BonusToken[0]);
 	}
