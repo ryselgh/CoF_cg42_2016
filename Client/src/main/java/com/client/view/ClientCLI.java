@@ -13,7 +13,7 @@ public class ClientCLI extends ClientObservable implements ClientObserver{
 
 	private GameStatus game;
 	private PrintStream out;
-	private static String[][] map = new String[15][5];
+	private String[][] map = new String[15][5];
 
 	/**
 	 * constructor of the class

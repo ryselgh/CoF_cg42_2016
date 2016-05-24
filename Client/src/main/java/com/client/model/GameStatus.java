@@ -48,52 +48,9 @@ public class GameStatus extends ClientObservable{
 	
 	public GameStatus(){
 		//importer method
-		constructMap();
 	}
 	
 	
-	private void constructMap() {
-		String[] initialsRowOne = {"A","C","F","I","K","N"};
-		String[] initialsRowTwo = {"B","D","G","J","L","O"};
-		String[] initialsRowThree = {"E"," ","H"," ","M"," "};
-		
-		//Region separators
-		for(int i=0;i<15;i++){
-			for(int j=0;j<5;j++){
-				if(i==4 || i==10)
-					map[i][j] = "|";
-			}
-		}
-		
-		//Cities
-		for(int i=0;i<15;i++){
-			for(int j=0;j<5;j++){
-				switch(j){
-					case 1:
-						if(i%2==0 && !map[i][j].equals("|"))
-							map[i][j]=initialsRowOne[i/2];
-						break;
-					case 2:
-						if(i%2==0 && !map[i][j].equals("|"))
-							map[i][j]=initialsRowTwo[i/2];
-						break;
-					case 3:
-						if(i%2==0 && !map[i][j].equals("|"))
-							map[i][j]=initialsRowThree[i/2];
-						break;
-				}
-			}
-		}
-		
-		//Fill empty spaces
-		for(int i=0;i<15;i++){
-			for(int j=0;j<5;j++){
-				if(map[i][j].equals(null))
-					map[i][j] = " ";
-			}
-		}
-		
-	}
 
 
 	/**

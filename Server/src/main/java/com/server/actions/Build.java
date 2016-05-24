@@ -59,9 +59,9 @@ public class Build extends Action{
 			if(!l.equals(Character.toString(city.getName().toLowerCase().charAt(0)))){
 				errors.add("This permit can't build on the selected city");
 			}
-			if(game.getActualPlayer().getAvailableAssistants().size()<city.getEmporium().length){
-				errors.add("You have not enought assistants");
-			}
+		if(game.getActualPlayer().getAvailableAssistants().size()<city.getEmporium().length){
+			errors.add("You have not enought assistants");
+		}
 	}
 	
 	/**

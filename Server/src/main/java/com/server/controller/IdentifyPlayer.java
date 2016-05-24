@@ -5,6 +5,8 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Observable;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class IdentifyPlayer extends Observable implements Runnable  {
 	private Socket socket;
@@ -12,6 +14,7 @@ public class IdentifyPlayer extends Observable implements Runnable  {
 	private PrintWriter socketOut;
 	private String userName;
 	private Lobby lobby;
+	private Logger logger;
 	
 	public IdentifyPlayer(Socket s, Lobby l){
 		this.socket = s;
@@ -36,7 +39,7 @@ public class IdentifyPlayer extends Observable implements Runnable  {
 			getName();
 		} catch (IOException e) {
 			// MSG: ERROR HANDLING SOCKET I/O
-			e.printStackTrace();
+			logger.log(Level.SEVERE, "I/O Error in socket connection: getName()",e);
 		}
 	}
 }
