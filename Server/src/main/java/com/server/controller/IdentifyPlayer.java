@@ -23,7 +23,9 @@ public class IdentifyPlayer extends Observable implements Runnable  {
 		socketOut = new PrintWriter(socket.getOutputStream());
 		//get tramite socket
 		ClientHandler client = new ClientHandler(socket,socketIn,socketOut,userName);
+		lobby.addObserver(client);
 		this.addObserver(lobby);
+		client.addObserver(lobby);
 		setChanged();
 		notifyObservers(client);
 	}

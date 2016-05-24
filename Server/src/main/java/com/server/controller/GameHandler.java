@@ -1,5 +1,10 @@
 package com.server.controller;
 
-public class GameHandler {
+import java.util.ArrayList;
 
+public class GameHandler {
+	ArrayList<ClientHandler> players;
+	public GameHandler(ArrayList<ClientHandler> pl){
+		players = pl;
+	}
 }
