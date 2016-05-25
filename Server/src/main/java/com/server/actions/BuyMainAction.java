@@ -2,7 +2,9 @@ package com.server.actions;
 
 import java.util.ArrayList;
 
+import com.server.model.board.Bonus;
 import com.server.model.gamelogic.Game;
+import com.server.values.BonusType;
 
 public class BuyMainAction extends Action{
 	private Game game;
@@ -29,8 +31,15 @@ public class BuyMainAction extends Action{
 	 */
 	
 	public ActionReturn execute() {
+		if(errors.size()>0){
+			String errorsStr = "";
+			for(String e : errors)
+				errorsStr += "\n" + e;
+			return new ActionReturn(false,errorsStr,null);
+		}
 		for(int i=0;i<3;i++)
 			game.getMap().getAssistantsPool().add(game.getActualPlayer().getAvailableAssistants().remove(0));
-		return new ActionReturn(true,"",false,true);
+		Bonus[] toRet = new Bonus[] {new Bonus(BonusType.MAINACTION,1)};
+		return new ActionReturn(true,"",toRet);
 	}
 }

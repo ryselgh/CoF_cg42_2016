@@ -32,8 +32,14 @@ public class BuyAssistant extends Action{
 	 */
 	
 	public ActionReturn execute() {
+		if(errors.size()>0){
+			String errorsStr = "";
+			for(String e : errors)
+				errorsStr += "\n" + e;
+			return new ActionReturn(false,errorsStr,null);
+		}
 		game.getActualPlayer().addCoins(-3);
 		game.getActualPlayer().addAssistant(game.getMap().getAssistant(1));
-		return new ActionReturn(true,"",false,false);
+		return new ActionReturn(true,"",null);
 	}
 }

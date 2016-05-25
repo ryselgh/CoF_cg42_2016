@@ -2,12 +2,15 @@ package com.server.controller;
 
 import java.util.ArrayList;
 
+import org.w3c.dom.Document;
+
 public class Room {
 	private ArrayList<ClientHandler> players;
-	private String MapLocation;
+	private Document rawMap;
 	private ClientHandler admin;
 	private int maxPlayers, minPlayers;
 	private String name;
+	private boolean defaultMap = true;
 	
 	public Room(String name, ClientHandler adm, int maxPlayers, int minPlayers){
 		this.name = name;
@@ -31,7 +34,9 @@ public class Room {
 	}
 	
 	public void startRoom(){
-		
+		GameHandler gh = new GameHandler(players,defaultMap,rawMap);
+		Thread thread = new Thread(gh);
+		thread.start();
 	}
 	
 	public boolean leaveRoom(ClientHandler player){
@@ -53,8 +58,9 @@ public class Room {
 			return true;
 		return false;
 	}
-	public void setMap(String mapLoc){//non lo metto nel costruttore perchè va passata serializzata, credo
-		this.MapLocation = mapLoc;
+	public void setMap(Document map){//non lo metto nel costruttore perchè va passata serializzata, credo
+		this.rawMap = map;
+		this.defaultMap = false;
 	}
 	
 

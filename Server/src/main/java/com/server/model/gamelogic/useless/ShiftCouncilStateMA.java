@@ -1,6 +1,10 @@
-package com.server.model.gamelogic;
+package com.server.model.gamelogic.useless;
 
 import com.server.model.board.Councilor;
+import com.server.model.gamelogic.Context;
+import com.server.model.gamelogic.Game;
+import com.server.model.gamelogic.MainAction;
+import com.server.model.gamelogic.State;
 
 public class ShiftCouncilStateMA extends MainAction implements State{
 

@@ -2,6 +2,9 @@ package com.server.model.gamelogic ;
 
 import java.util.ArrayList;
 
+import org.w3c.dom.Document;
+
+import com.server.model.board.City;
 import com.server.model.board.Map;
 import com.server.model.market.Market;
 
@@ -22,7 +25,7 @@ public class Game {
 	private Player actualPlayer;
 	private boolean finalTurn;
 	private boolean defaultMap;
-	private String mapDir;
+	private Document rawMap;
 	private MainAction mainAction;
 	private SpeedAction speedAction;
 	private GraphMap graphMap;
@@ -35,10 +38,10 @@ public class Game {
 	 * @throws Exception if the number of players is less than 2 or greater than {@value #MAXPLAYERS}
 	 */
 	
-	public Game(int playersQty, boolean defaultMap, String fileDir) {
+	public Game(int playersQty, boolean defaultMap, Document rawMap) {
 		this.playersQty = playersQty;
 		this.defaultMap = defaultMap;
-		this.mapDir = fileDir;
+		this.rawMap = rawMap;
 		mainAction = new MainAction(this);
 		speedAction = new SpeedAction(this);
 		this.initializeObjects();
@@ -63,7 +66,7 @@ public class Game {
 		actualPlayer = players.get(0);
 		
 		//Map
-		map = new Map(players.toArray(new Player[players.size()]),defaultMap,"");
+		map = new Map(players.toArray(new Player[players.size()]),defaultMap,rawMap);
 		graphMap = new GraphMap(map);
 		
 		
@@ -145,6 +148,14 @@ public class Game {
 		this.actualPlayer = this.players.get(index);
 	}
 	
+	public int getActualPlayerIndex(){
+		for(int i=0;i<players.size();i++)
+			if(players.get(i).equals(actualPlayer))
+				return i;
+		return -1;
+				
+	}
+	
 	/**
 	 * @return the mainAction
 	 */
@@ -164,6 +175,13 @@ public class Game {
 	 */
 	public GraphMap getGraphMap() {
 		return graphMap;
+	}
+	
+	public City getCityFromName(String name){
+		for(City c : this.getMap().getCity())
+			if(c.getName().equals(name))
+				return c;
+		return null;
 	}
 	
 }

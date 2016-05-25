@@ -1,4 +1,9 @@
-package com.server.model.gamelogic;
+package com.server.model.gamelogic.useless;
+
+import com.server.model.gamelogic.Context;
+import com.server.model.gamelogic.Game;
+import com.server.model.gamelogic.SpeedAction;
+import com.server.model.gamelogic.State;
 
 public class BuyAssistantState extends SpeedAction implements State{
 

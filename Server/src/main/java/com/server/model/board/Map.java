@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
 import com.server.model.decks.PermitsCard;
@@ -47,17 +48,17 @@ public class Map {
 	 */
 	
 	
-	public Map(Player[] p, boolean _default, String file) {
+	public Map(Player[] p, boolean _default, Document rawMap) {
 		this.players = p;
 		initializeMapObjects();
 		try {
-			importMap(file,_default);
+			importMap(rawMap,_default);
 		} catch (Exception e) {
 			logger.log(Level.SEVERE, "Something went wrong while importing the map", e);
 		}
 	}
 
-	public int importMap(String file, boolean _default) throws ParserConfigurationException, SAXException, IOException{
+	public int importMap(Document file, boolean _default) throws ParserConfigurationException, SAXException, IOException{
 		Importer reader = new Importer(file,_default, this, players);
 		reader.startImport();
 		

@@ -107,9 +107,16 @@ public class ObtainPermit extends Action {
 	 */
 	
 	public ActionReturn execute() {//il client una volta ricevuto l'ack deve eliminare le carte politica dalla mano
-	    payCards(counter, jollycnt);
+		if(errors.size()>0){
+			String errorsStr = "";
+			for(String e : errors)
+				errorsStr += "\n" + e;
+			return new ActionReturn(false,errorsStr,null);
+		}
+		
+		payCards(counter, jollycnt);
 		PermitsCard card = game.getMap().getPermitsDeck(regionIndex).getSlot(slot,true);
 		game.getActualPlayer().addPermits(card);
-		return new ActionReturn(true,"",false,false);
+		return new ActionReturn(true,"",card.getBonus());
 	}
 }
