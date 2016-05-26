@@ -2,17 +2,16 @@ package com.communication.market ;
 
 import java.io.Serializable;
 
+import com.communication.ObjectDTO;
 import com.communication.gamelogic.PlayerDTO;
 
 public class OnSaleDTO implements Serializable{
-	
-	
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 2787902738966299455L;
+	private static final long serialVersionUID = -2466917896104839445L;
 	private PlayerDTO seller;
-	private Object obj;	
+	private ObjectDTO obj;	
 	private int price;
 	
 	
@@ -37,7 +36,7 @@ public class OnSaleDTO implements Serializable{
 	/**
 	 * @param obj the obj to set
 	 */
-	public void setObj(Object obj) {
+	public void setObj(ObjectDTO obj) {
 		this.obj = obj;
 	}
 	/**

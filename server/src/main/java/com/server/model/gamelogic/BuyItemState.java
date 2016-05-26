@@ -19,7 +19,7 @@ public class BuyItemState implements State{
 		this.game = gamehandler.getGame();
 		
 		OnSaleInterface toBuy = clienthandler.getItemToBuy(game.getMarket().getObjectsOnSale());
-		if(toBuy.equals(null))
+		if(toBuy == null)
 			clienthandler.sendToClient("NullBuyReceived", null);
 		else if(isValid(toBuy)){
 				clienthandler.sendToClient("ValidBuyReceived", null);

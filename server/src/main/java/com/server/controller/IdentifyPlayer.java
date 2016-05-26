@@ -36,8 +36,7 @@ public class IdentifyPlayer extends Observable implements Runnable  {
 			try {
 				in = (CommunicationObject) inputStream.readObject();
 			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				logger.log(Level.SEVERE, "Failed o read object", e);
 			}
 			inputName = in.getMsg();
 			correct = isCorrect(inputName);

@@ -3,17 +3,14 @@ package com.communication.gamelogic ;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import org.w3c.dom.Document;
-
 import com.communication.board.MapDTO;
 import com.communication.market.MarketDTO;
 
 public class GameDTO implements Serializable{
-
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 6910401517009447582L;
+	private static final long serialVersionUID = -4159569654633234785L;
 	private static final int MAXPLAYERS = 8;
 	private static final int COINOFFSET = 10;
 	private static final int ASSISTOFFSET = 1;
@@ -25,11 +22,8 @@ public class GameDTO implements Serializable{
 	private PlayerDTO actualPlayer;
 	private boolean finalTurn;
 	private boolean defaultMap;
-	private Document rawMap;
 	private MainActionDTO mainAction;
 	private SpeedActionDTO speedAction;
-	private GraphMapDTO graphMap;
-	
 	
 	/**
 	 * @return the players
@@ -116,18 +110,6 @@ public class GameDTO implements Serializable{
 		this.defaultMap = defaultMap;
 	}
 	/**
-	 * @return the rawMap
-	 */
-	public Document getRawMap() {
-		return rawMap;
-	}
-	/**
-	 * @param rawMap the rawMap to set
-	 */
-	public void setRawMap(Document rawMap) {
-		this.rawMap = rawMap;
-	}
-	/**
 	 * @return the mainAction
 	 */
 	public MainActionDTO getMainAction() {
@@ -150,18 +132,6 @@ public class GameDTO implements Serializable{
 	 */
 	public void setSpeedAction(SpeedActionDTO speedAction) {
 		this.speedAction = speedAction;
-	}
-	/**
-	 * @return the graphMap
-	 */
-	public GraphMapDTO getGraphMap() {
-		return graphMap;
-	}
-	/**
-	 * @param graphMap the graphMap to set
-	 */
-	public void setGraphMap(GraphMapDTO graphMap) {
-		this.graphMap = graphMap;
 	}
 	/**
 	 * @return the maxplayers

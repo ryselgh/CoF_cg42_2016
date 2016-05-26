@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.server.actions.Action;
 import com.server.model.board.BonusToken;
@@ -19,9 +21,9 @@ import com.server.model.market.OnSaleInterface;
 public class ClientHandler extends Observable implements Observer, Runnable{
 	private Socket socket;
 	private ObjectInputStream inputStream;
-	private ObjectOutputStream outputStream;
-	
+	private ObjectOutputStream outputStream;	
 	private String userName;
+	private Logger logger;
 	
 	public ClientHandler(Socket s, ObjectInputStream si, ObjectOutputStream so, String un){
 		this.socket = s;
@@ -55,8 +57,7 @@ public class ClientHandler extends Observable implements Observer, Runnable{
 			outputStream.writeObject(toSend);
 			outputStream.flush();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.log(Level.SEVERE, "Failed to send", e);
 		}
 	}
 	
@@ -65,8 +66,7 @@ public class ClientHandler extends Observable implements Observer, Runnable{
 		try {
 			in = (CommunicationObject) inputStream.readObject();
 		} catch (ClassNotFoundException | IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.log(Level.SEVERE, "Failed to receive", e);
 		}
 		return in;
 	}

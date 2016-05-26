@@ -25,7 +25,7 @@ public class SellItemState implements State{
 		this.game = gamehandler.getGame();
 		
 		ItemOnSale toSell = clienthandler.getItemToSell();
-		if(toSell.getObj().equals(null))
+		if(toSell.getObj() == null)
 			clienthandler.sendToClient("NullSellReceived", null);
 		else if(isValid(toSell)){
 				addToMarket(toSell);

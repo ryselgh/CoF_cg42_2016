@@ -2,13 +2,15 @@ package com.communication.gamelogic;
 
 import java.io.Serializable;
 
+import com.communication.ObjectDTO;
+
 public class ItemOnSaleDTO implements Serializable{
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 7966883847105139462L;
+	private static final long serialVersionUID = -5035687814804543490L;
 	private int price;
-	private Object obj;
+	private ObjectDTO obj;
 	
 	
 	/**
@@ -26,13 +28,13 @@ public class ItemOnSaleDTO implements Serializable{
 	/**
 	 * @return the obj
 	 */
-	public Object getObj() {
+	public ObjectDTO getObj() {
 		return obj;
 	}
 	/**
 	 * @param obj the obj to set
 	 */
-	public void setObj(Object obj) {
+	public void setObj(ObjectDTO obj) {
 		this.obj = obj;
 	}
 	
