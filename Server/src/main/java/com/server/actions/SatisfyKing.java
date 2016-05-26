@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import com.server.model.board.Balcony;
+import com.server.model.board.Bonus;
 import com.server.model.board.City;
 import com.server.model.board.Councilor;
 import com.server.model.decks.PoliticsCard;
@@ -42,9 +43,16 @@ public class SatisfyKing extends Action {
 	 */
 	
 	public ActionReturn execute(){
+		if(errors.size()>0){
+			String errorsStr = "";
+			for(String e : errors)
+				errorsStr += "\n" + e;
+			return new ActionReturn(false,errorsStr,null);
+		}
 		payCards();
 		game.getMap().getKing().setLocation(destination);
-		return new ActionReturn(true,"",false,false);
+		Bonus[] bonusToCollect = getCitiesBonus(destination);
+		return new ActionReturn(true,"",bonusToCollect);
 	}
 	
 	public boolean isValid(){
@@ -120,4 +128,30 @@ public class SatisfyKing extends Action {
 	        break;
 	    }
 	  }
+	  
+	  private Bonus[] getCitiesBonus(City startcity){
+			ArrayList<City> checked = new ArrayList<City>();
+			ArrayList<City> tocheck = new ArrayList<City>();
+			ArrayList<Bonus> found = new ArrayList<Bonus>();
+			found.addAll(new ArrayList<Bonus>(Arrays.asList(startcity.getBonusToken().getBonus())));//aggiungo i bonus della città di partenza
+			for (String c : startcity.getCloseCity())
+				tocheck.add(game.getCityFromName(c));//aggiungo le città vicine alla lista da controllare
+			while (true) {
+				if (tocheck.size() == 0)//se la lista è vuota break
+					break;
+				for (int i = 0; i < tocheck.size(); i++) {
+					if (tocheck.get(i).hasEmporium(game.getActualPlayer())) {//se la città da controllare ha un emporio
+						found.addAll(new ArrayList<Bonus>(Arrays.asList(tocheck.get(i).getBonusToken().getBonus())));//aggiungo i bonus del token di quella città
+						checked.add(tocheck.get(i));//la aggiungo alla lista delle città controllate
+						for (String c : tocheck.get(i).getCloseCity())//aggiungo i suoi vicini alle città da controllare SE NON LE HO GIà CONTROLLATE
+							if (!checked.contains(game.getCityFromName(c)))
+								tocheck.add(game.getCityFromName(c));
+						tocheck.remove(i);//rimuovo la città appena controllata
+					}
+				}
+			}
+			Bonus[] stockArr = new Bonus[found.size()];
+			stockArr = found.toArray(stockArr);
+			return stockArr;
+		}
 }

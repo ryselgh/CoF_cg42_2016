@@ -50,19 +50,20 @@ public class Importer {
 	 * @throws SAXException 
 	 */
 	
-	public Importer(String loc, boolean def, Map m, Player[] p) throws ParserConfigurationException, SAXException, IOException{
+	public Importer(Document rawMap, boolean def, Map m, Player[] p) throws ParserConfigurationException, SAXException, IOException{
 		this.players = p;
 		this.mapInst = m;
-		if (def)
+		if (def) {
 			this.location = "Default map.xml";
+			File inputFile = new File(location);
+			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder dBuilder;
+			dBuilder = dbFactory.newDocumentBuilder();
+			doc = (Document) dBuilder.parse(inputFile);
+		}
 		else
-			this.location = loc;
-
-		File inputFile = new File(location);
-		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-		DocumentBuilder dBuilder;
-		dBuilder = dbFactory.newDocumentBuilder();
-		doc = (Document) dBuilder.parse(inputFile);
+			doc = rawMap;
+		
 		doc.getDocumentElement().normalize();
 	}
 	

@@ -1,6 +1,8 @@
 package com.server.controller;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Observable;
@@ -22,17 +24,44 @@ public class IdentifyPlayer extends Observable implements Runnable  {
 	}
 	
 	private void getName() throws IOException{
-		socketIn = new Scanner(socket.getInputStream());
-		socketOut = new PrintWriter(socket.getOutputStream());
-		//get tramite socket
-		ClientHandler client = new ClientHandler(socket,socketIn,socketOut,userName);
+		ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
+		ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
+		
+		outputStream.writeObject(new CommunicationObject("Please tell us your nickname, only letters allowed",null));
+		outputStream.flush();
+		boolean correct=false;
+		String inputName = "";
+		while (!correct) {
+			CommunicationObject in = null;
+			try {
+				in = (CommunicationObject) inputStream.readObject();
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			inputName = in.getMsg();
+			correct = isCorrect(inputName);
+			if (!correct) {
+				outputStream.writeObject(new CommunicationObject("Invalid nickname. Insert another one", null));
+				outputStream.flush();
+			}
+		}
+		this.userName = inputName;
+		ClientHandler client = new ClientHandler(socket,inputStream,outputStream,userName);
+		Thread thread = new Thread(client);
+		thread.start();
 		lobby.addObserver(client);
 		this.addObserver(lobby);
 		client.addObserver(lobby);
 		setChanged();
 		notifyObservers(client);
 	}
-
+	
+	private boolean isCorrect(String name){
+		if(name.contains("[^abcdefghilmnopqrstuvzjkywxABCDEFGHILMNOPQRSTUVZJKYWX]"))//regex equivalente a tutti i caratteri a parte le lettere
+			return false;
+		return true;
+	}
 	@Override
 	public void run() {
 		try {

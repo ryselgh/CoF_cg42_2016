@@ -3,8 +3,10 @@ package com.server.controller;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
+
+import org.w3c.dom.Document;
 //comandi: newRoom(roomName,maxplayers, minplayers),   joinRoom(roomName)   startgame(roomName)--->requires admin
-//         getRoomList()--->obj ad hoc     leaveRoom(roomName)
+//         getRoomList()--->obj ad hoc     leaveRoom(roomName)    1-setMap_mapname-->2-send serialized xml---->requires admin 
 
 public class Lobby extends Observable implements Runnable, Observer  {
 	private ArrayList<ClientHandler> clients;
@@ -62,6 +64,7 @@ public class Lobby extends Observable implements Runnable, Observer  {
 			sendToClient(sender, commandResponse[resp +1]);
 		}
 	}
+	
 	
 	private void sendToClient(ClientHandler client, String msg){
 		setChanged();

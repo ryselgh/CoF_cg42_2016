@@ -34,6 +34,13 @@ public class ShiftCouncilSpeed extends Action{
 		return false;
 	}
 	public ActionReturn execute() {
+		if(errors.size()>0){
+			String errorsStr = "";
+			for(String e : errors)
+				errorsStr += "\n" + e;
+			return new ActionReturn(false,errorsStr,null);
+		}
+		
 		ArrayList<Councilor> tmpBalcony = new ArrayList<Councilor>();
 		Councilor[] temp = game.getMap().getBalcony(balconyIndex).getCouncilors();
 		tmpBalcony.addAll(Arrays.asList(temp));
@@ -43,7 +50,7 @@ public class ShiftCouncilSpeed extends Action{
 		game.getMap().getCouncilorsPool().remove(councilor);
 		game.getMap().getBalcony(balconyIndex).setCouncilor(tmpBalcony.toArray(new Councilor[0]));
 		game.getMap().getAssistantsPool().add(game.getActualPlayer().getAvailableAssistants().remove(0));
-		return new ActionReturn(true,"",false,false);
+		return new ActionReturn(true,"",null);
 		
 	}
 }
