@@ -1,5 +1,5 @@
 eclipse.preferences.version=1
 extraProperties=sonar.java.coveragePlugin\=jacoco\r\nsonar.language\=java\r\nsonar.jacoco.reportPath\=C\:\\Users\\Erio\\git\\prog-info\\Client/../target/jacoco.exec\r\nsonar.host.url\=http\://localhost\:9000/\r\nsonar.dynamicAnalysis\=reuseReports
-projectKey=it.polimi.ingsw\:Client
+projectKey=it.polimi.ingsw\:client
 serverUrl=http\://localhost\:9000
 version=2

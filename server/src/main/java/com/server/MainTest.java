@@ -20,7 +20,7 @@ import com.server.controller.TestController;
 
 
 
-public class Main{
+public class MainTest{
 
 	
 //	private Lobby lobby;
@@ -31,7 +31,7 @@ public class Main{
 //	private static GraphMap graph;
 	
 	
-	public Main() {
+	public MainTest() {
 		
 	}
 

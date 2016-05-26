@@ -6,10 +6,8 @@
 		<artifactId>cg42</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<groupId>it.polimi.ingsw</groupId>
-	<artifactId>Client</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>Client</name>
+	<artifactId>client</artifactId>
+	<name>client</name>
 	<url>http://maven.apache.org</url>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -20,6 +18,11 @@
 			<artifactId>junit</artifactId>
 			<version>3.8.1</version>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>it.polimi.ingsw</groupId>
+			<artifactId>communication</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 </project>
