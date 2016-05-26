@@ -38,11 +38,15 @@ public class IdentifyPlayer extends Observable implements Runnable  {
 			} catch (ClassNotFoundException e) {
 				logger.log(Level.SEVERE, "Failed o read object", e);
 			}
-			inputName = in.getMsg();
-			correct = isCorrect(inputName);
-			if (!correct) {
-				outputStream.writeObject(new CommunicationObject("Invalid nickname. Insert another one", null));
-				outputStream.flush();
+			if(in == null)
+				throw new NullPointerException("Something went wrong with the CommunicationObject");
+			else{
+				inputName = in.getMsg();
+				correct = isCorrect(inputName);
+				if (!correct) {
+					outputStream.writeObject(new CommunicationObject("Invalid nickname. Insert another one", null));
+					outputStream.flush();
+				}
 			}
 		}
 		this.userName = inputName;

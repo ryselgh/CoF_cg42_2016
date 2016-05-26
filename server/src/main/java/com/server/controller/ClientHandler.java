@@ -38,12 +38,15 @@ public class ClientHandler extends Observable implements Observer, Runnable{
 			try {
 				in = (CommunicationObject) inputStream.readObject();
 			} catch (ClassNotFoundException | IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				logger.log(Level.SEVERE,"Failed to read the CommunicationObject",e);
 			}
-			String command = in.getMsg();
-			setChanged();
-		    notifyObservers(command);//check di validità sul comando. sarà lo stesso che attua il client prima dell'invio, ma ripetuto qui sul server per controllare che non ci siano stati errori di trasmissione
+			if(in == null)
+				throw new NullPointerException("Something went wrong with the CommunicationObject");
+			else{
+				String command = in.getMsg();
+				setChanged();
+			    notifyObservers(command);//check di validità sul comando. sarà lo stesso che attua il client prima dell'invio, ma ripetuto qui sul server per controllare che non ci siano stati errori di trasmissione
+			}
 		}
 	}
 	
