@@ -13,7 +13,9 @@ public class Balcony
 
 	public Balcony(Councilor[] c) {
 		this.councilor = c; 
-		//this.region = region;
+		
+		if(c == null)
+			throw new IllegalArgumentException("Argument not valid.");
 	}
 
 	/**
