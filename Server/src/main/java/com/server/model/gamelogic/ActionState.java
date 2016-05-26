@@ -23,21 +23,23 @@ import com.server.model.board.City;
 import com.server.model.decks.PermitsCard;
 import com.server.model.decks.PoliticsCard;
 
-public class ActionState {
+public class ActionState implements State {
 	private Game game;
 	private int mainCounter = 1;
 	private int speedCounter = 1;
-	public ActionState(){}
 	private ClientHandler clienthandler;
 	private GameHandler gamehandler;
+
+	public ActionState(){}
 	
 	public void doAction(Context context) {
+		context.setState(this);
 		clienthandler = context.getClienthandler();
 		gamehandler = context.getGamehandler();
+		this.game = gamehandler.getGame();
+		PoliticsCard draw = game.getMap().getPoliticsDeck().draw();
+		clienthandler.sendToClient("StartTurn", draw);
 		while (mainCounter > 0 || speedCounter > 0) {
-			this.game = gamehandler.getGame();
-			PoliticsCard draw = game.getMap().getPoliticsDeck().draw();
-			clienthandler.sendToClient("StartTurn", draw);
 			clienthandler.sendToClient("AvailableActions", getAvailableActions());
 			boolean valid = false;
 			Action action = null;
@@ -52,7 +54,7 @@ public class ActionState {
 					clienthandler.sendToClient("ActionNotValid", ret.getError());
 				}
 			}
-			if(action instanceof Pass)
+			if(action instanceof Pass)//niente check perchè è abilitata solo quando mainaction già fatta
 				break;
 			ActionReturn ret = action.execute();
 			if (ret.getBonus() != null)
@@ -60,10 +62,15 @@ public class ActionState {
 					collectBonus(b);
 			decreaseCounter(action);
 		}
-		
 		//QUI DOVREBBE ESSERE FINITO IL TURNO DI UN GIOCATORE
+		gamehandler.changeState(context);
 	}
 	
+	public void restoreState(){//riverginizza lo stato per essere usato da un altro giocatore senza creare una nuova istanza
+		this.mainCounter = 1;
+		this.speedCounter = 1;
+		//il resto sta in context che viene cambiato dal gamehandler
+	}
 	private boolean[] getAvailableActions(){
 		//order
 		//main: build[0], obtainpermit[1], satisfyking[2], shiftcouncilmain[3]

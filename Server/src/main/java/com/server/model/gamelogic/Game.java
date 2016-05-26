@@ -56,7 +56,7 @@ public class Game {
 	 */
 	
 	private void initializeObjects() {
-		market = new Market (); // Will be implemented soon...
+		market = new Market (); 
 		players = new ArrayList<Player>(playersQty);
 				
 		//Players initialize
@@ -108,8 +108,7 @@ public class Game {
 	 */
 	
 	public Market getMarket() {
-		// TODO implement me
-		return null;	
+		return this.market;	
 	}
 	
 	/**

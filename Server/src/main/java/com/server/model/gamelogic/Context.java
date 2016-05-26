@@ -8,7 +8,6 @@ public class Context {
 	   private State state;
 	   private ClientHandler clienthandler;
 	   private GameHandler gamehandler;
-	   private int playerIndex;
 	   
 	   public Context(){
 	      state = null;
@@ -38,13 +37,6 @@ public class Context {
 		this.gamehandler = gamehandler;
 	}
 
-	public int getPlayerIndex() {
-		return playerIndex;
-	}
-
-	public void setPlayerIndex(int playerIndex) {
-		this.playerIndex = playerIndex;
-	}
 	   
 	   
 }

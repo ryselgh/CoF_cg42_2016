@@ -5,6 +5,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Scanner;
@@ -12,6 +13,8 @@ import java.util.Scanner;
 import com.server.actions.Action;
 import com.server.model.board.BonusToken;
 import com.server.model.decks.PermitsCard;
+import com.server.model.gamelogic.ItemOnSale;
+import com.server.model.market.OnSaleInterface;
 
 public class ClientHandler extends Observable implements Observer, Runnable{
 	private Socket socket;
@@ -88,7 +91,7 @@ public class ClientHandler extends Observable implements Observer, Runnable{
 		
 	}
 
-	public BonusToken[] getBonusToken(BonusToken[] tokenPool){
+	public BonusToken[] getBonusToken(BonusToken[] tokenPool){//IN TUTTI QUESTI GETTER C'è DA IMPLEMENTARE IL CHECK SUL PRIMO PARAMETRO (STRINGA) CHE DEVE IDENTIFICARE L'INPUT CORRETTAMENTE
 		sendToClient("OneBonusToken", tokenPool);
 		BonusToken[] ret = (BonusToken[]) getClientInput().getObj();
 		return ret;
@@ -103,6 +106,18 @@ public class ClientHandler extends Observable implements Observer, Runnable{
 	public PermitsCard getOwnedPermitsCard(){
 		sendToClient("OwnedPermitsCard", null);
 		PermitsCard ret = (PermitsCard) getClientInput().getObj();
+		return ret;
+	}
+	
+	public ItemOnSale getItemToSell(){
+		sendToClient("ItemToSell", null);
+		ItemOnSale ret = (ItemOnSale) getClientInput().getObj();
+		return ret;
+	}
+	
+	public OnSaleInterface getItemToBuy(ArrayList<OnSaleInterface> availableItems){
+		sendToClient("ItemToBuy", availableItems);
+		OnSaleInterface ret = (OnSaleInterface) getClientInput().getObj();
 		return ret;
 	}
 }

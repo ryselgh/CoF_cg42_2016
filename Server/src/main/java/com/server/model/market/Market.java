@@ -42,7 +42,11 @@ public class Market implements Iterator
 	public OnSaleInterface getObjOnSale(int arrayPointer) {
 			return objectsOnSale.get(arrayPointer);	
 	}
-
+	
+	public ArrayList<OnSaleInterface> getObjectsOnSale() {
+		return objectsOnSale;	
+}
+	
 	public void addObj(OnSaleInterface o)
 	{
 		objectsOnSale.add(o);
