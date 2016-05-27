@@ -165,9 +165,9 @@ public class TestController {
 			if (politicIndex == -1)
 				break;// go back
 			price = cli.getSellPrice();
-			OnSaleInterface polSale = new PoliticsOnSale(game.getActualPlayer(),
+			OnSaleInterface polSale = (OnSaleInterface) new PoliticsOnSale(game.getActualPlayer(),
 					game.getActualPlayer().getHand().get(politicIndex), price);
-			market.addObj(polSale);
+			market.addObj((OnSale) polSale);
 			marketAvailable = false;
 			break;
 		case 2:// SELL PERMIT
@@ -187,9 +187,9 @@ public class TestController {
 				} while (facedown);
 
 			price = cli.getSellPrice();
-			OnSaleInterface permSale = new PermitOnSale(game.getActualPlayer(),
+			OnSaleInterface permSale = (OnSaleInterface) new PermitOnSale(game.getActualPlayer(),
 					game.getActualPlayer().getPermits().get(permIndex), price);
-			market.addObj(permSale);
+			market.addObj((OnSale) permSale);
 			marketAvailable = false;
 			break;
 		case 3:// SELL ASSISTANT
@@ -198,9 +198,9 @@ public class TestController {
 				break;
 			}
 			price = cli.getSellPrice();
-			OnSaleInterface assSale = new AssistantOnSale(game.getActualPlayer(),
+			OnSaleInterface assSale = (OnSaleInterface) new AssistantOnSale(game.getActualPlayer(),
 					game.getActualPlayer().getAvailableAssistants().get(0), price);
-			market.addObj(assSale);
+			market.addObj((OnSale) assSale);
 			marketAvailable = false;
 			break;
 		}
