@@ -3,11 +3,15 @@ package com.server.actions;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import com.communication.actions.ActionDTO;
+import com.communication.actions.ObtainPermitDTO;
+import com.communication.decks.PoliticsCardDTO;
 import com.server.model.board.Balcony;
 import com.server.model.board.Councilor;
 import com.server.model.decks.PermitsCard;
 import com.server.model.decks.PoliticsCard;
 import com.server.model.gamelogic.Game;
+import com.server.model.gamelogic.Player;
 import com.server.values.CouncilorColor;
 
 public class ObtainPermit extends Action {
@@ -118,5 +122,18 @@ public class ObtainPermit extends Action {
 		PermitsCard card = game.getMap().getPermitsDeck(regionIndex).getSlot(slot,true);
 		game.getActualPlayer().addPermits(card);
 		return new ActionReturn(true,"",card.getBonus());
+	}
+	
+	public void setterFromDTO(ObtainPermitDTO opDTO, Player player, Game game){
+		this.game = game;
+		ArrayList<PoliticsCard> storage = new ArrayList<PoliticsCard>();
+		for(PoliticsCardDTO pcDTO : opDTO.getPolitics()){
+			PoliticsCard pc = PoliticsCard.fromDTO(pcDTO, player);
+			storage.add(pc);
+		}
+		this.politics = new PoliticsCard[storage.size()];
+		this.politics = storage.toArray(politics);
+		this.regionIndex = opDTO.getRegionIndex();
+		this.slot = opDTO.getSlot();
 	}
 }

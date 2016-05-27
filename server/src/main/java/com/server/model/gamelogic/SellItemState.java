@@ -51,20 +51,19 @@ public class SellItemState implements State{
 				return new AssistantOnSale(game.getActualPlayer(),game.getActualPlayer().getAvailableAssistants().get(0),price);
 			else
 				return null;
-		else if (DTO instanceof PermitOnSaleDTO)
-			return new PermitOnSale(game.getActualPlayer(),DTOtoPermit((PermitOnSaleDTO) DTO), price);
-		else if (DTO instanceof PoliticsOnSale)
-			return new PoliticsOnSale(game.getActualPlayer(),DTOtoPolitic((PoliticsOnSaleDTO) DTO), price);
+		else if (DTO instanceof PermitOnSaleDTO){
+			PermitsCard perm = PermitsCard.fromDTO(((PermitOnSaleDTO) DTO).getPermit(), game.getActualPlayer());
+			return new PermitOnSale(game.getActualPlayer(),perm, price);
+		}
+		else if (DTO instanceof PoliticsOnSale){
+			PoliticsCard politic = PoliticsCard.fromDTO(((PoliticsOnSaleDTO) DTO).getPoliticsCard(),game.getActualPlayer());
+			return new PoliticsOnSale(game.getActualPlayer(),politic, price);
+		}
 		
 		return null;
 	}
 	
-	private PermitsCard DTOtoPermit(PermitOnSaleDTO pDTO){
-		for(PermitsCard pc : game.getActualPlayer().getPermits())
-			if(pc.equals(pDTO))
-				return pc;
-		return null;
-	}
+	
 	
 	private PoliticsCard DTOtoPolitic(PoliticsOnSaleDTO pDTO){
 		for(PoliticsCard pc : game.getActualPlayer().getHand())

@@ -79,7 +79,7 @@ public class ClientHandler extends Observable implements Observer, Runnable{
 	public ActionDTO getAction(){//da specificare le disponibili
 		sendToClient("GetAction",null);//il client alla ricezione di questo msg deve disabilitare qualsiasi invio eccetto le azioni
 		CommunicationObject received = getClientInput();
-		Action action = (Action) received.getObj();
+		ActionDTO action = (ActionDTO) received.getObj();
 		return action;
 	}
 

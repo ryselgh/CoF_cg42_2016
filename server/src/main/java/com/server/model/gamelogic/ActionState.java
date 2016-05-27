@@ -79,24 +79,42 @@ public class ActionState implements State {
 	}
 	
 	private Action DTOtoObj(ActionDTO actDTO){
-		if(actDTO instanceof BuildDTO)
-			return null;
-		else if(actDTO instanceof BuyAssistantDTO)
-			return null;
-		else if(actDTO instanceof BuyMainActionDTO)
-			return null;
-		else if(actDTO instanceof ChangeCardsDTO)
-			return null;
-		else if(actDTO instanceof ObtainPermitDTO)
-			return null;
-		else if(actDTO instanceof PassDTO)
-			return null;
-		else if(actDTO instanceof SatisfyKingDTO)
-			return null;
-		else if(actDTO instanceof ShiftCouncilMainDTO)
-			return null;
-		else if(actDTO instanceof ShiftCouncilSpeedDTO)
-			return null;
+		Action act;
+		if(actDTO instanceof BuildDTO){
+			act = new Build(null,null);
+			act.setterFromDTO((BuildDTO) actDTO, game.getActualPlayer(), game);
+			return act;}
+		else if(actDTO instanceof BuyAssistantDTO){
+			act = new BuyAssistant();
+			return act;}
+		else if(actDTO instanceof BuyMainActionDTO){
+			act = new BuyMainAction();
+			return act;
+		}
+		else if(actDTO instanceof ChangeCardsDTO){
+			act = new ChangeCards(((ChangeCardsDTO)actDTO).getBalconyIndex());
+			return act;
+		}
+		else if(actDTO instanceof ObtainPermitDTO){
+			act = new ObtainPermit(null,0,0);
+			act.setterFromDTO((ObtainPermitDTO) actDTO, game.getActualPlayer(), game);
+			return act;}
+		else if(actDTO instanceof PassDTO){
+			act = new Pass();
+			return act;
+		}
+		else if(actDTO instanceof SatisfyKingDTO){
+			act = new SatisfyKing(null,null);
+			act.setterFromDTO((SatisfyKingDTO) actDTO, game.getActualPlayer(), game);
+			return null;}
+		else if(actDTO instanceof ShiftCouncilMainDTO){
+			act = new ShiftCouncilMain(0,null);
+			act.setterFromDTO((ShiftCouncilMainDTO) actDTO, game.getActualPlayer(), game);
+			return null;}
+		else if(actDTO instanceof ShiftCouncilSpeedDTO){
+			act = new ShiftCouncilSpeed(0,null);
+			act.setterFromDTO((ShiftCouncilSpeedDTO) actDTO, game.getActualPlayer(), game);
+			return null;}
 		else
 			return null;
 	}
