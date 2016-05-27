@@ -61,15 +61,17 @@ public class SellItemState implements State{
 	
 	private PermitsCard DTOtoPermit(PermitOnSaleDTO pDTO){
 		for(PermitsCard pc : game.getActualPlayer().getPermits())
-			if(pc.equals(pDTO))
-				return pc;
+			/* if(pc.equals(pDTO))
+			return pc; */ //TODO: Fix this equas. Unrelated types.
+			return null;
 		return null;
 	}
 	
 	private PoliticsCard DTOtoPolitic(PoliticsOnSaleDTO pDTO){
 		for(PoliticsCard pc : game.getActualPlayer().getHand())
-			if(pc.equals(pDTO))
-				return pc;
+			/* if(pc.equals(pDTO))
+				return pc; */ //TODO: Fix this equas. Unrelated types
+			return null;
 		return null;
 	}
 	/*
