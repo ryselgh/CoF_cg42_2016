@@ -5,7 +5,7 @@ import java.io.Serializable;
 import com.communication.decks.PermitsCardDTO;
 import com.communication.gamelogic.PlayerDTO;
 
-public class PermitOnSaleDTO implements Serializable{
+public class PermitOnSaleDTO extends OnSaleDTO implements Serializable{
 	
 	/**
 	 * 

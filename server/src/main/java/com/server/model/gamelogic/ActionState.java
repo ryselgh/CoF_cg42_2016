@@ -3,6 +3,16 @@ package com.server.model.gamelogic;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import com.communication.actions.ActionDTO;
+import com.communication.actions.BuildDTO;
+import com.communication.actions.BuyAssistantDTO;
+import com.communication.actions.BuyMainActionDTO;
+import com.communication.actions.ChangeCardsDTO;
+import com.communication.actions.ObtainPermitDTO;
+import com.communication.actions.PassDTO;
+import com.communication.actions.SatisfyKingDTO;
+import com.communication.actions.ShiftCouncilMainDTO;
+import com.communication.actions.ShiftCouncilSpeedDTO;
 import com.server.actions.Action;
 import com.server.actions.ActionReturn;
 import com.server.actions.Build;
@@ -42,9 +52,11 @@ public class ActionState implements State {
 		while (mainCounter > 0 || speedCounter > 0) {
 			clienthandler.sendToClient("AvailableActions", getAvailableActions());
 			boolean valid = false;
+			ActionDTO actionDTO = null;
 			Action action = null;
 			while (!valid) {
-				action = clienthandler.getAction();
+				actionDTO = clienthandler.getAction();
+				action = DTOtoObj(actionDTO);
 				action.setGame(game);
 				if (action.isValid()) {
 					valid = true;
@@ -65,6 +77,30 @@ public class ActionState implements State {
 		//QUI DOVREBBE ESSERE FINITO IL TURNO DI UN GIOCATORE
 		gamehandler.changeState(context);
 	}
+	
+	private Action DTOtoObj(ActionDTO actDTO){
+		if(actDTO instanceof BuildDTO)
+			return null;
+		else if(actDTO instanceof BuyAssistantDTO)
+			return null;
+		else if(actDTO instanceof BuyMainActionDTO)
+			return null;
+		else if(actDTO instanceof ChangeCardsDTO)
+			return null;
+		else if(actDTO instanceof ObtainPermitDTO)
+			return null;
+		else if(actDTO instanceof PassDTO)
+			return null;
+		else if(actDTO instanceof SatisfyKingDTO)
+			return null;
+		else if(actDTO instanceof ShiftCouncilMainDTO)
+			return null;
+		else if(actDTO instanceof ShiftCouncilSpeedDTO)
+			return null;
+		else
+			return null;
+	}
+	
 	
 	public void restoreState(){//riverginizza lo stato per essere usato da un altro giocatore senza creare una nuova istanza
 		this.mainCounter = 1;

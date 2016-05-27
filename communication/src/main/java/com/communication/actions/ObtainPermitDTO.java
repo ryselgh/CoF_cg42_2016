@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import com.communication.decks.PoliticsCardDTO;
 import com.communication.gamelogic.GameDTO;
 
-public class ObtainPermitDTO implements Serializable{
+public class ObtainPermitDTO extends ActionDTO implements Serializable{
 	
 	/**
 	 * 

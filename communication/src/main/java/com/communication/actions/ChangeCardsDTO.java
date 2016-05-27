@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 import com.communication.gamelogic.GameDTO;
 
-public class ChangeCardsDTO implements Serializable{
+public class ChangeCardsDTO extends ActionDTO implements Serializable{
 
 	/**
 	 * 

@@ -5,7 +5,7 @@ import java.io.Serializable;
 import com.communication.decks.PoliticsCardDTO;
 import com.communication.gamelogic.PlayerDTO;
 
-public class PoliticsOnSaleDTO implements Serializable{
+public class PoliticsOnSaleDTO extends OnSaleDTO implements Serializable{
 	
 	
 	/**

@@ -3,6 +3,8 @@ package com.server.model.market ;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import com.communication.market.MarketDTO;
+
 /**
  * <!-- begin-user-doc -->
  * <!--  end-user-doc  -->
@@ -18,7 +20,7 @@ public class Market implements Iterator
 	 * @ordered
 	 */
 	
-	private ArrayList<OnSaleInterface> objectsOnSale;
+	private ArrayList<OnSale> objectsOnSale;
 	
 
 	/**
@@ -29,7 +31,7 @@ public class Market implements Iterator
 	 */
 	
 	public Market() {
-		objectsOnSale = new ArrayList<OnSaleInterface>();	
+		objectsOnSale = new ArrayList<OnSale>();	
 	}
 	
 	/**
@@ -39,15 +41,15 @@ public class Market implements Iterator
 	 * @ordered
 	 */
 	
-	public OnSaleInterface getObjOnSale(int arrayPointer) {
+	public OnSale getObjOnSale(int arrayPointer) {
 			return objectsOnSale.get(arrayPointer);	
 	}
 	
-	public ArrayList<OnSaleInterface> getObjectsOnSale() {
+	public ArrayList<OnSale> getObjectsOnSale() {
 		return objectsOnSale;	
 }
 	
-	public void addObj(OnSaleInterface o)
+	public void addObj(OnSale o)
 	{
 		objectsOnSale.add(o);
 	}
@@ -70,6 +72,13 @@ public class Market implements Iterator
 	@Override
 	public Object next() {
 		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	public MarketDTO toDTO(){
+		for(OnSale os : objectsOnSale){
+			
+		}
 		return null;
 	}
 	

@@ -22,9 +22,10 @@ public class MarketDTO implements Serializable{
 	/**
 	 * @param objectsOnSale the objectsOnSale to set
 	 */
-	public void setObjectsOnSale(ArrayList<OnSaleDTO> objectsOnSale) {
+	/*public void setObjectsOnSale(ArrayList<OnSaleDTO> objectsOnSale) {
 		this.objectsOnSale = objectsOnSale;
-	}
+	}*/
+	//i dto sono readonly
 	
 }
 

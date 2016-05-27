@@ -5,7 +5,7 @@ import java.io.Serializable;
 import com.communication.board.AssistantDTO;
 import com.communication.gamelogic.PlayerDTO;
 
-public class AssistantOnSaleDTO implements Serializable{
+public class AssistantOnSaleDTO extends OnSaleDTO implements Serializable{
 
 	
 	private AssistantDTO assistant;
