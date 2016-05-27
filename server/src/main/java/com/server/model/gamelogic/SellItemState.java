@@ -1,11 +1,15 @@
 package com.server.model.gamelogic;
 
+import com.communication.market.AssistantOnSaleDTO;
+import com.communication.market.PermitOnSaleDTO;
+import com.communication.market.PoliticsOnSaleDTO;
 import com.server.controller.ClientHandler;
 import com.server.controller.GameHandler;
 import com.server.model.board.Assistant;
 import com.server.model.decks.PermitsCard;
 import com.server.model.decks.PoliticsCard;
 import com.server.model.market.AssistantOnSale;
+import com.server.model.market.OnSale;
 import com.server.model.market.OnSaleInterface;
 import com.server.model.market.PermitOnSale;
 import com.server.model.market.PoliticsOnSale;
@@ -27,29 +31,64 @@ public class SellItemState implements State{
 		ItemOnSale toSell = clienthandler.getItemToSell();
 		if(toSell.getObj() == null)
 			clienthandler.sendToClient("NullSellReceived", null);
-		else if(isValid(toSell)){
-				addToMarket(toSell);
+		else {
+			OnSale soldObj = DTOtoObj(toSell);
+			if(soldObj==null)
+				clienthandler.sendToClient("ObjectNotRecognized", null);
+			else{
+				game.getMarket().addObj(soldObj);
 				clienthandler.sendToClient("ValidSellReceived", null);
+			}
 			}
 		gamehandler.changeState(context);
 	}
 	
+	private OnSale DTOtoObj(ItemOnSale itemOnSale){
+		Object DTO = itemOnSale.getObj();
+		int price = itemOnSale.getPrice();
+		if (DTO instanceof AssistantOnSaleDTO)
+			if(game.getActualPlayer().getAvailableAssistants().size()>0)
+				return new AssistantOnSale(game.getActualPlayer(),game.getActualPlayer().getAvailableAssistants().get(0),price);
+			else
+				return null;
+		else if (DTO instanceof PermitOnSaleDTO)
+			return new PermitOnSale(game.getActualPlayer(),DTOtoPermit((PermitOnSaleDTO) DTO), price);
+		else if (DTO instanceof PoliticsOnSale)
+			return new PoliticsOnSale(game.getActualPlayer(),DTOtoPolitic((PoliticsOnSaleDTO) DTO), price);
+		
+		return null;
+	}
+	
+	private PermitsCard DTOtoPermit(PermitOnSaleDTO pDTO){
+		for(PermitsCard pc : game.getActualPlayer().getPermits())
+			if(pc.equals(pDTO))
+				return pc;
+		return null;
+	}
+	
+	private PoliticsCard DTOtoPolitic(PoliticsOnSaleDTO pDTO){
+		for(PoliticsCard pc : game.getActualPlayer().getHand())
+			if(pc.equals(pDTO))
+				return pc;
+		return null;
+	}
+	/*
 	private void addToMarket(ItemOnSale item){
 		Object item_obj = item.getObj();
 		int item_price = item.getPrice();
 		boolean found = false;
 		if(item_obj instanceof PoliticsCard){
-			OnSaleInterface polSale = new PoliticsOnSale(game.getActualPlayer(), 
+			OnSale polSale = new PoliticsOnSale(game.getActualPlayer(), 
 					(PoliticsCard) item_obj, item_price);
 			game.getMarket().addObj(polSale);
 		}
 		else if(item_obj instanceof PermitsCard){
-			OnSaleInterface permSale = new PermitOnSale(game.getActualPlayer(),
+			OnSale permSale = new PermitOnSale(game.getActualPlayer(),
 					(PermitsCard) item_obj, item_price);
 			game.getMarket().addObj(permSale);
 		}
 		else if(item_obj instanceof Assistant){
-			OnSaleInterface assSale = new AssistantOnSale(game.getActualPlayer(),
+			OnSale assSale = new AssistantOnSale(game.getActualPlayer(),
 					(Assistant) item_obj, item_price);
 			game.getMarket().addObj(assSale);
 		}
@@ -94,7 +133,7 @@ public class SellItemState implements State{
 		return true;
 	}
 	
-	
+	*/
 	@Override
 	public void restoreState() {
 		// nothing to be restored

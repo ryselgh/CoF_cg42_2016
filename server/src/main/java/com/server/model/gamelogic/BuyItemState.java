@@ -1,7 +1,9 @@
 package com.server.model.gamelogic;
 
+import com.communication.market.OnSaleDTO;
 import com.server.controller.ClientHandler;
 import com.server.controller.GameHandler;
+import com.server.model.market.OnSale;
 import com.server.model.market.OnSaleInterface;
 
 public class BuyItemState implements State{
@@ -18,20 +20,27 @@ public class BuyItemState implements State{
 		gamehandler = context.getGamehandler();
 		this.game = gamehandler.getGame();
 		
-		OnSaleInterface toBuy = clienthandler.getItemToBuy(game.getMarket().getObjectsOnSale());
-		if(toBuy == null)
-			clienthandler.sendToClient("NullBuyReceived", null);
-		else if(isValid(toBuy)){
-				clienthandler.sendToClient("ValidBuyReceived", null);
-			}
+		OnSaleDTO toBuyDTO = clienthandler.getItemToBuy(game.getMarket().toDTO());
+		if(toBuyDTO == null)
+			clienthandler.sendToClient("NullBuyReceived", null);//da cambiare in actionreturn
+		OnSale toBuy = DTOtoObj(toBuyDTO);
+		if(toBuy==null)
+			clienthandler.sendToClient("InvalidObjectReceived", null);
+		else{
+			toBuy.obtain(game.getActualPlayer());
+			clienthandler.sendToClient("BuyObjectReceived", null);
+		}
 		gamehandler.changeState(context);
 		
 	}
-
-	private boolean isValid(OnSaleInterface item){
-		
-		return true;
+	
+	private OnSale DTOtoObj(OnSaleDTO item){
+		for(OnSale os : game.getMarket().getObjectsOnSale())
+			if(os.equals(item))
+				return os;
+		return null;
 	}
+	
 	@Override
 	public void restoreState() {
 		// TODO Auto-generated method stub

@@ -12,6 +12,9 @@ import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.communication.actions.ActionDTO;
+import com.communication.market.MarketDTO;
+import com.communication.market.OnSaleDTO;
 import com.server.actions.Action;
 import com.server.model.board.BonusToken;
 import com.server.model.decks.PermitsCard;
@@ -73,7 +76,7 @@ public class ClientHandler extends Observable implements Observer, Runnable{
 		}
 		return in;
 	}
-	public Action getAction(){//da specificare le disponibili
+	public ActionDTO getAction(){//da specificare le disponibili
 		sendToClient("GetAction",null);//il client alla ricezione di questo msg deve disabilitare qualsiasi invio eccetto le azioni
 		CommunicationObject received = getClientInput();
 		Action action = (Action) received.getObj();
@@ -118,9 +121,9 @@ public class ClientHandler extends Observable implements Observer, Runnable{
 		return ret;
 	}
 	
-	public OnSaleInterface getItemToBuy(ArrayList<OnSaleInterface> availableItems){
-		sendToClient("ItemToBuy", availableItems);
-		OnSaleInterface ret = (OnSaleInterface) getClientInput().getObj();
+	public OnSaleDTO getItemToBuy(MarketDTO market){
+		sendToClient("ItemToBuy", market);
+		OnSaleDTO ret = (OnSaleDTO) getClientInput().getObj();
 		return ret;
 	}
 }

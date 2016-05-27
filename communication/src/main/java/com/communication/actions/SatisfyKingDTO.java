@@ -7,7 +7,7 @@ import com.communication.decks.PoliticsCardDTO;
 import com.communication.gamelogic.GameDTO;
 import com.communication.board.*;
 
-public class SatisfyKingDTO implements Serializable{
+public class SatisfyKingDTO extends ActionDTO implements Serializable{
 	
 	/**
 	 * 

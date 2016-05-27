@@ -2,7 +2,7 @@ package com.communication.actions;
 
 import java.io.Serializable;
 
-public class PassDTO implements Serializable{
+public class PassDTO extends ActionDTO implements Serializable{
 
 	/**
 	 * 

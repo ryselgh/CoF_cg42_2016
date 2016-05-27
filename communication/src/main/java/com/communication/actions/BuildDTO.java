@@ -7,7 +7,7 @@ import com.communication.board.CityDTO;
 import com.communication.decks.PermitsCardDTO;
 import com.communication.gamelogic.GameDTO;
 
-public class BuildDTO implements Serializable{
+public class BuildDTO extends ActionDTO implements Serializable{
 
 	/**
 	 * 

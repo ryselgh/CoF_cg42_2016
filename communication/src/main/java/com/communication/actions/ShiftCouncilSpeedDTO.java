@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import com.communication.board.CouncilorDTO;
 import com.communication.gamelogic.GameDTO;
 
-public class ShiftCouncilSpeedDTO implements Serializable{
+public class ShiftCouncilSpeedDTO extends ActionDTO implements Serializable{
 		
 	/**
 	 * 

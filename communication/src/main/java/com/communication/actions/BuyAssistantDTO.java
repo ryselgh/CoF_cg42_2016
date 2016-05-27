@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 import com.communication.gamelogic.GameDTO;
 
-public class BuyAssistantDTO implements Serializable{
+public class BuyAssistantDTO extends ActionDTO implements Serializable{
 
 	/**
 	 * 
