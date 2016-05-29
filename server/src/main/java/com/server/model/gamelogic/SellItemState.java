@@ -31,14 +31,14 @@ public class SellItemState implements State{
 		
 		ItemOnSale toSell = clienthandler.getItemToSell();
 		if(toSell.getObj() == null)
-			clienthandler.sendToClient("NullSellReceived", null);
+			clienthandler.sendToClient("ItemToSellNack","Null object received");
 		else {
 			OnSale soldObj = DTOtoObj(toSell);
 			if(soldObj==null)
-				clienthandler.sendToClient("ObjectNotRecognized", null);
+				clienthandler.sendToClient("ItemToSellNack","Objec not recognized");
 			else{
 				game.getMarket().addObj(soldObj);
-				clienthandler.sendToClient("ValidSellReceived", null);
+				clienthandler.sendToClient("ItemToSellAck", null);
 			}
 			}
 		gamehandler.changeState(context);

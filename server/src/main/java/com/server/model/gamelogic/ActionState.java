@@ -14,6 +14,7 @@ import com.communication.actions.SatisfyKingDTO;
 import com.communication.actions.ShiftCouncilMainDTO;
 import com.communication.actions.ShiftCouncilSpeedDTO;
 import com.communication.decks.PermitsCardDTO;
+import com.communication.decks.PoliticsCardDTO;
 import com.server.actions.Action;
 import com.server.actions.ActionReturn;
 import com.server.actions.Build;
@@ -49,7 +50,9 @@ public class ActionState implements State {
 		gamehandler = context.getGamehandler();
 		this.game = gamehandler.getGame();
 		PoliticsCard draw = game.getMap().getPoliticsDeck().draw();
-		clienthandler.sendToClient("StartTurn", draw);
+		PoliticsCardDTO drawDTO = new PoliticsCardDTO();
+		drawDTO.setColor(draw.getColor());
+		clienthandler.sendToClient("StartTurn", drawDTO );
 		while (mainCounter > 0 || speedCounter > 0) {
 			clienthandler.sendToClient("AvailableActions", getAvailableActions());
 			boolean valid = false;
@@ -201,11 +204,12 @@ public class ActionState implements State {
 		case TOKEN:
 			btTmp = getAvailableTokens();
 			if (btTmp.length == 0)
-				clienthandler.sendToClient("You have no available city tokens. Bonus discarded", null);
+				clienthandler.sendToClient("OneBonusTokenNack", "You have no available city tokens. Bonus discarded");
 			else {
 				BonusToken[] chosen = clienthandler.getBonusToken(btTmp);
 				for (Bonus bo : chosen[0].getBonus())
 					collectBonus(bo);
+				clienthandler.sendToClient("OneBonusTokenAck", null);
 			}
 			break;
 		case TWOTOKENS:
@@ -232,22 +236,25 @@ public class ActionState implements State {
 						}
 					}
 				if(!found)
-					clienthandler.sendToClient("Invalid input permit. Try again", null);
+					clienthandler.sendToClient("FreePermitsCardNack", "Invalid input permit. Try again");
 			}
+			clienthandler.sendToClient("FreePermitsCardAck", null);
 			break;
 		case BONUSCARD:// input da convertire da DTO a oggetti
+			PermitsCard temp=null;
+			while(temp==null){
 			ArrayList<PermitsCard> pcOwned = game.getActualPlayer().getPermits();
 			PermitsCardDTO chosen = clienthandler.getOwnedPermitsCard();
-			PermitsCard temp=null;
 			for(PermitsCard pc : pcOwned)
 				if(pc.equals(chosen))
 					temp = pc;
 			if(temp==null)
-				;//errore di conversione dto->ogg
-			else{
+				clienthandler.sendToClient("OwnedPermitsCardNack", "Invalid input permit. Try again");
+			}
+			
 			for (Bonus bo : temp.getBonus())
 				collectBonus(bo);
-			}
+			clienthandler.sendToClient("OwnedPermitsCardAck", null);
 			break;
 
 		}

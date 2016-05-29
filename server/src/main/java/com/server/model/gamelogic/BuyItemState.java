@@ -22,13 +22,13 @@ public class BuyItemState implements State{
 		
 		OnSaleDTO toBuyDTO = clienthandler.getItemToBuy(game.getMarket().toDTO());
 		if(toBuyDTO == null)
-			clienthandler.sendToClient("NullBuyReceived", null);//da cambiare in actionreturn
+			clienthandler.sendToClient("ItemToBuyNack", "Null object received");
 		OnSale toBuy = DTOtoObj(toBuyDTO);
 		if(toBuy==null)
-			clienthandler.sendToClient("InvalidObjectReceived", null);
+			clienthandler.sendToClient("ItemToBuyNack", "Invalid object received");
 		else{
 			toBuy.obtain(game.getActualPlayer());
-			clienthandler.sendToClient("BuyObjectReceived", null);
+			clienthandler.sendToClient("ItemToBuyAck", null);
 		}
 		gamehandler.changeState(context);
 		

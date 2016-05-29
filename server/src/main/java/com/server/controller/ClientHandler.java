@@ -93,7 +93,7 @@ public class ClientHandler extends Observable implements Observer, Runnable{
 		if(o instanceof Lobby){
 			String[] splitted = ((String)arg).split("_");
 			if(splitted[0].equals(this.getUserName()))
-				this.sendToClient(splitted[1],null);}
+				this.sendToClient("lobby_msg-" + splitted[1],null);}
 	}
 
 	@Override

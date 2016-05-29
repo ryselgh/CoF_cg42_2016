@@ -15,7 +15,7 @@ public class Lobby extends Observable implements Runnable, Observer  {
 	public Lobby(){ 
 		clients = new ArrayList<ClientHandler>();
 		rooms = new ArrayList<Room>();
-		commandResponse = new String[] {"Command not recognized","You are already in the room","There are not enought players",
+		commandResponse = new String[] {"Operation successful", "Command not recognized","You are already in the room","There are not enought players",
 				"You are not the admin, you can't start the game","You are not in this room"};
 	}
 
@@ -61,7 +61,7 @@ public class Lobby extends Observable implements Runnable, Observer  {
 			String command = (String) arg1;
 			ClientHandler sender = (ClientHandler) arg0;
 			int resp = commandParser(command, sender);
-			sendToClient(sender, commandResponse[resp +1]);
+			sendToClient(sender, commandResponse[resp]);
 		}
 	}
 	
