@@ -18,7 +18,7 @@ import org.xml.sax.SAXException;
 import com.server.model.decks.PermitsCard;
 import com.server.model.decks.PermitsDeck;
 import com.server.model.gamelogic.Player;
-import com.server.values.BonusType;
+import com.communication.values.BonusType;
 import com.server.values.CityColor;
 
 public class Importer {

@@ -1,5 +1,6 @@
 package com.server.model.board ;
 
+import com.communication.board.CouncilorDTO;
 import com.server.values.CouncilorColor;
 
 
@@ -25,6 +26,12 @@ public class Councilor
 	
 	public CouncilorColor getCouncilorColor() {
 		return this.color;	
+	}
+	
+	public boolean equals(CouncilorDTO cDTO){
+		if(this.color.equals(cDTO.getColor()))
+			return true;
+		return false;
 	}
 	
 }

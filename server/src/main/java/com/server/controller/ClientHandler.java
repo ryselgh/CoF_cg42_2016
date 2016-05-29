@@ -13,6 +13,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.communication.actions.ActionDTO;
+import com.communication.board.BonusTokenDTO;
+import com.communication.decks.PermitsCardDTO;
 import com.communication.market.MarketDTO;
 import com.communication.market.OnSaleDTO;
 import com.server.actions.Action;
@@ -27,6 +29,7 @@ public class ClientHandler extends Observable implements Observer, Runnable{
 	private ObjectOutputStream outputStream;	
 	private String userName;
 	private Logger logger;
+	public boolean inGame = false;
 	
 	public ClientHandler(Socket s, ObjectInputStream si, ObjectOutputStream so, String un){
 		this.socket = s;
@@ -36,7 +39,7 @@ public class ClientHandler extends Observable implements Observer, Runnable{
 	}
 	
 	private void startListen(){
-		while(true){
+		while(!inGame){//la comunicazione mvc avviene nella lobby. in game invece è ad invocazione diretta e questo loop bloccherebbe il thread
 			CommunicationObject in = null;
 			try {
 				in = (CommunicationObject) inputStream.readObject();
@@ -58,7 +61,7 @@ public class ClientHandler extends Observable implements Observer, Runnable{
 	}
 	
 	public void sendToClient(String msg, Object o){
-		CommunicationObject toSend = new CommunicationObject(msg,o);
+		CommunicationObject toSend = new CommunicationObject(msg,(SerObject) o);
 		try {
 			outputStream.writeObject(toSend);
 			outputStream.flush();
@@ -76,10 +79,10 @@ public class ClientHandler extends Observable implements Observer, Runnable{
 		}
 		return in;
 	}
-	public ActionDTO getAction(){//da specificare le disponibili | Prima era un public ActionDTO che ritornava Action, decidi quale dei due
+	public ActionDTO getAction(){//le azioni disponibili sono già state comunicate al client nella comunicazione precedente
 		sendToClient("GetAction",null);//il client alla ricezione di questo msg deve disabilitare qualsiasi invio eccetto le azioni
 		CommunicationObject received = getClientInput();
-		ActionDTO action = (ActionDTO) received.getObj(); //<-------------- ho cambiato questo
+		ActionDTO action = (ActionDTO) received.getObj();
 		return action;
 	}
 
@@ -99,19 +102,23 @@ public class ClientHandler extends Observable implements Observer, Runnable{
 
 	public BonusToken[] getBonusToken(BonusToken[] tokenPool){//IN TUTTI QUESTI GETTER C'è DA IMPLEMENTARE IL CHECK SUL PRIMO PARAMETRO (STRINGA) CHE DEVE IDENTIFICARE L'INPUT CORRETTAMENTE
 		sendToClient("OneBonusToken", tokenPool);
-		BonusToken[] ret = (BonusToken[]) getClientInput().getObj();
+		CommunicationObject resp = getClientInput();
+		BonusTokenDTO[] retDTO = (BonusTokenDTO[]) resp.getObj();
+		BonusToken[] ret = new BonusToken[retDTO.length];
+		for(int i=0;i<retDTO.length;i++)
+			ret[i].setterFromDTO(retDTO[i]);
 		return ret;
 	}
 	
-	public PermitsCard getFreePermitsCard(){
+	public PermitsCardDTO getFreePermitsCard(){
 		sendToClient("FreePermitsCard", null);
-		PermitsCard ret = (PermitsCard) getClientInput().getObj();
+		PermitsCardDTO ret = (PermitsCardDTO) getClientInput().getObj();
 		return ret;
 	}
 	
-	public PermitsCard getOwnedPermitsCard(){
+	public PermitsCardDTO getOwnedPermitsCard(){
 		sendToClient("OwnedPermitsCard", null);
-		PermitsCard ret = (PermitsCard) getClientInput().getObj();
+		PermitsCardDTO ret = (PermitsCardDTO) getClientInput().getObj();
 		return ret;
 	}
 	

@@ -1,6 +1,5 @@
 package com.server ;
 
-import com.server.controller.TestController;
 
 //import java.io.Console;
 //import java.io.InputStream;
@@ -37,7 +36,7 @@ public class MainTest{
 
 	
 	public static void main(String[] args) {
-		TestController controller = new TestController();
+		
 	}
 }
 

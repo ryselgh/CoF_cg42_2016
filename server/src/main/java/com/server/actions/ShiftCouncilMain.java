@@ -3,8 +3,11 @@ package com.server.actions;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import com.communication.actions.ShiftCouncilMainDTO;
+import com.communication.board.CouncilorDTO;
 import com.server.model.board.Councilor;
 import com.server.model.gamelogic.Game;
+import com.server.model.gamelogic.Player;
 
 public class ShiftCouncilMain extends Action{
 		
@@ -50,5 +53,17 @@ public class ShiftCouncilMain extends Action{
 		game.getMap().getBalcony(balconyIndex).setCouncilor(tmpBalcony.toArray(new Councilor[0]));
 		game.getActualPlayer().addCoins(4);
 		return new ActionReturn(true,"",null);
+	}
+	
+	public void setterFromDTO(ShiftCouncilMainDTO scmDTO,Player player,Game game){
+		this.balconyIndex = scmDTO.getBalconyIndex();
+		this.councilor = getCouncilorFromDTO(scmDTO.getCouncilor());
+	}
+	
+	private Councilor getCouncilorFromDTO(CouncilorDTO cDTO){
+		for(Councilor c : game.getMap().getCouncilorsPool())
+			if(c.equals(cDTO))
+				return c;
+		return null;
 	}
 }

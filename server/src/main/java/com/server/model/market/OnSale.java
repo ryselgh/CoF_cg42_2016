@@ -60,17 +60,13 @@ public class OnSale
 	public int getPrice(){return 0;};
 	public String printDetails(){return "";};
 	public boolean equals(OnSaleDTO osDTO){
-		if(osDTO == null)
-			throw new NullPointerException("OnSale item can't be NULL");
-		else{
-			/*if(!seller.equals(osDTO.getSeller()))
-				return false; //TODO: UNRELATED TYPES, FIX HERE!
-			else */if(!objectEquals(obj,osDTO))
-				return false;
-			else if(price != osDTO.getPrice())
-				return false;
-			return true;
-		}
+		if(!seller.equals(osDTO.getSeller()))
+			return false;
+		else if(!objectEquals(obj,osDTO))
+			return false;
+		else if(price != osDTO.getPrice())
+			return false;
+		return true;
 	}
 	
 	private boolean objectEquals(Object obj, Object objDTO){

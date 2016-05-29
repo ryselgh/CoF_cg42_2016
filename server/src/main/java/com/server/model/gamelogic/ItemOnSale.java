@@ -1,6 +1,8 @@
 package com.server.model.gamelogic;
 
-public class ItemOnSale {//used for client-server communication
+import java.io.Serializable;
+
+public class ItemOnSale implements Serializable{//used for client-server communication
 	private int price;
 	private Object obj;
 	

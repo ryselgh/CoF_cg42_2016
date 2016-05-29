@@ -3,11 +3,13 @@ package com.server.actions;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import com.communication.actions.BuildDTO;
 import com.server.model.board.Bonus;
 import com.server.model.board.City;
 import com.server.model.board.Emporium;
 import com.server.model.decks.PermitsCard;
 import com.server.model.gamelogic.Game;
+import com.server.model.gamelogic.Player;
 
 public class Build extends Action{
 
@@ -111,5 +113,11 @@ public class Build extends Action{
 		game.getActualPlayer().getAvailableEmporiums().remove(0);
 		Bonus[] bonusToCollect = getCitiesBonus(city);
 		return new ActionReturn(true,"",bonusToCollect);
+	}
+	
+	public void setterFromDTO(BuildDTO buildDTO, Player player, Game game){
+		this.permit = PermitsCard.fromDTO(buildDTO.getPermit(), player);
+		this.game = game;
+		this.city = game.getCityFromName(buildDTO.getCity().getName());
 	}
 }
