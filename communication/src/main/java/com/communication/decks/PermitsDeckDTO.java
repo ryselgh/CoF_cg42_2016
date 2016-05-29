@@ -32,8 +32,8 @@ public class PermitsDeckDTO implements Serializable{
 	/**
 	 * @return the slot
 	 */
-	public PermitsCardDTO[] getSlot() {
-		return slot;
+	public PermitsCardDTO getSlot(int i) {
+		return slot[i];
 	}
 	/**
 	 * @param slot the slot to set

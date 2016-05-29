@@ -46,7 +46,7 @@ public class ColorGroupDTO implements Serializable{
 	/**
 	 * @return the bc
 	 */
-	public BonusCardDTO getBc() {
+	public BonusCardDTO getBonusCard() {
 		return bc;
 	}
 	/**

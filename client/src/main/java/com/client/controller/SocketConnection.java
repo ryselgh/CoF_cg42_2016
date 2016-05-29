@@ -3,10 +3,13 @@ package com.client.controller;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.PrintStream;
 import java.net.Socket;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.client.ClientObservable;
 import com.communication.CommunicationObject;
 import com.communication.ItemOnSale;
 import com.communication.SerObject;
@@ -14,33 +17,33 @@ import com.communication.board.BonusTokenDTO;
 import com.communication.decks.PermitsCardDTO;
 import com.communication.market.OnSaleDTO;
 
-public class SocketConnection {
+public class SocketConnection extends ClientObservable{
 
 	private Socket socket = null;
 	private ObjectOutputStream outputStream = null;
 	private ObjectInputStream inputStream = null;
+	private PrintStream out;
 	private Logger logger;
 	private static final int PORT = 29999;
 	private static final String IP_ADDRESS = "127.0.0.1";
-	
+	private static final int NICKNAME_MAX_LENGHT = 5;
+
 	public SocketConnection(){
-		//Singleton?
+		
 	}
 
 	public void run(){
-
 		try {
 			socket = new Socket(IP_ADDRESS, PORT);
-
 			outputStream = new ObjectOutputStream(socket.getOutputStream());
 			inputStream = new ObjectInputStream(socket.getInputStream());
+			startListen();
 		} catch (IOException e) {
 			logger.log(Level.SEVERE, "Failed to connect to "+IP_ADDRESS+":"+Integer.toString(PORT)+".",e);
 		}
 	}
-	
-	public void startListen()
-	{
+
+	public void startListen(){
 		while(true){//la comunicazione mvc avviene nella lobby. in game invece è ad invocazione diretta e questo loop bloccherebbe il thread
 			CommunicationObject in = null;
 			try {
@@ -51,56 +54,17 @@ public class SocketConnection {
 			if(in == null)
 				throw new NullPointerException("Something went wrong with the CommunicationObject");
 			else{
-				String command = in.getMsg();
-				parseCommand(command, in.getObj());
-				}
-		}
-	}
-	
-	private void parseCommand(String cmd, Object obj){
-		switch(cmd){
-		case "InsertNickname":
-			//stampa: inserisci nickname + istruzioni
-			String nick = "";
-			while(!isNicknameCorrect(nick)){
-			//get nickname
+				this.notifyObservers(in);
 			}
-			sendToServer("InsertNickname",nick);
-			break;
-		case "OneBonusToken":
-			BonusTokenDTO[] btDTO = new BonusTokenDTO[1];
-			//get bonus token. obj = BonusToken[] tokenPool
-			sendToServer("OneBonusToken",btDTO);
-			break;
-		case "FreePermitsCard":
-			PermitsCardDTO pcDTO=null;
-			//get ret: una carta permesso di quelle a faccia in su nelle regioni
-			sendToServer("FreePermitsCard",pcDTO);
-			break;
-		case "OwnedPermitsCard":
-			PermitsCardDTO pcOwnedDTO=null;
-			//get ret: una carta permesso usata dal giocatore
-			sendToServer("OwnedPermitsCard",pcOwnedDTO);
-			break;
-		case "ItemToSell":
-			ItemOnSale its = null;
-			//get its: l'oggetto da vendere al mercato
-			sendToServer("ItemToSell",its);
-			break;
-		case "ItemToBuy":
-			OnSaleDTO onsaleDTO = null;
-			//get itemtobuy. obj = MarketDTO market
-			sendToServer("ItemToBuy",onsaleDTO);
-			break;
 		}
 	}
-	
-	private boolean isNicknameCorrect(String name){
-		if(name.contains("[^abcdefghilmnopqrstuvzjkywxABCDEFGHILMNOPQRSTUVZJKYWX]")|| name.length()<5)//regex equivalente a tutti i caratteri a parte le lettere
+
+	public boolean isNicknameCorrect(String name){
+		if(name.contains("[^abcdefghilmnopqrstuvzjkywxABCDEFGHILMNOPQRSTUVZJKYWX0123456789]")|| name.length()<NICKNAME_MAX_LENGHT)//regex equivalente a tutti i caratteri a parte le lettere
 			return false;
 		return true;
 	}
-	
+
 	public void sendToServer(String s, Object o){
 		CommunicationObject toSend = new CommunicationObject(s,(SerObject) o);
 		try {

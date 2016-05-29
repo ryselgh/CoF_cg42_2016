@@ -44,8 +44,8 @@ public class MapDTO implements Serializable{
 	/**
 	 * @return the regions
 	 */
-	public RegionDTO[] getRegions() {
-		return regions;
+	public RegionDTO getRegion(int i) {
+		return regions[i];
 	}
 	/**
 	 * @param regions the regions to set
@@ -56,8 +56,8 @@ public class MapDTO implements Serializable{
 	/**
 	 * @return the colorGroups
 	 */
-	public ColorGroupDTO[] getColorGroups() {
-		return colorGroups;
+	public ColorGroupDTO getColorGroup(int i) {
+		return colorGroups[i];
 	}
 	/**
 	 * @param colorGroups the colorGroups to set
@@ -80,8 +80,8 @@ public class MapDTO implements Serializable{
 	/**
 	 * @return the balcony
 	 */
-	public BalconyDTO[] getBalcony() {
-		return balcony;
+	public BalconyDTO getBalcony(int i) {
+		return balcony[i];
 	}
 	/**
 	 * @param balcony the balcony to set
@@ -174,10 +174,11 @@ public class MapDTO implements Serializable{
 		this.kingBonus = kingBonus;
 	}
 	/**
+	 * @param i 
 	 * @return the permitsDeck
 	 */
-	public PermitsDeckDTO[] getPermitsDeck() {
-		return permitsDeck;
+	public PermitsDeckDTO getPermitsDeck(int i) {
+		return permitsDeck[i];
 	}
 	/**
 	 * @param permitsDeck the permitsDeck to set

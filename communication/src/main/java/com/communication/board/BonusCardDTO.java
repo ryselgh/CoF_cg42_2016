@@ -14,14 +14,14 @@ public class BonusCardDTO implements Serializable{
 	/**
 	 * @return the bonus
 	 */
-	public BonusDTO getB() {
+	public BonusDTO getBonus() {
 		return b;
 	}
 
 	/**
 	 * @param b the bonus to set
 	 */
-	public void setB(BonusDTO b) {
+	public void setBonus(BonusDTO b) {
 		this.b = b;
 	}
 	
