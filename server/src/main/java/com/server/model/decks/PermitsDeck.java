@@ -23,11 +23,16 @@ public class PermitsDeck extends Deck{
 	 */
 
 	public PermitsDeck(PermitsCard[] p, int r) {
-		permitsDeck = new ArrayList<PermitsCard> (Arrays.asList(p));
-		regionCode = r;
-		Collections.shuffle(permitsDeck);
-		this.draw();
-
+		for(PermitsCard pc: p){
+			if(pc==null)
+				throw new NullPointerException("Cards cannot be null");
+			else{
+				permitsDeck = new ArrayList<PermitsCard> (Arrays.asList(p));
+				regionCode = r;
+				Collections.shuffle(permitsDeck);
+				this.draw();
+			}
+		}
 	}
 
 	/**
@@ -36,15 +41,23 @@ public class PermitsDeck extends Deck{
 	 * @param draw is a boolen if true the slot is full else is empty
 	 */
 	public PermitsCard getSlot(int index, boolean draw) {
-		if(!draw)
-			return this.slot[index];
-		else
-		{
-			PermitsCard tmp = this.slot[index];
-			this.slot[index] = null;
-			draw();
-			return tmp;
+		
+		
+		if(index>1 || index<0)
+			throw new NullPointerException("thre are only two slots!");
+		else{
+			if(!draw)
+
+				return this.slot[index];
+			else
+			{
+				PermitsCard tmp = this.slot[index];
+				this.slot[index] = null;
+				draw();
+				return tmp;
+			}
 		}
+		
 	}
 
 
@@ -71,6 +84,7 @@ public class PermitsDeck extends Deck{
 	public void draw() {
 		if(permitsDeck.isEmpty())
 			throw new NullPointerException("Cards are over");
+		else{
 		if (slot[0] == null){
 			slot[0] = permitsDeck.get(0);
 			slot[0].setFaceDown(false);
@@ -81,6 +95,7 @@ public class PermitsDeck extends Deck{
 			permitsDeck.remove(0);
 			slot[1].setFaceDown(false);
 		}
+		}
 	}
 
 	/**
@@ -88,12 +103,15 @@ public class PermitsDeck extends Deck{
 	 */
 
 	public void changeCards(){
-		permitsDeck.add(getSlot(0,false));
-		permitsDeck.add(getSlot(1,false));
-		setSlot1(null);
-		setSlot2(null);
-		draw();
-
+		if(permitsDeck.isEmpty())
+			throw new NullPointerException("Cards are over");
+		else{
+			permitsDeck.add(getSlot(0,false));
+			permitsDeck.add(getSlot(1,false));
+			setSlot1(null);
+			setSlot2(null);
+			draw();
+		}
 	}
 
 

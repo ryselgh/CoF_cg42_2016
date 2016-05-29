@@ -12,18 +12,23 @@ public class KingBonusDeck extends Deck{
 
 	/**
 	 * constructor of the kbd. create the 5 king bonus cards
-	 * @param bonuses bonuses is one of the bonus token from the bonus array
+	 * @param bonuses is the array of bonus card
 	 */
 
 
 	public KingBonusDeck(Bonus[] bonuses) {
-		kingBonusDeck = new ArrayList<KingBonusCard>(KINGQTY);
-		for (int i=0; i<KINGQTY; i++){
-			kingBonusDeck.set(i, new KingBonusCard(i+1,bonuses[i]));
-		}
+		for(Bonus b: bonuses)
+			if(b == null)
+				throw new NullPointerException("Bonuses cannot be null!");
+			else{
+				kingBonusDeck = new ArrayList<KingBonusCard>(KINGQTY);
+				for (int i=0; i<KINGQTY; i++){
+					kingBonusDeck.set(i, new KingBonusCard(i+1,bonuses[i]));
+				}
+			}
 
 	}
-	
+
 	/**
 	 * when you achieve a particular goal you draw a card from the kbd
 	 * @return null if the deck is empty else return the kbc you have to take
@@ -32,7 +37,7 @@ public class KingBonusDeck extends Deck{
 	public KingBonusCard draw(){
 		KingBonusCard drawnCard;
 		if(kingBonusDeck.isEmpty()){
-			return null;
+			throw new NullPointerException("Deck is empty!");
 		}else{
 			drawnCard = kingBonusDeck.get(0);
 			kingBonusDeck.remove(0);

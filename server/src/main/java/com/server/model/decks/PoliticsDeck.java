@@ -66,7 +66,10 @@ public class PoliticsDeck extends Deck{
 	 */
 
 	public void discard(PoliticsCard c) {
-		garbage.add(c);
+		if(c==null)
+			throw new IllegalArgumentException();
+		else
+			garbage.add(c);
 	}
 
 }

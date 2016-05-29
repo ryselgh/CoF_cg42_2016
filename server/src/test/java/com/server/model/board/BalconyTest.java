@@ -1,5 +1,6 @@
 package com.server.model.board;
 
+import org.junit.*;
 import static org.junit.Assert.*;
 
 import org.junit.Before;
@@ -14,6 +15,49 @@ public class BalconyTest{
 	
 	Councilor[] councilorsInTheBalcony;
 
+	@Test
+	public void testBalcony_1()
+		throws Exception {
+		Councilor[] c = new Councilor[] {};
+
+		Balcony result = new Balcony(c);
+
+		assertNotNull(result);
+	}
+
+	@Test
+	public void testBalcony_2()
+		throws Exception {
+		Councilor[] c = new Councilor[] {};
+
+		Balcony result = new Balcony(c);
+
+		assertNotNull(result);
+	}
+
+	@Test
+	public void testGetCouncilors_1()
+		throws Exception {
+		Balcony fixture = new Balcony(new Councilor[] {});
+		fixture.setCouncilor(new Councilor[] {});
+
+		Councilor[] result = fixture.getCouncilors();
+
+		assertNotNull(result);
+		assertEquals(0, result.length);
+	}
+
+	@Test
+	public void testSetCouncilor_1()
+		throws Exception {
+		Balcony fixture = new Balcony(new Councilor[] {});
+		fixture.setCouncilor(new Councilor[] {});
+		Councilor[] councilor = new Councilor[] {};
+
+		fixture.setCouncilor(councilor);
+
+	}
+
 	@Before
 	public void setUp(){
 		councilorsInTheBalcony = new Councilor[4];
@@ -25,7 +69,7 @@ public class BalconyTest{
 	
 	@Test
     public void testpippo(){
-    	Assert.assertNotNull(councilorsInTheBalcony);
+    	assertNotNull(councilorsInTheBalcony);
     }
 	@Test
 	public void testthecreationofaBalcony() {
@@ -42,7 +86,7 @@ public class BalconyTest{
 	public void testTheRightFunctionOfTheGetMethod() {
 		
 		Balcony balcony=new Balcony (councilorsInTheBalcony);
-		Assert.assertEquals(balcony.getCouncilors(), councilorsInTheBalcony);
+		assertEquals(balcony.getCouncilors(), councilorsInTheBalcony);
 		
 	}
 	
@@ -58,4 +102,13 @@ public class BalconyTest{
 		
 	
 
+
+	@After
+	public void tearDown()
+		throws Exception {
+	}
+
+	public static void main(String[] args) {
+		new org.junit.runner.JUnitCore().run(BalconyTest.class);
+	}
 }

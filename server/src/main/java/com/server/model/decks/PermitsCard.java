@@ -39,13 +39,21 @@ public class PermitsCard {
 
 	/**
 	 * constructor of the permitscard
-	 * @param b  the bonus on the card
-	 * @param l the letter of the city
+	 * @param b  the bonuses on the card
+	 * @param l the letters of the city
 	 */
 	public PermitsCard(Bonus[] b, String[] l) {
-		bonuses= b;
-		cityLetter = l;
-		
+		for(Bonus bn:b){
+			for (String stn:l){
+				if (bn==null || stn==null)
+					throw new NullPointerException();
+				else{
+					bonuses= b;
+					cityLetter = l;
+				}
+			}
+		}
+
 	}
 	
 	/**
