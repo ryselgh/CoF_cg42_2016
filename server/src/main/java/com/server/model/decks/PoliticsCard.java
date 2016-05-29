@@ -2,8 +2,8 @@ package com.server.model.decks ;
 
 import com.communication.decks.PermitsCardDTO;
 import com.communication.decks.PoliticsCardDTO;
+import com.communication.values.CouncilorColor;
 import com.server.model.gamelogic.Player;
-import com.server.values.CouncilorColor;
 
 
 
@@ -42,5 +42,10 @@ public class PoliticsCard
 		return null;
 	}
 	
+	public boolean equals(PoliticsCardDTO pcDTO){
+		if(this.color.equals(pcDTO.getColor()))
+			return true;
+		return false;
+	}
 }
 

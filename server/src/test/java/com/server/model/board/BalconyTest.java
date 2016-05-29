@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.server.values.CouncilorColor;
+import com.communication.values.CouncilorColor;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;

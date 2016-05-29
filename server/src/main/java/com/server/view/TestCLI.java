@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
+import com.communication.values.CouncilorColor;
 import com.server.model.board.Balcony;
 import com.server.model.board.Bonus;
 import com.server.model.board.BonusToken;
@@ -18,7 +19,6 @@ import com.server.model.gamelogic.Game;
 import com.server.model.gamelogic.Player;
 import com.server.utils.TableBuilder;
 import com.server.values.CityColor;
-import com.server.values.CouncilorColor;
 import com.server.values.RegionName;
 
 public class TestCLI {

@@ -1,4 +1,4 @@
-package com.server.controller;
+package com.communication;
 
 import java.io.Serializable;
 

@@ -12,6 +12,9 @@ import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.communication.CommunicationObject;
+import com.communication.ItemOnSale;
+import com.communication.SerObject;
 import com.communication.actions.ActionDTO;
 import com.communication.board.BonusTokenDTO;
 import com.communication.decks.PermitsCardDTO;
@@ -20,7 +23,6 @@ import com.communication.market.OnSaleDTO;
 import com.server.actions.Action;
 import com.server.model.board.BonusToken;
 import com.server.model.decks.PermitsCard;
-import com.server.model.gamelogic.ItemOnSale;
 import com.server.model.market.OnSaleInterface;
 
 public class ClientHandler extends Observable implements Observer, Runnable{

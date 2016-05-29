@@ -1,4 +1,4 @@
-package com.server.model.gamelogic;
+package com.communication;
 
 import java.io.Serializable;
 

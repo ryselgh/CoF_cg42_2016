@@ -6,6 +6,7 @@ import java.util.Arrays;
 import com.communication.actions.ObtainPermitDTO;
 import com.communication.actions.SatisfyKingDTO;
 import com.communication.decks.PoliticsCardDTO;
+import com.communication.values.CouncilorColor;
 import com.server.model.board.Balcony;
 import com.server.model.board.Bonus;
 import com.server.model.board.City;
@@ -13,7 +14,6 @@ import com.server.model.board.Councilor;
 import com.server.model.decks.PoliticsCard;
 import com.server.model.gamelogic.Game;
 import com.server.model.gamelogic.Player;
-import com.server.values.CouncilorColor;
 
 public class SatisfyKing extends Action {
 	/**

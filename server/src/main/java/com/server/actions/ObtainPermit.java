@@ -6,13 +6,13 @@ import java.util.Arrays;
 import com.communication.actions.ActionDTO;
 import com.communication.actions.ObtainPermitDTO;
 import com.communication.decks.PoliticsCardDTO;
+import com.communication.values.CouncilorColor;
 import com.server.model.board.Balcony;
 import com.server.model.board.Councilor;
 import com.server.model.decks.PermitsCard;
 import com.server.model.decks.PoliticsCard;
 import com.server.model.gamelogic.Game;
 import com.server.model.gamelogic.Player;
-import com.server.values.CouncilorColor;
 
 public class ObtainPermit extends Action {
 	

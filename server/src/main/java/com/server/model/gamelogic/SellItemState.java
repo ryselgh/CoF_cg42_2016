@@ -1,5 +1,6 @@
 package com.server.model.gamelogic;
 
+import com.communication.ItemOnSale;
 import com.communication.market.AssistantOnSaleDTO;
 import com.communication.market.PermitOnSaleDTO;
 import com.communication.market.PoliticsOnSaleDTO;

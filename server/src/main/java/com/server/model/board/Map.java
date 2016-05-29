@@ -11,12 +11,12 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
+import com.communication.values.CouncilorColor;
 import com.server.model.decks.PermitsCard;
 import com.server.model.decks.PermitsDeck;
 import com.server.model.decks.PoliticsDeck;
 import com.server.model.gamelogic.Player;
 import com.server.values.CityColor;
-import com.server.values.CouncilorColor;
 import com.server.values.RegionName;
 
 import java.io.IOException;

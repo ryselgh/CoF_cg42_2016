@@ -1,7 +1,7 @@
 package com.server.model.board ;
 
 import com.communication.board.CouncilorDTO;
-import com.server.values.CouncilorColor;
+import com.communication.values.CouncilorColor;
 
 
 public class Councilor

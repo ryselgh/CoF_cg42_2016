@@ -10,6 +10,8 @@ import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.communication.CommunicationObject;
+
 public class IdentifyPlayer extends Observable implements Runnable  {
 	private Socket socket;
 	private Scanner socketIn;
@@ -27,7 +29,7 @@ public class IdentifyPlayer extends Observable implements Runnable  {
 		ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
 		ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
 		
-		outputStream.writeObject(new CommunicationObject("Please tell us your nickname, only letters allowed",null));
+		outputStream.writeObject(new CommunicationObject("InsertNickname",null));
 		outputStream.flush();
 		boolean correct=false;
 		String inputName = "";
@@ -40,11 +42,11 @@ public class IdentifyPlayer extends Observable implements Runnable  {
 			}
 			if(in == null)
 				throw new NullPointerException("Something went wrong with the CommunicationObject");
-			else{
-				inputName = in.getMsg();
+			else{//da aggiungere check su in.getMsg()=="InsertNickname"
+				inputName = (String) in.getObj();
 				correct = isCorrect(inputName);
 				if (!correct) {
-					outputStream.writeObject(new CommunicationObject("Invalid nickname. Insert another one", null));
+					outputStream.writeObject(new CommunicationObject("InvalidNickname", null));
 					outputStream.flush();
 				}
 			}
@@ -61,7 +63,7 @@ public class IdentifyPlayer extends Observable implements Runnable  {
 	}
 	
 	private boolean isCorrect(String name){
-		if(name.contains("[^abcdefghilmnopqrstuvzjkywxABCDEFGHILMNOPQRSTUVZJKYWX]"))//regex equivalente a tutti i caratteri a parte le lettere
+		if(name.contains("[^abcdefghilmnopqrstuvzjkywxABCDEFGHILMNOPQRSTUVZJKYWX]") || name.length()<5)//regex equivalente a tutti i caratteri a parte le lettere
 			return false;
 		return true;
 	}

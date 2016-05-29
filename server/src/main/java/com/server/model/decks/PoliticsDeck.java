@@ -3,7 +3,7 @@ package com.server.model.decks ;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import com.server.values.CouncilorColor;
+import com.communication.values.CouncilorColor;
 
 public class PoliticsDeck extends Deck{
 
