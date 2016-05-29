@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import com.server.model.board.Bonus;
 import com.server.model.gamelogic.Game;
-import com.server.values.BonusType;
+import com.communication.values.BonusType;
 
 public class BuyMainAction extends Action{
 	private Game game;

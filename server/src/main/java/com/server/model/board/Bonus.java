@@ -1,6 +1,7 @@
 package com.server.model.board ;
 
-import com.server.values.BonusType;
+import com.communication.board.BonusDTO;
+import com.communication.values.BonusType;
 
 
 public class Bonus
@@ -38,6 +39,11 @@ public class Bonus
 		return this.quantity;	
 	}
 	
+	public boolean equals(BonusDTO bDTO){
+		if(!type.equals(bDTO.getType()) || quantity != bDTO.getQnt())
+			return false;
+		return true;
+	}
 	public static boolean hasNobilityBonus(Bonus[] b)
 	{
 		for(Bonus bo: b)

@@ -73,6 +73,12 @@ public class PermitsCard {
 				return pc;
 		return null;
 	}
+	
+	public boolean equals(PermitsCardDTO pcDTO){
+		if(!cityLetter.equals(pcDTO.getCityLetter()) || !bonuses.equals(pcDTO.getBonuses()))
+			return false;
+		return true;
+	}
 		
 	
 	

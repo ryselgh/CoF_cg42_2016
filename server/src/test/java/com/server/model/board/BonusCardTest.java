@@ -6,7 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.server.model.gamelogic.Game;
-import com.server.values.BonusType;
+import com.communication.values.BonusType;
 
 import junit.framework.Assert;
 
