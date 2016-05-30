@@ -34,15 +34,6 @@ public abstract class ClientObservable {
 	}
 	
 	/**
-	 * the default method that notify observers
-	 */
-	
-	public void notifyObservers(){
-		for(ClientObserver o: this.observers){
-			o.update();
-		}
-	}
-	/**
 	 * notify the observers that something is changed
 	 * @param c c is a Change object
 	 */

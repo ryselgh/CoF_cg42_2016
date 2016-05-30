@@ -7,7 +7,9 @@ import java.util.Scanner;
 
 import com.client.ClientObservable;
 import com.client.ClientObserver;
+import com.client.controller.ClientController;
 import com.client.utils.TableBuilder;
+import com.communication.board.AssistantDTO;
 import com.communication.board.BonusDTO;
 import com.communication.board.BonusTokenDTO;
 import com.communication.board.CityDTO;
@@ -27,12 +29,11 @@ public class ClientCLI extends ClientObservable implements ClientObserver{
 
 	/**
 	 * constructor of the class
-	 * @param game is the GameStatus
+	 * @param controller is the client controller
 	 */
 
-	public ClientCLI(GameDTO game){
-//		game.attachObserver(this);
-		this.game = game;
+	public ClientCLI(ClientController clientController){
+		clientController.attachObserver(this);
 		this.out = System.out;
 		constructMap();
 	}
@@ -356,9 +357,39 @@ public class ClientCLI extends ClientObservable implements ClientObserver{
 		return resp;
 	}
 	
+	public Object getItemToSell(int playerID){
+		ArrayList<AssistantDTO> assistants = new ArrayList<AssistantDTO>(game.getPlayers().get(playerID).getAvailableAssistants());
+		ArrayList<PermitsCardDTO> permits = new ArrayList<PermitsCardDTO>(game.getPlayers().get(playerID).getPermits());
+		ArrayList<PoliticsCardDTO> cards = new ArrayList<PoliticsCardDTO>(game.getPlayers().get(playerID).getHand());
+		switch(getSellType()){
+			case 1:
+				if(assistants.isEmpty()){
+					out.println("No available assistants to sell, select something else.");
+					return getItemToSell(playerID);
+				}else
+					return assistants.get(0);
+			case 2:
+				if(permits.isEmpty()){
+					out.println("No available permits to sell, select something else.");
+					return getItemToSell(playerID);
+				}else
+					return permits.get(getPermitsCardIndex(permits.size(),playerID));
+			case 3:
+				if(cards.isEmpty()){
+					out.println("No available politics cards to sell, select something else.");
+					return getItemToSell(playerID);
+				}else
+					return cards.get(getPoliticsCardIndex(cards.size(),playerID));
+			case 4:
+				return "Pass";
+			default:
+				return null;
+		}
+	}
+	
 	public int getSellType()
 	{
-		return waitCorrectIntInput("Insert the index of the category of the item you want to sell: \n1-PoliticCard\n2-PermitCard\n3-Assistant\n",1,3);
+		return waitCorrectIntInput("Insert the index of the category of the item you want to sell: \n1-Assistants\n2-PermitCard\n3-PoliticCard\n4-Pass\n",1,4);
 	}
 	
 	public int getSellPrice()
@@ -600,19 +631,16 @@ public class ClientCLI extends ClientObservable implements ClientObserver{
 
 	/*Observer*/
 
-	@Override
-	public void update() {
-		// TODO Auto-generated method stub
-
-	}
-
 	/**
 	 * print the new GameDTO after an update
 	 */
 	@Override
 	public <C> void update(C change) {
-		this.game = (GameDTO) change;
-		this.printGameStatus();
+		if(change instanceof GameDTO){
+			this.game = (GameDTO) change;
+			this.printGameStatus();
+		}else
+			throw new IllegalArgumentException("Wrong instance. Failed to update the game.");
 	}
 
 }
