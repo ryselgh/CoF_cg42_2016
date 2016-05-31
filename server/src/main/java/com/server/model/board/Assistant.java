@@ -1,7 +1,6 @@
 package com.server.model.board ;
 
-
-
+import com.communication.board.AssistantDTO;
 
 public class Assistant
 {
@@ -12,5 +11,8 @@ public class Assistant
 		super();
 	}
 
+	public AssistantDTO toDTO(){
+		return new AssistantDTO();
+	}
 }
 

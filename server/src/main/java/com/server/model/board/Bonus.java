@@ -52,5 +52,12 @@ public class Bonus
 		return false;
 			
 	}
+
+	public BonusDTO toDTO(){
+		BonusDTO bDTO = new BonusDTO();
+		bDTO.setQuantity(this.quantity);
+		bDTO.setType(this.type);
+		return bDTO;
+	}
 }
 

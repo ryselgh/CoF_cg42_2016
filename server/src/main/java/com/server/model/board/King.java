@@ -1,7 +1,6 @@
 package com.server.model.board ;
 
-
-
+import com.communication.board.KingDTO;
 
 public class King
 {
@@ -35,5 +34,10 @@ public class King
 		this.location = l;	
 	}
 	
+	public KingDTO toDTO(){
+		KingDTO kDTO = new KingDTO();
+		kDTO.setLocation(this.getLocation().toDTO());
+		return kDTO;
+	}
 }
 

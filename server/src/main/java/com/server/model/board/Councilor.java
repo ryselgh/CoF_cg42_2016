@@ -34,5 +34,10 @@ public class Councilor
 		return false;
 	}
 	
+	public CouncilorDTO toDTO(){
+		CouncilorDTO cDTO = new CouncilorDTO();
+		cDTO.setColor(this.getCouncilorColor());
+		return cDTO;
+	}
 }
 

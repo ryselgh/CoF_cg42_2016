@@ -11,6 +11,22 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
+import com.communication.board.AssistantDTO;
+import com.communication.board.BalconyDTO;
+import com.communication.board.BonusDTO;
+import com.communication.board.CityDTO;
+import com.communication.board.ColorGroupDTO;
+import com.communication.board.CouncilorDTO;
+import com.communication.board.EmporiumDTO;
+import com.communication.board.KingDTO;
+import com.communication.board.MapDTO;
+import com.communication.board.NobilityTrackDTO;
+import com.communication.board.PawnDTO;
+import com.communication.board.RegionDTO;
+import com.communication.decks.PermitsDeckDTO;
+import com.communication.decks.PoliticsDeckDTO;
+import com.communication.gamelogic.GameDTO;
+import com.communication.gamelogic.PlayerDTO;
 import com.communication.values.CouncilorColor;
 import com.server.model.decks.PermitsCard;
 import com.server.model.decks.PermitsDeck;
@@ -40,7 +56,81 @@ public class Map {
 	private PermitsDeck[] permitsDeck;
 	private King king;
 	private Logger logger;
-
+	
+	public MapDTO toDTO(){
+		MapDTO mapDTO = new MapDTO();
+		
+		RegionDTO[] regDTO = new RegionDTO[regions.length];
+		for(int i=0;i<regions.length;i++)
+			regDTO[i] = regions[i].toDTO();
+		mapDTO.setRegions(regDTO);
+		
+		PlayerDTO[] plDTO = new PlayerDTO[players.length];
+		for(int i=0;i<players.length;i++)
+			plDTO[i] = players[i].toDTO();
+		mapDTO.setPlayers(plDTO);
+		
+		ColorGroupDTO[] cgDTO = new ColorGroupDTO[colorGroups.length];
+		for(int i=0;i<colorGroups.length;i++)
+			cgDTO[i] = colorGroups[i].toDTO();
+		mapDTO.setColorGroups(cgDTO);
+		
+		ArrayList <CouncilorDTO> councilorsDTO = new ArrayList <CouncilorDTO>();
+		for(int i=0;i<councilors.size();i++)
+			councilorsDTO.set(i,councilors.get(i).toDTO());
+		mapDTO.setCouncilors(councilorsDTO);
+		
+		BalconyDTO[] balconyDTO = new BalconyDTO[balcony.length];
+		for(int i=0;i<balcony.length;i++)
+			balconyDTO[i] = balcony[i].toDTO();
+		mapDTO.setBalcony(balconyDTO);
+		
+		ArrayList<AssistantDTO> assistDTO = new ArrayList<AssistantDTO>();
+		for(int i=0;i<assistants.size();i++)
+			assistDTO.set(i, assistants.get(i).toDTO());
+		mapDTO.setAssistants(assistDTO);
+		
+		EmporiumDTO[] empDTO = new EmporiumDTO[emporiums.length];
+		for(int i=0;i<emporiums.length;i++)
+			empDTO[i] = emporiums[i].toDTO();
+		mapDTO.setEmporiums(empDTO);
+		
+		PawnDTO[] pawnDTO = new PawnDTO[pawn.length];
+		for(int i=0;i<pawn.length;i++)
+			pawnDTO[i] = pawn[i].toDTO();
+		mapDTO.setPawn(pawnDTO);
+		
+		NobilityTrackDTO nobtrDTO = new NobilityTrackDTO();
+		nobtrDTO = nobilityTrack.toDTO();
+		mapDTO.setNobilityTrack(nobtrDTO);
+		
+		CityDTO[] citiesDTO = new CityDTO[city.length];
+		for(int i=0;i<city.length;i++)
+			citiesDTO[i] = city[i].toDTO();
+		mapDTO.setCity(citiesDTO);
+	
+		
+		PoliticsDeckDTO polDeckDTO = new PoliticsDeckDTO();
+		polDeckDTO = politicsDeck.toDTO();
+		mapDTO.setPoliticsDeck(polDeckDTO);
+		
+		ArrayList<BonusDTO> kingBonusDTO = new ArrayList<BonusDTO>();
+		for(Bonus b: kingBonus)
+			kingBonusDTO.add(b.toDTO());
+		mapDTO.setKingBonus(kingBonusDTO);
+		
+		PermitsDeckDTO[] permitsDeckDTO = new PermitsDeckDTO[permitsDeck.length];
+		for(int i=0;i<permitsDeck.length;i++)
+			permitsDeckDTO[i] = permitsDeck[i].toDTO();
+		mapDTO.setPermitsDeck(permitsDeckDTO);
+		
+		KingDTO kingDTO = new KingDTO();
+		kingDTO = king.toDTO();
+		mapDTO.setKing(kingDTO);
+		return mapDTO;
+		
+		
+	}
 	/**
 	 * @throws SAXException 
 	 * @throws IOException 

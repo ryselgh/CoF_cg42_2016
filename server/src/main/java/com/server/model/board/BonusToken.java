@@ -37,5 +37,14 @@ public class BonusToken
 		}
 		this.b = bonus;
 	}
+	
+	public BonusTokenDTO toDTO(){
+		BonusTokenDTO ret = new BonusTokenDTO();
+		BonusDTO[] bDTO = new BonusDTO[this.getBonus().length];
+		for(int i=0;i<this.getBonus().length;i++)
+			bDTO[i] = this.getBonus()[i].toDTO();
+		ret.setBonus(bDTO);
+		return ret;
+	}
 }
 

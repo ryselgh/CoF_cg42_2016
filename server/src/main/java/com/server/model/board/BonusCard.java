@@ -1,7 +1,7 @@
 package com.server.model.board ;
 
-
-
+import com.communication.board.BonusCardDTO;
+import com.communication.board.BonusDTO;
 
 public class BonusCard
 {
@@ -25,6 +25,15 @@ public class BonusCard
 	
 	public Bonus getBonus() {
 		return this.b;	
+	}
+	
+	public BonusCardDTO toDTO(){
+		BonusCardDTO ret = new BonusCardDTO();
+		BonusDTO bDTO = new BonusDTO();
+		bDTO.setQuantity(this.getBonus().getQnt());
+		bDTO.setType(this.getBonus().getType());
+		ret.setBonus(bDTO);
+		return ret;
 	}
 	
 }
