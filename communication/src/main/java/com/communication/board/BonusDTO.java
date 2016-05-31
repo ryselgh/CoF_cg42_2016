@@ -30,5 +30,21 @@ public class BonusDTO implements Serializable{
 	public int getQnt() {
 		return this.quantity;	
 	}
+
+	/**
+	 * @param type the type to set
+	 */
+	public void setType(BonusType type) {
+		this.type = type;
+	}
+
+	/**
+	 * @param quantity the quantity to set
+	 */
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
+	
+	
 }
 
