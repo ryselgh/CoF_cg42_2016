@@ -1,5 +1,6 @@
 package com.server.model.board ;
 
+import com.communication.board.PawnDTO;
 import com.server.model.gamelogic.Player;
 import com.server.values.PawnColor;
 import com.server.values.Track;
@@ -56,5 +57,12 @@ public class Pawn
 		this.pos = pos;
 	}
 	
+	public PawnDTO toDTO(){
+		PawnDTO pDTO = new PawnDTO();
+		pDTO.setHexColor(this.getColor());
+		pDTO.setP(this.getPlayer().toDTO());
+		pDTO.setPos(this.getPos());
+		return pDTO;
+	}
 }
 

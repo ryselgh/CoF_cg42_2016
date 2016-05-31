@@ -2,21 +2,43 @@ package com.server.model.board;
 
 import java.util.ArrayList;
 
+import com.communication.board.BonusDTO;
+import com.communication.board.NobilityTrackDTO;
+import com.communication.board.PawnDTO;
+
 
 
 public class NobilityTrack {
 	
 
-	private Pawn[] pawns;
+	private Pawn[][] pawns;
 	private Bonus[][] BonusVector;
-
+	
+	public NobilityTrackDTO toDTO(){
+		BonusDTO[][] bvDTO = new BonusDTO[BonusVector.length][];
+		for(int i=0;i<BonusVector.length;i++){
+			bvDTO[i] = new BonusDTO[BonusVector[i].length];
+			for(int j=0;j<BonusVector[i].length;j++)
+				bvDTO[i][j] = BonusVector[i][j].toDTO();
+		}
+		PawnDTO[][] pDTO = new PawnDTO[pawns.length][];
+		for(int i=0;i<pawns.length;i++){
+			pDTO[i] = new PawnDTO[pawns[i].length];
+			for(int j=0;j<pawns[i].length;j++)
+				pDTO[i][j] = pawns[i][j].toDTO();
+		}
+		NobilityTrackDTO nbDTO = new NobilityTrackDTO();
+		nbDTO.setBonusVector(bvDTO);
+		nbDTO.setPawns(pDTO);
+		return nbDTO;
+	}
 	/**
 	 * constructor of the nobility track
 	 * @param pawn pawn element
 	 * @param BonusVector one array for the position, another for the bonus in each position
 	 */
 
-	public NobilityTrack(Pawn[] pawn, Bonus[][] BonusVector) {
+	public NobilityTrack(Pawn[][] pawn, Bonus[][] BonusVector) {
 		this.pawns = pawn;
 		this.BonusVector = BonusVector;
 	}

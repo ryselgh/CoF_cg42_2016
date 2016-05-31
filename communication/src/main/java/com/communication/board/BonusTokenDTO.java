@@ -19,6 +19,13 @@ public class BonusTokenDTO implements Serializable{
 	public BonusDTO[] getBonus() {
 		return this.b;	
 	}
+
+
+	public void setBonus(BonusDTO[] b) {
+		this.b = b;
+	}
+	
+	
 	
 }
 

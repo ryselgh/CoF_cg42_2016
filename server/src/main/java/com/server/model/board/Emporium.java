@@ -1,5 +1,6 @@
 package com.server.model.board ;
 
+import com.communication.board.EmporiumDTO;
 import com.server.model.gamelogic.Player;
 
 
@@ -28,5 +29,10 @@ public class Emporium
 		return this.player;	
 	}
 	
+	public EmporiumDTO toDTO(){
+		EmporiumDTO eDTO = new EmporiumDTO();
+		eDTO.setPlayer(this.player.toDTO());
+		return eDTO;
+	}
 }
 

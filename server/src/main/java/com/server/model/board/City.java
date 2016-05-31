@@ -1,5 +1,7 @@
 package com.server.model.board ;
 
+import com.communication.board.CityDTO;
+import com.communication.board.EmporiumDTO;
 import com.server.model.gamelogic.Player;
 import com.server.values.CityColor;
 import com.server.values.CityName;
@@ -18,6 +20,19 @@ public class City
 	private int playerNum;
 	
 
+	public CityDTO toDTO(){
+		CityDTO cDTO = new CityDTO();
+		EmporiumDTO[] slotDTO = new EmporiumDTO[this.slot.length];
+		for(int i=0;i<this.slot.length;i++)
+			slotDTO[i] = this.slot[i].toDTO();
+		cDTO.setSlot(slotDTO);
+		cDTO.setColor(this.getColor());
+		cDTO.setName(this.getName());
+		cDTO.setCloseCities(this.getCloseCity());
+		cDTO.setToken(this.getBonusToken().toDTO());
+		cDTO.setPlayerNum(this.playerNum);
+		return cDTO;
+	}
 	/**
 	 * constructor of the city
 	 * @param n n is the name of the city
@@ -26,7 +41,6 @@ public class City
 	 * @param playerNo pn is the number of the player
 	 * @param bt bt is the bonus token on the city
 	 */
-	
 	public City(String n, CityColor c, String[] close, int playerNo, BonusToken bt) {
 		this.name = n;
 		this.color = c;
