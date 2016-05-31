@@ -13,30 +13,21 @@ public class NobilityTrack {
 
 	private Pawn[] pawns;
 	private Bonus[][] BonusVector;
-	
-//	public NobilityTrackDTO toDTO(){
-//		BonusDTO[][] bvDTO = new BonusDTO[BonusVector.length][];
-//		for(int i=0;i<BonusVector.length;i++){
-//			bvDTO[i] = new BonusDTO[BonusVector[i].length];
-//			for(int j=0;j<BonusVector[i].length;j++)
-//				bvDTO[i][j] = BonusVector[i][j].toDTO();
-//		}
-//		PawnDTO[][] pDTO = new PawnDTO[pawns.length][];
-//		for(int i=0;i<pawns.length;i++){
-//			pDTO[i] = new PawnDTO[pawns[i].length];
-//			for(int j=0;j<pawns[i].length;j++)
-//				pDTO[i][j] = pawns[i][j].toDTO();
-//		}
-//		NobilityTrackDTO nbDTO = new NobilityTrackDTO();
-//		nbDTO.setBonusVector(bvDTO);
-//		nbDTO.setPawns(pDTO);
-//		return nbDTO;
-//	}
+
 	
 	public NobilityTrackDTO toDTO(){
-		NobilityTrackDTO ntDTO = new NobiltyTrackDTO();
-		ntDTO.setBonusVector(bonusVector);
-		ntDTO.setPawns(pawns);
+		NobilityTrackDTO ntDTO = new NobilityTrackDTO();
+		BonusDTO[][] bvDTO = new BonusDTO[BonusVector.length][];
+		for(int i=0;i<BonusVector.length;i++){
+			bvDTO[i] = new BonusDTO[BonusVector[i].length];
+			for(int j=0;j<BonusVector[i].length;j++)
+				bvDTO[i][j] = BonusVector[i][j].toDTO();
+		}
+		PawnDTO[] pDTO = new PawnDTO[pawns.length];
+			for(int k=0;k<pawns.length;k++)
+				pDTO[k] = pawns[k].toDTO();
+		ntDTO.setBonusVector(bvDTO);
+		ntDTO.setPawns(pDTO);
 		return ntDTO;
 	}
 	/**
@@ -45,7 +36,7 @@ public class NobilityTrack {
 	 * @param BonusVector one array for the position, another for the bonus in each position
 	 */
 
-	public NobilityTrack(Pawn[][] pawn, Bonus[][] BonusVector) {
+	public NobilityTrack(Pawn[] pawn, Bonus[][] BonusVector) {
 		this.pawns = pawn;
 		this.BonusVector = BonusVector;
 	}

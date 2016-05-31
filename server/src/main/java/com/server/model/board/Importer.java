@@ -25,7 +25,7 @@ public class Importer {
 	String location;
 	Document doc;
 	private Player[] players;
-	private Pawn[][] pawn;
+	private Pawn[] pawn;
 	private NobilityTrack nobilityTrack;
 	private Bonus[][] nobilityTrackBonus;
 	private ArrayList<BonusToken> tokenPool;
