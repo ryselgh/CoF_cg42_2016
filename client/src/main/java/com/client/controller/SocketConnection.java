@@ -41,6 +41,7 @@ public class SocketConnection extends ClientObservable{
 			CommunicationObject in = null;
 			try {
 				in = (CommunicationObject) inputStream.readObject();
+				this.notifyObservers(in);
 			} catch (ClassNotFoundException | IOException e) {
 				logger.log(Level.SEVERE,"Failed to read the CommunicationObject",e);
 			}

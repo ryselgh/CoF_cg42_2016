@@ -16,6 +16,7 @@ public class SocketAcceptor implements Runnable {
 	
 	public SocketAcceptor(Lobby l){
 		this.lobby = l;
+		logger = Logger.getLogger("myLogger");
 	}
 	
 	private void acceptLoop() throws IOException{

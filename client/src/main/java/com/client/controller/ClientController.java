@@ -24,11 +24,13 @@ public class ClientController extends ClientObservable implements ClientObserver
 	public ClientController(){
 		cli = new ClientCLI(this);
 		cli.attachObserver(this);
+	}
+	
+	public void run(){
 		connection = new SocketConnection();
 		connection.run();
 		connection.attachObserver(this);
 	}
-	
 
 	@Override
 	public <C> void update(C change) {
@@ -91,7 +93,7 @@ public class ClientController extends ClientObservable implements ClientObserver
 				connection.sendToServer("OwnedPermitsCard",pcOwnedIndex);
 				break;
 				
-			case "ItemToSell":						//Da aggiustare
+			case "ItemToSell":						//Da aggiustare      aggiustala così: se item è null equivale a pass
 				ItemOnSale its = null;
 				//get its: l'oggetto da vendere al mercato
 				Object item = cli.getItemToSell(playerID);
