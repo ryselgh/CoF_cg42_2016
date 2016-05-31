@@ -1,7 +1,6 @@
 package com.server.model.board ;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,15 +24,14 @@ import com.communication.board.PawnDTO;
 import com.communication.board.RegionDTO;
 import com.communication.decks.PermitsDeckDTO;
 import com.communication.decks.PoliticsDeckDTO;
-import com.communication.gamelogic.GameDTO;
 import com.communication.gamelogic.PlayerDTO;
 import com.communication.values.CouncilorColor;
 import com.server.model.decks.PermitsCard;
 import com.server.model.decks.PermitsDeck;
 import com.server.model.decks.PoliticsDeck;
 import com.server.model.gamelogic.Player;
-import com.server.values.CityColor;
-import com.server.values.RegionName;
+import com.communication.values.CityColor;
+import com.communication.values.RegionName;
 
 import java.io.IOException;
 

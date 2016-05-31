@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import com.communication.board.CityDTO;
 import com.communication.board.ColorGroupDTO;
-import com.server.values.CityColor;
+import com.communication.values.CityColor;
 
 
 

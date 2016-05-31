@@ -9,20 +9,20 @@ public class NobilityTrackDTO implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 6770222019663805479L;
-	private PawnDTO[][] pawns;
+	private PawnDTO[] pawns;
 	private BonusDTO[][] BonusVector;
 	
 	
 	/**
 	 * @return the pawns
 	 */
-	public PawnDTO[][] getPawns() {
+	public PawnDTO[] getPawns() {
 		return pawns;
 	}
 	/**
 	 * @param pawns the pawns to set
 	 */
-	public void setPawns(PawnDTO[][] pawns) {
+	public void setPawns(PawnDTO[] pawns) {
 		this.pawns = pawns;
 	}
 	/**

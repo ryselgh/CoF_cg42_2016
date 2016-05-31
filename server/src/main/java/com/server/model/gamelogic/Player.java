@@ -2,6 +2,11 @@ package com.server.model.gamelogic;
 
 import java.util.ArrayList;
 
+import com.communication.board.AssistantDTO;
+import com.communication.board.BonusCardDTO;
+import com.communication.board.EmporiumDTO;
+import com.communication.decks.PermitsCardDTO;
+import com.communication.decks.PoliticsCardDTO;
 import com.communication.gamelogic.PlayerDTO;
 import com.server.model.board.Assistant;
 import com.server.model.board.BonusCard;
@@ -273,13 +278,28 @@ public class Player {
 
 	public PlayerDTO toDTO() {
 		PlayerDTO playerDTO = new PlayerDTO();
-		playerDTO.setAvailableAssistants(availableAssistants.toDTO());
-		playerDTO.setAvailableEmporiums(availableEmporiums.toDTO());
-		playerDTO.setBonusCards(bonusCards.toDTO());
+		ArrayList<AssistantDTO> assDTO = new ArrayList<AssistantDTO>();
+		ArrayList<EmporiumDTO> empDTO = new ArrayList<EmporiumDTO>();
+		ArrayList<BonusCardDTO> bcDTO = new ArrayList<BonusCardDTO>();
+		ArrayList<PoliticsCardDTO> handDTO = new ArrayList<PoliticsCardDTO>();
+		ArrayList<PermitsCardDTO> permDTO = new ArrayList<PermitsCardDTO>();
+		for(Assistant ass: availableAssistants)
+			assDTO.add(ass.toDTO());
+		playerDTO.setAvailableAssistants(assDTO);
+		for(Emporium emp: availableEmporiums)
+			empDTO.add(emp.toDTO());
+		playerDTO.setAvailableEmporiums(empDTO);
+		for(BonusCard bc: bonusCards)
+			bcDTO.add(bc.toDTO());
+		playerDTO.setBonusCards(bcDTO);
 		playerDTO.setCoins(coins);
-		playerDTO.setHand(hand.toDTO());
+		for(PoliticsCard pc: hand)
+			handDTO.add(pc.toDTO());
+		playerDTO.setHand(handDTO);
 		playerDTO.setPawn(pawn.toDTO());
-		playerDTO.setPermits(permits.toDTO());
+		for(PermitsCard perm: permits)
+			permDTO.add(perm.toDTO());
+		playerDTO.setPermits(permDTO);
 		playerDTO.setPlayerID(playerID);
 		playerDTO.setScore(score);
 		return playerDTO;

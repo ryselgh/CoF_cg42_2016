@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import com.communication.board.CityDTO;
 import com.communication.board.RegionDTO;
-import com.server.values.RegionName;
+import com.communication.values.RegionName;
 
 
 

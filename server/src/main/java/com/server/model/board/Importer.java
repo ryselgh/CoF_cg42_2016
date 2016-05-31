@@ -19,13 +19,13 @@ import com.server.model.decks.PermitsCard;
 import com.server.model.decks.PermitsDeck;
 import com.server.model.gamelogic.Player;
 import com.communication.values.BonusType;
-import com.server.values.CityColor;
+import com.communication.values.CityColor;
 
 public class Importer {
 	String location;
 	Document doc;
 	private Player[] players;
-	private Pawn[] pawn;
+	private Pawn[][] pawn;
 	private NobilityTrack nobilityTrack;
 	private Bonus[][] nobilityTrackBonus;
 	private ArrayList<BonusToken> tokenPool;

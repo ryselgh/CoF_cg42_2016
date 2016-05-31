@@ -3,8 +3,8 @@ package com.server.model.board ;
 import com.communication.board.CityDTO;
 import com.communication.board.EmporiumDTO;
 import com.server.model.gamelogic.Player;
-import com.server.values.CityColor;
-import com.server.values.CityName;
+import com.communication.values.CityColor;
+import com.communication.values.CityName;
 
 
 
@@ -26,7 +26,7 @@ public class City
 		for(int i=0;i<this.slot.length;i++)
 			slotDTO[i] = this.slot[i].toDTO();
 		cDTO.setSlot(slotDTO);
-		cDTO.setColor(this.getColor());
+		cDTO.setColor(color);
 		cDTO.setName(this.getName());
 		cDTO.setCloseCities(this.getCloseCity());
 		cDTO.setToken(this.getBonusToken().toDTO());
