@@ -1,4 +1,4 @@
-package com.communication;
+package com.communication.market;
 
 import org.junit.runner.JUnitCore;
 import org.junit.runner.RunWith;
@@ -6,11 +6,11 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-	com.communication.actions.TestAll.class,
-	com.communication.board.TestAll.class,
-	com.communication.decks.TestAll.class,
-	com.communication.gamelogic.TestAll.class,
-	com.communication.market.TestAll.class,
+	MarketDTOTest.class,
+	AssistantOnSaleDTOTest.class,
+	OnSaleDTOTest.class,
+	PermitOnSaleDTOTest.class,
+	PoliticsOnSaleDTOTest.class,
 })
 public class TestAll {
 
