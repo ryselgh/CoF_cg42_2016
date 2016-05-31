@@ -4,31 +4,14 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import com.communication.market.MarketDTO;
+import com.communication.market.OnSaleDTO;
 
-/**
- * <!-- begin-user-doc -->
- * <!--  end-user-doc  -->
- * @generated
- */
 
-public class Market implements Iterator
-{
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
+public class Market implements Iterator{
+
 	
 	private ArrayList<OnSale> objectsOnSale;
 	
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
 	
 	public Market() {
 		objectsOnSale = new ArrayList<OnSale>();	
@@ -63,6 +46,7 @@ public class Market implements Iterator
 	{
 		return objectsOnSale.size();
 	}
+	
 	@Override
 	public boolean hasNext() {
 		// TODO Auto-generated method stub
@@ -76,10 +60,12 @@ public class Market implements Iterator
 	}
 	
 	public MarketDTO toDTO(){
-		for(OnSale os : objectsOnSale){
-			
-		}
-		return null;
+		MarketDTO marketDTO = new MarketDTO();
+		ArrayList<OnSaleDTO> osDTO = new ArrayList<OnSaleDTO>();
+		for(OnSale os : objectsOnSale)
+			osDTO.add(os.toDTO());
+		marketDTO.setObjectsOnSale(osDTO);
+		return marketDTO;
 	}
 	
 }

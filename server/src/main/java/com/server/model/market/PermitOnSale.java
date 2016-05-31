@@ -1,34 +1,18 @@
 package com.server.model.market ;
 
+import com.communication.SerObject;
+import com.communication.market.PermitOnSaleDTO;
 import com.server.model.board.Bonus;
 import com.server.model.decks.PermitsCard;
 import com.server.model.gamelogic.Player;
 
-/**
- * <!-- begin-user-doc -->
- * <!--  end-user-doc  -->
- * @generated
- */
-
 public class PermitOnSale extends OnSale
 {
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
 	
 	private PermitsCard permit;
 	private Player seller;
 	private int price;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
+	
 	
 	public PermitOnSale(Player pl, PermitsCard pc, int pr) {
 		this.permit=pc;
@@ -58,13 +42,13 @@ public class PermitOnSale extends OnSale
 		return "Permit card: {[Letters= "+ letters + "], [Bonus= " + bonus + "]}\nPrice= " + Integer.toString(price) + "\n\n";
 	}
 	
-	
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
+	public PermitOnSaleDTO toDTO(){
+		PermitOnSaleDTO posDTO = new PermitOnSaleDTO();
+		posDTO.setPermit(permit.toDTO());
+		posDTO.setPrice(price);
+		posDTO.setSeller(seller.toDTO());
+		return posDTO;
+	}
 	
 	
 }

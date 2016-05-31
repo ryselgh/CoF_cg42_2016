@@ -2,6 +2,8 @@ package com.server.model.decks ;
 
 import java.util.ArrayList;
 
+import com.communication.decks.KingBonusCardDTO;
+import com.communication.decks.KingBonusDeckDTO;
 import com.server.model.board.Bonus;
 
 public class KingBonusDeck extends Deck{
@@ -47,7 +49,15 @@ public class KingBonusDeck extends Deck{
 	public static int getKingqty() {
 		return KINGQTY;
 	}
-
+	
+	public KingBonusDeckDTO toDTO(){
+		KingBonusDeckDTO kbdDTO = new KingBonusDeckDTO();
+		ArrayList<KingBonusCardDTO> kbArrayDTO = new ArrayList<KingBonusCardDTO>();
+		for(KingBonusCard kbc: kingBonusDeck)
+			kbArrayDTO.add(kbc.toDTO());
+		kbdDTO.setKingBonusDeck(kbArrayDTO);
+		return kbdDTO;
+	}
 
 
 }

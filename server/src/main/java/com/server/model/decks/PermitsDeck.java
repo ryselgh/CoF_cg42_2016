@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
+import com.communication.decks.PermitsCardDTO;
+import com.communication.decks.PermitsDeckDTO;
 import com.server.values.RegionName;
 
 
@@ -94,6 +96,20 @@ public class PermitsDeck extends Deck{
 		setSlot2(null);
 		draw();
 
+	}
+	
+	public PermitsDeckDTO toDTO(){
+		PermitsDeckDTO pdDTO = new PermitsDeckDTO();
+		ArrayList<PermitsCardDTO> deckDTO = new ArrayList<PermitsCardDTO>();
+		for(PermitsCard pc: permitsDeck)
+			deckDTO.add(pc.toDTO());
+		pdDTO.setPermitsDeck(deckDTO);
+		pdDTO.setRegionCode(regionCode);
+		PermitsCardDTO[] slotDTO = new PermitsCardDTO[2];
+		slotDTO[0] = slot[0].toDTO();
+		slotDTO[1] = slot[1].toDTO();
+		pdDTO.setSlot(slotDTO);
+		return pdDTO;
 	}
 
 

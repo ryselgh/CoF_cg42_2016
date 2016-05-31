@@ -1,33 +1,17 @@
 package com.server.model.market ;
 
+import com.communication.SerObject;
+import com.communication.market.PoliticsOnSaleDTO;
 import com.server.model.decks.PoliticsCard;
 import com.server.model.gamelogic.Player;
 
-/**
- * <!-- begin-user-doc -->
- * <!--  end-user-doc  -->
- * @generated
- */
 
-public class PoliticsOnSale extends OnSale
-{
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
+public class PoliticsOnSale extends OnSale{
 	
 	private PoliticsCard politicsCard;
 	private int price;
 	private Player seller;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
+	
 	
 	public PoliticsOnSale(Player pl, PoliticsCard pc, int pr) {
 		this.politicsCard=pc;
@@ -52,13 +36,13 @@ public class PoliticsOnSale extends OnSale
 		return "Politic card: [Color= "+ this.politicsCard.getColor().toString() + "]\nPrice= " + Integer.toString(price) + "\n\n";
 	}
 	
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
-	
+	public PoliticsOnSaleDTO toDTO(){
+		PoliticsOnSaleDTO polosDTO = new PoliticsOnSaleDTO();
+		polosDTO.setPoliticsCard(politicsCard.toDTO());
+		polosDTO.setPrice(price);
+		polosDTO.setSeller(seller.toDTO());
+		return polosDTO;
+	}
 	
 }
 

@@ -1,5 +1,8 @@
 package com.server.model.decks ;
 
+import java.util.ArrayList;
+
+import com.communication.board.BonusDTO;
 import com.communication.decks.PermitsCardDTO;
 import com.server.model.board.Bonus;
 import com.server.model.gamelogic.Game;
@@ -81,7 +84,18 @@ public class PermitsCard {
 	}
 		
 	
-	
+	public PermitsCardDTO toDTO(){
+		PermitsCardDTO pcDTO = new PermitsCardDTO();
+		ArrayList<BonusDTO> bonusesDTO = new ArrayList<BonusDTO>();
+		for(Bonus b: bonuses)
+			bonusesDTO.add(b.toDTO());
+		BonusDTO[] bonusesDTOArray = new BonusDTO[bonusesDTO.size()];
+		bonusesDTO.toArray(bonusesDTOArray);
+		pcDTO.setBonuses(bonusesDTOArray);
+		pcDTO.setCityLetter(cityLetter);
+		pcDTO.setFaceDown(faceDown);
+		return pcDTO;
+	}
 	
 	
 	

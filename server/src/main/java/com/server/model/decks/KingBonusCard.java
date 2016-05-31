@@ -1,5 +1,6 @@
 package com.server.model.decks ;
 
+import com.communication.decks.KingBonusCardDTO;
 import com.server.model.board.Bonus;
 
 
@@ -31,5 +32,11 @@ public class KingBonusCard
 		return bonus;	
 	}
 	
+	public KingBonusCardDTO toDTO(){
+		KingBonusCardDTO kbDTO = new KingBonusCardDTO();
+		kbDTO.setBonus(bonus.toDTO());
+		kbDTO.setNumber(n);
+		return kbDTO;
+	}
 }
 

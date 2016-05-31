@@ -3,6 +3,8 @@ package com.server.model.decks ;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import com.communication.decks.PoliticsCardDTO;
+import com.communication.decks.PoliticsDeckDTO;
 import com.communication.values.CouncilorColor;
 
 public class PoliticsDeck extends Deck{
@@ -67,6 +69,19 @@ public class PoliticsDeck extends Deck{
 
 	public void discard(PoliticsCard c) {
 		garbage.add(c);
+	}
+	
+	public PoliticsDeckDTO toDTO(){
+		PoliticsDeckDTO pdDTO = new PoliticsDeckDTO();
+		ArrayList<PoliticsCardDTO> deckDTO = new ArrayList<PoliticsCardDTO>();
+		ArrayList<PoliticsCardDTO> garbageDTO = new ArrayList<PoliticsCardDTO>();
+		for(PoliticsCard pc: politicsDeck)
+			deckDTO.add(pc.toDTO());
+		pdDTO.setPoliticsDeck(deckDTO);
+		for(PoliticsCard gar: garbage)
+			garbageDTO.add(gar.toDTO());
+		pdDTO.setGarbage(garbageDTO);
+		return pdDTO;
 	}
 
 }

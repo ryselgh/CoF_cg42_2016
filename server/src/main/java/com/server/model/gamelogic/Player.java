@@ -2,6 +2,7 @@ package com.server.model.gamelogic;
 
 import java.util.ArrayList;
 
+import com.communication.gamelogic.PlayerDTO;
 import com.server.model.board.Assistant;
 import com.server.model.board.BonusCard;
 import com.server.model.board.Emporium;
@@ -268,6 +269,20 @@ public class Player {
 	 */
 	public void addBonusCards(ArrayList<BonusCard> bonusCards) {
 		this.bonusCards.addAll(bonusCards);
+	}
+
+	public PlayerDTO toDTO() {
+		PlayerDTO playerDTO = new PlayerDTO();
+		playerDTO.setAvailableAssistants(availableAssistants.toDTO());
+		playerDTO.setAvailableEmporiums(availableEmporiums.toDTO());
+		playerDTO.setBonusCards(bonusCards.toDTO());
+		playerDTO.setCoins(coins);
+		playerDTO.setHand(hand.toDTO());
+		playerDTO.setPawn(pawn.toDTO());
+		playerDTO.setPermits(permits.toDTO());
+		playerDTO.setPlayerID(playerID);
+		playerDTO.setScore(score);
+		return playerDTO;
 	}
 	
 	// <--------- MARKET END ---------->

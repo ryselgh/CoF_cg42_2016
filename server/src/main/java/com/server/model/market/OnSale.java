@@ -1,59 +1,25 @@
 package com.server.model.market ;
 
+import com.communication.SerObject;
 import com.communication.market.AssistantOnSaleDTO;
 import com.communication.market.OnSaleDTO;
 import com.communication.market.PermitOnSaleDTO;
 import com.communication.market.PoliticsOnSaleDTO;
 import com.server.model.gamelogic.Player;
 
-/**
- * <!-- begin-user-doc -->
- * <!--  end-user-doc  -->
- * @generated
- */
+public class OnSale{
 
-public class OnSale
-{
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
-	
-	private Player seller;
-	
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
-	
+	private Player seller;	
 	protected static Object obj;
-	
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
-	
 	private int price;
 	
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
 	
 	public OnSale(Player p, Object o, int pr) {
 		this.seller = p;
 		this.obj = o;
 		this.price = pr;
 	}
+	
 	public OnSale(){};
 	
 	public void obtain(Player buyer){};
@@ -84,6 +50,13 @@ public class OnSale
 				return false;
 		else
 			return false;
+	}
+	public OnSaleDTO toDTO() {
+		OnSaleDTO osDTO = new OnSaleDTO();
+		osDTO.setObj((SerObject) obj);
+		osDTO.setPrice(price);
+		osDTO.setSeller(seller.toDTO());
+		return osDTO;
 	}
 	
 }

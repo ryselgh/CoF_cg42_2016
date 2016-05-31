@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import org.w3c.dom.Document;
 
+import com.communication.gamelogic.GameDTO;
+import com.communication.gamelogic.PlayerDTO;
 import com.server.model.board.City;
 import com.server.model.board.Map;
 import com.server.model.market.Market;
@@ -181,6 +183,21 @@ public class Game {
 			if(c.getName().equals(name))
 				return c;
 		return null;
+	}
+	
+	public GameDTO toDto(){
+		GameDTO gameDTO = new GameDTO();
+		gameDTO.setActualPlayer(actualPlayer.toDTO());
+		gameDTO.setDefaultMap(defaultMap);
+		gameDTO.setFinalTurn(finalTurn);
+		gameDTO.setMap(map.toDTO());
+		gameDTO.setMarket(market.toDTO());
+		ArrayList<PlayerDTO> plsDTO = new ArrayList<PlayerDTO>();
+		for(Player p: players)
+			plsDTO.add(p.toDTO());
+		gameDTO.setPlayers(plsDTO);
+		gameDTO.setPlayersQty(playersQty);
+		return gameDTO;
 	}
 	
 }

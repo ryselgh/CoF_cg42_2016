@@ -1,47 +1,22 @@
 package com.server.model.market;
 
+import com.communication.SerObject;
+import com.communication.market.AssistantOnSaleDTO;
 import com.server.model.board.Assistant;
 import com.server.model.gamelogic.Player;
 
-/**
- * <!-- begin-user-doc -->
- * <!--  end-user-doc  -->
- * @generated
- */
-
-public class AssistantOnSale extends OnSale
-{
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
+public class AssistantOnSale extends OnSale{
 	
 	private Assistant assistant;
 	private Player seller;
 	private int price;
-	
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
 	
 	public AssistantOnSale(Player pl, Assistant a, int pr) {
 		this.assistant=a;
 		this.price = pr;
 		this.seller = pl;
 	}
-	
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
 	
 	public void obtain(Player buyer)
 	{
@@ -53,12 +28,21 @@ public class AssistantOnSale extends OnSale
 	
 	public int getPrice(){
 		return this.price;
-	};
+	}
 	
 
 	public String printDetails()
 	{
 		return "Assistant\nPrice= " + Integer.toString(price) + "\n\n";
+	}
+	
+	public AssistantOnSaleDTO toDTO(){
+		AssistantOnSaleDTO assDTO = new AssistantOnSaleDTO();
+		assDTO.setAssistant(assistant.toDTO());
+		assDTO.setObj((SerObject) obj);
+		assDTO.setPrice(price);
+		assDTO.setSeller(seller.toDTO());
+		return assDTO;
 	}
 }
 
