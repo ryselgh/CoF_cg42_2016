@@ -1,4 +1,4 @@
-package com.communication;
+package com.communication.decks;
 
 import org.junit.runner.JUnitCore;
 import org.junit.runner.RunWith;
@@ -6,9 +6,12 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-	com.communication.actions.TestAll.class,
-	com.communication.board.TestAll.class,
-	com.communication.decks.TestAll.class,
+	PoliticsDeckDTOTest.class,
+	PermitsDeckDTOTest.class,
+	KingBonusDeckDTOTest.class,
+	KingBonusCardDTOTest.class,
+	PoliticsCardDTOTest.class,
+	PermitsCardDTOTest.class,
 })
 public class TestAll {
 
