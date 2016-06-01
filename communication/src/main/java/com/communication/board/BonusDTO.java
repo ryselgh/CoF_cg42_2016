@@ -1,4 +1,4 @@
-package com.communication.board;
+package com.communication.board ;
 
 import java.io.Serializable;
 
@@ -31,18 +31,19 @@ public class BonusDTO implements Serializable{
 		return this.quantity;	
 	}
 
+	/**
+	 * @param type the type to set
+	 */
 	public void setType(BonusType type) {
 		this.type = type;
 	}
 
+	/**
+	 * @param quantity the quantity to set
+	 */
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
-
-	public int getQuantity() {
-		return quantity;
-	}
-	
 	
 	
 }
