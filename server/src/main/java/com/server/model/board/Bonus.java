@@ -40,10 +40,14 @@ public class Bonus
 	}
 	
 	public boolean equals(BonusDTO bDTO){
-		if(!type.equals(bDTO.getType()) || quantity != bDTO.getQnt())
-			return false;
-		return true;
+		if(!(bDTO==null)){
+			if(!type.equals(bDTO.getType()) || quantity != bDTO.getQnt())
+				return false;
+			return true;
+		}else
+			throw new NullPointerException("Data Transfer Object 'BonusDTO' cannot be NULL");
 	}
+	
 	public static boolean hasNobilityBonus(Bonus[] b)
 	{
 		for(Bonus bo: b)

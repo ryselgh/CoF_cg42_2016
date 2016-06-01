@@ -18,14 +18,14 @@ public class SocketConnection extends ClientObservable{
 	private ObjectInputStream inputStream = null;
 	private Logger logger;
 	private static final int PORT = 29999;
-	private static final String IP_ADDRESS = "127.0.0.1";
+	private static final String IP_ADDRESS = System.getProperty("server.ip");
 	private static final int NICKNAME_MAX_LENGHT = 5;
 
 	public SocketConnection(){
 		
 	}
 
-	public void run(){
+	public void run() throws IOException{
 		try {
 			socket = new Socket(IP_ADDRESS, PORT);
 			outputStream = new ObjectOutputStream(socket.getOutputStream());
@@ -33,6 +33,10 @@ public class SocketConnection extends ClientObservable{
 			startListen();
 		} catch (IOException e) {
 			logger.log(Level.SEVERE, "Failed to connect to "+IP_ADDRESS+":"+Integer.toString(PORT)+".",e);
+		} finally {
+			outputStream.close();
+			inputStream.close();
+			socket.close();
 		}
 	}
 

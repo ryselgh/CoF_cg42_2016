@@ -1,12 +1,16 @@
 package com.client.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.client.ClientObservable;
 import com.client.ClientObserver;
 import com.client.view.ClientCLI;
 import com.communication.CommunicationObject;
 import com.communication.ItemOnSale;
+import com.communication.SerObject;
 import com.communication.board.BonusTokenDTO;
 import com.communication.board.CityDTO;
 import com.communication.decks.PermitsCardDTO;
@@ -18,6 +22,7 @@ public class ClientController extends ClientObservable implements ClientObserver
 	private ClientCLI cli;
 	private GameDTO game;
 	private SocketConnection connection;
+	private Logger logger;
 	
 	private int playerID; // <------------------------------------ PROVVISORIO, serve comunque un identificativo
 
@@ -26,10 +31,14 @@ public class ClientController extends ClientObservable implements ClientObserver
 		cli.attachObserver(this);
 	}
 	
-	public void run(){
+	public void run() throws IOException{
 		connection = new SocketConnection();
-		connection.run();
-		connection.attachObserver(this);
+		try {
+			connection.run();
+			connection.attachObserver(this);
+		} catch (IOException e) {
+			logger.log(Level.SEVERE, "Connection lost.", e);
+		}
 	}
 
 	@Override
@@ -123,7 +132,7 @@ public class ClientController extends ClientObservable implements ClientObserver
 								connection.sendToServer("ItemToSell", pass);
 							}else{
 								int price = cli.getSellPrice();
-								its = new ItemOnSale(price, item);
+								its = new ItemOnSale(price, (SerObject) item);
 								connection.sendToServer("ItemToSell",its);
 							}
 							break;

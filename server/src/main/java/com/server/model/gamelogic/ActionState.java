@@ -226,7 +226,7 @@ public class ActionState implements State {
 				for (int i = 0; i < 3; i++)
 					for (int j = 0; j < 2; j++) {
 						PermitsCard temp = game.getMap().getPermitsDeck(i).getSlot(j, false);
-						if (temp.equals(chosen)) {
+						if (temp.equalsDTO(chosen)) {
 							found = true;
 							game.getActualPlayer().addPermits(game.getMap().getPermitsDeck(i).getSlot(j, true));
 						}
@@ -240,7 +240,7 @@ public class ActionState implements State {
 			PermitsCardDTO chosen = clienthandler.getOwnedPermitsCard();
 			PermitsCard temp=null;
 			for(PermitsCard pc : pcOwned)
-				if(pc.equals(chosen))
+				if(pc.equalsDTO(chosen))
 					temp = pc;
 			if(temp==null)
 				;//errore di conversione dto->ogg

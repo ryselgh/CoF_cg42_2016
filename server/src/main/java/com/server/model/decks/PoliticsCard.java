@@ -35,16 +35,22 @@ public class PoliticsCard
 	}
 	
 	public static PoliticsCard fromDTO(PoliticsCardDTO pcDTO, Player player){
-		for(PoliticsCard pc : player.getHand())
-			if(pc.equals(pcDTO))
-				return pc;
-		return null;
+		if (!(pcDTO == null)) {
+			for (PoliticsCard pc : player.getHand())
+				if (pc.equalsDTO(pcDTO))
+					return pc;
+			return null;
+		} else
+			throw new NullPointerException("pcDTO cannot be null");
 	}
 	
-	public boolean equals(PoliticsCardDTO pcDTO){
-		if(this.color.equals(pcDTO.getColor()))
-			return true;
-		return false;
+	public boolean equalsDTO(PoliticsCardDTO pcDTO){
+		if (!(pcDTO == null)) {
+			if (this.color.equals(pcDTO.getColor()))
+				return true;
+			return false;
+		} else
+			throw new NullPointerException("pcDTO cannot be null");
 	}
 	
 	public PoliticsCardDTO toDTO(){

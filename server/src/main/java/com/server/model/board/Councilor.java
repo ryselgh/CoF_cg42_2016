@@ -29,9 +29,12 @@ public class Councilor
 	}
 	
 	public boolean equals(CouncilorDTO cDTO){
-		if(this.color.equals(cDTO.getColor()))
-			return true;
-		return false;
+		if (!(cDTO == null)) {
+			if (this.color.equals(cDTO.getColor()))
+				return true;
+			return false;
+		} else
+			throw new NullPointerException("cDTO cannot be null");
 	}
 	
 	public CouncilorDTO toDTO(){

@@ -1,13 +1,11 @@
 package com.server.model.decks ;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import com.communication.board.BonusDTO;
 import com.communication.decks.PermitsCardDTO;
-import com.communication.values.Letter;
-import com.communication.values.RegionName;
 import com.server.model.board.Bonus;
-import com.server.model.gamelogic.Game;
 import com.server.model.gamelogic.Player;
 
 
@@ -72,15 +70,18 @@ public class PermitsCard {
 
 	public static PermitsCard fromDTO(PermitsCardDTO pcDTO, Player player){//ritorna il riferimento della carta permesso posseduta dal giocatore
 		for(PermitsCard pc : player.getPermits())
-			if(pc.equals(pcDTO))
+			if(pc.equalsDTO(pcDTO))
 				return pc;
 		return null;
 	}
 	
-	public boolean equals(PermitsCardDTO pcDTO){
-		if(!cityLetter.equals(pcDTO.getCityLetter()) || !bonuses.equals(pcDTO.getBonuses()))
-			return false;
-		return true;
+	public boolean equalsDTO(PermitsCardDTO pcDTO){
+		if (!(pcDTO == null)) {
+			if (!Arrays.equals(pcDTO.getCityLetter(), cityLetter) || !Arrays.equals(bonuses, pcDTO.getBonuses()))
+				return false;
+			return true;
+		} else
+			throw new NullPointerException("pcDTO cannot be null");
 	}
 		
 	

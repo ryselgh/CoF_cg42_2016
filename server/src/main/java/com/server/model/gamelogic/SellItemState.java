@@ -68,7 +68,7 @@ public class SellItemState implements State{
 	
 	private PoliticsCard DTOtoPolitic(PoliticsOnSaleDTO pDTO){
 		for(PoliticsCard pc : game.getActualPlayer().getHand())
-			if(pc.equals(pDTO))
+			if(pc.equalsDTO(pDTO.getPoliticsCard()))
 				return pc;
 		return null;
 	}

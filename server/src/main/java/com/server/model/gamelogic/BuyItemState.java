@@ -36,7 +36,7 @@ public class BuyItemState implements State{
 	
 	private OnSale DTOtoObj(OnSaleDTO item){
 		for(OnSale os : game.getMarket().getObjectsOnSale())
-			if(os.equals(item))
+			if(os.equalsDTO(item))
 				return os;
 		return null;
 	}

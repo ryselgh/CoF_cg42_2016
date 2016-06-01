@@ -4,9 +4,9 @@ import java.io.Serializable;
 
 public class ItemOnSale implements Serializable{//used for client-server communication
 	private int price;
-	private Object obj;
+	private SerObject obj;
 	
-	public ItemOnSale(int pr, Object obj){
+	public ItemOnSale(int pr, SerObject obj){
 		this.price = pr;
 		this.obj = obj;
 	}
@@ -15,7 +15,7 @@ public class ItemOnSale implements Serializable{//used for client-server communi
 		return price;
 	}
 
-	public Object getObj() {
+	public SerObject getObj() {
 		return obj;
 	}
 	
