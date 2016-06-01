@@ -7,7 +7,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.server.values.BonusType;
+import com.communication.values.BonusType;
 public class BonusTokenTest {
 	
 	Bonus[] bonus;

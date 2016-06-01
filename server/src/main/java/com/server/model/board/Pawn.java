@@ -1,9 +1,9 @@
 package com.server.model.board ;
 
 import com.communication.board.PawnDTO;
+import com.communication.values.PawnColor;
+import com.communication.values.Track;
 import com.server.model.gamelogic.Player;
-import com.server.values.PawnColor;
-import com.server.values.Track;
 
 
 

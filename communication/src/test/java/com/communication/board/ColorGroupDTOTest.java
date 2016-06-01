@@ -108,7 +108,7 @@ public class ColorGroupDTOTest {
 		fixture.setBc(bcDTO);
 		fixture.setCities(colCities);
 
-		BonusCardDTO result = fixture.getBc();
+		BonusCardDTO result = fixture.getBonusCard();
 
 		assertNotNull(result);
 		assertEquals(bonus, result.getBonus());

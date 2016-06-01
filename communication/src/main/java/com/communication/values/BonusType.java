@@ -1,4 +1,4 @@
-package com.communication.values;
+package com.communication.values ;
 
 /**
  * the bonus type list

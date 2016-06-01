@@ -78,19 +78,19 @@ public class PermitsDeckDTOTest {
 		assertEquals(1, result);
 	}
 
-	@Test
-	public void testGetSlot_1()
-		throws Exception {
-		PermitsDeckDTO fixture = new PermitsDeckDTO();
-		fixture.setRegionCode(1);
-		fixture.setSlot(new PermitsCardDTO[2] );
-		fixture.setPermitsDeck(permitsDeck);
-
-		PermitsCardDTO[] result = fixture.getSlot();
-
-		assertNotNull(result);
-		assertEquals(2, result.length);
-	}
+//	@Test
+//	public void testGetSlot_1()
+//		throws Exception {
+//		PermitsDeckDTO fixture = new PermitsDeckDTO();
+//		fixture.setRegionCode(1);
+//		fixture.setSlot(new PermitsCardDTO[2] );
+//		fixture.setPermitsDeck(permitsDeck);
+//
+//		PermitsCardDTO[] result = fixture.getSlot();
+//
+//		assertNotNull(result);
+//		assertEquals(2, result.length);
+//	}
 
 //	@Test
 //	public void testSetPermitsDeck_1()

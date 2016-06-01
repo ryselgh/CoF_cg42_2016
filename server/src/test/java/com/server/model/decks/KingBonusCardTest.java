@@ -4,8 +4,8 @@ import static org.junit.Assert.*;
 
 import org.junit.*;
 
+import com.communication.values.BonusType;
 import com.server.model.board.Bonus;
-import com.server.values.BonusType;
 
 
 

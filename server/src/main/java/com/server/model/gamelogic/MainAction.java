@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import com.communication.values.CouncilorColor;
+import com.communication.values.RegionName;
 import com.server.model.board.Balcony;
 import com.server.model.board.City;
 import com.server.model.board.Councilor;
 import com.server.model.board.Emporium;
 import com.server.model.decks.PermitsCard;
 import com.server.model.decks.PoliticsCard;
-import com.server.values.RegionName;
 
 public class MainAction {
 

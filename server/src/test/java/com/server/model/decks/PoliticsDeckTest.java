@@ -1,8 +1,10 @@
 package com.server.model.decks;
 
 import org.junit.*;
+
+import com.communication.values.CouncilorColor;
+
 import static org.junit.Assert.*;
-import com.server.values.CouncilorColor;
 
 public class PoliticsDeckTest {
 	

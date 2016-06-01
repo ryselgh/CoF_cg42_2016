@@ -8,6 +8,8 @@ import com.communication.board.EmporiumDTO;
 import com.communication.decks.PermitsCardDTO;
 import com.communication.decks.PoliticsCardDTO;
 import com.communication.gamelogic.PlayerDTO;
+import com.communication.values.PawnColor;
+import com.communication.values.Track;
 import com.server.model.board.Assistant;
 import com.server.model.board.BonusCard;
 import com.server.model.board.Emporium;
@@ -15,8 +17,6 @@ import com.server.model.board.Map;
 import com.server.model.board.Pawn;
 import com.server.model.decks.PermitsCard;
 import com.server.model.decks.PoliticsCard;
-import com.server.values.PawnColor;
-import com.server.values.Track;
 
 
 public class Player {

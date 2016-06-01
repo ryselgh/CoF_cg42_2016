@@ -5,10 +5,10 @@ import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
-import com.server.model.gamelogic.Player;
 
-import com.server.values.BonusType;
-import com.server.values.CityColor;
+import com.communication.values.BonusType;
+import com.communication.values.CityColor;
+import com.server.model.gamelogic.Player;
 
 import junit.framework.Assert;
 

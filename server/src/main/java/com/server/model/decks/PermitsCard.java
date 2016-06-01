@@ -4,11 +4,11 @@ import java.util.ArrayList;
 
 import com.communication.board.BonusDTO;
 import com.communication.decks.PermitsCardDTO;
+import com.communication.values.Letter;
+import com.communication.values.RegionName;
 import com.server.model.board.Bonus;
 import com.server.model.gamelogic.Game;
 import com.server.model.gamelogic.Player;
-import com.server.values.Letter;
-import com.server.values.RegionName;
 
 
 

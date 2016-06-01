@@ -2,8 +2,9 @@ package com.server.model.decks;
 
 import org.junit.*;
 import static org.junit.Assert.*;
+
+import com.communication.values.BonusType;
 import com.server.model.board.Bonus;
-import com.server.values.BonusType;
 
 public class PermitsDeckTest {
 	

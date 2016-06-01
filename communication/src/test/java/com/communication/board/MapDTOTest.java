@@ -69,10 +69,9 @@ public class MapDTOTest {
 		fixture.setColorGroups(new ColorGroupDTO[] {});
 		fixture.setAssistants(new ArrayList());
 
-		BalconyDTO[] result = fixture.getBalcony();
+		BalconyDTO result = fixture.getBalcony(0);
 
 		assertNotNull(result);
-		assertEquals(0, result.length);
 	}
 
 	@Test
@@ -119,10 +118,9 @@ public class MapDTOTest {
 		fixture.setColorGroups(new ColorGroupDTO[] {});
 		fixture.setAssistants(new ArrayList());
 
-		ColorGroupDTO[] result = fixture.getColorGroups();
+		ColorGroupDTO result = fixture.getColorGroup(0);
 
 		assertNotNull(result);
-		assertEquals(0, result.length);
 	}
 
 	@Test
@@ -295,10 +293,9 @@ public class MapDTOTest {
 		fixture.setColorGroups(new ColorGroupDTO[] {});
 		fixture.setAssistants(new ArrayList());
 
-		PermitsDeckDTO[] result = fixture.getPermitsDeck();
+		PermitsDeckDTO result = fixture.getPermitsDeck(0);
 
 		assertNotNull(result);
-		assertEquals(0, result.length);
 	}
 
 	@Test
@@ -371,10 +368,9 @@ public class MapDTOTest {
 		fixture.setColorGroups(new ColorGroupDTO[] {});
 		fixture.setAssistants(new ArrayList());
 
-		RegionDTO[] result = fixture.getRegions();
+		RegionDTO result = fixture.getRegion(0);
 
 		assertNotNull(result);
-		assertEquals(0, result.length);
 	}
 
 //	@Test
