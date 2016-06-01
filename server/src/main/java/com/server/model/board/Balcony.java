@@ -1,5 +1,8 @@
 package com.server.model.board;
 
+import com.communication.board.BalconyDTO;
+import com.communication.board.CouncilorDTO;
+
 public class Balcony
 {
 
@@ -12,12 +15,10 @@ public class Balcony
 	 */
 
 	public Balcony(Councilor[] c) {
+		this.councilor = c; 
+		
 		if(c == null)
 			throw new IllegalArgumentException("Argument not valid.");
-		else
-			this.councilor = c; 
-		
-		
 	}
 
 	/**
@@ -36,9 +37,15 @@ public class Balcony
 	}
 
 
-	// public Region getRegion() {
-	//  return region;
-	// }
+	public BalconyDTO toDTO(){
+		BalconyDTO bDTO = new BalconyDTO();
+		CouncilorDTO[] councDTO = new CouncilorDTO[this.getCouncilors().length];
+		for(int i=0;i<this.getCouncilors().length;i++)
+			councDTO[i]=this.getCouncilors()[i].toDTO();
+		return bDTO;
+			
+		
+	}
 
 }
 

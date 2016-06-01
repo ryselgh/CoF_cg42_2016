@@ -1,7 +1,7 @@
 package com.server.model.decks ;
 
+import com.communication.decks.KingBonusCardDTO;
 import com.server.model.board.Bonus;
-import com.server.values.BonusType;
 
 
 public class KingBonusCard
@@ -19,15 +19,8 @@ public class KingBonusCard
 	 */
 	
 	public KingBonusCard(int n, Bonus b) {
-		//		Bonus[] bonuses = new Bonus[BonusType.values().length];
-		//for(BonusType bt: BonusType.values()){
-		if(b.getType()!=BonusType.POINT)
-			throw new IllegalArgumentException("The BonusType is wrong or the card does not exist");
-		else{
-			this.n = n;
-			bonus = b;
-		}
-
+		this.n = n;
+		bonus = b;
 	}
 	
 	/**
@@ -39,5 +32,11 @@ public class KingBonusCard
 		return bonus;	
 	}
 	
+	public KingBonusCardDTO toDTO(){
+		KingBonusCardDTO kbDTO = new KingBonusCardDTO();
+		kbDTO.setBonus(bonus.toDTO());
+		kbDTO.setNumber(n);
+		return kbDTO;
+	}
 }
 

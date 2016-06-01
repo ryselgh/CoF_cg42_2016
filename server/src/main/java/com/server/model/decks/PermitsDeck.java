@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
+import com.communication.decks.PermitsCardDTO;
+import com.communication.decks.PermitsDeckDTO;
 import com.server.values.RegionName;
 
 
@@ -23,16 +25,11 @@ public class PermitsDeck extends Deck{
 	 */
 
 	public PermitsDeck(PermitsCard[] p, int r) {
-		for(PermitsCard pc: p){
-			if(pc==null)
-				throw new NullPointerException("Cards cannot be null");
-			else{
-				permitsDeck = new ArrayList<PermitsCard> (Arrays.asList(p));
-				regionCode = r;
-				Collections.shuffle(permitsDeck);
-				this.draw();
-			}
-		}
+		permitsDeck = new ArrayList<PermitsCard> (Arrays.asList(p));
+		regionCode = r;
+		Collections.shuffle(permitsDeck);
+		this.draw();
+
 	}
 
 	/**
@@ -41,23 +38,15 @@ public class PermitsDeck extends Deck{
 	 * @param draw is a boolen if true the slot is full else is empty
 	 */
 	public PermitsCard getSlot(int index, boolean draw) {
-		
-		
-		if(index>1 || index<0)
-			throw new NullPointerException("thre are only two slots!");
-		else{
-			if(!draw)
-
-				return this.slot[index];
-			else
-			{
-				PermitsCard tmp = this.slot[index];
-				this.slot[index] = null;
-				draw();
-				return tmp;
-			}
+		if(!draw)
+			return this.slot[index];
+		else
+		{
+			PermitsCard tmp = this.slot[index];
+			this.slot[index] = null;
+			draw();
+			return tmp;
 		}
-		
 	}
 
 
@@ -84,7 +73,6 @@ public class PermitsDeck extends Deck{
 	public void draw() {
 		if(permitsDeck.isEmpty())
 			throw new NullPointerException("Cards are over");
-		else{
 		if (slot[0] == null){
 			slot[0] = permitsDeck.get(0);
 			slot[0].setFaceDown(false);
@@ -95,7 +83,6 @@ public class PermitsDeck extends Deck{
 			permitsDeck.remove(0);
 			slot[1].setFaceDown(false);
 		}
-		}
 	}
 
 	/**
@@ -103,15 +90,26 @@ public class PermitsDeck extends Deck{
 	 */
 
 	public void changeCards(){
-		if(permitsDeck.isEmpty())
-			throw new NullPointerException("Cards are over");
-		else{
-			permitsDeck.add(getSlot(0,false));
-			permitsDeck.add(getSlot(1,false));
-			setSlot1(null);
-			setSlot2(null);
-			draw();
-		}
+		permitsDeck.add(getSlot(0,false));
+		permitsDeck.add(getSlot(1,false));
+		setSlot1(null);
+		setSlot2(null);
+		draw();
+
+	}
+	
+	public PermitsDeckDTO toDTO(){
+		PermitsDeckDTO pdDTO = new PermitsDeckDTO();
+		ArrayList<PermitsCardDTO> deckDTO = new ArrayList<PermitsCardDTO>();
+		for(PermitsCard pc: permitsDeck)
+			deckDTO.add(pc.toDTO());
+		pdDTO.setPermitsDeck(deckDTO);
+		pdDTO.setRegionCode(regionCode);
+		PermitsCardDTO[] slotDTO = new PermitsCardDTO[2];
+		slotDTO[0] = slot[0].toDTO();
+		slotDTO[1] = slot[1].toDTO();
+		pdDTO.setSlot(slotDTO);
+		return pdDTO;
 	}
 
 

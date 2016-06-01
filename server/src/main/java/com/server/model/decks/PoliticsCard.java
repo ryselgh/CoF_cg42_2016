@@ -1,6 +1,8 @@
 package com.server.model.decks ;
 
-import com.server.values.CouncilorColor;
+import com.communication.decks.PoliticsCardDTO;
+import com.communication.values.CouncilorColor;
+import com.server.model.gamelogic.Player;
 
 
 
@@ -18,10 +20,7 @@ public class PoliticsCard
 	
 	
 	public PoliticsCard(CouncilorColor c) {
-		if(c==null)
-			throw new NullPointerException();
-		else
-			color=c;
+		color=c;
 
 	}
 	
@@ -35,5 +34,23 @@ public class PoliticsCard
 		return color;	
 	}
 	
+	public static PoliticsCard fromDTO(PoliticsCardDTO pcDTO, Player player){
+		for(PoliticsCard pc : player.getHand())
+			if(pc.equals(pcDTO))
+				return pc;
+		return null;
+	}
+	
+	public boolean equals(PoliticsCardDTO pcDTO){
+		if(this.color.equals(pcDTO.getColor()))
+			return true;
+		return false;
+	}
+	
+	public PoliticsCardDTO toDTO(){
+		PoliticsCardDTO pcDTO = new PoliticsCardDTO();
+		pcDTO.setColor(color);
+		return pcDTO;
+	}
 }
 
