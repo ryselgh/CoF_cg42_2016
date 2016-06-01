@@ -68,6 +68,8 @@ public class PoliticsDeck extends Deck{
 	 */
 
 	public void discard(PoliticsCard c) {
+		if(c==null)
+			throw new NullPointerException("Argument must be PoliticsCard type.");
 		garbage.add(c);
 	}
 	

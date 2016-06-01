@@ -29,14 +29,12 @@ public class PermitsCardTest {
 	
 	
 	
-	@Test(expected=NullPointerException.class)
+	@Test
 	public void testPermitsCard_1(){
 		Bonus[] b = new Bonus[2] ;
 		String[] l = new String[3] ;
 		PermitsCard result = new PermitsCard(b, l);
-
-		
-		
+		assertNotNull(result);
 	}
 
 	@Test

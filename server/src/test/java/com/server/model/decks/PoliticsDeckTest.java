@@ -9,7 +9,7 @@ import static org.junit.Assert.*;
 public class PoliticsDeckTest {
 	
 
-	@Test(expected=IllegalArgumentException.class)
+	@Test(expected=NullPointerException.class)
 	public void testDiscard_1()
 		throws Exception {
 		PoliticsDeck fixture = new PoliticsDeck();

@@ -19,11 +19,11 @@ public class KingBonusDeckTest {
 		
 	}
 
-	@Test(expected= NullPointerException.class)
+	@Test(expected= IndexOutOfBoundsException.class)
 	public void testKingBonusDeck_2(){
 		Bonus[] bonuses = new Bonus[5];
 		KingBonusDeck result = new KingBonusDeck(bonuses);
-
+		assertNotNull(result);
 	}
 
 	
@@ -41,7 +41,7 @@ public class KingBonusDeckTest {
 //		assertNotNull(result);
 //	}
 
-	@Test(expected = NullPointerException.class)
+	@Test(expected = ArrayIndexOutOfBoundsException.class)
 	public void testDraw(){
 		KingBonusDeck fixture = new KingBonusDeck(new Bonus[] {});
 		KingBonusCard result = fixture.draw();
