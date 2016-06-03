@@ -41,21 +41,9 @@ public class ClientHandler extends Observable implements Observer, Runnable{
 	}
 	
 	private void startListen(){
-		while(!inGame){//la comunicazione mvc avviene nella lobby. in game invece è ad invocazione diretta e questo loop bloccherebbe il thread
-			CommunicationObject in = null;
-			try {
-				in = (CommunicationObject) inputStream.readObject();
-			} catch (ClassNotFoundException | IOException e) {
-				logger.log(Level.SEVERE,"Failed to read the CommunicationObject",e);
-			}
-			if(in == null)
-				throw new NullPointerException("Something went wrong with the CommunicationObject");
-			else{
-				String command = in.getMsg();
-				setChanged();
-			    notifyObservers(command);//check di validità sul comando. sarà lo stesso che attua il client prima dell'invio, ma ripetuto qui sul server per controllare che non ci siano stati errori di trasmissione
-			}
-		}
+		ClientListener listener = new ClientListener(inputStream);
+		listener.addObserver(this);
+		listener.startListen();
 	}
 	
 	public String getUserName() {
@@ -93,7 +81,12 @@ public class ClientHandler extends Observable implements Observer, Runnable{
 		if(o instanceof Lobby){
 			String[] splitted = ((String)arg).split("_");
 			if(splitted[0].equals(this.getUserName()))
-				this.sendToClient(splitted[1],null);}
+				this.sendToClient(splitted[1],null);
+			}
+		else if(o instanceof ClientListener){
+			setChanged();
+		    notifyObservers(arg);
+		}
 	}
 
 	@Override
@@ -102,37 +95,4 @@ public class ClientHandler extends Observable implements Observer, Runnable{
 		
 	}
 
-	public BonusToken[] getBonusToken(BonusToken[] tokenPool){//IN TUTTI QUESTI GETTER C'è DA IMPLEMENTARE IL CHECK SUL PRIMO PARAMETRO (STRINGA) CHE DEVE IDENTIFICARE L'INPUT CORRETTAMENTE
-		sendToClient("OneBonusToken", tokenPool);
-		CommunicationObject resp = getClientInput();
-		BonusTokenDTO[] retDTO = (BonusTokenDTO[]) resp.getObj();
-		BonusToken[] ret = new BonusToken[retDTO.length];
-		for(int i=0;i<retDTO.length;i++)
-			ret[i].setterFromDTO(retDTO[i]);
-		return ret;
-	}
-	
-	public PermitsCardDTO getFreePermitsCard(){
-		sendToClient("FreePermitsCard", null);
-		PermitsCardDTO ret = (PermitsCardDTO) getClientInput().getObj();
-		return ret;
-	}
-	
-	public PermitsCardDTO getOwnedPermitsCard(){
-		sendToClient("OwnedPermitsCard", null);
-		PermitsCardDTO ret = (PermitsCardDTO) getClientInput().getObj();
-		return ret;
-	}
-	
-	public ItemOnSale getItemToSell(){
-		sendToClient("ItemToSell", null);
-		ItemOnSale ret = (ItemOnSale) getClientInput().getObj();
-		return ret;
-	}
-	
-	public OnSaleDTO getItemToBuy(MarketDTO market){
-		sendToClient("ItemToBuy", market);
-		OnSaleDTO ret = (OnSaleDTO) getClientInput().getObj();
-		return ret;
-	}
 }

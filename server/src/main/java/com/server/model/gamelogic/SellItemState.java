@@ -2,6 +2,7 @@ package com.server.model.gamelogic;
 
 import com.communication.ItemOnSale;
 import com.communication.market.AssistantOnSaleDTO;
+import com.communication.market.OnSaleDTO;
 import com.communication.market.PermitOnSaleDTO;
 import com.communication.market.PoliticsOnSaleDTO;
 import com.server.controller.ClientHandler;
@@ -19,17 +20,26 @@ public class SellItemState implements State{
 	private Game game;
 	private ClientHandler clienthandler;
 	private GameHandler gamehandler;
-	
+	private Context context;
 	public SellItemState(){}
 	
 	@Override
 	public void doAction(Context context) {
+		this.context = context;
 		context.setState(this);
 		clienthandler = context.getClienthandler();
 		gamehandler = context.getGamehandler();
 		this.game = gamehandler.getGame();
 		
-		ItemOnSale toSell = clienthandler.getItemToSell();
+		execute(null,false);
+	}
+	
+	public void execute(ItemOnSale toSell, boolean passed){//uso passed perchè l'oggetto può essere null anche se ricevuto correttamente
+		if(!passed){
+			clienthandler.sendToClient("ItemToSell", null);
+			gamehandler.waitForInput("TOSELL", this);
+			return;
+		}
 		if(toSell.getObj() == null)
 			clienthandler.sendToClient("NullSellReceived", null);
 		else {

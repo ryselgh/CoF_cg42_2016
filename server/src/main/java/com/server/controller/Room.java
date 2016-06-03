@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import org.w3c.dom.Document;
 
+import com.communication.values.RoomState;
+
 public class Room {
 	private ArrayList<ClientHandler> players;
 	private Document rawMap;
@@ -11,12 +13,14 @@ public class Room {
 	private int maxPlayers, minPlayers;
 	private String name;
 	private boolean defaultMap = true;
+	private RoomState status;
 	
 	public Room(String name, ClientHandler adm, int maxPlayers, int minPlayers){
 		this.name = name;
 		this.admin = adm;
 		this.maxPlayers = maxPlayers;
 		this.minPlayers = minPlayers;
+		this.status = RoomState.WAITING_PLAYERS;
 		players = new ArrayList<ClientHandler>();
 		players.add(admin);
 	}
@@ -80,6 +84,10 @@ public class Room {
 
 	public int getMinPlayers() {
 		return minPlayers;
+	}
+	
+	public RoomState getState(){
+		return this.status;
 	}
 	
 	

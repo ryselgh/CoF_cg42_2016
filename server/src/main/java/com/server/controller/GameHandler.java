@@ -2,9 +2,18 @@ package com.server.controller;
 
 import java.util.ArrayList;
 import java.util.Observable;
+import java.util.Observer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.w3c.dom.Document;
 
+import com.communication.CommunicationObject;
+import com.communication.ItemOnSale;
+import com.communication.board.BonusTokenDTO;
+import com.communication.decks.PermitsCardDTO;
+import com.communication.market.OnSaleDTO;
+import com.server.actions.Action;
 import com.server.model.decks.PoliticsCard;
 import com.server.model.gamelogic.ActionState;
 import com.server.model.gamelogic.BuyItemState;
@@ -13,14 +22,20 @@ import com.server.model.gamelogic.Game;
 import com.server.model.gamelogic.SellItemState;
 import com.server.model.gamelogic.State;
 
-public class GameHandler extends Observable implements Runnable{
+public class GameHandler extends Observable implements Runnable, Observer{
 	ArrayList<ClientHandler> players;
 	private Game game;
 	private Document rawMap;
 	private Context context;
+	private Object toResume;
+	private String toResumeStr;
+	private boolean waitingInput = false;
+	private Logger logger;
 	
 	public GameHandler(ArrayList<ClientHandler> pl, boolean defaultMap, Document map){
 		players = pl;
+		for(ClientHandler ch : pl)
+			ch.addObserver(this);
 		this.game = new Game(players.size(),defaultMap,map);
 	}
 
@@ -72,5 +87,52 @@ public class GameHandler extends Observable implements Runnable{
 	
 	public Game getGame(){
 		return this.game;
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {//intestazioni: SETTINGS_ , INPUT_
+		String[] msg = ((CommunicationObject) arg).getMsg().split("_");
+		Object obj = ((CommunicationObject) arg).getObj();
+		if(msg[0].equals("INPUT_")){
+			if(waitingInput && msg[1].equals(toResumeStr)){
+				this.waitingInput = false;
+				switch(toResumeStr){
+				case "BONUSCARD":
+					((ActionState) toResume).collectBONUSCARD((PermitsCardDTO) obj);
+					break;
+				case "FREECARD":
+					((ActionState) toResume).collectFREECARD((PermitsCardDTO) obj);
+					break;
+				case "TWOTOKENS":
+					((ActionState) toResume).collectTWOTOKENS((BonusTokenDTO[]) obj);
+					break;
+				case "ONETOKEN":
+					((ActionState) toResume).collectONETOKEN((BonusTokenDTO[]) obj);
+					break;
+				case "TOBUY":
+					((BuyItemState) toResume).execute((OnSaleDTO) obj, true);
+					break;
+				case "TOSELL":
+					((SellItemState) toResume).execute((ItemOnSale) obj, true);
+				
+				
+				
+				}
+			}
+			else
+				logger.log(Level.SEVERE,"Input not expected");
+		}
+		else if(msg[0].equals("SETTINGS_")){
+			//impostazioni o altro
+		}
+		}
+		
+	
+	
+	
+	public void waitForInput(String ID, Object action){//da spostare qui le richieste al client dal clienthandler che riceverà soltante
+		this.waitingInput = true;
+		this.toResume = action;
+		this.toResumeStr = ID;
 	}
 }

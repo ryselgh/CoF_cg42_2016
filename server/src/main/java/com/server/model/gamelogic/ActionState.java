@@ -1,5 +1,6 @@
 package com.server.model.gamelogic;
-
+//gamehandler.waitfortwotokens(this (ActionState))
+//da spostare la sendtoclient sul gamehandler
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -13,6 +14,7 @@ import com.communication.actions.PassDTO;
 import com.communication.actions.SatisfyKingDTO;
 import com.communication.actions.ShiftCouncilMainDTO;
 import com.communication.actions.ShiftCouncilSpeedDTO;
+import com.communication.board.BonusTokenDTO;
 import com.communication.decks.PermitsCardDTO;
 import com.server.actions.Action;
 import com.server.actions.ActionReturn;
@@ -199,57 +201,96 @@ public class ActionState implements State {
 			mainCounter++;
 			break;
 		case TOKEN:
-			btTmp = getAvailableTokens();
-			if (btTmp.length == 0)
-				clienthandler.sendToClient("You have no available city tokens. Bonus discarded", null);
-			else {
-				BonusToken[] chosen = clienthandler.getBonusToken(btTmp);
-				for (Bonus bo : chosen[0].getBonus())
-					collectBonus(bo);
-			}
+			collectONETOKEN(null);
 			break;
 		case TWOTOKENS:
-			btTmp = getAvailableTokens();
-			if (btTmp.length == 0)
-				clienthandler.sendToClient("You have no available city tokens. Bonus discarded", null);
-			else {
-				BonusToken[] chosen = clienthandler.getBonusToken(btTmp);
-				for(BonusToken bt : chosen)
-					for (Bonus bo : bt.getBonus())
-					collectBonus(bo);
-			}
+			collectTWOTOKENS(null);
 			break;
 		case FREECARD: 
-			boolean found = false;
-			while (!found) {
-				PermitsCardDTO chosen = clienthandler.getFreePermitsCard();
-				for (int i = 0; i < 3; i++)
-					for (int j = 0; j < 2; j++) {
-						PermitsCard temp = game.getMap().getPermitsDeck(i).getSlot(j, false);
-						if (temp.equalsDTO(chosen)) {
-							found = true;
-							game.getActualPlayer().addPermits(game.getMap().getPermitsDeck(i).getSlot(j, true));
-						}
-					}
-				if(!found)
-					clienthandler.sendToClient("Invalid input permit. Try again", null);
-			}
+			collectFREECARD(null);
 			break;
 		case BONUSCARD:// input da convertire da DTO a oggetti
-			ArrayList<PermitsCard> pcOwned = game.getActualPlayer().getPermits();
-			PermitsCardDTO chosen = clienthandler.getOwnedPermitsCard();
-			PermitsCard temp=null;
-			for(PermitsCard pc : pcOwned)
-				if(pc.equalsDTO(chosen))
-					temp = pc;
-			if(temp==null)
-				;//errore di conversione dto->ogg
-			else{
-			for (Bonus bo : temp.getBonus())
-				collectBonus(bo);
-			}
+			collectBONUSCARD(null);
 			break;
 
+		}
+	}
+	
+	public void collectONETOKEN(BonusTokenDTO[] chosen){
+		BonusToken[] btTmp = getAvailableTokens();
+		if (btTmp.length == 0)
+			clienthandler.sendToClient("You have no available city tokens. Bonus discarded", null);
+		else {
+			if(chosen==null){
+				clienthandler.sendToClient("OneBonusToken", btTmp);
+				gamehandler.waitForInput("ONETOKEN", this);
+				return;
+			}
+			BonusToken conv = new BonusToken(null);
+			conv.setterFromDTO(chosen[0]);
+			for (Bonus bo : conv.getBonus())
+				collectBonus(bo);
+		}
+	}
+	
+	public void collectTWOTOKENS(BonusTokenDTO[] chosen){
+		BonusToken[] btTmp = getAvailableTokens();
+		BonusToken[] converted;
+		if (btTmp.length == 0)
+			clienthandler.sendToClient("You have no available city tokens. Bonus discarded", null);
+		else {
+			if(chosen==null){
+				clienthandler.sendToClient("TwoBonusToken", btTmp);
+				gamehandler.waitForInput("TWOTOKENS", this);
+				return;
+			}
+			converted = new BonusToken[chosen.length];
+			for(int i=0;i<chosen.length;i++)
+				converted[i].setterFromDTO(chosen[i]);
+			for(BonusToken bt : converted)
+				for (Bonus bo : bt.getBonus())
+				collectBonus(bo);
+		}
+	}
+	
+	public void collectFREECARD(PermitsCardDTO chosen){
+		boolean found = false;
+		if(chosen==null){
+			clienthandler.sendToClient("FreePermitsCard", null);
+			gamehandler.waitForInput("FREECARD", this);
+			return;
+		}
+			for (int i = 0; i < 3; i++)
+				for (int j = 0; j < 2; j++) {
+					PermitsCard temp = game.getMap().getPermitsDeck(i).getSlot(j, false);
+					if (temp.equalsDTO(chosen)) {
+						found = true;
+						game.getActualPlayer().addPermits(game.getMap().getPermitsDeck(i).getSlot(j, true));
+					}
+				}
+			if(!found){
+				clienthandler.sendToClient("Invalid input permit. Try again", null);
+				gamehandler.waitForInput("FREECARD", this);
+			}
+		}
+	
+	
+	public void collectBONUSCARD(PermitsCardDTO chosen){
+		ArrayList<PermitsCard> pcOwned = game.getActualPlayer().getPermits();
+		if(chosen==null){
+			clienthandler.sendToClient("OwnedPermitsCard", null);
+			gamehandler.waitForInput("BONUSCARD",this);
+			return;
+		}
+		PermitsCard temp=null;
+		for(PermitsCard pc : pcOwned)
+			if(pc.equalsDTO(chosen))
+				temp = pc;
+		if(temp==null)
+			;//errore di conversione dto->ogg
+		else{
+		for (Bonus bo : temp.getBonus())
+			collectBonus(bo);
 		}
 	}
 	
