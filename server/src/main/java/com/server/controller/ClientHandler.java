@@ -79,7 +79,7 @@ public class ClientHandler extends Observable implements Observer, Runnable{
 	@Override
 	public void update(Observable o, Object arg) {//arg è nella forma TargetUserName_messaggio
 		if(o instanceof Lobby){
-			String[] splitted = ((String)arg).split("_");
+			String[] splitted = ((String)arg).split("_",2);//splitta na volta sola
 			if(splitted[0].equals(this.getUserName()))
 				this.sendToClient(splitted[1],null);
 			}

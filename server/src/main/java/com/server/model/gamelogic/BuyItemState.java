@@ -26,22 +26,22 @@ public class BuyItemState implements State{
 	
 	public void execute(OnSaleDTO toBuyDTO, boolean passed){//uso passed perchè l'oggetto può essere null anche se ricevuto correttamente
 		if(!passed){
-			clienthandler.sendToClient("ItemToBuy", game.getMarket().toDTO());
+			clienthandler.sendToClient("TOBUY", game.getMarket().toDTO());
 			gamehandler.waitForInput("TOBUY", this);
 			return;
 		}
 		if(toBuyDTO == null)
-			clienthandler.sendToClient("NullBuyReceived", null);
+			clienthandler.sendToClient("TOBUYACK","NullBuyReceived");
 		OnSale toBuy = DTOtoObj(toBuyDTO);
 		if(toBuy==null){
-			clienthandler.sendToClient("InvalidObjectReceived", null);
-			clienthandler.sendToClient("ItemToBuy", game.getMarket().toDTO());
+			clienthandler.sendToClient("TOBUYNACK","InvalidObjectReceived");
+			clienthandler.sendToClient("TOBUY", game.getMarket().toDTO());
 			gamehandler.waitForInput("TOBUY", this);
 			return;
 		}
 		else{
 			toBuy.obtain(game.getActualPlayer());
-			clienthandler.sendToClient("BuyObjectReceived", null);
+			clienthandler.sendToClient("TOBUYACK","BuyObjectReceived");
 		}
 		gamehandler.changeState(context);
 	}

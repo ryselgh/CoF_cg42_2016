@@ -10,6 +10,7 @@ import org.w3c.dom.Document;
 
 import com.communication.CommunicationObject;
 import com.communication.ItemOnSale;
+import com.communication.actions.ActionDTO;
 import com.communication.board.BonusTokenDTO;
 import com.communication.decks.PermitsCardDTO;
 import com.communication.market.OnSaleDTO;
@@ -114,7 +115,8 @@ public class GameHandler extends Observable implements Runnable, Observer{
 					break;
 				case "TOSELL":
 					((SellItemState) toResume).execute((ItemOnSale) obj, true);
-				
+				case "ACTION":
+					((ActionState) toResume).execute((ActionDTO) obj);
 				
 				
 				}

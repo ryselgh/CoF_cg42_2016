@@ -36,19 +36,19 @@ public class SellItemState implements State{
 	
 	public void execute(ItemOnSale toSell, boolean passed){//uso passed perchè l'oggetto può essere null anche se ricevuto correttamente
 		if(!passed){
-			clienthandler.sendToClient("ItemToSell", null);
+			clienthandler.sendToClient("TOSELL", null);
 			gamehandler.waitForInput("TOSELL", this);
 			return;
 		}
 		if(toSell.getObj() == null)
-			clienthandler.sendToClient("NullSellReceived", null);
+			clienthandler.sendToClient("TOSELLACK","NullSellReceived");
 		else {
 			OnSale soldObj = DTOtoObj(toSell);
 			if(soldObj==null)
-				clienthandler.sendToClient("ObjectNotRecognized", null);
+				clienthandler.sendToClient("TOSELLNACK","ObjectNotRecognized");
 			else{
 				game.getMarket().addObj(soldObj);
-				clienthandler.sendToClient("ValidSellReceived", null);
+				clienthandler.sendToClient("TOSELLACK","ValidSellReceived");
 			}
 			}
 		gamehandler.changeState(context);

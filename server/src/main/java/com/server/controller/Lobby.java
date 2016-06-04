@@ -64,7 +64,7 @@ public class Lobby extends Observable implements Runnable, Observer  {
 			String command = ((CommunicationObject) arg1).getMsg();
 			ClientHandler sender = (ClientHandler) arg0;
 			int resp = commandParser(command, sender);
-			sendToClient(sender, commandResponse[resp]);
+			sendToClient(sender, "lobby_msg-" + commandResponse[resp]);
 			}
 		}
 	

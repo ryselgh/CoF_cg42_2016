@@ -50,7 +50,7 @@ public class ClientController extends ClientObservable implements ClientObserver
 		
 		if (cmd.contains("lobby_msg-")) {// messaggio della lobby
 						cmd = cmd.substring("lobby_msg-".length());
-						// printa cmd che è un messaggio
+						cli.printMsg(cmd + "\n");
 					} else {// messaggio di gioco
 						switch (cmd) {
 						
@@ -64,7 +64,7 @@ public class ClientController extends ClientObservable implements ClientObserver
 							connection.sendToServer("InsertNickname",nick);
 							break;
 							
-						case "OneBonusToken":
+						case "ONETOKEN":
 							BonusTokenDTO[] btDTO = new BonusTokenDTO[1];
 							//get bonus token. obj = BonusToken[] tokenPool
 							ArrayList<BonusTokenDTO> bt = new ArrayList<BonusTokenDTO>();
@@ -73,17 +73,32 @@ public class ClientController extends ClientObservable implements ClientObserver
 							BonusTokenDTO[] btArray = new BonusTokenDTO[bt.size()];
 							bt.toArray(btArray);
 							btDTO = cli.getTokenBonus(btArray, 1);
-							connection.sendToServer("OneBonusToken",btDTO);
+							connection.sendToServer("ONETOKEN",btDTO);
 							break;
 							
-						case "OneBonusTokenAck":
+						case "ONETOKEN_ACK":
 							break;
 							
-						case "OneBonusTokenNack":
-							// obj->(string) error
+						case "ONETOKEN_NACK":
+							break;
+						case "TWOTOKENS":
+							BonusTokenDTO[] btDTO2 = new BonusTokenDTO[1];
+							//get bonus token. obj = BonusToken[] tokenPool
+							ArrayList<BonusTokenDTO> bt2 = new ArrayList<BonusTokenDTO>();
+							for(CityDTO city: game.getMap().getCity())
+								bt2.add(city.getToken());
+							BonusTokenDTO[] btArray2 = new BonusTokenDTO[bt2.size()];
+							bt2.toArray(btArray2);
+							btDTO2 = cli.getTokenBonus(btArray2, 2);
+							connection.sendToServer("TWOTOKENS",btDTO2);
 							break;
 							
-						case "FreePermitsCard":
+						case "TWOTOKENS_ACK":
+							break;
+							
+						case "TWOTOKENS_NACK":
+							break;
+						case "FREECARD":
 							PermitsCardDTO pcDTO=null;
 							//get ret: una carta permesso di quelle a faccia in su nelle regioni
 							int regIndex = cli.getTargetRegion(2);
@@ -92,20 +107,18 @@ public class ClientController extends ClientObservable implements ClientObserver
 							availablePermits.add(game.getMap().getPermitsDeck(regIndex).getSlot(1));
 							int pcIndex = cli.getPermitIndex(availablePermits);
 							pcDTO = availablePermits.get(pcIndex);
-							connection.sendToServer("FreePermitsCard",pcDTO);
+							connection.sendToServer("FREECARD",pcDTO);
 							break;
 							
-						case "FreePermitsCardAck":
+						case "FREECARDACK":
 							break;
 							
-						case "FreePermitsCardNack":
-							// obj->(string) error
+						case "FREECARDNACK":
+							cli.printMsg(((String) obj)+ "\n");
 							break;
 							
-						case "OwnedPermitsCard":
+						case "BONUSCARD":
 							PermitsCardDTO pcOwnedDTO=null;
-							//get ret: una carta permesso usata dal giocatore
-							connection.sendToServer("OwnedPermitsCard",pcOwnedDTO);
 							ArrayList<PermitsCardDTO> ownedPermits = new ArrayList<PermitsCardDTO>();
 							ownedPermits.addAll(game.getPlayers().get(playerID).getPermits());
 							for(PermitsCardDTO pc: ownedPermits)
@@ -113,51 +126,53 @@ public class ClientController extends ClientObservable implements ClientObserver
 									ownedPermits.remove(pc);
 							int pcOwnedIndex = cli.getPermitIndex(ownedPermits);
 							pcOwnedDTO = ownedPermits.get(pcOwnedIndex);
-							connection.sendToServer("OwnedPermitsCard",pcOwnedIndex);
+							connection.sendToServer("BONUSCARD",pcOwnedDTO);
 							break;
 							
-						case "OwnedPermitsCardAck":
+						case "BONUSCARDACK":
 							break;
 							
-						case "OwnedPermitsCardNack":
-							// obj->(string) error
+						case "BONUSCARDNACK":
+							cli.printMsg(((String) obj)+ "\n");
 							break;
 							
-						case "ItemToSell":						//Da aggiustare      aggiustala così: se item è null equivale a pass
+						case "TOSELL":						//Da aggiustare      aggiustala così: se item è null equivale a pass
 							ItemOnSale its = null;
 							//get its: l'oggetto da vendere al mercato
 							Object item = cli.getItemToSell(playerID);
 							if(item instanceof String){
 								String pass = (String) item;
-								connection.sendToServer("ItemToSell", pass);
+								connection.sendToServer("TOSELL", pass);
 							}else{
 								int price = cli.getSellPrice();
 								its = new ItemOnSale(price, (SerObject) item);
-								connection.sendToServer("ItemToSell",its);
+								connection.sendToServer("TOSELL",its);
 							}
 							break;
 							
-						case "ItemToSellAck":
+						case "TOSELLACK":
+							cli.printMsg(((String) obj)+ "\n");
 							break;
 							
-						case "ItemToSellNack":
-							// obj->(string) error
+						case "TOSELLNACK":
+							cli.printMsg(((String) obj)+ "\n");
 							break;
 							
-						case "ItemToBuy":					//Anche questa
+						case "TOBUY":					//Anche questa
 							OnSaleDTO onSaleDTO = null;
 							ArrayList<OnSaleDTO> availableOnSale = new ArrayList<OnSaleDTO>(game.getMarket().getObjectsOnSale());
 							//get itemtobuy. obj = MarketDTO market
-							connection.sendToServer("ItemToBuy",onSaleDTO);
+							connection.sendToServer("TOBUY",onSaleDTO);
 							onSaleDTO = availableOnSale.get(cli.getObjectToBuyIndex(availableOnSale.size(), playerID));
-							connection.sendToServer("ItemToBuy", onSaleDTO);
+							connection.sendToServer("TOBUY", onSaleDTO);
 							break;
 							
-						case "ItemToBuyAck":
+						case "TOBUYACK":
+							cli.printMsg(((String) obj)+ "\n");
 							break;
 							
-						case "ItemToBuyNack":
-							// obj->(string) error
+						case "TOBUYNACK":
+							cli.printMsg(((String) obj)+ "\n");
 							break;
 							
 						case "StartTurn":
@@ -179,7 +194,7 @@ public class ClientController extends ClientObservable implements ClientObserver
 							// ack negativo dell'invio azione. il server ne aspetta un'altra
 							break;
 						default:
-							throw new IllegalArgumentException("Command not recognized.");
+							throw new IllegalArgumentException("Command not recognized: " + cmd);
 						}
 					}
 		
