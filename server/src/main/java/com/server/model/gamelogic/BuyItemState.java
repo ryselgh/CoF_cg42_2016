@@ -43,6 +43,7 @@ public class BuyItemState implements State{
 			toBuy.obtain(game.getActualPlayer());
 			clienthandler.sendToClient("TOBUYACK","BuyObjectReceived");
 		}
+		gamehandler.updateClientGame();
 		gamehandler.changeState(context);
 	}
 	

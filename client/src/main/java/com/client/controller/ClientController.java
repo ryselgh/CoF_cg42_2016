@@ -29,6 +29,8 @@ public class ClientController extends ClientObservable implements ClientObserver
 	public ClientController(){
 		cli = new ClientCLI(this);
 		cli.attachObserver(this);
+		Thread thread = new Thread(cli);
+		thread.start();
 	}
 	
 	public void run() throws IOException{
@@ -39,8 +41,15 @@ public class ClientController extends ClientObservable implements ClientObserver
 		} catch (IOException e) {
 			logger.log(Level.SEVERE, "Connection lost.", e);
 		}
+		cli.printMsg("Connected to the server");
 	}
 
+	private void getLobbyCommand(){
+		cli.printMsg("Lobby commands: \n'\\NEWROOM_roomname' \n'\\JOINROOM_roomname' \n'\\STARTGAME_roomname' requires admin of the room \n'\\LEAVEROOM_roomname' \n");
+		String command = cli.getMsg();
+		connection.sendToServer(command,null);
+	}
+	
 	@Override
 	public <C> void update(C change) {
 		
@@ -51,10 +60,12 @@ public class ClientController extends ClientObservable implements ClientObserver
 		if (cmd.contains("lobby_msg-")) {// messaggio della lobby
 						cmd = cmd.substring("lobby_msg-".length());
 						cli.printMsg(cmd + "\n");
-					} else {// messaggio di gioco
+						getLobbyCommand();
+					} 
+		else {// messaggio di gioco / input
 						switch (cmd) {
 						
-						case "InsertNickname":
+						case "INSERTNICKNAME":
 							cli.printMsg("Insert your nickname:");
 							String nick = cli.getMsg();
 							while(!connection.isNicknameCorrect(nick)){
@@ -63,7 +74,12 @@ public class ClientController extends ClientObservable implements ClientObserver
 							}
 							connection.sendToServer("InsertNickname",nick);
 							break;
-							
+						case "INSERTNICKNAMEACK":
+							getLobbyCommand();
+							break;
+						case "INSERTNICKNAMENACK":
+							cli.printMsg(((String) obj)+ "\n");
+							break;
 						case "ONETOKEN":
 							BonusTokenDTO[] btDTO = new BonusTokenDTO[1];
 							//get bonus token. obj = BonusToken[] tokenPool
@@ -192,6 +208,9 @@ public class ClientController extends ClientObservable implements ClientObserver
 							
 						case "ActionNotValid":
 							// ack negativo dell'invio azione. il server ne aspetta un'altra
+							break;
+						case "GAMEDTO":
+							this.cli.setGameAndBuildMap((GameDTO) obj);
 							break;
 						default:
 							throw new IllegalArgumentException("Command not recognized: " + cmd);

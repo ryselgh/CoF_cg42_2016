@@ -85,7 +85,7 @@ public class ClientHandler extends Observable implements Observer, Runnable{
 			}
 		else if(o instanceof ClientListener){
 			setChanged();
-		    notifyObservers(arg);
+		    notifyObservers(arg);//passa alla lobby
 		}
 	}
 

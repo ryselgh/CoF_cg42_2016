@@ -29,22 +29,32 @@ public class Lobby extends Observable implements Runnable, Observer  {
 		Thread thread = new Thread(acceptor);
 		thread.start();
 	}
-	 
+	 /*
+	'\\NEWROOM_roomname'
+	'\\JOINROOM_roomname'
+	'\\STARTGAME_roomname' requires admin of the room
+	'\\LEAVEROOM_roomname' 
+	*/
 	private int commandParser(String command, ClientHandler sender){
 		String[] ret = command.split("_");
 		switch(ret[0]){
-		case "newRoom":
+		case "\\NEWROOM":
 			createRoom(ret[1], sender, Integer.parseInt(ret[2]),Integer.parseInt(ret[3]));
+			sendToClient(sender, "lobby_msg-" + "Room " + ret[1] + " successfully created");
 			break;
-		case "joinRoom":
+		case "\\JOINROOM":
 			if (!joinRoom(ret[1],sender))
 				return 2;//game already started
+			sendToClient(sender, "lobby_msg-" + "You joined room " + ret[1]);
 			break;
-		case "startGame":
-			return startRoom(ret[1],sender);
-		case "leaveRoom":
+		case "\\STARTGAME":
+			int retg = startRoom(ret[1],sender);
+			sendToClient(sender, "lobby_msg-" + "Successfully started game at room " + ret[1]);
+			return retg;
+		case "\\LEAVEROOM":
 			if (!leaveRoom(ret[1],sender))
 				return 5;
+			sendToClient(sender, "lobby_msg-" + "You left room " + ret[1]);
 		default:
 			return 1;//command not recognized
 		}
@@ -110,6 +120,17 @@ public class Lobby extends Observable implements Runnable, Observer  {
 		return 0;
 	}
 
+	public boolean isNicknameUsed(String nick){
+		for(ClientHandler ch : this.clients)
+			if(ch.getUserName().equals(nick))
+					return true;
+		for(Room r : this.rooms)
+			for(ClientHandler ch : r.getPlayers())
+				if(ch.getUserName().equals(nick))
+					return true;
+		return false;
+	}
+	
 	public ArrayList<ClientHandler> getClients() {
 		return clients;
 	}

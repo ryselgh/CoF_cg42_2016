@@ -50,7 +50,8 @@ public class SellItemState implements State{
 				game.getMarket().addObj(soldObj);
 				clienthandler.sendToClient("TOSELLACK","ValidSellReceived");
 			}
-			}
+		}
+		gamehandler.updateClientGame();
 		gamehandler.changeState(context);
 	}
 	

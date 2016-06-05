@@ -20,7 +20,7 @@ import com.communication.gamelogic.GameDTO;
 import com.communication.gamelogic.PlayerDTO;
 import com.communication.values.*;
 
-public class ClientCLI extends ClientObservable implements ClientObserver{
+public class ClientCLI extends ClientObservable implements ClientObserver, Runnable{
 
 	private GameDTO game;
 	private PrintStream out;
@@ -35,9 +35,18 @@ public class ClientCLI extends ClientObservable implements ClientObserver{
 	public ClientCLI(ClientController clientController){
 		clientController.attachObserver(this);
 		this.out = System.out;
-		constructMap();
 	}
 
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public void setGameAndBuildMap(GameDTO game){
+		this.game = game;
+		constructMap();
+	}
 	private void constructMap() {
 
 		//City + Region separators
@@ -642,5 +651,6 @@ public class ClientCLI extends ClientObservable implements ClientObserver{
 		}else
 			throw new IllegalArgumentException("Wrong instance. Failed to update the game.");
 	}
+
 
 }
