@@ -18,7 +18,13 @@ public class BonusToken
 	 */
 	
 	public BonusToken(Bonus[] b) {
-		this.b = b;	
+//		for(Bonus bn : b){
+//			if (bn.equals(null))
+		if(b==null)
+				throw new NullPointerException("bonus token must have a bonus at least!");
+	//	}
+		
+			this.b = b;	
 	}
 	
 	/**

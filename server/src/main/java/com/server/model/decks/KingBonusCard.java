@@ -1,6 +1,7 @@
 package com.server.model.decks ;
 
 import com.communication.decks.KingBonusCardDTO;
+import com.communication.values.BonusType;
 import com.server.model.board.Bonus;
 
 
@@ -19,8 +20,12 @@ public class KingBonusCard
 	 */
 	
 	public KingBonusCard(int n, Bonus b) {
+		if(!b.getType().equals(BonusType.POINT))
+			throw new IllegalArgumentException();
+		else{
 		this.n = n;
 		bonus = b;
+		}
 	}
 	
 	/**

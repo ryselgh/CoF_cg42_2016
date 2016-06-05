@@ -6,8 +6,8 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
+	com.server.model.board.TestAll.class,
 	com.server.model.decks.TestAll.class,
-	
 })
 public class TestAll {
 

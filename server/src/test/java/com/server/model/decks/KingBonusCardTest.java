@@ -19,7 +19,7 @@ public class KingBonusCardTest {
 	}
 	
 	
-	@Test
+	@Test(expected = IllegalArgumentException.class)
 	public void testIfTheConstructorAcceptsOnlyPointBonus(){
 		int n=1;
 		Bonus bonus= new Bonus (BonusType.ASSISTANT,1);

@@ -15,6 +15,8 @@ public class King
 	 */
 	
 	public King(City c) {
+		if (c==null)
+			throw new NullPointerException();
 		this.location = c;	
 	}
 	

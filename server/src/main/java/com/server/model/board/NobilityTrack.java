@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.communication.board.BonusDTO;
 import com.communication.board.NobilityTrackDTO;
 import com.communication.board.PawnDTO;
+import com.server.model.gamelogic.Player;
 
 
 
@@ -49,21 +50,29 @@ public class NobilityTrack {
 	 */
 	
 	public Bonus[] advance(int pawnIndex, int av) {
-		Pawn p = this.pawns[pawnIndex];
-		int start = p.getPos(), i=0;
-		p.setPos(start + av);
-		ArrayList <Bonus> ret = new ArrayList <Bonus>();
-		for(i=start;i<=start + av;i++)
-		{
-			for(int k=0;k<=1;k++)
-				if(BonusVector[i][k]!=null)
-					ret.add(BonusVector[i][k]);
-		}
-		if(ret.size()<1) return null;
+		if (pawnIndex > pawns.length )
+			throw new ArrayIndexOutOfBoundsException();
 		else{
-			Bonus[] retArr = new Bonus[ret.size()];
-			retArr = ret.toArray(retArr);
-			return retArr;
+			if (av<=0)
+				throw new IllegalArgumentException();
+			else{
+				Pawn p = this.pawns[pawnIndex];
+				int start = p.getPos(), i=0;
+				p.setPos(start + av);
+				ArrayList <Bonus> ret = new ArrayList <Bonus>();
+				for(i=start;i<start + av;i++)
+				{
+					for(int k=0;k<BonusVector[i].length;k++)
+						if(BonusVector[i][k]!=null)
+							ret.add(BonusVector[i][k]);
+				}
+				if(ret.size()<1) return null;
+				else{
+					Bonus[] retArr = new Bonus[ret.size()];
+					retArr = ret.toArray(retArr);
+					return retArr;
+				}
+		}
 		}
 	}
 

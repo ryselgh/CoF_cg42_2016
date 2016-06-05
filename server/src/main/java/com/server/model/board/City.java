@@ -23,8 +23,10 @@ public class City
 	public CityDTO toDTO(){
 		CityDTO cDTO = new CityDTO();
 		EmporiumDTO[] slotDTO = new EmporiumDTO[this.slot.length];
-		for(int i=0;i<this.slot.length;i++)
-			slotDTO[i] = this.slot[i].toDTO();
+		for(int i=0;i<this.slot.length;i++){
+			if(slot[i] != null)
+				slotDTO[i] = this.slot[i].toDTO();
+		}
 		cDTO.setSlot(slotDTO);
 		cDTO.setColor(color);
 		cDTO.setName(this.getName());
@@ -53,7 +55,7 @@ public class City
 	
 	
 	/**
-	 * put an emporium in a free slot
+	 * create the space for the emporiums
 	 * @param e e is an emporium
 	 */
 	

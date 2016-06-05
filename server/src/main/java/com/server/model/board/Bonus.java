@@ -17,10 +17,15 @@ public class Bonus
 	 * @param t t is the bonus type
 	 * @param q q is the quantity of the bonus
 	 */
-	
+
 	public Bonus(BonusType t, int q) {
-		this.type = t;
-		this.quantity = q;
+		if (q<=0)
+			throw new IllegalArgumentException();
+		else{
+			this.type = t;
+			this.quantity = q;
+
+		}
 	}
 	
 	/**
@@ -39,11 +44,11 @@ public class Bonus
 		return this.quantity;	
 	}
 	
-	public boolean equals(BonusDTO bDTO){
+	public boolean equalsDTO(BonusDTO bDTO){
 		if(!(bDTO==null)){
-			if(!type.equals(bDTO.getType()) || quantity != bDTO.getQnt())
-				return false;
-			return true;
+			if(type.equals(bDTO.getType()) && quantity == bDTO.getQnt())
+				return true;
+			return false;
 		}else
 			throw new NullPointerException("Data Transfer Object 'BonusDTO' cannot be NULL");
 	}

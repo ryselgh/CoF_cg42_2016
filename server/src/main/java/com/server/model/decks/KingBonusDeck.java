@@ -15,13 +15,18 @@ public class KingBonusDeck extends Deck{
 	/**
 	 * constructor of the kbd. create the 5 king bonus cards
 	 * @param bonuses bonuses is one of the bonus token from the bonus array
+	 * @throws Exception 
 	 */
 
 
-	public KingBonusDeck(Bonus[] bonuses) {
+	public KingBonusDeck(Bonus[] bonuses){
+		if(bonuses.length != KINGQTY)
+			throw new IllegalArgumentException();
+		else{
 		kingBonusDeck = new ArrayList<KingBonusCard>(KINGQTY);
 		for (int i=0; i<KINGQTY; i++){
 			kingBonusDeck.set(i, new KingBonusCard(i+1,bonuses[i]));
+		}
 		}
 
 	}

@@ -16,7 +16,10 @@ public class BonusCard
 	 */
 	
 	public BonusCard(Bonus b) {
-		this.b = b;	
+		if (b==null)
+			throw new NullPointerException();
+		else
+			this.b = b;	
 	}
 	
 	/**
