@@ -7,7 +7,7 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
 	CityTest.class,
-	//MapTest.class,
+	MapTest.class,
 	KingTest.class,
 	NobilityTrackTest.class,
 	BonusCardTest.class,

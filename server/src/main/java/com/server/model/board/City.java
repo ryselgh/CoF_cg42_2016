@@ -31,7 +31,9 @@ public class City
 		cDTO.setColor(color);
 		cDTO.setName(this.getName());
 		cDTO.setCloseCities(this.getCloseCity());
-		cDTO.setToken(this.getBonusToken().toDTO());
+		if(token.getBonus().length != 0)
+			if(token.getBonus()[0]!=null)
+				cDTO.setToken(this.getBonusToken().toDTO());
 		cDTO.setPlayerNum(this.playerNum);
 		return cDTO;
 	}

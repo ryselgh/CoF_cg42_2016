@@ -11,7 +11,7 @@ public class OnSaleDTO implements Serializable{
 	 */
 	private static final long serialVersionUID = -2466917896104839445L;
 	private PlayerDTO seller;
-	private SerObject obj;	
+	private Object obj;	
 	private int price;
 	
 	
@@ -34,10 +34,10 @@ public class OnSaleDTO implements Serializable{
 		return obj;
 	}
 	/**
-	 * @param obj the obj to set
+	 * @param obj2 the obj to set
 	 */
-	public void setObj(SerObject obj) {
-		this.obj = obj;
+	public void setObj(Object obj2) {
+		this.obj = obj2;
 	}
 	/**
 	 * @return the price

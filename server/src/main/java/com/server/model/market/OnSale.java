@@ -60,7 +60,7 @@ public class OnSale{
 	}
 	public OnSaleDTO toDTO() {
 		OnSaleDTO osDTO = new OnSaleDTO();
-		osDTO.setObj((SerObject) obj);
+		osDTO.setObj(obj);
 		osDTO.setPrice(price);
 		osDTO.setSeller(seller.toDTO());
 		return osDTO;
