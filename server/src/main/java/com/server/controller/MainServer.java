@@ -1,7 +1,7 @@
 package com.server.controller;
 
 
-public class Main {
+public class MainServer {
 
 	public static void main(String[] args) {
 		Lobby lobby = new Lobby();

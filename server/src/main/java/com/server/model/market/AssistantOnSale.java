@@ -1,6 +1,5 @@
 package com.server.model.market;
 
-import com.communication.SerObject;
 import com.communication.market.AssistantOnSaleDTO;
 import com.server.model.board.Assistant;
 import com.server.model.gamelogic.Player;
@@ -39,7 +38,7 @@ public class AssistantOnSale extends OnSale{
 	public AssistantOnSaleDTO toDTO(){
 		AssistantOnSaleDTO assDTO = new AssistantOnSaleDTO();
 		assDTO.setAssistant(assistant.toDTO());
-		assDTO.setObj((SerObject) obj);
+		assDTO.setObj((Object) obj);
 		assDTO.setPrice(price);
 		assDTO.setSeller(seller.toDTO());
 		return assDTO;

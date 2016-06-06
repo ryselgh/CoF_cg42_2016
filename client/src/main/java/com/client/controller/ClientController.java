@@ -2,6 +2,8 @@ package com.client.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -10,14 +12,13 @@ import com.client.ClientObserver;
 import com.client.view.ClientCLI;
 import com.communication.CommunicationObject;
 import com.communication.ItemOnSale;
-import com.communication.SerObject;
 import com.communication.board.BonusTokenDTO;
 import com.communication.board.CityDTO;
 import com.communication.decks.PermitsCardDTO;
 import com.communication.gamelogic.GameDTO;
 import com.communication.market.OnSaleDTO;
 
-public class ClientController extends ClientObservable implements ClientObserver{
+public class ClientController extends Observable implements Observer{
 
 	private ClientCLI cli;
 	private GameDTO game;
@@ -28,7 +29,7 @@ public class ClientController extends ClientObservable implements ClientObserver
 
 	public ClientController(){
 		cli = new ClientCLI(this);
-		cli.attachObserver(this);
+		cli.addObserver(this);
 		Thread thread = new Thread(cli);
 		thread.start();
 	}
@@ -37,22 +38,24 @@ public class ClientController extends ClientObservable implements ClientObserver
 		connection = new SocketConnection();
 		try {
 			connection.run();
-			connection.attachObserver(this);
+			connection.addObserver(this);
 		} catch (IOException e) {
 			logger.log(Level.SEVERE, "Connection lost.", e);
 		}
 		cli.printMsg("Connected to the server");
+		connection.startListen();
 	}
 
-	private void getLobbyCommand(){
-		cli.printMsg("Lobby commands: \n'\\NEWROOM_roomname' \n'\\JOINROOM_roomname' \n'\\STARTGAME_roomname' requires admin of the room \n'\\LEAVEROOM_roomname' \n");
-		String command = cli.getMsg();
-		connection.sendToServer(command,null);
+	private void printLobbyCommand(){
+		cli.printMsg("Lobby commands: \n'\\NEWROOM_roomname_maxPl_minPl' \n'\\JOINROOM_roomname' \n'\\STARTGAME_roomname' requires admin of the room \n'\\LEAVEROOM_roomname' \n");
 	}
 	
 	@Override
-	public <C> void update(C change) {
-		
+	public void update(Observable o, Object change){
+		if(o instanceof ConsoleListener){
+			connection.sendToServer((String) change ,null);
+			return;
+		}
 		CommunicationObject in = (CommunicationObject) change;
 		String cmd = in.getMsg();
 		Object obj = in.getObj();
@@ -60,7 +63,6 @@ public class ClientController extends ClientObservable implements ClientObserver
 		if (cmd.contains("lobby_msg-")) {// messaggio della lobby
 						cmd = cmd.substring("lobby_msg-".length());
 						cli.printMsg(cmd + "\n");
-						getLobbyCommand();
 					} 
 		else {// messaggio di gioco / input
 						switch (cmd) {
@@ -72,10 +74,14 @@ public class ClientController extends ClientObservable implements ClientObserver
 								cli.printMsg("Only characters and numbers are allowed, try again:");
 								nick = cli.getMsg();
 							}
-							connection.sendToServer("InsertNickname",nick);
+							connection.sendToServer("INSERTNICKNAME",nick);
 							break;
 						case "INSERTNICKNAMEACK":
-							getLobbyCommand();
+							ConsoleListener consoleListener = new ConsoleListener();
+							consoleListener.addObserver(this);
+							Thread consoleThread = new Thread(consoleListener);
+							consoleThread.start();
+							printLobbyCommand();
 							break;
 						case "INSERTNICKNAMENACK":
 							cli.printMsg(((String) obj)+ "\n");
@@ -161,7 +167,7 @@ public class ClientController extends ClientObservable implements ClientObserver
 								connection.sendToServer("TOSELL", pass);
 							}else{
 								int price = cli.getSellPrice();
-								its = new ItemOnSale(price, (SerObject) item);
+								its = new ItemOnSale(price, (Object) item);
 								connection.sendToServer("TOSELL",its);
 							}
 							break;
@@ -303,5 +309,6 @@ public class ClientController extends ClientObservable implements ClientObserver
 				throw new IllegalArgumentException("Command not recognized.");
 		}*/
 	}
+
 
 }

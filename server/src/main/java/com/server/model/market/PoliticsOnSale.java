@@ -1,6 +1,5 @@
 package com.server.model.market ;
 
-import com.communication.SerObject;
 import com.communication.market.PoliticsOnSaleDTO;
 import com.server.model.decks.PoliticsCard;
 import com.server.model.gamelogic.Player;

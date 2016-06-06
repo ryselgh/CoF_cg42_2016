@@ -1,8 +1,11 @@
 package com.client.view;
 
+import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Scanner;
 
 import com.client.ClientObservable;
@@ -20,7 +23,7 @@ import com.communication.gamelogic.GameDTO;
 import com.communication.gamelogic.PlayerDTO;
 import com.communication.values.*;
 
-public class ClientCLI extends ClientObservable implements ClientObserver, Runnable{
+public class ClientCLI extends Observable implements Observer, Runnable{
 
 	private GameDTO game;
 	private PrintStream out;
@@ -33,8 +36,9 @@ public class ClientCLI extends ClientObservable implements ClientObserver, Runna
 	 */
 
 	public ClientCLI(ClientController clientController){
-		clientController.attachObserver(this);
+		clientController.addObserver(this);
 		this.out = System.out;
+		this.in = new Scanner(System.in);
 	}
 
 	@Override
@@ -644,13 +648,14 @@ public class ClientCLI extends ClientObservable implements ClientObserver, Runna
 	 * print the new GameDTO after an update
 	 */
 	@Override
-	public <C> void update(C change) {
+	public void update(Observable o, Object change) {
 		if(change instanceof GameDTO){
 			this.game = (GameDTO) change;
 			this.printGameStatus();
 		}else
-			throw new IllegalArgumentException("Wrong instance. Failed to update the game.");
+			;//throw new IllegalArgumentException("Wrong instance. Failed to update the game.");
 	}
+
 
 
 }

@@ -1,6 +1,5 @@
 package com.server.model.market ;
 
-import com.communication.SerObject;
 import com.communication.market.AssistantOnSaleDTO;
 import com.communication.market.OnSaleDTO;
 import com.communication.market.PermitOnSaleDTO;
@@ -60,7 +59,7 @@ public class OnSale{
 	}
 	public OnSaleDTO toDTO() {
 		OnSaleDTO osDTO = new OnSaleDTO();
-		osDTO.setObj((SerObject) obj);
+		osDTO.setObj((Object) obj);
 		osDTO.setPrice(price);
 		osDTO.setSeller(seller.toDTO());
 		return osDTO;

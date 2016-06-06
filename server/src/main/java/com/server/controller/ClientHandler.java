@@ -14,7 +14,6 @@ import java.util.logging.Logger;
 
 import com.communication.CommunicationObject;
 import com.communication.ItemOnSale;
-import com.communication.SerObject;
 import com.communication.actions.ActionDTO;
 import com.communication.board.BonusTokenDTO;
 import com.communication.decks.PermitsCardDTO;
@@ -51,7 +50,7 @@ public class ClientHandler extends Observable implements Observer, Runnable{
 	}
 	
 	public void sendToClient(String msg, Object o){
-		CommunicationObject toSend = new CommunicationObject(msg,(SerObject) o);
+		CommunicationObject toSend = new CommunicationObject(msg,(Object) o);
 		try {
 			outputStream.writeObject(toSend);
 			outputStream.flush();

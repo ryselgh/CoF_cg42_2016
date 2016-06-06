@@ -11,7 +11,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.communication.CommunicationObject;
-import com.communication.SerObject;
 
 public class IdentifyPlayer extends Observable implements Runnable  {
 	private Socket socket;
@@ -44,8 +43,8 @@ public class IdentifyPlayer extends Observable implements Runnable  {
 			else{//da aggiungere check su in.getMsg()=="InsertNickname"
 				inputName = (String) in.getObj();
 				correct = isCorrect(inputName);
-				if (correct !="") {
-					outputStream.writeObject(new CommunicationObject("INSERTNICKNAMENACK",(SerObject)((Object) correct)));
+				if (!correct.equals("")) {
+					outputStream.writeObject(new CommunicationObject("INSERTNICKNAMENACK",(Object) correct));
 					outputStream.flush();
 				}
 			}

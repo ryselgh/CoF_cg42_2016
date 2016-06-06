@@ -45,13 +45,19 @@ public class Room {
 		thread.start();
 	}
 	
-	public boolean leaveRoom(ClientHandler player){
-		for(int i=0;i<players.size();i++)
-			if(players.get(i).equals(player)){
-				players.remove(i);
-				return true;}
-		return false;
+	public ClientHandler leaveRoom(ClientHandler player) {//ritorna il nuovo admin, se l'admin lefta
+		for (int i = 0; i < players.size(); i++)
+			if (players.get(i).equals(player)) {
+				if (players.get(i).equals(admin)) {
+					players.remove(i);
+					this.admin = players.get(0);
+					return this.admin;
+				} else
+					players.remove(i);
+			}
+		return null;
 	}
+
 	public boolean addPlayer(ClientHandler pl){
 		if(players.size()==maxPlayers)
 			return false;

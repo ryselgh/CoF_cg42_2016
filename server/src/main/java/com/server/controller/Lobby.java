@@ -19,7 +19,7 @@ public class Lobby extends Observable implements Runnable, Observer  {
 		clients = new ArrayList<ClientHandler>();
 		rooms = new ArrayList<Room>();
 		commandResponse = new String[] {"Success", "Command not recognized","The game already started","There are not enought players",
-				"You are not the admin, you can't start the game","You are not in this room"};
+				"You are not the admin, you can't start the game","You are not in this room","Room not found"};
 	}
 
 	@Override
@@ -30,40 +30,49 @@ public class Lobby extends Observable implements Runnable, Observer  {
 		thread.start();
 	}
 	 /*
-	'\\NEWROOM_roomname'
-	'\\JOINROOM_roomname'
-	'\\STARTGAME_roomname' requires admin of the room
-	'\\LEAVEROOM_roomname' 
+	'\NEWROOM_roomname_maxPl_minPl'
+	'\JOINROOM_roomname'
+	'\STARTGAME_roomname' requires admin of the room
+	'\LEAVEROOM_roomname' 
 	*/
 	private int commandParser(String command, ClientHandler sender){
 		String[] ret = command.split("_");
 		switch(ret[0]){
 		case "\\NEWROOM":
 			createRoom(ret[1], sender, Integer.parseInt(ret[2]),Integer.parseInt(ret[3]));
-			sendToClient(sender, "lobby_msg-" + "Room " + ret[1] + " successfully created");
+			sendToClient(sender, "lobby_msg-" + "Room " + ret[1] + " successfully created. You are the Admin");
 			break;
 		case "\\JOINROOM":
+			if(findRoom(ret[1])==null)
+				return 6;
 			if (!joinRoom(ret[1],sender))
 				return 2;//game already started
 			sendToClient(sender, "lobby_msg-" + "You joined room " + ret[1]);
 			break;
-		case "\\STARTGAME":
+		case "\\STARTGAME"://da modificare togliendo il nome della room come parametro
 			int retg = startRoom(ret[1],sender);
 			sendToClient(sender, "lobby_msg-" + "Successfully started game at room " + ret[1]);
 			return retg;
 		case "\\LEAVEROOM":
-			if (!leaveRoom(ret[1],sender))
+			Room r = findRoom(ret[1]);
+			if(r==null)
+				return 6;
+			if (!r.hasJoined(sender))
 				return 5;
+			if(r.getPlayers().size()==1){
+				this.rooms.remove(r);
+				sendToClient(sender, "lobby_msg-" + "Room " + ret[1] + " deleted");
+				break;
+			}
+			ClientHandler newAdmin = r.leaveRoom(sender);
+			if(newAdmin!=null)
+				newAdmin.sendToClient("You are the new admin of the room", null);
 			sendToClient(sender, "lobby_msg-" + "You left room " + ret[1]);
+			break;
 		default:
 			return 1;//command not recognized
 		}
 		return 0;//success
-	}
-
-	private boolean leaveRoom(String roomName, ClientHandler player){
-		Room r = findRoom(roomName);
-		return r.leaveRoom(player);
 	}
 	
 	@Override
@@ -74,7 +83,8 @@ public class Lobby extends Observable implements Runnable, Observer  {
 			String command = ((CommunicationObject) arg1).getMsg();
 			ClientHandler sender = (ClientHandler) arg0;
 			int resp = commandParser(command, sender);
-			sendToClient(sender, "lobby_msg-" + commandResponse[resp]);
+			if(resp!=0)//se c'è un errore, altrimenti l'esito corretto viene già comunicato
+				sendToClient(sender, "lobby_msg-" + commandResponse[resp]);
 			}
 		}
 	

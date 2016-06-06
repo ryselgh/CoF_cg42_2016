@@ -69,7 +69,7 @@ public class GameHandler extends Observable implements Runnable, Observer{
 	
 	public void updateClientGame(){
 		for(ClientHandler ch : this.players){
-			ch.sendToClient("GAMEDTO", this.game.toDto());
+			ch.sendToClient("GAMEDTO", (Object) this.game.toDto());
 		}
 	}
 	public ClientHandler nextPlayer(ClientHandler pl){
