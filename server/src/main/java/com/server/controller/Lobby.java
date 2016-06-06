@@ -7,6 +7,8 @@ import java.util.Observer;
 import org.w3c.dom.Document;
 
 import com.communication.CommunicationObject;
+import com.communication.LobbyStatus;
+import com.communication.RoomStatus;
 import com.communication.values.RoomState;
 //comandi: newRoom(roomName,maxplayers, minplayers),   joinRoom(roomName)   startgame(roomName)--->requires admin
 //         getRoomList()--->obj ad hoc     leaveRoom(roomName)    1-setMap_mapname-->2-send serialized xml---->requires admin 
@@ -15,11 +17,12 @@ public class Lobby extends Observable implements Runnable, Observer  {
 	private ArrayList<ClientHandler> clients;
 	private ArrayList<Room> rooms;
 	private String[] commandResponse;
+	private LobbyStatus lobbyStatus;
 	public Lobby(){ 
 		clients = new ArrayList<ClientHandler>();
 		rooms = new ArrayList<Room>();
 		commandResponse = new String[] {"Success", "Command not recognized","The game already started","There are not enought players",
-				"You are not the admin, you can't start the game","You are not in this room","Room not found"};
+				"You are not the admin, you can't start the game","You are not in this room","Room not found", "You are already in the room"};
 	}
 
 	@Override
@@ -37,14 +40,18 @@ public class Lobby extends Observable implements Runnable, Observer  {
 	*/
 	private int commandParser(String command, ClientHandler sender){
 		String[] ret = command.split("_");
+		Room r = null;
 		switch(ret[0]){
 		case "\\NEWROOM":
 			createRoom(ret[1], sender, Integer.parseInt(ret[2]),Integer.parseInt(ret[3]));
 			sendToClient(sender, "lobby_msg-" + "Room " + ret[1] + " successfully created. You are the Admin");
 			break;
 		case "\\JOINROOM":
-			if(findRoom(ret[1])==null)
+			r = findRoom(ret[1]);
+			if(r==null)
 				return 6;
+			if(r.hasJoined(sender))
+				return 7;
 			if (!joinRoom(ret[1],sender))
 				return 2;//game already started
 			sendToClient(sender, "lobby_msg-" + "You joined room " + ret[1]);
@@ -54,7 +61,7 @@ public class Lobby extends Observable implements Runnable, Observer  {
 			sendToClient(sender, "lobby_msg-" + "Successfully started game at room " + ret[1]);
 			return retg;
 		case "\\LEAVEROOM":
-			Room r = findRoom(ret[1]);
+			r = findRoom(ret[1]);
 			if(r==null)
 				return 6;
 			if (!r.hasJoined(sender))
@@ -66,7 +73,7 @@ public class Lobby extends Observable implements Runnable, Observer  {
 			}
 			ClientHandler newAdmin = r.leaveRoom(sender);
 			if(newAdmin!=null)
-				newAdmin.sendToClient("You are the new admin of the room", null);
+				newAdmin.sendToClient("lobby_msg-You are the new admin of the room", null);
 			sendToClient(sender, "lobby_msg-" + "You left room " + ret[1]);
 			break;
 		default:
@@ -77,19 +84,41 @@ public class Lobby extends Observable implements Runnable, Observer  {
 	
 	@Override
 	public void update(Observable arg0, Object arg1) {
-		if(arg0 instanceof IdentifyPlayer)//ricevo un nuovo client
+		if(arg0 instanceof IdentifyPlayer){//ricevo un nuovo client
 			clients.add((ClientHandler) arg1);
+			lobbyStatus = generateLobbyStatus();
+			setChanged();
+		    notifyObservers(lobbyStatus);
+		}
 		else if(arg0 instanceof ClientHandler){//ricevo un comando da un client
 			String command = ((CommunicationObject) arg1).getMsg();
 			ClientHandler sender = (ClientHandler) arg0;
 			int resp = commandParser(command, sender);
 			if(resp!=0)//se c'è un errore, altrimenti l'esito corretto viene già comunicato
 				sendToClient(sender, "lobby_msg-" + commandResponse[resp]);
+			else{
+				lobbyStatus = generateLobbyStatus();
+				setChanged();
+			    notifyObservers(lobbyStatus);
+			}
 			}
 		}
 	
 	
-	
+	private LobbyStatus generateLobbyStatus(){
+		ArrayList<String> freeClients = new ArrayList<String>(); 
+		ArrayList<RoomStatus> rooms = new ArrayList<RoomStatus>();
+		
+		for(ClientHandler c : this.getClients())
+			freeClients.add(c.getUserName());
+		for(Room r : this.getRooms()){
+			ArrayList<String> roomPlayers = new ArrayList<String>();
+			for(ClientHandler ch : r.getPlayers())
+				roomPlayers.add(ch.getUserName());
+			rooms.add(new RoomStatus(r.getName(),r.getAdmin().getUserName(),
+										r.getMinPlayers(),r.getMaxPlayers(), roomPlayers));}
+		return new LobbyStatus(freeClients,rooms);
+	}
 	private void sendToClient(ClientHandler client, String msg){
 		setChanged();
 	    notifyObservers(client.getUserName() + "_" + msg);

@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 
 import com.communication.CommunicationObject;
 import com.communication.ItemOnSale;
+import com.communication.LobbyStatus;
 import com.communication.actions.ActionDTO;
 import com.communication.board.BonusTokenDTO;
 import com.communication.decks.PermitsCardDTO;
@@ -78,10 +79,15 @@ public class ClientHandler extends Observable implements Observer, Runnable{
 	@Override
 	public void update(Observable o, Object arg) {//arg è nella forma TargetUserName_messaggio
 		if(o instanceof Lobby){
+			if(arg instanceof String){
 			String[] splitted = ((String)arg).split("_",2);//splitta na volta sola
 			if(splitted[0].equals(this.getUserName()))
 				this.sendToClient(splitted[1],null);
 			}
+			else if(arg instanceof LobbyStatus){
+				this.sendToClient("LOBBYSTATUS",arg);
+			}
+		}
 		else if(o instanceof ClientListener){
 			setChanged();
 		    notifyObservers(arg);//passa alla lobby

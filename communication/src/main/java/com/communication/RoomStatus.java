@@ -1,8 +1,13 @@
-package com.server.controller;
+package com.communication;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class RoomStatus {
+public class RoomStatus implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5422552318901770319L;
 	private int minPlayers,maxPlayers;
 	private String roomName, adminName;
 	private ArrayList<String> players;

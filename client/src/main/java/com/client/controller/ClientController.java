@@ -12,6 +12,8 @@ import com.client.ClientObserver;
 import com.client.view.ClientCLI;
 import com.communication.CommunicationObject;
 import com.communication.ItemOnSale;
+import com.communication.LobbyStatus;
+import com.communication.RoomStatus;
 import com.communication.board.BonusTokenDTO;
 import com.communication.board.CityDTO;
 import com.communication.decks.PermitsCardDTO;
@@ -24,7 +26,7 @@ public class ClientController extends Observable implements Observer{
 	private GameDTO game;
 	private SocketConnection connection;
 	private Logger logger;
-	
+	private LobbyStatus lobbyStatus;
 	private int playerID; // <------------------------------------ PROVVISORIO, serve comunque un identificativo
 
 	public ClientController(){
@@ -50,6 +52,32 @@ public class ClientController extends Observable implements Observer{
 		cli.printMsg("Lobby commands: \n'\\NEWROOM_roomname_maxPl_minPl' \n'\\JOINROOM_roomname' \n'\\STARTGAME_roomname' requires admin of the room \n'\\LEAVEROOM_roomname' \n");
 	}
 	
+	private void printLobbyStatus(){
+		String clientsInLobby = "";
+		for(int i=0;i<lobbyStatus.getFreeClients().size();i++){
+			clientsInLobby += lobbyStatus.getFreeClients().get(i);
+			if(i!=lobbyStatus.getFreeClients().size()-1)
+				clientsInLobby += ", ";
+		}
+		cli.printMsg("Clients in lobby: " + clientsInLobby);
+		cli.printMsg("Rooms:");
+		for(RoomStatus rs : lobbyStatus.getRooms()){
+			cli.printMsg("[" + rs.getRoomName() + "]");
+			String clientsInRoom = "";
+			for(int i=0;i<rs.getPlayers().size();i++){
+				clientsInRoom += rs.getPlayers().get(i);
+				if(i!=rs.getPlayers().size()-1)
+					clientsInRoom += ", ";
+			}
+			cli.printMsg("Clients: " + clientsInRoom);
+			cli.printMsg("Admin: " + rs.getAdminName());
+			cli.printMsg("Minimum players: " + rs.getMinPlayers());
+			cli.printMsg("Maximum players: " + rs.getMaxPlayers());
+		}
+	}
+	
+
+	
 	@Override
 	public void update(Observable o, Object change){
 		if(o instanceof ConsoleListener){
@@ -66,7 +94,10 @@ public class ClientController extends Observable implements Observer{
 					} 
 		else {// messaggio di gioco / input
 						switch (cmd) {
-						
+						case "LOBBYSTATUS":
+							this.lobbyStatus = (LobbyStatus) obj;
+							printLobbyStatus();
+							break;
 						case "INSERTNICKNAME":
 							cli.printMsg("Insert your nickname:");
 							String nick = cli.getMsg();
