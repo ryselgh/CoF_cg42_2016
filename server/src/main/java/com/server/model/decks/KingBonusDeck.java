@@ -25,7 +25,7 @@ public class KingBonusDeck extends Deck{
 		else{
 		kingBonusDeck = new ArrayList<KingBonusCard>(KINGQTY);
 		for (int i=0; i<KINGQTY; i++){
-			kingBonusDeck.add(i, new KingBonusCard(i+1,bonuses[i]));
+			kingBonusDeck.add(new KingBonusCard(i+1,bonuses[i]));
 		}
 		}
 

@@ -20,11 +20,15 @@ public class KingBonusCard
 	 */
 	
 	public KingBonusCard(int n, Bonus b) {
-		if(!b.getType().equals(BonusType.POINT))
-			throw new IllegalArgumentException();
+		if(b==null)
+			throw new NullPointerException();
 		else{
-		this.n = n;
-		bonus = b;
+			if(!b.getType().equals(BonusType.POINT))
+				throw new IllegalArgumentException();
+			else{
+				this.n = n;
+				bonus = b;
+			}
 		}
 	}
 	

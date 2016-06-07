@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.*;
 
+import com.communication.decks.KingBonusCardDTO;
 import com.communication.values.BonusType;
 import com.server.model.board.Bonus;
 
@@ -16,6 +17,14 @@ public class KingBonusCardTest {
 		Bonus bonus = new Bonus(BonusType.POINT, 1);
 		KingBonusCard result = new KingBonusCard(n, bonus);
 		assertNotNull(result);
+	}
+	
+	@Test(expected = NullPointerException.class)
+	public void testNullPointerExc(){
+		int n=2;
+		
+		KingBonusCard result = new KingBonusCard(n, null);
+		
 	}
 	
 	
@@ -32,6 +41,18 @@ public class KingBonusCardTest {
 		Bonus bonus= new Bonus(BonusType.POINT,2);
 		KingBonusCard kingbc = new KingBonusCard(3, bonus);
 		assertEquals(kingbc.getBonus(),bonus);
+	}
+	
+	@Test
+	public void testToDTO(){
+		
+		Bonus bonus= new Bonus(BonusType.POINT,2);
+		KingBonusCard kingbc = new KingBonusCard(3, bonus);
+		KingBonusCardDTO kbcDTO = kingbc.toDTO();
+		
+		assertTrue(kbcDTO instanceof KingBonusCardDTO);
+		
+		
 	}
 
 	

@@ -3,6 +3,7 @@ package com.server.model.decks;
 import org.junit.*;
 import static org.junit.Assert.*;
 
+import com.communication.decks.KingBonusDeckDTO;
 import com.communication.values.BonusType;
 import com.server.model.board.Bonus;
 
@@ -74,13 +75,18 @@ public class KingBonusDeckTest {
 		assertNotNull(drawnCard);
 	}
 
-//	@Test
-//	public void testDraw(){
-//		KingBonusDeck kingbDeck = new KingBonusDeck(null);
-//		KingBonusCard drawnCard = kingbDeck.draw();
-//
-//		assertNull(drawnCard);
-//	}
+	@Test
+	public void testDraw(){
+		KingBonusDeck kingbDeck = new KingBonusDeck(kbDeck);
+		KingBonusCard drawnCard1 = kingbDeck.draw();
+		KingBonusCard drawnCard2 = kingbDeck.draw();
+		KingBonusCard drawnCard3 = kingbDeck.draw();
+		KingBonusCard drawnCard4 = kingbDeck.draw();
+		KingBonusCard drawnCard5 = kingbDeck.draw();
+		KingBonusCard drawnCard = kingbDeck.draw();
+
+		assertNull(drawnCard);
+	}
 
 	@Test
 	public void testGetKingqty_1()
@@ -92,7 +98,16 @@ public class KingBonusDeckTest {
 		assertEquals(5, result);
 	}
 
-	
+	@Test
+	public void testToDTO(){
+		
+		KingBonusDeck kd = new KingBonusDeck(kbDeck);
+		
+		KingBonusDeckDTO kdDTO = kd.toDTO();
+		
+		assertTrue(kdDTO instanceof KingBonusDeckDTO);
+		
+	}
 
 	
 
