@@ -15,28 +15,50 @@ public class KingBonusDeckTest {
 	
 	@Before
 	public void setUp(){
+		kbDeck = new Bonus[5];
+		kbDeck[0]= new Bonus(BonusType.POINT, 15);
+		kbDeck[1]= new Bonus(BonusType.POINT, 10);
+		kbDeck[2]= new Bonus(BonusType.POINT, 7);
+		kbDeck[3]= new Bonus(BonusType.POINT, 5);
+		kbDeck[4]= new Bonus(BonusType.POINT, 3);
 		
+}
+	
+	@Test
+	public void testTheConstructor(){
+		
+		KingBonusDeck KingBD = new KingBonusDeck(kbDeck);
+		
+		assertNotNull(KingBD);
+		
+	
 
-		
 		
 		
 	}
 	
 	
-	@Test(expected=NullPointerException.class)
+	@Test(expected=IllegalArgumentException.class)
 	public void testKingBonusDeckConstructor(){
+		
+		kbDeck = new Bonus[4];
+		kbDeck[0]= new Bonus(BonusType.POINT, 15);
+		kbDeck[1]= new Bonus(BonusType.POINT, 10);
+		kbDeck[2]= new Bonus(BonusType.POINT, 7);
+		kbDeck[3]= new Bonus(BonusType.POINT, 5);
+	
 		
 		kbd = new KingBonusDeck(kbDeck);
 		
-		assertNotNull(kbd);
+		
 	}
 
 	
 
-	@Test(expected = IndexOutOfBoundsException.class)
+	@Test
 	public void testDraw_1()
 		{
-		kbDeck = new Bonus[4];
+		kbDeck = new Bonus[5];
 		kbDeck[0]= new Bonus(BonusType.POINT, 15);
 		kbDeck[1]= new Bonus(BonusType.POINT, 10);
 		kbDeck[2]= new Bonus(BonusType.POINT, 7);
@@ -52,13 +74,13 @@ public class KingBonusDeckTest {
 		assertNotNull(drawnCard);
 	}
 
-	@Test(expected = IllegalArgumentException.class)
-	public void testDraw(){
-		KingBonusDeck kingbDeck = new KingBonusDeck(new Bonus[0]);
-		KingBonusCard drawnCard = kingbDeck.draw();
-
-		assertNull(drawnCard);
-	}
+//	@Test
+//	public void testDraw(){
+//		KingBonusDeck kingbDeck = new KingBonusDeck(null);
+//		KingBonusCard drawnCard = kingbDeck.draw();
+//
+//		assertNull(drawnCard);
+//	}
 
 	@Test
 	public void testGetKingqty_1()
