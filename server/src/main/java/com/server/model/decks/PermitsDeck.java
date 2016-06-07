@@ -25,6 +25,8 @@ public class PermitsDeck extends Deck{
 	 */
 
 	public PermitsDeck(PermitsCard[] p, int r) {
+		if(p==null)
+			throw new NullPointerException();
 		permitsDeck = new ArrayList<PermitsCard> (Arrays.asList(p));
 		regionCode = r;
 		Collections.shuffle(permitsDeck);

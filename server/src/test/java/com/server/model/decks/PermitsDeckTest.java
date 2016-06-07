@@ -3,6 +3,7 @@ package com.server.model.decks;
 import org.junit.*;
 import static org.junit.Assert.*;
 
+import com.communication.decks.PermitsDeckDTO;
 import com.communication.values.BonusType;
 import com.server.model.board.Bonus;
 
@@ -46,7 +47,7 @@ public class PermitsDeckTest {
 	@Test(expected=NullPointerException.class)
 	public void testPermitsDeck_1()
 		throws Exception {
-		PermitsCard[] p = new PermitsCard[15] ;
+		PermitsCard[] p = null ;
 		int r = 1;
 		PermitsDeck result = new PermitsDeck(p, r);
 
@@ -123,7 +124,15 @@ public class PermitsDeckTest {
 //		//       at com.server.model.decks.PermitsDeck.<init>(PermitsDeck.java:29)
 //	}
 
-	
+	@Test
+	public void toDTO(){
+		
+		PermitsDeck fixture = new PermitsDeck(permCard, 1);
+		PermitsDeckDTO pdDTO = fixture.toDTO();
+		
+		assertTrue(pdDTO instanceof PermitsDeckDTO);
+		
+	}
 
 	public static void main(String[] args) {
 		new org.junit.runner.JUnitCore().run(PermitsDeckTest.class);

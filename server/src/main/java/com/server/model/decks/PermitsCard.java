@@ -11,16 +11,16 @@ import com.server.model.gamelogic.Player;
 
 
 public class PermitsCard {
-	
-	
+
+
 	private Bonus[] bonuses;
 	private String[] cityLetter;
 	private boolean faceDown=true;
-	
-	
 
 
-	
+
+
+
 	/**
 	 * @return the bonuses of the card
 	 */
@@ -29,7 +29,7 @@ public class PermitsCard {
 	}
 
 
-	
+
 	/**
 	 * @return the cityLetter
 	 */
@@ -47,11 +47,13 @@ public class PermitsCard {
 	 * @param l the letter of the city
 	 */
 	public PermitsCard(Bonus[] b, String[] l) {
+		if(b == null || l == null)
+			throw new NullPointerException();
 		bonuses= b;
 		cityLetter = l;
-		
+
 	}
-	
+
 	/**
 	 * @return true if the card is faced down
 	 */
@@ -66,7 +68,7 @@ public class PermitsCard {
 	 */
 	public void setFaceDown(boolean faceDown) {
 		this.faceDown = faceDown;
- 	}
+	}
 
 	public static PermitsCard fromDTO(PermitsCardDTO pcDTO, Player player){//ritorna il riferimento della carta permesso posseduta dal giocatore
 		for(PermitsCard pc : player.getPermits())
@@ -74,17 +76,21 @@ public class PermitsCard {
 				return pc;
 		return null;
 	}
-	
+
 	public boolean equalsDTO(PermitsCardDTO pcDTO){
 		if (!(pcDTO == null)) {
-			if (!Arrays.equals(pcDTO.getCityLetter(), cityLetter) || !Arrays.equals(bonuses, pcDTO.getBonuses()))
-				return false;
-			return true;
+			int count = 0;
+			for(int i=0;i<bonuses.length;i++)
+				if(bonuses[i].toDTO().getQnt()==pcDTO.getBonuses()[i].getQnt() && bonuses[i].toDTO().getType().equals(pcDTO.getBonuses()[i].getType()))
+					count++;
+			if (Arrays.equals(pcDTO.getCityLetter(), cityLetter) && count == bonuses.length)
+				return true;
+			return false;
 		} else
 			throw new NullPointerException("pcDTO cannot be null");
 	}
-		
-	
+
+
 	public PermitsCardDTO toDTO(){
 		PermitsCardDTO pcDTO = new PermitsCardDTO();
 		ArrayList<BonusDTO> bonusesDTO = new ArrayList<BonusDTO>();
@@ -97,8 +103,8 @@ public class PermitsCard {
 		pcDTO.setFaceDown(faceDown);
 		return pcDTO;
 	}
-	
-	
-	
+
+
+
 }
 
