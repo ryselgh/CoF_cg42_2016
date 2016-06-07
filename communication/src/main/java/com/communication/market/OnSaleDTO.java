@@ -2,6 +2,7 @@ package com.communication.market ;
 
 import java.io.Serializable;
 
+import com.communication.SerObject;
 import com.communication.gamelogic.PlayerDTO;
 
 public class OnSaleDTO implements Serializable{
@@ -33,10 +34,10 @@ public class OnSaleDTO implements Serializable{
 		return obj;
 	}
 	/**
-	 * @param obj the obj to set
+	 * @param obj2 the obj to set
 	 */
-	public void setObj(Object obj) {
-		this.obj = obj;
+	public void setObj(Object obj2) {
+		this.obj = obj2;
 	}
 	/**
 	 * @return the price
