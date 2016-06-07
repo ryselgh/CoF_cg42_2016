@@ -27,7 +27,7 @@ public class Game {
 	private Player actualPlayer;
 	private boolean finalTurn;
 	private boolean defaultMap;
-	private Document rawMap;
+	private String rawMap;
 	private MainAction mainAction;
 	private SpeedAction speedAction;
 	private GraphMap graphMap;
@@ -40,7 +40,7 @@ public class Game {
 	 * @throws Exception if the number of players is less than 2 or greater than {@value #MAXPLAYERS}
 	 */
 	
-	public Game(int playersQty, boolean defaultMap, Document rawMap) {
+	public Game(int playersQty, boolean defaultMap, String rawMap) {
 		this.playersQty = playersQty;
 		this.defaultMap = defaultMap;
 		this.rawMap = rawMap;

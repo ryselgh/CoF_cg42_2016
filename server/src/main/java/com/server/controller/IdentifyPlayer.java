@@ -56,7 +56,6 @@ public class IdentifyPlayer extends Observable implements Runnable  {
 		Thread thread = new Thread(client);
 		thread.start();
 		lobby.addObserver(client);
-		this.addObserver(lobby);
 		client.addObserver(lobby);
 		setChanged();
 		notifyObservers(client);

@@ -136,7 +136,7 @@ public class Map {
 	 */
 	
 	
-	public Map(Player[] p, boolean _default, Document rawMap) {
+	public Map(Player[] p, boolean _default, String rawMap) {
 		this.players = p;
 		initializeMapObjects();
 		try {
@@ -146,7 +146,7 @@ public class Map {
 		}
 	}
 
-	public int importMap(Document file, boolean _default) throws ParserConfigurationException, SAXException, IOException{
+	public int importMap(String file, boolean _default) throws ParserConfigurationException, SAXException, IOException{
 		Importer reader = new Importer(file,_default, this, players);
 		reader.startImport();
 		

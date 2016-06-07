@@ -26,14 +26,14 @@ import com.server.model.gamelogic.State;
 public class GameHandler extends Observable implements Runnable, Observer{
 	ArrayList<ClientHandler> players;
 	private Game game;
-	private Document rawMap;
+	private String rawMap;
 	private Context context;
 	private Object toResume;
 	private String toResumeStr;
 	private boolean waitingInput = false;
 	private Logger logger;
 	
-	public GameHandler(ArrayList<ClientHandler> pl, boolean defaultMap, Document map){
+	public GameHandler(ArrayList<ClientHandler> pl, boolean defaultMap, String map){
 		players = pl;
 		for(ClientHandler ch : pl)
 			ch.addObserver(this);
@@ -47,6 +47,7 @@ public class GameHandler extends Observable implements Runnable, Observer{
 		this.context = new Context();
 		context.setClienthandler(players.get(0));
 		context.setGamehandler(this);
+		updateClientGame();//invio il primo GameDTO al client
 		ActionState actState = new ActionState();
 		actState.doAction(context);//avvio il primo stato di azione per il primo giocatore
 	}
@@ -65,6 +66,7 @@ public class GameHandler extends Observable implements Runnable, Observer{
 			game.setActualPlayer(0);//aggiorno il giocatore in game
 			newState.doAction(context);//avvio lo stato
 		}
+		updateClientGame();
 	}
 	
 	public void updateClientGame(){
@@ -99,7 +101,7 @@ public class GameHandler extends Observable implements Runnable, Observer{
 	public void update(Observable o, Object arg) {//intestazioni: SETTINGS_ , INPUT_
 		String[] msg = ((CommunicationObject) arg).getMsg().split("_");
 		Object obj = ((CommunicationObject) arg).getObj();
-		if(msg[0].equals("INPUT_")){
+		if(msg[0].equals("INPUT")){
 			if(waitingInput && msg[1].equals(toResumeStr)){
 				this.waitingInput = false;
 				switch(toResumeStr){

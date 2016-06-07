@@ -81,10 +81,10 @@ public class ClientHandler extends Observable implements Observer, Runnable{
 		if(o instanceof Lobby){
 			if(arg instanceof String){
 			String[] splitted = ((String)arg).split("_",2);//splitta na volta sola
-			if(splitted[0].equals(this.getUserName()))
+			if(splitted[0].equals(this.getUserName()))//se è un messaggio per questo client
 				this.sendToClient(splitted[1],null);
 			}
-			else if(arg instanceof LobbyStatus){
+			else if(arg instanceof LobbyStatus){//se è un update di lobbystatus (quindi in broadcast)
 				this.sendToClient("LOBBYSTATUS",arg);
 			}
 		}

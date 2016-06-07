@@ -8,7 +8,7 @@ import com.communication.values.RoomState;
 
 public class Room {
 	private ArrayList<ClientHandler> players;
-	private Document rawMap;
+	private String rawMap;
 	private ClientHandler admin;
 	private int maxPlayers, minPlayers;
 	private String name;
@@ -70,7 +70,7 @@ public class Room {
 			return true;
 		return false;
 	}
-	public void setMap(Document map){//non lo metto nel costruttore perchè va passata serializzata, credo
+	public void setMap(String map){//non lo metto nel costruttore perchè va passata serializzata, credo
 		this.rawMap = map;
 		this.defaultMap = false;
 	}
@@ -95,6 +95,11 @@ public class Room {
 	public RoomState getState(){
 		return this.status;
 	}
+	
+	public boolean isDefaultMap() {
+		return defaultMap;
+	}
+
 	
 	
 }

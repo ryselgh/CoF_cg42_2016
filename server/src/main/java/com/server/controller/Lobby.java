@@ -22,7 +22,7 @@ public class Lobby extends Observable implements Runnable, Observer  {
 		clients = new ArrayList<ClientHandler>();
 		rooms = new ArrayList<Room>();
 		commandResponse = new String[] {"Success", "Command not recognized","The game already started","There are not enought players",
-				"You are not the admin, you can't start the game","You are not in this room","Room not found", "You are already in the room"};
+				"You are not the admin, you can't start the game","You are not in this room","Room not found", "You are already in the room","You must left your current room first", "You must be the admin of the room to change the map"};
 	}
 
 	@Override
@@ -36,18 +36,31 @@ public class Lobby extends Observable implements Runnable, Observer  {
 	'\NEWROOM_roomname_maxPl_minPl'
 	'\JOINROOM_roomname'
 	'\STARTGAME_roomname' requires admin of the room
-	'\LEAVEROOM_roomname' 
+	'\LEAVEROOM_roomname'
+	'\SETMAP   Document->obj   requires admin
+	todo: passaggio lobby->game con ACK di STARTGAME 
+	      test gioco 
 	*/
-	private int commandParser(String command, ClientHandler sender){
+	private int commandParser(String command, ClientHandler sender, Object obj){
 		String[] ret = command.split("_");
 		Room r = null;
 		switch(ret[0]){
+		case "\\SETMAP":
+			r = findRoomByClient(sender);
+			if(!sender.equals(r.getAdmin()))
+				return 9;
+			r.setMap((String) obj);
+			sendToClient(sender, "lobby_msg-" + "Map successfully changed");
+			break;
 		case "\\NEWROOM":
 			createRoom(ret[1], sender, Integer.parseInt(ret[2]),Integer.parseInt(ret[3]));
 			sendToClient(sender, "lobby_msg-" + "Room " + ret[1] + " successfully created. You are the Admin");
 			break;
 		case "\\JOINROOM":
+			Room rTmp = findRoomByClient(sender);
 			r = findRoom(ret[1]);
+			if(rTmp != null && rTmp != r)
+				return 8;
 			if(r==null)
 				return 6;
 			if(r.hasJoined(sender))
@@ -56,16 +69,14 @@ public class Lobby extends Observable implements Runnable, Observer  {
 				return 2;//game already started
 			sendToClient(sender, "lobby_msg-" + "You joined room " + ret[1]);
 			break;
-		case "\\STARTGAME"://da modificare togliendo il nome della room come parametro
-			int retg = startRoom(ret[1],sender);
-			sendToClient(sender, "lobby_msg-" + "Successfully started game at room " + ret[1]);
+		case "\\STARTGAME":
+			r = findRoomByClient(sender);
+			int retg = startRoom(r,sender);
+			if(retg==0)
+				sendToClient(sender, "lobby_msg-" + "Successfully started game at room " + ret[1]);
 			return retg;
 		case "\\LEAVEROOM":
-			r = findRoom(ret[1]);
-			if(r==null)
-				return 6;
-			if (!r.hasJoined(sender))
-				return 5;
+			r = findRoomByClient(sender);
 			if(r.getPlayers().size()==1){
 				this.rooms.remove(r);
 				sendToClient(sender, "lobby_msg-" + "Room " + ret[1] + " deleted");
@@ -82,6 +93,13 @@ public class Lobby extends Observable implements Runnable, Observer  {
 		return 0;//success
 	}
 	
+	private Room findRoomByClient(ClientHandler client){
+		for(Room r : this.rooms)
+			for(ClientHandler c : r.getPlayers())
+				if (c.equals(client))
+				return r;
+		return null;
+	}
 	@Override
 	public void update(Observable arg0, Object arg1) {
 		if(arg0 instanceof IdentifyPlayer){//ricevo un nuovo client
@@ -92,8 +110,9 @@ public class Lobby extends Observable implements Runnable, Observer  {
 		}
 		else if(arg0 instanceof ClientHandler){//ricevo un comando da un client
 			String command = ((CommunicationObject) arg1).getMsg();
+			Object object = ((CommunicationObject) arg1).getObj();
 			ClientHandler sender = (ClientHandler) arg0;
-			int resp = commandParser(command, sender);
+			int resp = commandParser(command, sender, object);
 			if(resp!=0)//se c'è un errore, altrimenti l'esito corretto viene già comunicato
 				sendToClient(sender, "lobby_msg-" + commandResponse[resp]);
 			else{
@@ -116,7 +135,7 @@ public class Lobby extends Observable implements Runnable, Observer  {
 			for(ClientHandler ch : r.getPlayers())
 				roomPlayers.add(ch.getUserName());
 			rooms.add(new RoomStatus(r.getName(),r.getAdmin().getUserName(),
-										r.getMinPlayers(),r.getMaxPlayers(), roomPlayers));}
+										r.getMinPlayers(),r.getMaxPlayers(), roomPlayers, r.isDefaultMap()));}
 		return new LobbyStatus(freeClients,rooms);
 	}
 	private void sendToClient(ClientHandler client, String msg){
@@ -143,8 +162,7 @@ public class Lobby extends Observable implements Runnable, Observer  {
 		rooms.add(new Room(name,admin,maxPl,minPl));
 	}
 	
-	private int startRoom(String name, ClientHandler player){
-		Room r = findRoom(name);
+	private int startRoom(Room r, ClientHandler player){
 		switch (r.canStart(player)){
 		case 1:
 			return 3;

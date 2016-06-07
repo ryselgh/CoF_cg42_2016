@@ -1,11 +1,22 @@
 package com.client.controller;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.Document;
 
 import com.client.ClientObservable;
 import com.client.ClientObserver;
@@ -28,7 +39,8 @@ public class ClientController extends Observable implements Observer{
 	private Logger logger;
 	private LobbyStatus lobbyStatus;
 	private int playerID; // <------------------------------------ PROVVISORIO, serve comunque un identificativo
-
+	private ConsoleListener consoleListener;
+	
 	public ClientController(){
 		cli = new ClientCLI(this);
 		cli.addObserver(this);
@@ -49,7 +61,7 @@ public class ClientController extends Observable implements Observer{
 	}
 
 	private void printLobbyCommand(){
-		cli.printMsg("Lobby commands: \n'\\NEWROOM_roomname_maxPl_minPl' \n'\\JOINROOM_roomname' \n'\\STARTGAME_roomname' requires admin of the room \n'\\LEAVEROOM_roomname' \n");
+		cli.printMsg("Lobby commands: \n'\\NEWROOM_roomname_maxPl_minPl' \n'\\JOINROOM_roomname' \n'\\STARTGAME_roomname' requires admin of the room \n'\\LEAVEROOM_roomname' \n'\\SETMAP_filepath'");
 	}
 	
 	private void printLobbyStatus(){
@@ -73,14 +85,37 @@ public class ClientController extends Observable implements Observer{
 			cli.printMsg("Admin: " + rs.getAdminName());
 			cli.printMsg("Minimum players: " + rs.getMinPlayers());
 			cli.printMsg("Maximum players: " + rs.getMaxPlayers());
+			if(rs.isDefaultMap())
+				cli.printMsg("Map: default");
+			else
+				cli.printMsg("Map: custom");
 		}
 	}
 	
+	
 
+	static String readFile(String path, Charset encoding) 
+			  throws IOException 
+			{
+			  byte[] encoded = Files.readAllBytes(Paths.get(path));
+			  return new String(encoded, encoding);
+			}
+	
 	
 	@Override
 	public void update(Observable o, Object change){
 		if(o instanceof ConsoleListener){
+			String[] split = ((String) change).split("_");
+			if(split[0].equals("\\SETMAP")){
+				String newMap;
+				try {
+					newMap = readFile(split[1], StandardCharsets.UTF_8);
+					connection.sendToServer("\\SETMAP", newMap);
+				} catch (Exception e) {
+					cli.printMsg("Error during map import");
+				}
+				return;
+			}
 			connection.sendToServer((String) change ,null);
 			return;
 		}
@@ -108,7 +143,7 @@ public class ClientController extends Observable implements Observer{
 							connection.sendToServer("INSERTNICKNAME",nick);
 							break;
 						case "INSERTNICKNAMEACK":
-							ConsoleListener consoleListener = new ConsoleListener();
+							consoleListener = new ConsoleListener();
 							consoleListener.addObserver(this);
 							Thread consoleThread = new Thread(consoleListener);
 							consoleThread.start();
@@ -126,7 +161,7 @@ public class ClientController extends Observable implements Observer{
 							BonusTokenDTO[] btArray = new BonusTokenDTO[bt.size()];
 							bt.toArray(btArray);
 							btDTO = cli.getTokenBonus(btArray, 1);
-							connection.sendToServer("ONETOKEN",btDTO);
+							connection.sendToServer("INPUT_ONETOKEN",btDTO);
 							break;
 							
 						case "ONETOKEN_ACK":
@@ -143,7 +178,7 @@ public class ClientController extends Observable implements Observer{
 							BonusTokenDTO[] btArray2 = new BonusTokenDTO[bt2.size()];
 							bt2.toArray(btArray2);
 							btDTO2 = cli.getTokenBonus(btArray2, 2);
-							connection.sendToServer("TWOTOKENS",btDTO2);
+							connection.sendToServer("INPUT_TWOTOKENS",btDTO2);
 							break;
 							
 						case "TWOTOKENS_ACK":
@@ -160,7 +195,7 @@ public class ClientController extends Observable implements Observer{
 							availablePermits.add(game.getMap().getPermitsDeck(regIndex).getSlot(1));
 							int pcIndex = cli.getPermitIndex(availablePermits);
 							pcDTO = availablePermits.get(pcIndex);
-							connection.sendToServer("FREECARD",pcDTO);
+							connection.sendToServer("INPUT_FREECARD",pcDTO);
 							break;
 							
 						case "FREECARDACK":
@@ -179,7 +214,7 @@ public class ClientController extends Observable implements Observer{
 									ownedPermits.remove(pc);
 							int pcOwnedIndex = cli.getPermitIndex(ownedPermits);
 							pcOwnedDTO = ownedPermits.get(pcOwnedIndex);
-							connection.sendToServer("BONUSCARD",pcOwnedDTO);
+							connection.sendToServer("INPUT_BONUSCARD",pcOwnedDTO);
 							break;
 							
 						case "BONUSCARDACK":
@@ -195,11 +230,11 @@ public class ClientController extends Observable implements Observer{
 							Object item = cli.getItemToSell(playerID);
 							if(item instanceof String){
 								String pass = (String) item;
-								connection.sendToServer("TOSELL", pass);
+								connection.sendToServer("INPUT_TOSELL", null);
 							}else{
 								int price = cli.getSellPrice();
 								its = new ItemOnSale(price, (Object) item);
-								connection.sendToServer("TOSELL",its);
+								connection.sendToServer("INPUT_TOSELL",its);
 							}
 							break;
 							
@@ -214,10 +249,8 @@ public class ClientController extends Observable implements Observer{
 						case "TOBUY":					//Anche questa
 							OnSaleDTO onSaleDTO = null;
 							ArrayList<OnSaleDTO> availableOnSale = new ArrayList<OnSaleDTO>(game.getMarket().getObjectsOnSale());
-							//get itemtobuy. obj = MarketDTO market
-							connection.sendToServer("TOBUY",onSaleDTO);
 							onSaleDTO = availableOnSale.get(cli.getObjectToBuyIndex(availableOnSale.size(), playerID));
-							connection.sendToServer("TOBUY", onSaleDTO);
+							connection.sendToServer("INPUT_TOBUY", onSaleDTO);
 							break;
 							
 						case "TOBUYACK":
@@ -227,7 +260,6 @@ public class ClientController extends Observable implements Observer{
 						case "TOBUYNACK":
 							cli.printMsg(((String) obj)+ "\n");
 							break;
-							
 						case "StartTurn":
 							// aggiorna interfaccia con la carta pescata(obj =
 							// PoliticsCardDTO)
@@ -237,6 +269,8 @@ public class ClientController extends Observable implements Observer{
 							// aggiorna il vettore di azioni disponibili (obj = boolean[]).
 							// la descrizione del vettore la trovi in
 							// ActionState.getAvailableActions()
+							
+							//la ricezione di questo comando implica che il client deve mandare un'azione al server
 							break;
 							
 						case "ActionAccepted":
@@ -247,6 +281,7 @@ public class ClientController extends Observable implements Observer{
 							// ack negativo dell'invio azione. il server ne aspetta un'altra
 							break;
 						case "GAMEDTO":
+							consoleListener.deleteObserver(this);//in gioco gli input sono ad invocazione
 							this.cli.setGameAndBuildMap((GameDTO) obj);
 							break;
 						default:
