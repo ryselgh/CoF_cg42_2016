@@ -34,7 +34,11 @@ public class ColorGroup
 	 */
 	
 	public ColorGroup(CityColor col) {
-		this.color = col;
+		if(col==null)
+			throw new NullPointerException();
+		else	
+			this.color = col;
+		
 		this.cities = new ArrayList <City>();
 	}
 	
@@ -51,9 +55,11 @@ public class ColorGroup
 	 * @param c c is the city to add
 	 */
 	
-	public void addCity(City c)
-	{
-		cities.add(c);
+	public void addCity(City c){
+		if (c==null)
+			throw new NullPointerException();
+		else
+			cities.add(c);
 	}
 	
 	/**
@@ -62,7 +68,10 @@ public class ColorGroup
 	 */
 	public void setBonus(BonusCard b)
 	{
-		this.bc = b;
+		if(b==null)
+			throw new NullPointerException();
+		else
+			this.bc = b;
 	}
 	
 	/**

@@ -296,7 +296,7 @@ public class Player {
 		for(PoliticsCard pc: hand)
 			handDTO.add(pc.toDTO());
 		playerDTO.setHand(handDTO);
-		playerDTO.setPawn(pawn.toDTO());
+	//	playerDTO.setPawn(pawn.toDTO());
 		for(PermitsCard perm: permits)
 			permDTO.add(perm.toDTO());
 		playerDTO.setPermits(permDTO);

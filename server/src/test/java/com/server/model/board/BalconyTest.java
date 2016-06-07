@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.communication.board.BalconyDTO;
 import com.communication.values.CouncilorColor;
 
 import junit.framework.Assert;
@@ -25,7 +26,7 @@ public class BalconyTest{
 	
 	@Test
     public void testpippo(){
-    	Assert.assertNotNull(councilorsInTheBalcony);
+    	assertNotNull(councilorsInTheBalcony);
     }
 	@Test
 	public void testthecreationofaBalcony() {
@@ -40,11 +41,21 @@ public class BalconyTest{
 	
 	@Test
 	public void testTheRightFunctionOfTheGetMethod() {
-		
-		Balcony balcony=new Balcony (councilorsInTheBalcony);
-		Assert.assertEquals(balcony.getCouncilors(), councilorsInTheBalcony);
+		Councilor[] cons = new Councilor[4];
+		Balcony balcony=new Balcony (cons);
+		balcony.setCouncilor(councilorsInTheBalcony);
+		assertEquals(balcony.getCouncilors(), councilorsInTheBalcony);
 		
 	}
+	
+	@Test
+	public void testToDTO(){
+		Balcony balcony = new Balcony(councilorsInTheBalcony);
+		BalconyDTO balDTO = balcony.toDTO();
+		assertTrue(balDTO instanceof BalconyDTO);
+	}
+	
+	
 	
 	
 		

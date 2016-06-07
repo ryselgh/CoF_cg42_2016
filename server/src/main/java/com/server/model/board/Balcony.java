@@ -15,10 +15,11 @@ public class Balcony
 	 */
 
 	public Balcony(Councilor[] c) {
-		this.councilor = c; 
-		
 		if(c == null)
 			throw new IllegalArgumentException("Argument not valid.");
+		this.councilor = c; 
+		
+		
 	}
 
 	/**

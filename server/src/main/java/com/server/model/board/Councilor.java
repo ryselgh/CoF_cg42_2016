@@ -17,7 +17,10 @@ public class Councilor
 	 */
 	
 	public Councilor(CouncilorColor cc) {
-		this.color = cc;	
+		if (cc==null)
+			throw new NullPointerException();
+		else
+			this.color = cc;	
 	}
 	
 	/**

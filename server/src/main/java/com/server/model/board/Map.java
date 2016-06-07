@@ -69,13 +69,15 @@ public class Map {
 		mapDTO.setPlayers(plDTO);
 		
 		ColorGroupDTO[] cgDTO = new ColorGroupDTO[colorGroups.length];
-		for(int i=0;i<colorGroups.length;i++)
-			cgDTO[i] = colorGroups[i].toDTO();
+		for(int i=0;i<colorGroups.length;i++){
+			if(colorGroups[i].getBonus()!=null)
+				cgDTO[i] = colorGroups[i].toDTO();
+		}
 		mapDTO.setColorGroups(cgDTO);
 		
 		ArrayList <CouncilorDTO> councilorsDTO = new ArrayList <CouncilorDTO>();
 		for(int i=0;i<councilors.size();i++)
-			councilorsDTO.set(i,councilors.get(i).toDTO());
+			councilorsDTO.add(councilors.get(i).toDTO());
 		mapDTO.setCouncilors(councilorsDTO);
 		
 		BalconyDTO[] balconyDTO = new BalconyDTO[balcony.length];
@@ -85,7 +87,7 @@ public class Map {
 		
 		ArrayList<AssistantDTO> assistDTO = new ArrayList<AssistantDTO>();
 		for(int i=0;i<assistants.size();i++)
-			assistDTO.set(i, assistants.get(i).toDTO());
+			assistDTO.add(assistants.get(i).toDTO());
 		mapDTO.setAssistants(assistDTO);
 		
 		EmporiumDTO[] empDTO = new EmporiumDTO[emporiums.length];
@@ -166,7 +168,7 @@ public class Map {
 		permitsDeck = new PermitsDeck[3];
 		for(int i=0;i<3;i++)
 			permitsDeck[i] = new PermitsDeck(pool[i],i);
-		
+		pawn = reader.getPawn();
 		
 		return 1;
 	}

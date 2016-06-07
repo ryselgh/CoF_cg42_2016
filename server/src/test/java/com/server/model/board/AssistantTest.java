@@ -1,6 +1,9 @@
 package com.server.model.board;
 
 import org.junit.*;
+
+import com.communication.board.AssistantDTO;
+
 import static org.junit.Assert.*;
 
 public class AssistantTest {
@@ -12,16 +15,26 @@ public class AssistantTest {
 
 		assertNotNull(result);
 	}
-
-	@Before
-	public void setUp()
-		throws Exception {
+	
+	@Test 
+	public void toDTO(){
+		
+		Assistant assistant= new Assistant();
+		AssistantDTO assDTO = assistant.toDTO();
+		assertTrue(assDTO instanceof AssistantDTO);
+		
+		
 	}
 
-	@After
-	public void tearDown()
-		throws Exception {
-	}
+//	@Before
+//	public void setUp()
+//		throws Exception {
+//	}
+//
+//	@After
+//	public void tearDown()
+//		throws Exception {
+//	}
 
 	public static void main(String[] args) {
 		new org.junit.runner.JUnitCore().run(AssistantTest.class);

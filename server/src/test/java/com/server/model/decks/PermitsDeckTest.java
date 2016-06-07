@@ -3,6 +3,7 @@ package com.server.model.decks;
 import org.junit.*;
 import static org.junit.Assert.*;
 
+import com.communication.decks.PermitsDeckDTO;
 import com.communication.values.BonusType;
 import com.server.model.board.Bonus;
 
@@ -11,6 +12,7 @@ public class PermitsDeckTest {
 	PermitsCard[] permCard;
 	Bonus[]b;
 	String[]l;
+	PermitsCard[] slot;
 	
 	@Before
 	public void setUp(){
@@ -36,13 +38,16 @@ public class PermitsDeckTest {
 		permCard[12]=new PermitsCard(b,l);
 		permCard[13]=new PermitsCard(b,l);
 		permCard[14]=new PermitsCard(b,l);
+		
+//		slot= new PermitsCrad[2];
+//		slot[0]= 
 	
     }
 	
 	@Test(expected=NullPointerException.class)
 	public void testPermitsDeck_1()
 		throws Exception {
-		PermitsCard[] p = new PermitsCard[15] ;
+		PermitsCard[] p = null ;
 		int r = 1;
 		PermitsDeck result = new PermitsDeck(p, r);
 
@@ -71,27 +76,25 @@ public class PermitsDeckTest {
 
 	}
 
-//	@Test
-//	public void testGetSlot_1()
-//		throws Exception {
-//		PermitsDeck fixture = new PermitsDeck(permCard, 1);
-//		fixture.draw();
-//		fixture.draw();
-//		boolean draw = false;
-//		PermitsCard result = fixture.getSlot(0, draw);
-//		assertEquals(result,permCard[0]);
-//	}
-//
-//	@Test
-//	public void testGetSlot_2()
-//		throws Exception {
-//		PermitsDeck fixture = new PermitsDeck(permCard, 1);
-//		fixture.draw();
-//		fixture.draw();
-//		boolean draw = false;
-//		PermitsCard result = fixture.getSlot(1, draw);
-//		assertEquals(result,permCard[0]);
-//	}
+	@Test
+	public void testGetSlot_1()
+		throws Exception {
+		PermitsDeck fixture = new PermitsDeck(permCard, 1);
+		
+		boolean draw = false;
+		PermitsCard result = fixture.getSlot(1, draw);
+		assertNotNull(result);
+	}
+
+	@Test
+	public void testGetSlot_2()
+		throws Exception {
+		PermitsDeck fixture = new PermitsDeck(permCard, 1);
+		
+		boolean draw = false;
+		PermitsCard result = fixture.getSlot(0, draw);
+		assertNotNull(result);
+	}
 
 //	@Test
 //	public void testSetSlot1_1()
@@ -121,7 +124,15 @@ public class PermitsDeckTest {
 //		//       at com.server.model.decks.PermitsDeck.<init>(PermitsDeck.java:29)
 //	}
 
-	
+	@Test
+	public void toDTO(){
+		
+		PermitsDeck fixture = new PermitsDeck(permCard, 1);
+		PermitsDeckDTO pdDTO = fixture.toDTO();
+		
+		assertTrue(pdDTO instanceof PermitsDeckDTO);
+		
+	}
 
 	public static void main(String[] args) {
 		new org.junit.runner.JUnitCore().run(PermitsDeckTest.class);

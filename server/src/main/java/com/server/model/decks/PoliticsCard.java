@@ -20,7 +20,11 @@ public class PoliticsCard
 	
 	
 	public PoliticsCard(CouncilorColor c) {
+		if (c==null)
+			throw new NullPointerException();
+		else {
 		color=c;
+		}
 
 	}
 	

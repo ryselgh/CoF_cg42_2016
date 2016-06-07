@@ -2,6 +2,7 @@ package com.communication.board;
 
 import org.junit.*;
 
+import com.communication.gamelogic.PlayerDTO;
 import com.communication.values.BonusType;
 
 import static org.junit.Assert.*;
@@ -9,6 +10,10 @@ import static org.junit.Assert.*;
 public class NobilityTrackDTOTest {
 	
 	BonusDTO bonus;
+	PlayerDTO player1;
+	PlayerDTO player2;
+	PlayerDTO player3;
+	BonusDTO[][] bonusVector;
 	
 	@Before
 	public void setUp()
@@ -17,6 +22,9 @@ public class NobilityTrackDTOTest {
 		bonus = new BonusDTO();
 		bonus.setQuantity(1);
 		bonus.setType(BonusType.ASSISTANT);
+		bonusVector=new BonusDTO[15][];
+		
+		
 		
 	}
 	
@@ -31,7 +39,7 @@ public class NobilityTrackDTOTest {
 	public void testGetBonusVector_1()
 		throws Exception {
 		NobilityTrackDTO fixture = new NobilityTrackDTO();
-		fixture.setBonusVector(new BonusDTO[][] {});
+		fixture.setBonusVector(bonusVector);
 		fixture.setPawns(new PawnDTO[] {});
 
 		BonusDTO[][] result = fixture.getBonusVector();
