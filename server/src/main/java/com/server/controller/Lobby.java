@@ -73,7 +73,8 @@ public class Lobby extends Observable implements Runnable, Observer  {
 			r = findRoomByClient(sender);
 			int retg = startRoom(r,sender);
 			if(retg==0)
-				sendToClient(sender, "lobby_msg-" + "Successfully started game at room " + ret[1]);
+				for(ClientHandler ch: r.getPlayers())
+					sendToClient(sender, "lobby_msg-" + "Successfully started game at room " + ret[1]);
 			return retg;
 		case "\\LEAVEROOM":
 			r = findRoomByClient(sender);
@@ -138,6 +139,7 @@ public class Lobby extends Observable implements Runnable, Observer  {
 										r.getMinPlayers(),r.getMaxPlayers(), roomPlayers, r.isDefaultMap()));}
 		return new LobbyStatus(freeClients,rooms);
 	}
+	
 	private void sendToClient(ClientHandler client, String msg){
 		setChanged();
 	    notifyObservers(client.getUserName() + "_" + msg);

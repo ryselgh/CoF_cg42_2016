@@ -39,7 +39,8 @@ public class Room {
 	
 	public void startRoom(){
 		for(ClientHandler ch : players)
-			ch.inGame = true;//blocca il loop mvc della lobby
+			ch.inGame = true;
+		this.status = RoomState.IN_GAME;
 		GameHandler gh = new GameHandler(players,defaultMap,rawMap);
 		Thread thread = new Thread(gh);
 		thread.start();
