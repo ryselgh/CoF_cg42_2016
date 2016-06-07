@@ -3,7 +3,6 @@ package com.server.model.board;
 import java.util.ArrayList;
 import org.junit.*;
 import static org.junit.Assert.*;
-import org.w3c.dom.Document;
 import com.communication.board.MapDTO;
 import com.communication.values.CityColor;
 import com.communication.values.CouncilorColor;
@@ -30,7 +29,7 @@ public class MapTest {
 		throws Exception {
 		
 		boolean _default = true;
-		Document rawMap = null;
+		String rawMap = null;
 
 		Map result = new Map(p, _default, rawMap);
 
@@ -43,7 +42,7 @@ public class MapTest {
 		throws Exception {
 		
 		boolean _default = true;
-		Document rawMap = null;
+		String rawMap = null;
 
 		Map result = new Map(p, _default, rawMap);
 
@@ -58,7 +57,7 @@ public class MapTest {
 		throws Exception {
 		Player[] p = new Player[] {};
 		boolean _default = true;
-		Document rawMap = null;
+		String rawMap = null;
 
 		Map result = new Map(p, _default, rawMap);
 
@@ -73,7 +72,7 @@ public class MapTest {
 		throws Exception {
 		Player[] p = new Player[] {};
 		boolean _default = true;
-		Document rawMap = null;
+		String rawMap = null;
 
 		Map result = new Map(p, _default, rawMap);
 
@@ -86,7 +85,7 @@ public class MapTest {
 	@Test
 	public void testGetAssistant_1()
 		throws Exception {
-		Map fixture = new Map(new Player[] {}, true, (Document) null);
+		Map fixture = new Map(new Player[] {}, true, (String) null);
 		fixture.setKingBonus(new ArrayList());
 		fixture.setNobilityTrack(new NobilityTrack(new Pawn[] {}, new Bonus[][] {}));
 		fixture.setCity(new City[] {});
@@ -103,7 +102,7 @@ public class MapTest {
 	@Test
 	public void testGetAssistant_2()
 		throws Exception {
-		Map fixture = new Map(new Player[] {}, true, (Document) null);
+		Map fixture = new Map(new Player[] {}, true, (String) null);
 		fixture.setKingBonus(new ArrayList());
 		fixture.setNobilityTrack(new NobilityTrack(new Pawn[] {}, new Bonus[][] {}));
 		fixture.setCity(new City[] {});
@@ -120,7 +119,7 @@ public class MapTest {
 	@Test
 	public void testGetAssistantsPool_1()
 		throws Exception {
-		Map fixture = new Map(new Player[] {}, true, (Document) null);
+		Map fixture = new Map(new Player[] {}, true, (String) null);
 		fixture.setKingBonus(new ArrayList());
 		fixture.setNobilityTrack(new NobilityTrack(new Pawn[] {}, new Bonus[][] {}));
 		fixture.setCity(new City[] {});
@@ -136,7 +135,7 @@ public class MapTest {
 	@Test
 	public void testGetAvailableColors_1()
 		throws Exception {
-		Map fixture = new Map(new Player[] {}, true, (Document) null);
+		Map fixture = new Map(new Player[] {}, true, (String) null);
 		fixture.setKingBonus(new ArrayList());
 		fixture.setNobilityTrack(new NobilityTrack(new Pawn[] {}, new Bonus[][] {}));
 		fixture.setCity(new City[] {});
@@ -152,7 +151,7 @@ public class MapTest {
 	@Test
 	public void testGetAvailableColors_2()
 		throws Exception {
-		Map fixture = new Map(new Player[] {}, true, (Document) null);
+		Map fixture = new Map(new Player[] {}, true, (String) null);
 		fixture.setKingBonus(new ArrayList());
 		fixture.setNobilityTrack(new NobilityTrack(new Pawn[] {}, new Bonus[][] {}));
 		fixture.setCity(new City[] {});
@@ -168,7 +167,7 @@ public class MapTest {
 	@Test
 	public void testGetAvailableColors_3()
 		throws Exception {
-		Map fixture = new Map(new Player[] {}, true, (Document) null);
+		Map fixture = new Map(new Player[] {}, true, (String) null);
 		fixture.setKingBonus(new ArrayList());
 		fixture.setNobilityTrack(new NobilityTrack(new Pawn[] {}, new Bonus[][] {}));
 		fixture.setCity(new City[] {});
@@ -184,7 +183,7 @@ public class MapTest {
 	@Test
 	public void testGetBalcony_1()
 		throws Exception {
-		Map fixture = new Map(new Player[] {}, true, (Document) null);
+		Map fixture = new Map(new Player[] {}, true, (String) null);
 		fixture.setKingBonus(new ArrayList());
 		fixture.setNobilityTrack(new NobilityTrack(new Pawn[] {}, new Bonus[][] {}));
 		fixture.setCity(new City[] {});
@@ -201,7 +200,7 @@ public class MapTest {
 	@Test
 	public void testGetCity_1()
 		throws Exception {
-		Map fixture = new Map(new Player[] {}, true, (Document) null);
+		Map fixture = new Map(new Player[] {}, true, (String) null);
 		fixture.setKingBonus(new ArrayList());
 		fixture.setNobilityTrack(new NobilityTrack(new Pawn[] {}, new Bonus[][] {}));
 		fixture.setCity(new City[] {});
@@ -217,7 +216,7 @@ public class MapTest {
 	@Test
 	public void testGetColorGroup_1()
 		throws Exception {
-		Map fixture = new Map(new Player[] {}, true, (Document) null);
+		Map fixture = new Map(new Player[] {}, true, (String) null);
 		fixture.setKingBonus(new ArrayList());
 		fixture.setNobilityTrack(new NobilityTrack(new Pawn[] {}, new Bonus[][] {}));
 		fixture.setCity(new City[] {});
@@ -234,7 +233,7 @@ public class MapTest {
 	@Test
 	public void testGetCouncilor_1()
 		throws Exception {
-		Map fixture = new Map(new Player[] {}, true, (Document) null);
+		Map fixture = new Map(new Player[] {}, true, (String) null);
 		fixture.setKingBonus(new ArrayList());
 		fixture.setNobilityTrack(new NobilityTrack(new Pawn[] {}, new Bonus[][] {}));
 		fixture.setCity(new City[] {});
@@ -252,7 +251,7 @@ public class MapTest {
 	@Test
 	public void testGetCouncilor_2()
 		throws Exception {
-		Map fixture = new Map(new Player[] {}, true, (Document) null);
+		Map fixture = new Map(new Player[] {}, true, (String) null);
 		fixture.setKingBonus(new ArrayList());
 		fixture.setNobilityTrack(new NobilityTrack(new Pawn[] {}, new Bonus[][] {}));
 		fixture.setCity(new City[] {});
@@ -269,7 +268,7 @@ public class MapTest {
 	@Test
 	public void testGetCouncilorsPool_1()
 		throws Exception {
-		Map fixture = new Map(new Player[] {}, true, (Document) null);
+		Map fixture = new Map(new Player[] {}, true, (String) null);
 		fixture.setKingBonus(new ArrayList());
 		fixture.setNobilityTrack(new NobilityTrack(new Pawn[] {}, new Bonus[][] {}));
 		fixture.setCity(new City[] {});
@@ -285,7 +284,7 @@ public class MapTest {
 	@Test
 	public void testGetKing_1()
 		throws Exception {
-		Map fixture = new Map(new Player[] {}, true, (Document) null);
+		Map fixture = new Map(new Player[] {}, true, (String) null);
 		fixture.setKingBonus(new ArrayList());
 		fixture.setNobilityTrack(new NobilityTrack(new Pawn[] {}, new Bonus[][] {}));
 		fixture.setCity(new City[] {});
@@ -301,7 +300,7 @@ public class MapTest {
 	@Test
 	public void testGetKingBonus_1()
 		throws Exception {
-		Map fixture = new Map(new Player[] {}, true, (Document) null);
+		Map fixture = new Map(new Player[] {}, true, (String) null);
 		fixture.setKingBonus(new ArrayList());
 		fixture.setNobilityTrack(new NobilityTrack(new Pawn[] {}, new Bonus[][] {}));
 		fixture.setCity(new City[] {});
@@ -317,7 +316,7 @@ public class MapTest {
 	@Test
 	public void testGetNobilityTrack_1()
 		throws Exception {
-		Map fixture = new Map(new Player[] {}, true, (Document) null);
+		Map fixture = new Map(new Player[] {}, true, (String) null);
 		fixture.setKingBonus(new ArrayList());
 		fixture.setNobilityTrack(new NobilityTrack(new Pawn[] {}, new Bonus[][] {}));
 		fixture.setCity(new City[] {});
@@ -333,7 +332,7 @@ public class MapTest {
 	@Test
 	public void testGetPermitsDeck_1()
 		throws Exception {
-		Map fixture = new Map(new Player[] {}, true, (Document) null);
+		Map fixture = new Map(new Player[] {}, true, (String) null);
 		fixture.setKingBonus(new ArrayList());
 		fixture.setNobilityTrack(new NobilityTrack(new Pawn[] {}, new Bonus[][] {}));
 		fixture.setCity(new City[] {});
@@ -350,7 +349,7 @@ public class MapTest {
 	@Test
 	public void testGetPlayerEmporiums_1()
 		throws Exception {
-		Map fixture = new Map(p, true, (Document) null);
+		Map fixture = new Map(p, true, (String) null);
 		fixture.setKingBonus(new ArrayList());
 		fixture.setNobilityTrack(new NobilityTrack(new Pawn[] {}, new Bonus[][] {}));
 		fixture.setCity(new City[] {});
@@ -367,7 +366,7 @@ public class MapTest {
 	@Test
 	public void testGetPlayerEmporiums_2()
 		throws Exception {
-		Map fixture = new Map(p, true, (Document) null);
+		Map fixture = new Map(p, true, (String) null);
 		fixture.setKingBonus(new ArrayList());
 		fixture.setNobilityTrack(new NobilityTrack(new Pawn[] {}, new Bonus[][] {}));
 		fixture.setCity(new City[] {});
@@ -384,7 +383,7 @@ public class MapTest {
 	@Test
 	public void testGetPoliticsDeck_1()
 		throws Exception {
-		Map fixture = new Map(new Player[] {}, true, (Document) null);
+		Map fixture = new Map(new Player[] {}, true, (String) null);
 		fixture.setKingBonus(new ArrayList());
 		fixture.setNobilityTrack(new NobilityTrack(new Pawn[] {}, new Bonus[][] {}));
 		fixture.setCity(new City[] {});
@@ -400,7 +399,7 @@ public class MapTest {
 	@Test
 	public void testGetRegion_1()
 		throws Exception {
-		Map fixture = new Map(new Player[] {}, true, (Document) null);
+		Map fixture = new Map(new Player[] {}, true, (String) null);
 		fixture.setKingBonus(new ArrayList());
 		fixture.setNobilityTrack(new NobilityTrack(new Pawn[] {}, new Bonus[][] {}));
 		fixture.setCity(new City[] {});
@@ -417,11 +416,11 @@ public class MapTest {
 	@Test
 	public void testImportMap_1()
 		throws Exception {
-		Map fixture = new Map(p, true, (Document) null);
+		Map fixture = new Map(p, true, (String) null);
 		fixture.setKingBonus(new ArrayList());
 		fixture.setNobilityTrack(new NobilityTrack(new Pawn[] {}, new Bonus[][] {}));
 		fixture.setCity(new City[] {});
-		Document file = null;
+		String file = null;
 		boolean _default = true;
 
 		int result = fixture.importMap(file, _default);
@@ -544,7 +543,7 @@ public class MapTest {
 	@Test
 	public void testInsertCity_1()
 		throws Exception {
-		Map fixture = new Map(p, true, (Document) null);
+		Map fixture = new Map(p, true, (String) null);
 		fixture.setKingBonus(new ArrayList());
 		fixture.setNobilityTrack(new NobilityTrack(new Pawn[] {}, new Bonus[][] {}));
 		fixture.setCity(new City[] {});
@@ -725,7 +724,7 @@ public class MapTest {
 	@Test
 	public void testToDTO_1()
 		throws Exception {
-		Map fixture = new Map(p, true, (Document) null);
+		Map fixture = new Map(p, true, (String) null);
 		fixture.setKingBonus(new ArrayList());
 		Pawn[] pawns = new Pawn[3];
 		pawns[0] = new Pawn(p[0],"#FFFFFF");
@@ -746,7 +745,7 @@ public class MapTest {
 	@Test
 	public void testToDTO_2()
 		throws Exception {
-		Map fixture = new Map(new Player[] {}, true, (Document) null);
+		Map fixture = new Map(new Player[] {}, true, (String) null);
 		fixture.setKingBonus(new ArrayList());
 		fixture.setNobilityTrack(new NobilityTrack(new Pawn[] {}, new Bonus[][] {}));
 		fixture.setCity(new City[] {});
