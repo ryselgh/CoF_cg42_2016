@@ -25,6 +25,7 @@ import com.communication.CommunicationObject;
 import com.communication.ItemOnSale;
 import com.communication.LobbyStatus;
 import com.communication.RoomStatus;
+import com.communication.actions.BuildDTO;
 import com.communication.board.BonusTokenDTO;
 import com.communication.board.CityDTO;
 import com.communication.decks.PermitsCardDTO;
@@ -35,7 +36,7 @@ import com.communication.market.OnSaleDTO;
 public class ClientController extends Observable implements Observer{
 
 	private ClientCLI cli;
-	private GameDTO game;
+	private GameDTO game; 
 	private SocketConnection connection;
 	private Logger logger;
 	private LobbyStatus lobbyStatus;
@@ -268,40 +269,16 @@ public class ClientController extends Observable implements Observer{
 				cli.printMsg("You drew this card: "+polcDTO.getColor().toString());
 				break;
 
-			case "AvailableActions": //Serve sapere anche se possibile fare main/speed o è market time <------------------------README------------------------ 
-				// aggiorna il vettore di azioni disponibili (obj = boolean[]).
-				// la descrizione del vettore la trovi in
-				// ActionState.getAvailableActions()
+			case "AvailableActions":
 
 				//la ricezione di questo comando implica che il client deve mandare un'azione al server
 				//main: build[0], obtainpermit[1], satisfyking[2], shiftcouncilmain[3]
 				//speed: buyassistant[4], buymainaction[5], changecards[6], shiftcouncilspeed[7]
 				//pass[8]
+				// SONO DA RIORDINARE SECONDO LA SCHEDA DEL GIOCO <-------------------------------------------IMPORTANTE!!
 				boolean[] availableActions = (boolean[]) obj;
-				boolean error = true;
-				int selection = -1;
-				int actionChoice = cli.getAction(playerID, 0, 0, false);
-				while(error){
-					switch(actionChoice){
-					case 1:
-						selection = cli.mainActionChoice() - 1;
-						break;
-					case 2:
-						selection = (cli.speedActionChoice() - 1) + 4; // 4: offset speed action
-						break;
-					case 3:
-						//com'è gestito qui il mercato?
-						break;
-					case 4:
-						selection = 8;
-						break;
-					}
-					if(availableActions[selection])
-						error = false;
-					else
-						cli.printMsg("Selected action not available. Try again.");
-				}
-				// connection.sendToServer("Boh", deviSpiegarmiStaParte);
+				int selectedAction = cli.getAction(availableActions);
+				connection.sendToServer("ACTION", getActionInstance(selectedAction));
 				break;
 
 			case "ActionAccepted": 
@@ -320,6 +297,34 @@ public class ClientController extends Observable implements Observer{
 			}
 		}
 
+	}
+
+	private Object getActionInstance(int selectedAction) {
+		switch(selectedAction){
+		case 0:
+			BuildDTO build = new BuildDTO();
+			cli.printMsg("Where do you want to build?");
+			int buildHere = cli.getInputCities(game.getMap().getCity());
+			build.setCity(game.getMap().getCity()[buildHere]);
+			PermitsCardDTO usedPermit = game.getPlayers().get(playerID).getPermits().get(cli.getBuildPermit(playerID));
+			build.setPermit(usedPermit);
+			return build;
+		case 1:
+			break;
+		case 2:
+			break;
+		case 3:
+			break;
+		case 4:
+			break;
+		case 5:
+			break;
+		case 6:
+			break;
+		case 7:
+			break;
+		}
+		return null;
 	}
 
 
