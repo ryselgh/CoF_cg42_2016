@@ -11,46 +11,8 @@ public class BuyAssistantDTO extends ActionDTO implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 8360790696872974040L;
-	private GameDTO game;
-	private ArrayList<String> errors;
-	private boolean disable = false;
 	
+	public BuyAssistantDTO(){}
 	
-	/**
-	 * @return the game
-	 */
-	public GameDTO getGame() {
-		return game;
-	}
-	/**
-	 * @param game the game to set
-	 */
-	public void setGame(GameDTO game) {
-		this.game = game;
-	}
-	/**
-	 * @return the errors
-	 */
-	public ArrayList<String> getErrors() {
-		return errors;
-	}
-	/**
-	 * @param errors the errors to set
-	 */
-	public void setErrors(ArrayList<String> errors) {
-		this.errors = errors;
-	}
-	/**
-	 * @return the disable
-	 */
-	public boolean isDisable() {
-		return disable;
-	}
-	/**
-	 * @param disable the disable to set
-	 */
-	public void setDisable(boolean disable) {
-		this.disable = disable;
-	}
 	
 }

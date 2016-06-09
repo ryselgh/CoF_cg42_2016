@@ -15,10 +15,8 @@ public class BuildDTO extends ActionDTO implements Serializable{
 	private static final long serialVersionUID = -6895733758879038L;
 	private CityDTO city;
 	private PermitsCardDTO permit;
-	private GameDTO game;
-	private ArrayList<String> errors;
-	private boolean disable = false;
 	
+	public BuildDTO(){}
 	
 	/**
 	 * @return the city
@@ -43,42 +41,6 @@ public class BuildDTO extends ActionDTO implements Serializable{
 	 */
 	public void setPermit(PermitsCardDTO permit) {
 		this.permit = permit;
-	}
-	/**
-	 * @return the game
-	 */
-	public GameDTO getGame() {
-		return game;
-	}
-	/**
-	 * @param game the game to set
-	 */
-	public void setGame(GameDTO game) {
-		this.game = game;
-	}
-	/**
-	 * @return the errors
-	 */
-	public ArrayList<String> getErrors() {
-		return errors;
-	}
-	/**
-	 * @param errors the errors to set
-	 */
-	public void setErrors(ArrayList<String> errors) {
-		this.errors = errors;
-	}
-	/**
-	 * @return the disable
-	 */
-	public boolean isDisable() {
-		return disable;
-	}
-	/**
-	 * @param disable the disable to set
-	 */
-	public void setDisable(boolean disable) {
-		this.disable = disable;
 	}
 
 }

@@ -23,7 +23,6 @@ public class ObtainPermit extends Action {
 	int counter = 0;
     int jollycnt = 0;
     private ArrayList<String> errors;
-	private boolean disable = false;
     
     
 	public ObtainPermit(PoliticsCard[] politics, int regionIndex, int slot){

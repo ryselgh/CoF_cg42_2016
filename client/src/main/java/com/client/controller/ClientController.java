@@ -25,13 +25,23 @@ import com.communication.CommunicationObject;
 import com.communication.ItemOnSale;
 import com.communication.LobbyStatus;
 import com.communication.RoomStatus;
+import com.communication.actions.ActionDTO;
 import com.communication.actions.BuildDTO;
+import com.communication.actions.BuyAssistantDTO;
+import com.communication.actions.BuyMainActionDTO;
+import com.communication.actions.ChangeCardsDTO;
+import com.communication.actions.ObtainPermitDTO;
+import com.communication.actions.SatisfyKingDTO;
+import com.communication.actions.ShiftCouncilMainDTO;
+import com.communication.actions.ShiftCouncilSpeedDTO;
 import com.communication.board.BonusTokenDTO;
 import com.communication.board.CityDTO;
+import com.communication.board.CouncilorDTO;
 import com.communication.decks.PermitsCardDTO;
 import com.communication.decks.PoliticsCardDTO;
 import com.communication.gamelogic.GameDTO;
 import com.communication.market.OnSaleDTO;
+import com.communication.values.CouncilorColor;
 
 public class ClientController extends Observable implements Observer{
 
@@ -130,6 +140,9 @@ public class ClientController extends Observable implements Observer{
 			cli.printMsg(cmd + "\n");
 		} 
 		else {// messaggio di gioco / input
+			boolean[] availableActions;
+			int selectedAction;
+			ActionDTO compiledAction;
 			switch (cmd) {
 			case "LOBBYSTATUS":
 				this.lobbyStatus = (LobbyStatus) obj;
@@ -231,7 +244,6 @@ public class ClientController extends Observable implements Observer{
 				//get its: l'oggetto da vendere al mercato
 				Object item = cli.getItemToSell(playerID);
 				if(item instanceof String){
-					String pass = (String) item;
 					connection.sendToServer("INPUT_TOSELL", null);
 				}else{
 					int price = cli.getSellPrice();
@@ -276,9 +288,10 @@ public class ClientController extends Observable implements Observer{
 				//speed: buyassistant[4], buymainaction[5], changecards[6], shiftcouncilspeed[7]
 				//pass[8]
 				// SONO DA RIORDINARE SECONDO LA SCHEDA DEL GIOCO <-------------------------------------------IMPORTANTE!!
-				boolean[] availableActions = (boolean[]) obj;
-				int selectedAction = cli.getAction(availableActions);
-				connection.sendToServer("ACTION", getActionInstance(selectedAction));
+				availableActions = (boolean[]) obj;
+				selectedAction = cli.getAction(availableActions);
+				compiledAction = getActionInstance(selectedAction);
+				connection.sendToServer("ACTION", compiledAction);
 				break;
 
 			case "ActionAccepted": 
@@ -286,12 +299,19 @@ public class ClientController extends Observable implements Observer{
 				break;
 
 			case "ActionNotValid":
-				// ack negativo dell'invio azione. il server ne aspetta un'altra
+				cli.printMsg(((String) obj)+ "\n");
+				
+				availableActions = (boolean[]) obj;
+				selectedAction = cli.getAction(availableActions);
+				compiledAction = getActionInstance(selectedAction);
+				connection.sendToServer("ACTION", compiledAction);
 				break;
 			case "GAMEDTO":
-				consoleListener.deleteObserver(this);//in gioco gli input sono ad invocazione
 				this.cli.setGameAndBuildMap((GameDTO) obj);
 				break;
+			case "STARTGAME":
+				consoleListener.deleteObserver(this);//in gioco gli input sono ad invocazione
+				this.cli.setGameAndBuildMap((GameDTO) obj);
 			default:
 				throw new IllegalArgumentException("Command not recognized: " + cmd);
 			}
@@ -299,7 +319,9 @@ public class ClientController extends Observable implements Observer{
 
 	}
 
-	private Object getActionInstance(int selectedAction) {
+	private ActionDTO getActionInstance(int selectedAction) {
+		ArrayList<PoliticsCardDTO> polCards = new ArrayList<PoliticsCardDTO>();
+		PoliticsCardDTO[] cardsRet;
 		switch(selectedAction){
 		case 0:
 			BuildDTO build = new BuildDTO();
@@ -310,19 +332,67 @@ public class ClientController extends Observable implements Observer{
 			build.setPermit(usedPermit);
 			return build;
 		case 1:
-			break;
+			ObtainPermitDTO obtPerm = new ObtainPermitDTO();
+			int reg = cli.getTargetRegion(2);
+			int slot = cli.waitCorrectIntInput("Insert slot number: 0= left  1=right", 0, 1);
+			polCards = cli.waitInputCards(this.game.getActualPlayer().getHand());
+			cardsRet = new PoliticsCardDTO[polCards.size()];
+			cardsRet = polCards.toArray(cardsRet);
+			obtPerm.setPolitics(cardsRet);
+			obtPerm.setRegionIndex(reg);
+			obtPerm.setSlot(slot);
+			return obtPerm;
 		case 2:
+			SatisfyKingDTO satKing = new SatisfyKingDTO();
+			polCards = cli.waitInputCards(this.game.getActualPlayer().getHand());
+			cardsRet = new PoliticsCardDTO[polCards.size()];
+			cardsRet = polCards.toArray(cardsRet);
+			CityDTO[] cities = this.game.getMap().getCity();
+			CityDTO[] validCities = new CityDTO[cities.length - 1];
+			int i=0;
+			for(CityDTO c : cities)
+				if(!c.equals(this.game.getMap().getKing().getLocation())){
+					validCities[i]=c;
+					i++;
+				}
+			CityDTO dest = validCities[cli.getInputCities(validCities)];
+			satKing.setDestination(dest);
+			satKing.setPolitics(cardsRet);
 			break;
 		case 3:
-			break;
+			ShiftCouncilMainDTO shiftMain = new ShiftCouncilMainDTO();
+			ArrayList<CouncilorColor> avColors = new ArrayList<CouncilorColor>();
+			for(CouncilorDTO c : this.game.getMap().getCouncilors())
+				if(!avColors.contains(c.getColor()))
+					avColors.add(c.getColor());
+			int balIndex = cli.getTargetBalcony();
+			CouncilorColor targetColor = avColors.get(cli.getColorIndex(avColors));
+			for(CouncilorDTO c : this.game.getMap().getCouncilors())
+				if(c.getColor().equals(targetColor))
+					shiftMain.setCouncilor(c);
+			shiftMain.setBalconyIndex(balIndex);
+			return shiftMain;
 		case 4:
-			break;
+			return new BuyAssistantDTO();
 		case 5:
-			break;
+			return new BuyMainActionDTO();
 		case 6:
+			ChangeCardsDTO changeDTO = new ChangeCardsDTO();
+			changeDTO.setBalconyIndex(cli.getTargetBalcony());
 			break;
 		case 7:
-			break;
+			ShiftCouncilSpeedDTO shiftSpeed = new ShiftCouncilSpeedDTO();
+			ArrayList<CouncilorColor> availColors = new ArrayList<CouncilorColor>();
+			for(CouncilorDTO c : this.game.getMap().getCouncilors())
+				if(!availColors.contains(c.getColor()))
+					availColors.add(c.getColor());
+			int balcIndex = cli.getTargetBalcony();
+			CouncilorColor targColor = availColors.get(cli.getColorIndex(availColors));
+			for(CouncilorDTO c : this.game.getMap().getCouncilors())
+				if(c.getColor().equals(targColor))
+					shiftSpeed.setCouncilor(c);
+			shiftSpeed.setBalconyIndex(balcIndex);
+			return shiftSpeed;
 		}
 		return null;
 	}

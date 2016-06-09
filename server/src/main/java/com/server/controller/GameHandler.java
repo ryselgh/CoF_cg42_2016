@@ -35,9 +35,11 @@ public class GameHandler extends Observable implements Runnable, Observer{
 	
 	public GameHandler(ArrayList<ClientHandler> pl, boolean defaultMap, String map){
 		players = pl;
-		for(ClientHandler ch : pl)
-			ch.addObserver(this);
 		this.game = new Game(players.size(),defaultMap,map);
+		for(ClientHandler ch : pl){
+			ch.addObserver(this);
+			ch.sendToClient("STARTGAME", this.game.toDto());
+		}
 	}
 
 	@Override

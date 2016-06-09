@@ -405,12 +405,12 @@ public class ClientCLI extends Observable implements Observer, Runnable{
 		
 		int choice = 0;
 		do{
-			choice = waitCorrectIntInput("",1,5);
-			if(!available[choice-1])
+			choice = waitCorrectIntInput("",0,8);
+			if(!available[choice])
 				out.println("Selected action is disabled, you must chose from the list.");
-		}while(available[choice-1]);
+		}while(available[choice]);
 		
-		return choice - 1;
+		return choice;
 	}
 	
 	public Object getItemToSell(int playerID){
@@ -577,7 +577,7 @@ public class ClientCLI extends Observable implements Observer, Runnable{
 		return waitCorrectIntInput("",1,availableCouncColor.size()) -1;
 	}
 	
-	private int waitCorrectIntInput(String msg, int min, int max){
+	public int waitCorrectIntInput(String msg, int min, int max){
 		int respInt = -1;
 		do {
 			String resp = getInput(msg);
