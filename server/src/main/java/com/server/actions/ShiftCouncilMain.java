@@ -3,6 +3,7 @@ package com.server.actions;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import com.communication.actions.ActionDTO;
 import com.communication.actions.ShiftCouncilMainDTO;
 import com.communication.board.CouncilorDTO;
 import com.server.model.board.Councilor;
@@ -56,7 +57,10 @@ public class ShiftCouncilMain extends Action{
 		return new ActionReturn(true,"",null);
 	}
 	
-	public void setterFromDTO(ShiftCouncilMainDTO scmDTO,Player player,Game game){
+	@Override
+	public void setterFromDTO(ActionDTO DTO,Player player,Game game){
+		this.game = game;
+		ShiftCouncilMainDTO scmDTO = (ShiftCouncilMainDTO) DTO;
 		this.balconyIndex = scmDTO.getBalconyIndex();
 		this.councilor = getCouncilorFromDTO(scmDTO.getCouncilor());
 	}

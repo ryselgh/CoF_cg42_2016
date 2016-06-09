@@ -83,7 +83,8 @@ public class ActionState implements State {
 		gamehandler = context.getGamehandler();
 		this.game = gamehandler.getGame();
 		PoliticsCard draw = game.getMap().getPoliticsDeck().draw();
-		clienthandler.sendToClient("StartTurn", draw);
+		clienthandler.sendToClient("StartTurn", draw.toDTO());
+		gamehandler.updateClientGame();
 		
 		this.execute(null);
 	}
@@ -116,15 +117,15 @@ public class ActionState implements State {
 		else if(actDTO instanceof SatisfyKingDTO){
 			act = new SatisfyKing(null,null);
 			act.setterFromDTO((SatisfyKingDTO) actDTO, game.getActualPlayer(), game);
-			return null;}
+			return act;}
 		else if(actDTO instanceof ShiftCouncilMainDTO){
 			act = new ShiftCouncilMain(0,null);
 			act.setterFromDTO((ShiftCouncilMainDTO) actDTO, game.getActualPlayer(), game);
-			return null;}
+			return act;}
 		else if(actDTO instanceof ShiftCouncilSpeedDTO){
 			act = new ShiftCouncilSpeed(0,null);
 			act.setterFromDTO((ShiftCouncilSpeedDTO) actDTO, game.getActualPlayer(), game);
-			return null;}
+			return act;}
 		else
 			return null;
 	}
@@ -137,8 +138,8 @@ public class ActionState implements State {
 	}
 	private boolean[] getAvailableActions(){
 		//order
-		//main: build[0], obtainpermit[1], satisfyking[2], shiftcouncilmain[3]
-		//speed: buyassistant[4], buymainaction[5], changecards[6], shiftcouncilspeed[7]
+		//main: obtainpermit[0], satisfyking[1], shiftcouncilmain[2], build[3]
+		//speed: buyassistant[4], changecards[5], shiftcouncilspeed[6], buymainaction[7]
 		//pass[8]
 		//------GLOBAL CHECK------
 		boolean[] toRet = new boolean[9];//4main + 4speed + pass
@@ -157,16 +158,16 @@ public class ActionState implements State {
 			if(!pc.isFaceDown())
 				availablePermit = true;
 		if(!availablePermit)
-			toRet[0]=false;
+			toRet[3]=false;
 		//BUY ASSISTANT
 		if(game.getActualPlayer().getCoins()<3)
 			toRet[4]=false;
 		//BUY MAIN ACTION
 		if(game.getActualPlayer().getAvailableAssistants().size()<3)
-			toRet[5]=false;
+			toRet[7]=false;
 		//CHANGE CARDS
 		if(game.getActualPlayer().getAvailableAssistants().size()==0)
-			toRet[6]=false;
+			toRet[5]=false;
 		return toRet;
 	}
 	private void decreaseCounter(Action action){

@@ -1,6 +1,5 @@
 package com.client.view;
 
-import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -8,8 +7,6 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Scanner;
 
-import com.client.ClientObservable;
-import com.client.ClientObserver;
 import com.client.controller.ClientController;
 import com.client.utils.TableBuilder;
 import com.communication.board.AssistantDTO;
@@ -50,6 +47,7 @@ public class ClientCLI extends Observable implements Observer, Runnable{
 	public void setGameAndBuildMap(GameDTO game){
 		this.game = game;
 		constructMap();
+		printGameStatus();
 	}
 	private void constructMap() {
 
@@ -275,7 +273,7 @@ public class ClientCLI extends Observable implements Observer, Runnable{
 			out.print(game.getMap().getCity()[i].getName()+": {");
 			for(int j=0;j<game.getMap().getCity()[i].getSlot().length;j++){
 				if(game.getMap().getCity()[i].getSlot()[j] != null){
-					out.print("["+Integer.toString(game.getMap().getCity()[i].getSlot()[j].getPlayer().getPlayerID())+"]");
+					out.print("["+game.getMap().getCity()[i].getSlot()[j].getPlayer().getPlayerID()+"]");
 				}
 			}
 			out.print("}\n");
@@ -300,7 +298,7 @@ public class ClientCLI extends Observable implements Observer, Runnable{
 //					singlePermit.removeAll(singlePermit);
 				}
 			int nobilityPos = game.getMap().getNobilityTrack().getPawns()[i].getPos();
-			tb.addRow(Integer.toString(p.getPlayerID()), Integer.toString(p.getAvailableEmporiums().size()),
+			tb.addRow(p.getPlayerID(), Integer.toString(p.getAvailableEmporiums().size()),
 						Integer.toString(p.getAvailableAssistants().size()), Integer.toString(p.getCoins()),
 						Integer.toString(p.getScore()), Integer.toString(p.getHand().size()), activePermits.toString(), Integer.toString(usedPermits), p.getBonusCards().toString(), String.valueOf(nobilityPos));
 		}
@@ -357,7 +355,6 @@ public class ClientCLI extends Observable implements Observer, Runnable{
 		out.println("Choose an action:");
 		if(available[0] || available[1] || available[2] || available[3]){ // MAIN
 			out.println("MAIN ACTION:");
-			int mainCount = 0;
 			for(int i=0;i<4;i++)
 				if(available[i]){
 					out.print("\n" + Integer.toString(i) + "-");
@@ -371,7 +368,7 @@ public class ClientCLI extends Observable implements Observer, Runnable{
 						case 2:
 							out.print("Shift Council. Earn: 4 coins\n");
 							break;
-						case 4:
+						case 3:
 							out.print("Build an emporium in a city. Needed: permit\n");
 							break;
 					}
@@ -408,7 +405,7 @@ public class ClientCLI extends Observable implements Observer, Runnable{
 			choice = waitCorrectIntInput("",0,8);
 			if(!available[choice])
 				out.println("Selected action is disabled, you must chose from the list.");
-		}while(available[choice]);
+		}while(!available[choice]);
 		
 		return choice;
 	}

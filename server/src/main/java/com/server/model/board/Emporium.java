@@ -30,10 +30,11 @@ public class Emporium
 		return this.player;	
 	}
 	
-	public EmporiumDTO toDTO(){
+	public EmporiumDTO toDTO(PlayerDTO plDTO){
 		EmporiumDTO eDTO = new EmporiumDTO();
-		eDTO.setPlayer(this.getPlayer().toDTO());
+		eDTO.setPlayer(plDTO);
 		return eDTO;
 	}
+	
 }
 

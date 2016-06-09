@@ -22,7 +22,8 @@ public class NobilityTrack {
 		for(int i=0;i<BonusVector.length;i++){
 			bvDTO[i] = new BonusDTO[BonusVector[i].length];
 			for(int j=0;j<BonusVector[i].length;j++)
-				bvDTO[i][j] = BonusVector[i][j].toDTO();
+				if(BonusVector[i][j] != null)
+					bvDTO[i][j] = BonusVector[i][j].toDTO();
 		}
 		PawnDTO[] pDTO = new PawnDTO[pawns.length];
 			for(int k=0;k<pawns.length;k++)

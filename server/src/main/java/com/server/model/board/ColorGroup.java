@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.communication.board.CityDTO;
 import com.communication.board.ColorGroupDTO;
+import com.communication.gamelogic.PlayerDTO;
 import com.communication.values.CityColor;
 
 
@@ -16,11 +17,11 @@ public class ColorGroup
     private CityColor color;
     private BonusCard bc;
 	
-    public ColorGroupDTO toDTO(){
+    public ColorGroupDTO toDTO(ArrayList<PlayerDTO> plsDTO){
     	ColorGroupDTO cgDTO = new ColorGroupDTO();
     	ArrayList<CityDTO> cDTO = new ArrayList<CityDTO>(this.cities.size());
 		for(int i=0;i< this.cities.size();i++)
-			cDTO.add(this.cities.get(i).toDTO());
+			cDTO.add(this.cities.get(i).toDTO(plsDTO));
 		cgDTO.setCities(cDTO);
 		cgDTO.setBc(this.bc.toDTO());
 		cgDTO.setColor(this.color);

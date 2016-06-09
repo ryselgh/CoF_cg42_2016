@@ -38,8 +38,9 @@ public class Room {
 	}
 	
 	public void startRoom(){
-		for(ClientHandler ch : players)
+		for(ClientHandler ch : players){
 			ch.inGame = true;
+		}
 		this.status = RoomState.IN_GAME;
 		GameHandler gh = new GameHandler(players,defaultMap,rawMap);
 		Thread thread = new Thread(gh);
@@ -64,6 +65,12 @@ public class Room {
 			return false;
 		players.add(pl);
 		return true;
+	}
+	
+	public boolean isFull(){
+		if(this.maxPlayers==this.players.size())
+			return true;
+		return false;
 	}
 	
 	public boolean hasJoined(ClientHandler player){

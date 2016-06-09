@@ -52,6 +52,7 @@ public class ClientController extends Observable implements Observer{
 	private LobbyStatus lobbyStatus;
 	private int playerID; // <------------------------------------ PROVVISORIO, serve comunque un identificativo
 	private ConsoleListener consoleListener;
+	private Thread consoleThread;
 
 	public ClientController(){
 		cli = new ClientCLI(this);
@@ -73,7 +74,7 @@ public class ClientController extends Observable implements Observer{
 	}
 
 	private void printLobbyCommand(){
-		cli.printMsg("Lobby commands: \n'\\NEWROOM_roomname_maxPl_minPl' \n'\\JOINROOM_roomname' \n'\\STARTGAME_roomname' requires admin of the room \n'\\LEAVEROOM_roomname' \n'\\SETMAP_filepath'");
+		cli.printMsg("Lobby commands: \n'\\NEWROOM_roomname_maxPl_minPl' \n'\\JOINROOM_roomname' \n'\\STARTGAME' requires admin of the room \n'\\LEAVEROOM' \n'\\SETMAP_filepath'");
 	}
 
 	private void printLobbyStatus(){
@@ -160,7 +161,7 @@ public class ClientController extends Observable implements Observer{
 			case "INSERTNICKNAMEACK":
 				consoleListener = new ConsoleListener();
 				consoleListener.addObserver(this);
-				Thread consoleThread = new Thread(consoleListener);
+				consoleThread = new Thread(consoleListener);
 				consoleThread.start();
 				printLobbyCommand();
 				break;
@@ -284,14 +285,14 @@ public class ClientController extends Observable implements Observer{
 			case "AvailableActions":
 
 				//la ricezione di questo comando implica che il client deve mandare un'azione al server
-				//main: build[0], obtainpermit[1], satisfyking[2], shiftcouncilmain[3]
-				//speed: buyassistant[4], buymainaction[5], changecards[6], shiftcouncilspeed[7]
+				//main: obtainpermit[0], satisfyking[1], shiftcouncilmain[2], build[3]
+				//speed: buyassistant[4], changecards[5], shiftcouncilspeed[6], buymainaction[7]
 				//pass[8]
 				// SONO DA RIORDINARE SECONDO LA SCHEDA DEL GIOCO <-------------------------------------------IMPORTANTE!!
 				availableActions = (boolean[]) obj;
 				selectedAction = cli.getAction(availableActions);
 				compiledAction = getActionInstance(selectedAction);
-				connection.sendToServer("ACTION", compiledAction);
+				connection.sendToServer("INPUT_ACTION", compiledAction);
 				break;
 
 			case "ActionAccepted": 
@@ -304,14 +305,17 @@ public class ClientController extends Observable implements Observer{
 				availableActions = (boolean[]) obj;
 				selectedAction = cli.getAction(availableActions);
 				compiledAction = getActionInstance(selectedAction);
-				connection.sendToServer("ACTION", compiledAction);
+				connection.sendToServer("INPUT_ACTION", compiledAction);
 				break;
 			case "GAMEDTO":
 				this.cli.setGameAndBuildMap((GameDTO) obj);
+				this.game = (GameDTO) obj;
 				break;
 			case "STARTGAME":
-				consoleListener.deleteObserver(this);//in gioco gli input sono ad invocazione
+				//consoleListener.deleteObserver(this);//in gioco gli input sono ad invocazione  commentanto perchè credo sia inutile
 				this.cli.setGameAndBuildMap((GameDTO) obj);
+				this.game = (GameDTO) obj;
+				break;
 			default:
 				throw new IllegalArgumentException("Command not recognized: " + cmd);
 			}
@@ -323,7 +327,7 @@ public class ClientController extends Observable implements Observer{
 		ArrayList<PoliticsCardDTO> polCards = new ArrayList<PoliticsCardDTO>();
 		PoliticsCardDTO[] cardsRet;
 		switch(selectedAction){
-		case 0:
+		case 3:
 			BuildDTO build = new BuildDTO();
 			cli.printMsg("Where do you want to build?");
 			int buildHere = cli.getInputCities(game.getMap().getCity());
@@ -331,7 +335,7 @@ public class ClientController extends Observable implements Observer{
 			PermitsCardDTO usedPermit = game.getPlayers().get(playerID).getPermits().get(cli.getBuildPermit(playerID));
 			build.setPermit(usedPermit);
 			return build;
-		case 1:
+		case 0:
 			ObtainPermitDTO obtPerm = new ObtainPermitDTO();
 			int reg = cli.getTargetRegion(2);
 			int slot = cli.waitCorrectIntInput("Insert slot number: 0= left  1=right", 0, 1);
@@ -342,7 +346,7 @@ public class ClientController extends Observable implements Observer{
 			obtPerm.setRegionIndex(reg);
 			obtPerm.setSlot(slot);
 			return obtPerm;
-		case 2:
+		case 1:
 			SatisfyKingDTO satKing = new SatisfyKingDTO();
 			polCards = cli.waitInputCards(this.game.getActualPlayer().getHand());
 			cardsRet = new PoliticsCardDTO[polCards.size()];
@@ -359,7 +363,7 @@ public class ClientController extends Observable implements Observer{
 			satKing.setDestination(dest);
 			satKing.setPolitics(cardsRet);
 			break;
-		case 3:
+		case 2:
 			ShiftCouncilMainDTO shiftMain = new ShiftCouncilMainDTO();
 			ArrayList<CouncilorColor> avColors = new ArrayList<CouncilorColor>();
 			for(CouncilorDTO c : this.game.getMap().getCouncilors())
@@ -374,13 +378,13 @@ public class ClientController extends Observable implements Observer{
 			return shiftMain;
 		case 4:
 			return new BuyAssistantDTO();
-		case 5:
+		case 7:
 			return new BuyMainActionDTO();
-		case 6:
+		case 5:
 			ChangeCardsDTO changeDTO = new ChangeCardsDTO();
 			changeDTO.setBalconyIndex(cli.getTargetBalcony());
 			break;
-		case 7:
+		case 6:
 			ShiftCouncilSpeedDTO shiftSpeed = new ShiftCouncilSpeedDTO();
 			ArrayList<CouncilorColor> availColors = new ArrayList<CouncilorColor>();
 			for(CouncilorDTO c : this.game.getMap().getCouncilors())

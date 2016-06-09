@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 import com.communication.decks.PermitsDeckDTO;
 import com.communication.decks.PoliticsDeckDTO;
-import com.communication.gamelogic.PlayerDTO;
 
 public class MapDTO implements Serializable{
 
@@ -13,13 +12,11 @@ public class MapDTO implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 4519455876400010117L;
-	private PlayerDTO[] players;
 	private RegionDTO[] regions;
 	private ColorGroupDTO[] colorGroups;
 	private ArrayList <CouncilorDTO> councilors;
 	private BalconyDTO[] balcony;
 	private ArrayList<AssistantDTO> assistants;
-	private EmporiumDTO[] emporiums;
 	private PawnDTO[] pawn;
 	private NobilityTrackDTO nobilityTrack;
 	private CityDTO[] city;
@@ -32,15 +29,6 @@ public class MapDTO implements Serializable{
 	/**
 	 * @return the players
 	 */
-	public PlayerDTO[] getPlayers() {
-		return players;
-	}
-	/**
-	 * @param players the players to set
-	 */
-	public void setPlayers(PlayerDTO[] players) {
-		this.players = players;
-	}
 	/**
 	 * @return the regions
 	 */
@@ -100,18 +88,6 @@ public class MapDTO implements Serializable{
 	 */
 	public void setAssistants(ArrayList<AssistantDTO> assistants) {
 		this.assistants = assistants;
-	}
-	/**
-	 * @return the emporiums
-	 */
-	public EmporiumDTO[] getEmporiums() {
-		return emporiums;
-	}
-	/**
-	 * @param emporiums the emporiums to set
-	 */
-	public void setEmporiums(EmporiumDTO[] emporiums) {
-		this.emporiums = emporiums;
 	}
 	/**
 	 * @return the pawn

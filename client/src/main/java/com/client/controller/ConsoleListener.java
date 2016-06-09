@@ -7,6 +7,7 @@ import com.client.ClientObservable;
 
 public class ConsoleListener extends Observable implements Runnable{
 	private Scanner in;
+	
 	public ConsoleListener(){
 
 		this.in = new Scanner(System.in);
@@ -14,11 +15,12 @@ public class ConsoleListener extends Observable implements Runnable{
 
 	@Override
 	public void run() {
-		while(true){
-			String cmd = in.nextLine();
+		String cmd = "";
+		do{
+			cmd = in.nextLine();
 			this.setChanged();
 			this.notifyObservers(cmd);
-		}
+		}while(!cmd.equals("\\STARTGAME"));
 	}
-
+	
 }

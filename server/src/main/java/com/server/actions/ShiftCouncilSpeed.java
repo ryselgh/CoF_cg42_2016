@@ -59,6 +59,7 @@ public class ShiftCouncilSpeed extends Action{
 	}
 	
 	public void setterFromDTO(ShiftCouncilMainDTO scmDTO,Player player,Game game){
+		this.game = game;
 		this.balconyIndex = scmDTO.getBalconyIndex();
 		this.councilor = getCouncilorFromDTO(scmDTO.getCouncilor());
 	}

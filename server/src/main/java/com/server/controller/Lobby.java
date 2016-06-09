@@ -22,7 +22,8 @@ public class Lobby extends Observable implements Runnable, Observer  {
 		clients = new ArrayList<ClientHandler>();
 		rooms = new ArrayList<Room>();
 		commandResponse = new String[] {"Success", "Command not recognized","The game already started","There are not enought players",
-				"You are not the admin, you can't start the game","You are not in this room","Room not found", "You are already in the room","You must left your current room first", "You must be the admin of the room to change the map"};
+				"You are not the admin, you can't start the game","You are not in this room","Room not found", "You are already in the room",
+				"You must left your current room first", "You must be the admin of the room to change the map","The room is full"};
 	}
 
 	@Override
@@ -53,7 +54,12 @@ public class Lobby extends Observable implements Runnable, Observer  {
 			sendToClient(sender, "lobby_msg-" + "Map successfully changed");
 			break;
 		case "\\NEWROOM":
+			if(Integer.parseInt(ret[2])<Integer.parseInt(ret[3])){
+				sendToClient(sender, "lobby_msg-" + "MaxPlayers can't be lower than MinPlayers");
+				break;
+			}
 			createRoom(ret[1], sender, Integer.parseInt(ret[2]),Integer.parseInt(ret[3]));
+			this.clients.remove(sender);
 			sendToClient(sender, "lobby_msg-" + "Room " + ret[1] + " successfully created. You are the Admin");
 			break;
 		case "\\JOINROOM":
@@ -65,6 +71,8 @@ public class Lobby extends Observable implements Runnable, Observer  {
 				return 6;
 			if(r.hasJoined(sender))
 				return 7;
+			if(r.isFull())
+				return 10;
 			if (!joinRoom(ret[1],sender))
 				return 2;//game already started
 			sendToClient(sender, "lobby_msg-" + "You joined room " + ret[1]);
@@ -72,9 +80,6 @@ public class Lobby extends Observable implements Runnable, Observer  {
 		case "\\STARTGAME":
 			r = findRoomByClient(sender);
 			int retg = startRoom(r,sender);
-			if(retg==0)
-				for(ClientHandler ch: r.getPlayers())
-					sendToClient(sender, "lobby_msg-" + "Successfully started game at room " + ret[1]);
 			return retg;
 		case "\\LEAVEROOM":
 			r = findRoomByClient(sender);
@@ -172,8 +177,10 @@ public class Lobby extends Observable implements Runnable, Observer  {
 			return 4;
 		case 0:
 			r.startRoom();
-			for(ClientHandler ch : r.getPlayers() )
+			for(ClientHandler ch : r.getPlayers() ){
 				ch.deleteObserver(this);
+				this.deleteObserver(ch);
+			}
 			return 0;
 		}
 		return 0;

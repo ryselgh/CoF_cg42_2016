@@ -21,7 +21,7 @@ public class PlayerDTO implements Serializable{
 	private PawnDTO pawn;
 	private int coins;
 	private int score;
-	private int playerID;
+	private String playerID;
 	
 	/**
 	 * @return the availableEmporiums
@@ -122,13 +122,13 @@ public class PlayerDTO implements Serializable{
 	/**
 	 * @return the playerID
 	 */
-	public int getPlayerID() {
+	public String getPlayerID() {
 		return playerID;
 	}
 	/**
 	 * @param playerID the playerID to set
 	 */
-	public void setPlayerID(int playerID) {
+	public void setPlayerID(String playerID) {
 		this.playerID = playerID;
 	}
 	

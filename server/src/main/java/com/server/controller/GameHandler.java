@@ -13,6 +13,7 @@ import com.communication.ItemOnSale;
 import com.communication.actions.ActionDTO;
 import com.communication.board.BonusTokenDTO;
 import com.communication.decks.PermitsCardDTO;
+import com.communication.gamelogic.GameDTO;
 import com.communication.market.OnSaleDTO;
 import com.server.actions.Action;
 import com.server.model.decks.PoliticsCard;
@@ -35,10 +36,11 @@ public class GameHandler extends Observable implements Runnable, Observer{
 	
 	public GameHandler(ArrayList<ClientHandler> pl, boolean defaultMap, String map){
 		players = pl;
-		this.game = new Game(players.size(),defaultMap,map);
+		this.game = new Game(players.size(),defaultMap,map, clientNames(players));
+		GameDTO gameDTO = this.game.toDto();
 		for(ClientHandler ch : pl){
 			ch.addObserver(this);
-			ch.sendToClient("STARTGAME", this.game.toDto());
+			ch.sendToClient("STARTGAME", gameDTO);
 		}
 	}
 
@@ -49,10 +51,17 @@ public class GameHandler extends Observable implements Runnable, Observer{
 		this.context = new Context();
 		context.setClienthandler(players.get(0));
 		context.setGamehandler(this);
-		updateClientGame();//invio il primo GameDTO al client
 		ActionState actState = new ActionState();
 		actState.doAction(context);//avvio il primo stato di azione per il primo giocatore
 	}
+	
+	private String[] clientNames(ArrayList<ClientHandler> players){
+		String[] ret = new String[players.size()];
+		for(int i=0;i<players.size();i++)
+			ret[i]=players.get(i).getUserName();
+		return ret;
+	}
+	
 	
 	public void changeState(Context context){
 		ClientHandler client = context.getClienthandler();
@@ -72,8 +81,9 @@ public class GameHandler extends Observable implements Runnable, Observer{
 	}
 	
 	public void updateClientGame(){
+		GameDTO gameDTO = this.game.toDto();
 		for(ClientHandler ch : this.players){
-			ch.sendToClient("GAMEDTO", (Object) this.game.toDto());
+			ch.sendToClient("GAMEDTO", (Object) gameDTO);
 		}
 	}
 	public ClientHandler nextPlayer(ClientHandler pl){
