@@ -15,11 +15,22 @@ import com.server.model.gamelogic.Game;
 import com.server.model.gamelogic.Player;
 
 public class SatisfyKingTest {
+	
+	
+//	Game game;
+//	
+//	
+//	@Before
+//	public void setUp()
+//		throws Exception {
+//		
+//		game= new Game(3,true,null);
+//	}
 //	@Test
 //	public void testSatisfyKing_1()
 //		throws Exception {
-//		PoliticsCard[] politics = new PoliticsCard[] {};
-//		City destination = new City("", CityColor.BLUE, new String[] {}, 1, new BonusToken(new Bonus[] {}));
+//		PoliticsCard[] politics = new PoliticsCard[5] ;
+//		City destination = game.getMap().getCity()[2];
 //
 //		SatisfyKing result = new SatisfyKing(politics, destination);
 //
@@ -29,8 +40,9 @@ public class SatisfyKingTest {
 //	@Test
 //	public void testExecute_1()
 //		throws Exception {
-//		SatisfyKing fixture = new SatisfyKing(new PoliticsCard[] {}, new City("", CityColor.BLUE, new String[] {}, 1, new BonusToken(new Bonus[] {})));
-//		fixture.setGame(new Game(1, true, (Document) null));
+//		City destination = game.getMap().getCity()[2];
+//		SatisfyKing fixture = new SatisfyKing(new PoliticsCard[5] , destination );
+//		fixture.setGame(game);
 //
 //		ActionReturn result = fixture.execute();
 //
@@ -45,8 +57,8 @@ public class SatisfyKingTest {
 //	@Test
 //	public void testExecute_2()
 //		throws Exception {
-//		SatisfyKing fixture = new SatisfyKing(new PoliticsCard[] {}, new City("", CityColor.BLUE, new String[] {}, 1, new BonusToken(new Bonus[] {})));
-//		fixture.setGame(new Game(1, true, (Document) null));
+//		SatisfyKing fixture = new SatisfyKing(new PoliticsCard[5] , );
+//		fixture.setGame(game);
 //
 //		ActionReturn result = fixture.execute();
 //
@@ -162,10 +174,7 @@ public class SatisfyKingTest {
 //		//       at com.server.model.gamelogic.Game.<init>(Game.java:49)
 //	}
 //
-//	@Before
-//	public void setUp()
-//		throws Exception {
-//	}
+//	
 //
 //	@After
 //	public void tearDown()

@@ -6,14 +6,14 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-//	BuyMainActionTest.class,
-//	ChangeCardsTest.class,
+	BuyMainActionTest.class,
+	ChangeCardsTest.class,
 //	ShiftCouncilSpeedTest.class,
 	ActionReturnTest.class,
 	ActionTest.class,
-//	ObtainPermitTest.class,
+	ObtainPermitTest.class,
 	BuildTest.class,
-//	PassTest.class,
+	PassTest.class,
 //	SatisfyKingTest.class,
 //	ShiftCouncilMainTest.class,
 //	BuyAssistantTest.class,

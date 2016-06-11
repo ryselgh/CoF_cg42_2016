@@ -44,4 +44,8 @@ public class ChangeCards extends Action{
 		game.getMap().getAssistantsPool().add(game.getActualPlayer().getAvailableAssistants().remove(0));
 		return new ActionReturn(true,"",null);
 	}
+	
+	public void setGame(Game game){
+		this.game = game;
+	}
 }
