@@ -2,6 +2,7 @@ package com.server.model.board;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -13,6 +14,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import com.server.model.decks.PermitsCard;
@@ -50,10 +52,10 @@ public class Importer {
 	 * @throws SAXException 
 	 */
 	
-	public Importer(Document rawMap, boolean def, Map m, Player[] p) throws ParserConfigurationException, SAXException, IOException{
+	public Importer(String rawMap, boolean def, Map m, Player[] p) throws ParserConfigurationException, SAXException, IOException{
 		this.players = p;
 		this.mapInst = m;
-		if (def) {
+		if (def) {//importo da file
 			this.location = "Default map.xml";
 			File inputFile = new File(location);
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -61,8 +63,12 @@ public class Importer {
 			dBuilder = dbFactory.newDocumentBuilder();
 			doc = (Document) dBuilder.parse(inputFile);
 		}
-		else
-			doc = rawMap;
+		else{
+			DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();//importo da stringa
+			InputSource is = new InputSource();
+			is.setCharacterStream(new StringReader(rawMap));
+			doc = db.parse(is);
+		}
 		
 		doc.getDocumentElement().normalize();
 	}

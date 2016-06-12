@@ -16,7 +16,7 @@ public class MarketTest {
 	@Before
 	public void setUp()
 		throws Exception {
-		p = new Player(1);
+		p = new Player("1");
 		o = new OnSale(p,new Assistant(), 3);
 		o2 = new OnSale(p,new Assistant(), 2);
 	}

@@ -24,6 +24,7 @@ public class SocketAcceptor implements Runnable {
 		while(true){
 			Socket socket = serverSocket.accept();
 			IdentifyPlayer identifier = new IdentifyPlayer(socket, lobby);
+			identifier.addObserver(lobby);
 			Thread thread = new Thread(identifier);
 			thread.start();
 		}

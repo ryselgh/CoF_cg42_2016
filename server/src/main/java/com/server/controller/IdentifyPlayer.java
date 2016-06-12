@@ -14,8 +14,6 @@ import com.communication.CommunicationObject;
 
 public class IdentifyPlayer extends Observable implements Runnable  {
 	private Socket socket;
-	private Scanner socketIn;
-	private PrintWriter socketOut;
 	private String userName;
 	private Lobby lobby;
 	private Logger logger;
@@ -29,11 +27,11 @@ public class IdentifyPlayer extends Observable implements Runnable  {
 		ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
 		ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
 		
-		outputStream.writeObject(new CommunicationObject("InsertNickname",null));
-		outputStream.flush();
-		boolean correct=false;
+		String correct="nope";
 		String inputName = "";
-		while (!correct) {
+		while (!(correct=="")) {
+			outputStream.writeObject(new CommunicationObject("INSERTNICKNAME",null));
+			outputStream.flush();
 			CommunicationObject in = null;
 			try {
 				in = (CommunicationObject) inputStream.readObject();
@@ -45,27 +43,32 @@ public class IdentifyPlayer extends Observable implements Runnable  {
 			else{//da aggiungere check su in.getMsg()=="InsertNickname"
 				inputName = (String) in.getObj();
 				correct = isCorrect(inputName);
-				if (!correct) {
-					outputStream.writeObject(new CommunicationObject("InvalidNickname", null));
+				if (!correct.equals("")) {
+					outputStream.writeObject(new CommunicationObject("INSERTNICKNAMENACK",(Object) correct));
 					outputStream.flush();
 				}
 			}
 		}
+		outputStream.writeObject(new CommunicationObject("INSERTNICKNAMEACK",null));
+		outputStream.flush();
 		this.userName = inputName;
 		ClientHandler client = new ClientHandler(socket,inputStream,outputStream,userName);
 		Thread thread = new Thread(client);
 		thread.start();
 		lobby.addObserver(client);
-		this.addObserver(lobby);
 		client.addObserver(lobby);
 		setChanged();
 		notifyObservers(client);
 	}
 	
-	private boolean isCorrect(String name){
-		if(name.contains("[^abcdefghilmnopqrstuvzjkywxABCDEFGHILMNOPQRSTUVZJKYWX]") || name.length()<5)//regex equivalente a tutti i caratteri a parte le lettere
-			return false;
-		return true;
+	private String isCorrect(String name){
+		if(name.contains("[^abcdefghilmnopqrstuvzjkywxABCDEFGHILMNOPQRSTUVZJKYWX]"))//regex equivalente a tutti i caratteri a parte le lettere
+			return "Illegal characters";
+		if(name.length()<5 || name.length()>13)
+			return "Nickname size must be >5 and <13";
+		if(lobby.isNicknameUsed(name))
+			return "Nickname already used";
+		return "";
 	}
 	@Override
 	public void run() {

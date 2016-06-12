@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.communication.board.CityDTO;
 import com.communication.board.RegionDTO;
+import com.communication.gamelogic.PlayerDTO;
 import com.communication.values.RegionName;
 
 
@@ -16,11 +17,11 @@ public class Region
 	private ArrayList <City> cities;
 	private RegionName name;
 	
-	public RegionDTO toDTO(){
+	public RegionDTO toDTO(ArrayList<PlayerDTO> plsDTO){
 		RegionDTO rDTO = new RegionDTO();
 		ArrayList<CityDTO> cDTO = new ArrayList<CityDTO>(this.cities.size());
 		for(int i=0;i< this.cities.size();i++)
-			cDTO.add(this.cities.get(i).toDTO());
+			cDTO.add(this.cities.get(i).toDTO(plsDTO));
 		rDTO.setCities(cDTO);
 		rDTO.setBonusCard(this.bc.toDTO());
 		rDTO.setName(this.name);

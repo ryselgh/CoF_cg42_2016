@@ -3,10 +3,10 @@ package com.client.view;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Scanner;
 
-import com.client.ClientObservable;
-import com.client.ClientObserver;
 import com.client.controller.ClientController;
 import com.client.utils.TableBuilder;
 import com.communication.board.AssistantDTO;
@@ -20,7 +20,7 @@ import com.communication.gamelogic.GameDTO;
 import com.communication.gamelogic.PlayerDTO;
 import com.communication.values.*;
 
-public class ClientCLI extends ClientObservable implements ClientObserver{
+public class ClientCLI extends Observable implements Observer, Runnable{
 
 	private GameDTO game;
 	private PrintStream out;
@@ -33,11 +33,22 @@ public class ClientCLI extends ClientObservable implements ClientObserver{
 	 */
 
 	public ClientCLI(ClientController clientController){
-		clientController.attachObserver(this);
+		clientController.addObserver(this);
 		this.out = System.out;
-		constructMap();
+		this.in = new Scanner(System.in);
 	}
 
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public void setGameAndBuildMap(GameDTO game){
+		this.game = game;
+		constructMap();
+		printGameStatus();
+	}
 	private void constructMap() {
 
 		//City + Region separators
@@ -262,7 +273,7 @@ public class ClientCLI extends ClientObservable implements ClientObserver{
 			out.print(game.getMap().getCity()[i].getName()+": {");
 			for(int j=0;j<game.getMap().getCity()[i].getSlot().length;j++){
 				if(game.getMap().getCity()[i].getSlot()[j] != null){
-					out.print("["+Integer.toString(game.getMap().getCity()[i].getSlot()[j].getPlayer().getPlayerID())+"]");
+					out.print("["+game.getMap().getCity()[i].getSlot()[j].getPlayer().getPlayerID()+"]");
 				}
 			}
 			out.print("}\n");
@@ -287,7 +298,7 @@ public class ClientCLI extends ClientObservable implements ClientObserver{
 //					singlePermit.removeAll(singlePermit);
 				}
 			int nobilityPos = game.getMap().getNobilityTrack().getPawns()[i].getPos();
-			tb.addRow(Integer.toString(p.getPlayerID()), Integer.toString(p.getAvailableEmporiums().size()),
+			tb.addRow(p.getPlayerID(), Integer.toString(p.getAvailableEmporiums().size()),
 						Integer.toString(p.getAvailableAssistants().size()), Integer.toString(p.getCoins()),
 						Integer.toString(p.getScore()), Integer.toString(p.getHand().size()), activePermits.toString(), Integer.toString(usedPermits), p.getBonusCards().toString(), String.valueOf(nobilityPos));
 		}
@@ -340,21 +351,63 @@ public class ClientCLI extends ClientObservable implements ClientObserver{
 		return in.nextLine();
 	}
 
-	public int getAction(int plIndex, int main, int speed, boolean marketAvailable){
-		out.print("Hi there player" + plIndex + ", ");
-		if(main>0)
-			out.print("insert 1 for Main Action, ");
-		if(speed>0)
-			out.print("insert 2 for Speed Action, ");
-		if(marketAvailable)
-			out.print("insert 3 to open the market, ");
-		int resp = waitCorrectIntInput("insert 4 to pass\n",1,4);
-		if((resp==1 && main<=0) || (resp==2 && speed<=0))
-		{
-			out.print("Selection inavailable. Try again\n");
-			return getAction(plIndex, main, speed, marketAvailable);
+	public int getAction(boolean[] available){
+		out.println("Choose an action:");
+		if(available[0] || available[1] || available[2] || available[3]){ // MAIN
+			out.println("MAIN ACTION:");
+			for(int i=0;i<4;i++)
+				if(available[i]){
+					out.print("\n" + Integer.toString(i) + "-");
+					switch(i){
+						case 0:
+							out.print("Satisfy a council. Earn: permit; Needed: min 1 politics card\n");
+							break;
+						case 1:
+							out.print("Satisfy the king's council. Build instantly. Needed: min 1 politics card\n");
+							break;
+						case 2:
+							out.print("Shift Council. Earn: 4 coins\n");
+							break;
+						case 3:
+							out.print("Build an emporium in a city. Needed: permit\n");
+							break;
+					}
+				}
+			out.print("\n");
 		}
-		return resp;
+		if(available[4] || available[5] || available[6] || available[7]){ // SPEED
+			out.println("SPEED ACTION:");
+			for(int i=4;i<8;i++)
+				if(available[i]){
+					out.print("\n" + Integer.toString(i) + "-");
+					switch(i){
+						case 4:
+							out.print("Buy an assistant. Pay: 3 coins\n");
+							break;
+						case 5:
+							out.print("Change permits card on the ground in a region. Pay: 1 assistant\n");
+							break;
+						case 6:
+							out.print("Shift a councilor. Pay: 1 assistant\n");
+							break;
+						case 7:
+							out.print("Buy a main action. Pay: 3 assistants\n");
+							break;
+					}
+				}
+			out.print("\n");
+		}
+		if(available[8])   // PASS
+			out.println("8-Pass turn");
+		
+		int choice = 0;
+		do{
+			choice = waitCorrectIntInput("",0,8);
+			if(!available[choice])
+				out.println("Selected action is disabled, you must chose from the list.");
+		}while(!available[choice]);
+		
+		return choice;
 	}
 	
 	public Object getItemToSell(int playerID){
@@ -387,43 +440,41 @@ public class ClientCLI extends ClientObservable implements ClientObserver{
 		}
 	}
 	
-	public int getSellType()
-	{
+	public int getBuildPermit(int playerID){
+		int i = 1;
+		for(PermitsCardDTO perm: game.getPlayers().get(playerID).getPermits()){
+			if(!perm.isFaceDown()){
+				out.println(Integer.toString(i)+"-[");
+				for(String c: perm.getCityLetter())
+					out.print(c+",");
+				out.print("]\n");
+			}
+		}
+		return waitCorrectIntInput("Select the permit you want to use to build.",1,i) -1;
+	}
+	
+	public int getSellType(){
 		return waitCorrectIntInput("Insert the index of the category of the item you want to sell: \n1-Assistants\n2-PermitCard\n3-PoliticCard\n4-Pass\n",1,4);
 	}
 	
-	public int getSellPrice()
-	{
+	public int getSellPrice(){
 		return waitCorrectIntInput("Insert the price of the item you are selling\n",1,100);
 	}
 	
-	public int mainActionChoice(){
-		return waitCorrectIntInput("\nMAIN ACTION\nInsert the number related to your action:\n"
-				+ "1-Satisfy a council. Earn: permit* Needed: min 1 politics card\n"
-				+ "2-Satisfy the king's council. Build instantly. Needed: min 1 politics card*\n"
-				+ "3-Shift Council. Earn: 4 coins\n"
-				+ "4-Build an emporium in a city. Needed: permit\n\n"
-				+ "5-Go back\n",1,5);
-	}
-	
-	public int getPoliticsCardIndex(int size, int playerIndex)
-	{
+	public int getPoliticsCardIndex(int size, int playerIndex){
 		return waitCorrectIntInput("\nHi Player" + playerIndex + ", insert the index of the PoliticCard you want to sell. Insert 0 to go back.\n",0,size) - 1;
 	}
 	
-	public int getPermitsCardIndex(int size, int playerIndex)
-	{
+	public int getPermitsCardIndex(int size, int playerIndex){
 		return waitCorrectIntInput("\nHi Player" + playerIndex + ", insert the index of the PermitsCard you want to sell. Insert 0 to go back.\n",0,size) - 1;
 	}
 	
-	public int getObjectToBuyIndex(int size, int playerIndex)
-	{
+	public int getObjectToBuyIndex(int size, int playerIndex){
 		return waitCorrectIntInput("\nHi Player" + playerIndex + ", insert the index of the item you want to buy on the market. Insert 0 to pass.\n",0,size) - 1;
 	}
 	
 	
-	public int getPermitIndex(ArrayList<PermitsCardDTO> cards)
-	{
+	public int getPermitIndex(ArrayList<PermitsCardDTO> cards){
 		for(int i=0; i<cards.size();i++)
 		{
 			out.print((i+1) + "° CARD:\nBonus: ");
@@ -436,8 +487,7 @@ public class ClientCLI extends ClientObservable implements ClientObserver{
 		return waitCorrectIntInput("\nInsert the index of the card you want to choose.\n",1,cards.size()) - 1;
 	}
 	
-	public int getInputCities(CityDTO[] cities)
-	{
+	public int getInputCities(CityDTO[] cities){
 		out.print("\nInsert the indexes of the cities:\n");
 		for(int i=0; i< cities.length;i++)
 			out.print(i+1 + "-" + cities[i].getName() + "\n");
@@ -445,18 +495,7 @@ public class ClientCLI extends ClientObservable implements ClientObserver{
 	}
 	
 	
-	public int speedActionChoice(){
-		return waitCorrectIntInput("\nSPEED ACTION \nInsert the number related to your action:\n"
-						+ "1-Buy an assistant. Pay: 3 coins\n"
-						+ "2-Change permits card on the ground in a region. Pay: 1 assistant\n"
-						+ "3-Shift a councilor. Pay: 1 assistant\n"
-						+ "4-Buy a main action. Pay: 3 assistants\n\n"
-						+ "5-Go back\n",1,5);
-	}
-	
-	
-	public int getTargetRegion(int msg)
-	{
+	public int getTargetRegion(int msg){
 		String messages[] = {"\nInsert the index of the region related to the permits card you want to change:\n"
 				+ "1-Sea\n"
 				+ "2-Hill\n"
@@ -476,8 +515,7 @@ public class ClientCLI extends ClientObservable implements ClientObserver{
 		return waitCorrectIntInput(messages[msg],1,3) - 1;
 	}
 	
-	public int getTargetBalcony()
-	{
+	public int getTargetBalcony(){
 		return waitCorrectIntInput("Select the balcony:\n"
 				+ "1-Sea\n"
 				+ "2-Hill\n"
@@ -485,18 +523,15 @@ public class ClientCLI extends ClientObservable implements ClientObserver{
 				+ "4-King\n",1,4)-1;
 	}
 		
-	public void unavailableOptions()
-	{
+	public void unavailableOptions(){
 		out.print("\nUnavailable option. Chose another action.\n");
 	}
-	public BonusTokenDTO[] getTokenBonus(BonusTokenDTO[] bts, int amm)
-	{
+	public BonusTokenDTO[] getTokenBonus(BonusTokenDTO[] bts, int amm){
 		if(amm==1)
 			out.print("\nInsert the index of the BonusToken you want:\n");
 		else
 			out.print("\nInsert the indexes of the BonusTokens you want, separated each other by a comma:\n");
-		for(int i=0;i<bts.length;i++)
-		{
+		for(int i=0;i<bts.length;i++){
 			out.print(i+"° BonusToken:\n");
 			for(BonusDTO b : bts[i].getBonus())
 				out.print("Bonus: [Type=" + b.getType().toString() + ", Amm= " + b.getQnt() + "\n");
@@ -530,8 +565,8 @@ public class ClientCLI extends ClientObservable implements ClientObserver{
 		}
 		return null;//non dovrebbe mai essere eseguito
 	}
-	public int getColorIndex(ArrayList<CouncilorColor> availableCouncColor)
-	{
+	
+	public int getColorIndex(ArrayList<CouncilorColor> availableCouncColor){
 		for(int i=0;i<availableCouncColor.size();i++){
 			out.print(i+1 + "-" + availableCouncColor.get(i).toString() + "\n");
 		}
@@ -539,7 +574,7 @@ public class ClientCLI extends ClientObservable implements ClientObserver{
 		return waitCorrectIntInput("",1,availableCouncColor.size()) -1;
 	}
 	
-	private int waitCorrectIntInput(String msg, int min, int max){
+	public int waitCorrectIntInput(String msg, int min, int max){
 		int respInt = -1;
 		do {
 			String resp = getInput(msg);
@@ -600,8 +635,7 @@ public class ClientCLI extends ClientObservable implements ClientObserver{
 		}
 	}
 
-	private String getInput(String message)
-	{
+	private String getInput(String message){
 		out.print(message);
 		return in.nextLine();
 
@@ -609,12 +643,10 @@ public class ClientCLI extends ClientObservable implements ClientObserver{
 
 	private int parseNum(String msg, int min, int max){
 		int read=0;
-		try
-		{
+		try{
 			read = Integer.parseInt(msg);
 		}
-		catch (NumberFormatException e) 
-		{
+		catch (NumberFormatException e) {
 			out.print("Wrong input format. Try again\n");
 			return -1;
 		}
@@ -635,12 +667,14 @@ public class ClientCLI extends ClientObservable implements ClientObserver{
 	 * print the new GameDTO after an update
 	 */
 	@Override
-	public <C> void update(C change) {
+	public void update(Observable o, Object change) {
 		if(change instanceof GameDTO){
 			this.game = (GameDTO) change;
 			this.printGameStatus();
 		}else
-			throw new IllegalArgumentException("Wrong instance. Failed to update the game.");
+			;//throw new IllegalArgumentException("Wrong instance. Failed to update the game.");
 	}
+
+
 
 }

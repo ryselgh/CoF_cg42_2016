@@ -17,7 +17,7 @@ public class ChangeCardsTest {
 	@Before
 	public void setUp()
 		throws Exception {
-		game = new Game(2,true,null);
+		game = new Game(2,true,null,null);
 	}
 	
 	@Test

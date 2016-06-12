@@ -4,14 +4,14 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.Observable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.client.ClientObservable;
 import com.communication.CommunicationObject;
-import com.communication.SerObject;
 
-public class SocketConnection extends ClientObservable{
+public class SocketConnection extends Observable{
 
 	private Socket socket = null;
 	private ObjectOutputStream outputStream = null;
@@ -30,14 +30,9 @@ public class SocketConnection extends ClientObservable{
 			socket = new Socket(IP_ADDRESS, PORT);
 			outputStream = new ObjectOutputStream(socket.getOutputStream());
 			inputStream = new ObjectInputStream(socket.getInputStream());
-			startListen();
 		} catch (IOException e) {
 			logger.log(Level.SEVERE, "Failed to connect to "+IP_ADDRESS+":"+Integer.toString(PORT)+".",e);
-		} finally {
-			outputStream.close();
-			inputStream.close();
-			socket.close();
-		}
+		} 
 	}
 
 	public void startListen(){
@@ -45,13 +40,13 @@ public class SocketConnection extends ClientObservable{
 			CommunicationObject in = null;
 			try {
 				in = (CommunicationObject) inputStream.readObject();
-				this.notifyObservers(in);
 			} catch (ClassNotFoundException | IOException e) {
 				logger.log(Level.SEVERE,"Failed to read the CommunicationObject",e);
 			}
 			if(in == null)
 				throw new NullPointerException("Something went wrong with the CommunicationObject");
 			else{
+				this.setChanged();
 				this.notifyObservers(in);
 			}
 		}
@@ -64,7 +59,7 @@ public class SocketConnection extends ClientObservable{
 	}
 
 	public void sendToServer(String s, Object o){
-		CommunicationObject toSend = new CommunicationObject(s,(SerObject) o);
+		CommunicationObject toSend = new CommunicationObject(s,(Object) ((Object)o));
 		try {
 			outputStream.writeObject(toSend);
 			outputStream.flush();

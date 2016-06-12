@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import org.junit.*;
 import static org.junit.Assert.*;
 import com.communication.board.ColorGroupDTO;
+import com.communication.gamelogic.PlayerDTO;
 import com.communication.values.BonusType;
 import com.communication.values.CityColor;
 
@@ -130,7 +131,7 @@ public class ColorGroupTest {
 		fixture.addCity(city);
 		fixture.addCity(city2);
 
-		ColorGroupDTO result = fixture.toDTO();
+		ColorGroupDTO result = fixture.toDTO(new ArrayList<PlayerDTO>());
 
 		// An unexpected exception was thrown in user code while executing this test:
 		//    java.lang.NullPointerException

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import org.junit.*;
 import static org.junit.Assert.*;
 import com.communication.board.RegionDTO;
+import com.communication.gamelogic.PlayerDTO;
 import com.communication.values.BonusType;
 import com.communication.values.CityColor;
 import com.communication.values.RegionName;
@@ -125,7 +126,7 @@ public class RegionTest {
 		fixture.setBonus(new BonusCard(new Bonus(BonusType.ASSISTANT, 1)));
 		fixture.addCity(new City("", CityColor.BLUE, new String[] {}, 1, new BonusToken(new Bonus[] {})));
 
-		RegionDTO result = fixture.toDTO();
+		RegionDTO result = fixture.toDTO(new ArrayList<PlayerDTO>());
 
 		// An unexpected exception was thrown in user code while executing this test:
 		//    java.lang.NullPointerException
@@ -141,7 +142,7 @@ public class RegionTest {
 		Region fixture = new Region(RegionName.HILL);
 		fixture.setBonus(new BonusCard(new Bonus(BonusType.ASSISTANT, 1)));
 
-		RegionDTO result = fixture.toDTO();
+		RegionDTO result = fixture.toDTO(new ArrayList<PlayerDTO>());
 
 		assertNotNull(result);
 	}

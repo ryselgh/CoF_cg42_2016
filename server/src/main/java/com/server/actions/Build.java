@@ -53,29 +53,17 @@ public class Build extends Action{
 			if(c.getName().equals(city.getName())){ //trovo l'oggetto città sul server corrispondente a quello mandato da client
 				this.city = c;//aggiorno l'istanza per l'execute
 				for(Emporium e : c.getEmporium())
-					if(e != null)
-						if(e.getPlayer().equals(game.getActualPlayer()))//controllo che non ci sia un emporio di questo giocatore
-							errors.add("You already have an emporium in the selected city");
+					if(e.getPlayer().equals(game.getActualPlayer()))//controllo che non ci sia un emporio di questo giocatore
+						errors.add("You already have an emporium in the selected city");
 			}
 	}
 	
 	private void canBuild(){
-		int count = 0;
-		
 		for(String l: permit.getCityLetter())
-			if(!l.equals(Character.toString(city.getName().toLowerCase().charAt(0))))
-				count++;
-		
-		if(count==permit.getCityLetter().length)
-			errors.add("This permit can't build on the selected city");
-		
-		count = 0;
-		
-		for(Emporium e: city.getEmporium())
-			if(e!=null)
-				count++;
-		
-		if(game.getActualPlayer().getAvailableAssistants().size()<count){
+			if(!l.equals(Character.toString(city.getName().toLowerCase().charAt(0)))){
+				errors.add("This permit can't build on the selected city");
+			}
+		if(game.getActualPlayer().getAvailableAssistants().size()<city.getEmporium().length){
 			errors.add("You have not enought assistants");
 		}
 	}
@@ -85,7 +73,6 @@ public class Build extends Action{
 		ArrayList<City> tocheck = new ArrayList<City>();
 		ArrayList<Bonus> found = new ArrayList<Bonus>();
 		found.addAll(new ArrayList<Bonus>(Arrays.asList(startcity.getBonusToken().getBonus())));//aggiungo i bonus della città di partenza
-		checked.add(startcity);
 		for (String c : startcity.getCloseCity())
 			tocheck.add(game.getCityFromName(c));//aggiungo le città vicine alla lista da controllare
 		while (true) {
@@ -99,17 +86,9 @@ public class Build extends Action{
 						if (!checked.contains(game.getCityFromName(c)))
 							tocheck.add(game.getCityFromName(c));
 					tocheck.remove(i);//rimuovo la città appena controllata
-				}else{
-					checked.add(tocheck.get(i));
-					tocheck.remove(i);
 				}
 			}
 		}
-		Bonus toRemove = null;
-		for(Bonus b: found)
-			if(b==null)
-				toRemove = b;
-		found.remove(toRemove); //Avoid ConcurrentModificationException
 		Bonus[] stockArr = new Bonus[found.size()];
 		stockArr = found.toArray(stockArr);
 		return stockArr;
@@ -129,8 +108,7 @@ public class Build extends Action{
 		}
 			
 		for(Emporium e: city.getEmporium())
-			if(e!=null)
-				game.getActualPlayer().getAvailableAssistants().remove(0);
+			game.getActualPlayer().getAvailableAssistants().remove(0);
 		city.setEmporium(game.getActualPlayer().getAvailableEmporiums().get(0));
 		game.getActualPlayer().getAvailableEmporiums().remove(0);
 		Bonus[] bonusToCollect = getCitiesBonus(city);

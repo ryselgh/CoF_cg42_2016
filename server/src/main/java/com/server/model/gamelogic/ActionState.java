@@ -1,5 +1,6 @@
 package com.server.model.gamelogic;
-
+//gamehandler.waitfortwotokens(this (ActionState))
+//da spostare la sendtoclient sul gamehandler
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -13,6 +14,7 @@ import com.communication.actions.PassDTO;
 import com.communication.actions.SatisfyKingDTO;
 import com.communication.actions.ShiftCouncilMainDTO;
 import com.communication.actions.ShiftCouncilSpeedDTO;
+import com.communication.board.BonusTokenDTO;
 import com.communication.decks.PermitsCardDTO;
 import com.server.actions.Action;
 import com.server.actions.ActionReturn;
@@ -40,43 +42,51 @@ public class ActionState implements State {
 	private int speedCounter = 1;
 	private ClientHandler clienthandler;
 	private GameHandler gamehandler;
+	private Context context;
 
 	public ActionState(){}
 	
+	public void execute(ActionDTO actionDTO){
+		boolean pass = false;
+		Action action = null;
+		if(actionDTO==null){
+			clienthandler.sendToClient("AvailableActions", getAvailableActions());
+			gamehandler.waitForInput("ACTION", this);
+			return;
+		}
+		action = DTOtoObj(actionDTO);
+		action.setGame(game);
+		if (!action.isValid()) {
+			ActionReturn ret = action.execute();// gli errori li grabbo dall'actionreturn ritornato dall'execute
+			clienthandler.sendToClient("ActionNotValid", ret.getError());
+			gamehandler.waitForInput("ACTION", this);//non reinvio le azioni disponibili perchè non sono cambiate
+			return;
+		}
+		clienthandler.sendToClient("ActionAccepted", null);
+		if(action instanceof Pass)//niente check perchè è abilitata solo quando mainaction già fatta
+			pass=true;
+		ActionReturn ret = action.execute();
+		if (ret.getBonus() != null)
+			for (Bonus b : ret.getBonus())
+				collectBonus(b);
+		decreaseCounter(action);
+		gamehandler.updateClientGame();
+		if(pass || !(mainCounter > 0 || speedCounter > 0))
+			gamehandler.changeState(context);
+		else
+			this.execute(null);
+	}
 	public void doAction(Context context) {
+		this.context = context;
 		context.setState(this);
 		clienthandler = context.getClienthandler();
 		gamehandler = context.getGamehandler();
 		this.game = gamehandler.getGame();
 		PoliticsCard draw = game.getMap().getPoliticsDeck().draw();
-		clienthandler.sendToClient("StartTurn", draw);
-		while (mainCounter > 0 || speedCounter > 0) {
-			clienthandler.sendToClient("AvailableActions", getAvailableActions());
-			boolean valid = false;
-			ActionDTO actionDTO = null;
-			Action action = null;
-			while (!valid) {
-				actionDTO = clienthandler.getAction();
-				action = DTOtoObj(actionDTO);
-				action.setGame(game);
-				if (action.isValid()) {
-					valid = true;
-					clienthandler.sendToClient("ActionAccepted", null);
-				} else {
-					ActionReturn ret = action.execute();// gli errori li grabbo dall'actionreturn ritornato dall'execute
-					clienthandler.sendToClient("ActionNotValid", ret.getError());
-				}
-			}
-			if(action instanceof Pass)//niente check perchè è abilitata solo quando mainaction già fatta
-				break;
-			ActionReturn ret = action.execute();
-			if (ret.getBonus() != null)
-				for (Bonus b : ret.getBonus())
-					collectBonus(b);
-			decreaseCounter(action);
-		}
-		//QUI DOVREBBE ESSERE FINITO IL TURNO DI UN GIOCATORE
-		gamehandler.changeState(context);
+		clienthandler.sendToClient("StartTurn", draw.toDTO());
+		gamehandler.updateClientGame();
+		
+		this.execute(null);
 	}
 	
 	private Action DTOtoObj(ActionDTO actDTO){
@@ -107,15 +117,15 @@ public class ActionState implements State {
 		else if(actDTO instanceof SatisfyKingDTO){
 			act = new SatisfyKing(null,null);
 			act.setterFromDTO((SatisfyKingDTO) actDTO, game.getActualPlayer(), game);
-			return null;}
+			return act;}
 		else if(actDTO instanceof ShiftCouncilMainDTO){
 			act = new ShiftCouncilMain(0,null);
 			act.setterFromDTO((ShiftCouncilMainDTO) actDTO, game.getActualPlayer(), game);
-			return null;}
+			return act;}
 		else if(actDTO instanceof ShiftCouncilSpeedDTO){
 			act = new ShiftCouncilSpeed(0,null);
 			act.setterFromDTO((ShiftCouncilSpeedDTO) actDTO, game.getActualPlayer(), game);
-			return null;}
+			return act;}
 		else
 			return null;
 	}
@@ -128,8 +138,8 @@ public class ActionState implements State {
 	}
 	private boolean[] getAvailableActions(){
 		//order
-		//main: build[0], obtainpermit[1], satisfyking[2], shiftcouncilmain[3]
-		//speed: buyassistant[4], buymainaction[5], changecards[6], shiftcouncilspeed[7]
+		//main: obtainpermit[0], satisfyking[1], shiftcouncilmain[2], build[3]
+		//speed: buyassistant[4], changecards[5], shiftcouncilspeed[6], buymainaction[7]
 		//pass[8]
 		//------GLOBAL CHECK------
 		boolean[] toRet = new boolean[9];//4main + 4speed + pass
@@ -148,16 +158,16 @@ public class ActionState implements State {
 			if(!pc.isFaceDown())
 				availablePermit = true;
 		if(!availablePermit)
-			toRet[0]=false;
+			toRet[3]=false;
 		//BUY ASSISTANT
 		if(game.getActualPlayer().getCoins()<3)
 			toRet[4]=false;
 		//BUY MAIN ACTION
 		if(game.getActualPlayer().getAvailableAssistants().size()<3)
-			toRet[5]=false;
+			toRet[7]=false;
 		//CHANGE CARDS
 		if(game.getActualPlayer().getAvailableAssistants().size()==0)
-			toRet[6]=false;
+			toRet[5]=false;
 		return toRet;
 	}
 	private void decreaseCounter(Action action){
@@ -199,57 +209,105 @@ public class ActionState implements State {
 			mainCounter++;
 			break;
 		case TOKEN:
-			btTmp = getAvailableTokens();
-			if (btTmp.length == 0)
-				clienthandler.sendToClient("You have no available city tokens. Bonus discarded", null);
-			else {
-				BonusToken[] chosen = clienthandler.getBonusToken(btTmp);
-				for (Bonus bo : chosen[0].getBonus())
-					collectBonus(bo);
-			}
+			collectONETOKEN(null);
 			break;
 		case TWOTOKENS:
-			btTmp = getAvailableTokens();
-			if (btTmp.length == 0)
-				clienthandler.sendToClient("You have no available city tokens. Bonus discarded", null);
-			else {
-				BonusToken[] chosen = clienthandler.getBonusToken(btTmp);
-				for(BonusToken bt : chosen)
-					for (Bonus bo : bt.getBonus())
-					collectBonus(bo);
-			}
+			collectTWOTOKENS(null);
 			break;
 		case FREECARD: 
-			boolean found = false;
-			while (!found) {
-				PermitsCardDTO chosen = clienthandler.getFreePermitsCard();
-				for (int i = 0; i < 3; i++)
-					for (int j = 0; j < 2; j++) {
-						PermitsCard temp = game.getMap().getPermitsDeck(i).getSlot(j, false);
-						if (temp.equalsDTO(chosen)) {
-							found = true;
-							game.getActualPlayer().addPermits(game.getMap().getPermitsDeck(i).getSlot(j, true));
-						}
-					}
-				if(!found)
-					clienthandler.sendToClient("Invalid input permit. Try again", null);
-			}
+			collectFREECARD(null);
 			break;
 		case BONUSCARD:// input da convertire da DTO a oggetti
-			ArrayList<PermitsCard> pcOwned = game.getActualPlayer().getPermits();
-			PermitsCardDTO chosen = clienthandler.getOwnedPermitsCard();
-			PermitsCard temp=null;
-			for(PermitsCard pc : pcOwned)
-				if(pc.equalsDTO(chosen))
-					temp = pc;
-			if(temp==null)
-				;//errore di conversione dto->ogg
-			else{
-			for (Bonus bo : temp.getBonus())
-				collectBonus(bo);
-			}
+			collectBONUSCARD(null);
 			break;
 
+		}
+	}
+	
+	public void collectONETOKEN(BonusTokenDTO[] chosen){
+		BonusToken[] btTmp = getAvailableTokens();
+		if (btTmp.length == 0)
+			clienthandler.sendToClient("You have no available city tokens. Bonus discarded", null);//non è nack perchè non ho chiesto input al client
+		else {
+			if(chosen==null){
+				clienthandler.sendToClient("ONETOKEN", btTmp);
+				gamehandler.waitForInput("ONETOKEN", this);
+				return;
+			}
+			BonusToken conv = new BonusToken(null);
+			conv.setterFromDTO(chosen[0]);
+			for (Bonus bo : conv.getBonus())
+				collectBonus(bo);
+			clienthandler.sendToClient("ONETOKENACK", null);
+		}
+	}
+	
+	public void collectTWOTOKENS(BonusTokenDTO[] chosen){
+		BonusToken[] btTmp = getAvailableTokens();
+		BonusToken[] converted;
+		if (btTmp.length == 0)
+			clienthandler.sendToClient("You have no available city tokens. Bonus discarded", null);
+		else {
+			if(chosen==null){
+				clienthandler.sendToClient("TWOTOKENS", btTmp);
+				gamehandler.waitForInput("TWOTOKENS", this);
+				return;
+			}
+			converted = new BonusToken[chosen.length];
+			for(int i=0;i<chosen.length;i++)
+				converted[i].setterFromDTO(chosen[i]);
+			for(BonusToken bt : converted)
+				for (Bonus bo : bt.getBonus())
+				collectBonus(bo);
+			clienthandler.sendToClient("TWOTOKENSACK", null);
+		}
+	}
+	
+	public void collectFREECARD(PermitsCardDTO chosen){
+		boolean found = false;
+		if(chosen==null){
+			clienthandler.sendToClient("FREECARD", null);
+			gamehandler.waitForInput("FREECARD", this);
+			return;
+		}
+			for (int i = 0; i < 3; i++)
+				for (int j = 0; j < 2; j++) {
+					PermitsCard temp = game.getMap().getPermitsDeck(i).getSlot(j, false);
+					if (temp.equalsDTO(chosen)) {
+						found = true;
+						game.getActualPlayer().addPermits(game.getMap().getPermitsDeck(i).getSlot(j, true));
+					}
+				}
+			if(!found){
+				clienthandler.sendToClient("FREECARDNACK", "Invalid input permit. Try again");
+				clienthandler.sendToClient("FREECARD", null);
+				gamehandler.waitForInput("FREECARD", this);
+			}
+			else
+				clienthandler.sendToClient("FREECARDACK", null);
+		}
+	
+	
+	public void collectBONUSCARD(PermitsCardDTO chosen){
+		ArrayList<PermitsCard> pcOwned = game.getActualPlayer().getPermits();
+		if(chosen==null){
+			clienthandler.sendToClient("BONUSCARD", null);
+			gamehandler.waitForInput("BONUSCARD",this);
+			return;
+		}
+		PermitsCard temp=null;
+		for(PermitsCard pc : pcOwned)
+			if(pc.equalsDTO(chosen))
+				temp = pc;
+		if(temp==null){
+			clienthandler.sendToClient("BONUSCARDNACK", "Invalid input. Try again");
+			clienthandler.sendToClient("BONUSCARD", null);
+			gamehandler.waitForInput("BONUSCARD", this);
+		}
+		else{
+		for (Bonus bo : temp.getBonus())
+			collectBonus(bo);
+		clienthandler.sendToClient("BONUSCARDACK", null);
 		}
 	}
 	

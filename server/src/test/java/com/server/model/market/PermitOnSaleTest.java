@@ -11,7 +11,7 @@ public class PermitOnSaleTest {
 	@Test
 	public void testPermitOnSale_1()
 		throws Exception {
-		Player pl = new Player(1);
+		Player pl = new Player("1");
 		PermitsCard pc = new PermitsCard(new Bonus[] {}, new String[] {});
 		int pr = 1;
 
@@ -25,7 +25,7 @@ public class PermitOnSaleTest {
 	@Test
 	public void testGetPrice_1()
 		throws Exception {
-		PermitOnSale fixture = new PermitOnSale(new Player(1), new PermitsCard(new Bonus[] {}, new String[] {}), 1);
+		PermitOnSale fixture = new PermitOnSale(new Player("1"), new PermitsCard(new Bonus[] {}, new String[] {}), 1);
 
 		int result = fixture.getPrice();
 
@@ -35,8 +35,8 @@ public class PermitOnSaleTest {
 	@Test
 	public void testObtain_1()
 		throws Exception {
-		PermitOnSale fixture = new PermitOnSale(new Player(1), new PermitsCard(new Bonus[] {}, new String[] {}), 1);
-		Player buyer = new Player(1);
+		PermitOnSale fixture = new PermitOnSale(new Player("1"), new PermitsCard(new Bonus[] {}, new String[] {}), 1);
+		Player buyer = new Player("1");
 		buyer.setCoins(1);
 
 		fixture.obtain(buyer);
@@ -46,7 +46,7 @@ public class PermitOnSaleTest {
 	@Test
 	public void testPrintDetails_1()
 		throws Exception {
-		PermitOnSale fixture = new PermitOnSale(new Player(1), new PermitsCard(new Bonus[] {}, new String[] {}), 1);
+		PermitOnSale fixture = new PermitOnSale(new Player("1"), new PermitsCard(new Bonus[] {}, new String[] {}), 1);
 
 		String result = fixture.printDetails();
 
@@ -56,7 +56,7 @@ public class PermitOnSaleTest {
 	@Test
 	public void testPrintDetails_2()
 		throws Exception {
-		PermitOnSale fixture = new PermitOnSale(new Player(1), new PermitsCard(new Bonus[] {}, new String[] {}), 1);
+		PermitOnSale fixture = new PermitOnSale(new Player("1"), new PermitsCard(new Bonus[] {}, new String[] {}), 1);
 
 		String result = fixture.printDetails();
 
@@ -66,7 +66,7 @@ public class PermitOnSaleTest {
 	@Test
 	public void testToDTO_1()
 		throws Exception {
-		PermitOnSale fixture = new PermitOnSale(new Player(1), new PermitsCard(new Bonus[] {}, new String[] {}), 1);
+		PermitOnSale fixture = new PermitOnSale(new Player("1"), new PermitsCard(new Bonus[] {}, new String[] {}), 1);
 
 		PermitOnSaleDTO result = fixture.toDTO();
 

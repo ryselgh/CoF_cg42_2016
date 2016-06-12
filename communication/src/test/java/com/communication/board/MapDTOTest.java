@@ -105,7 +105,7 @@ public class MapDTOTest {
 		players[0].setHand(hand);
 		players[0].setPawn(pawns[0]);
 		players[0].setPermits(permits);
-		players[0].setPlayerID(5);
+		players[0].setPlayerID("5");
 		players[0].setScore(20);
 		
 		players[1]=new PlayerDTO();
@@ -116,7 +116,7 @@ public class MapDTOTest {
 		players[1].setHand(hand);
 		players[1].setPawn(pawns[1]);
 		players[1].setPermits(permits);
-		players[1].setPlayerID(5);
+		players[1].setPlayerID("5");
 		players[1].setScore(20);
 		
 		players[2]=new PlayerDTO();
@@ -127,7 +127,7 @@ public class MapDTOTest {
 		players[2].setHand(hand);
 		players[2].setPawn(pawns[2]);
 		players[2].setPermits(permits);
-		players[2].setPlayerID(5);
+		players[2].setPlayerID("5");
 		players[2].setScore(20);
 		
 		councilor= new CouncilorDTO[3];
@@ -226,10 +226,8 @@ public class MapDTOTest {
 		fixture.setNobilityTrack(new NobilityTrackDTO());
 		fixture.setKingBonus(new ArrayList());
 		fixture.setKing(king);
-		fixture.setPlayers(players);
 		fixture.setCouncilors(councilors);
 		fixture.setRegions(region);
-		fixture.setEmporiums(new EmporiumDTO[10] );
 		fixture.setCity(new CityDTO[15] );
 		fixture.setPoliticsDeck(politicDeck);
 		fixture.setPermitsDeck(permitsDeck);
@@ -251,10 +249,8 @@ public class MapDTOTest {
 		fixture.setNobilityTrack(new NobilityTrackDTO());
 		fixture.setKingBonus(new ArrayList());
 		fixture.setKing(king);
-		fixture.setPlayers(players);
 		fixture.setCouncilors(councilors);
 		fixture.setRegions(region );
-		fixture.setEmporiums(new EmporiumDTO[10] );
 		fixture.setCity(new CityDTO[15] );
 		fixture.setPoliticsDeck(politicDeck);
 		fixture.setPermitsDeck(permitsDeck);
@@ -275,10 +271,8 @@ public class MapDTOTest {
 		fixture.setNobilityTrack(new NobilityTrackDTO());
 		fixture.setKingBonus(new ArrayList());
 		fixture.setKing(king);
-		fixture.setPlayers(players);
 		fixture.setCouncilors(councilors);
 		fixture.setRegions(region );
-		fixture.setEmporiums(new EmporiumDTO[10] );
 		fixture.setCity(new CityDTO[15] );
 		fixture.setPoliticsDeck(politicDeck);
 		fixture.setPermitsDeck(permitsDeck);
@@ -300,10 +294,8 @@ public class MapDTOTest {
 		fixture.setNobilityTrack(new NobilityTrackDTO());
 		fixture.setKingBonus(new ArrayList());
 		fixture.setKing(king);
-		fixture.setPlayers(players);
 		fixture.setCouncilors(councilors);
 		fixture.setRegions(region);
-		fixture.setEmporiums(new EmporiumDTO[10] );
 		fixture.setCity(new CityDTO[15] );
 		fixture.setPoliticsDeck(politicDeck);
 		fixture.setPermitsDeck(permitsDeck);
@@ -324,10 +316,8 @@ public class MapDTOTest {
 		fixture.setNobilityTrack(new NobilityTrackDTO());
 		fixture.setKingBonus(new ArrayList());
 		fixture.setKing(king);
-		fixture.setPlayers(players);
 		fixture.setCouncilors(councilors);
 		fixture.setRegions(region);
-		fixture.setEmporiums(new EmporiumDTO[10] );
 		fixture.setCity(new CityDTO[15] );
 		fixture.setPoliticsDeck(politicDeck);
 		fixture.setPermitsDeck(permitsDeck);
@@ -341,30 +331,7 @@ public class MapDTOTest {
 		assertEquals(3, result.size());
 	}
 
-	@Test
-	public void testGetEmporiums_1()
-		throws Exception {
-		MapDTO fixture = new MapDTO();
-		fixture.setPawn(pawns);
-		fixture.setNobilityTrack(new NobilityTrackDTO());
-		fixture.setKingBonus(new ArrayList());
-		fixture.setKing(king);
-		fixture.setPlayers(players);
-		fixture.setCouncilors(councilors);
-		fixture.setRegions(region );
-		fixture.setEmporiums(new EmporiumDTO[10] );
-		fixture.setCity(new CityDTO[15] );
-		fixture.setPoliticsDeck(politicDeck);
-		fixture.setPermitsDeck(permitsDeck);
-		fixture.setBalcony(balcony);
-		fixture.setColorGroups(new ColorGroupDTO[5] );
-		fixture.setAssistants(assistants);
-
-		EmporiumDTO[] result = fixture.getEmporiums();
-
-		assertNotNull(result);
-		assertEquals(10, result.length);
-	}
+	
 
 	@Test
 	public void testGetKing_1()
@@ -374,10 +341,8 @@ public class MapDTOTest {
 		fixture.setNobilityTrack(new NobilityTrackDTO());
 		fixture.setKingBonus(new ArrayList());
 		fixture.setKing(king);
-		fixture.setPlayers(players);
 		fixture.setCouncilors(councilors);
 		fixture.setRegions(region);
-		fixture.setEmporiums(new EmporiumDTO[10] );
 		fixture.setCity(new CityDTO[15] );
 		fixture.setPoliticsDeck(politicDeck);
 		fixture.setPermitsDeck(permitsDeck);
@@ -399,10 +364,8 @@ public class MapDTOTest {
 		fixture.setNobilityTrack(new NobilityTrackDTO());
 		fixture.setKingBonus(new ArrayList());
 		fixture.setKing(king);
-		fixture.setPlayers(players);
 		fixture.setCouncilors(councilors);
 		fixture.setRegions(region);
-		fixture.setEmporiums(new EmporiumDTO[10] );
 		fixture.setCity(new CityDTO[15] );
 		fixture.setPoliticsDeck(politicDeck);
 		fixture.setPermitsDeck(permitsDeck);
@@ -424,10 +387,8 @@ public class MapDTOTest {
 		fixture.setNobilityTrack(new NobilityTrackDTO());
 		fixture.setKingBonus(new ArrayList());
 		fixture.setKing(king);
-		fixture.setPlayers(players);
 		fixture.setCouncilors(councilors);
 		fixture.setRegions(region);
-		fixture.setEmporiums(new EmporiumDTO[10] );
 		fixture.setCity(new CityDTO[15] );
 		fixture.setPoliticsDeck(politicDeck);
 		fixture.setPermitsDeck(permitsDeck);
@@ -450,10 +411,8 @@ public class MapDTOTest {
 		fixture.setNobilityTrack(new NobilityTrackDTO());
 		fixture.setKingBonus(new ArrayList());
 		fixture.setKing(king);
-		fixture.setPlayers(players);
 		fixture.setCouncilors(councilors);
 		fixture.setRegions(region);
-		fixture.setEmporiums(new EmporiumDTO[10] );
 		fixture.setCity(new CityDTO[15] );
 		fixture.setPoliticsDeck(politicDeck);
 		fixture.setPermitsDeck(permitsDeck);
@@ -475,10 +434,8 @@ public class MapDTOTest {
 		fixture.setNobilityTrack(new NobilityTrackDTO());
 		fixture.setKingBonus(new ArrayList());
 		fixture.setKing(king);
-		fixture.setPlayers(players);
 		fixture.setCouncilors(councilors);
 		fixture.setRegions(region);
-		fixture.setEmporiums(new EmporiumDTO[10] );
 		fixture.setCity(new CityDTO[15] );
 		fixture.setPoliticsDeck(politicDeck);
 		fixture.setPermitsDeck(permitsDeck);
@@ -491,30 +448,6 @@ public class MapDTOTest {
 		assertNotNull(result);
 	}
 
-	@Test
-	public void testGetPlayers_1()
-		throws Exception {
-		MapDTO fixture = new MapDTO();
-		fixture.setPawn(pawns);
-		fixture.setNobilityTrack(new NobilityTrackDTO());
-		fixture.setKingBonus(new ArrayList());
-		fixture.setKing(king);
-		fixture.setPlayers(players);
-		fixture.setCouncilors(councilors);
-		fixture.setRegions(region);
-		fixture.setEmporiums(new EmporiumDTO[10] );
-		fixture.setCity(new CityDTO[15] );
-		fixture.setPoliticsDeck(politicDeck);
-		fixture.setPermitsDeck(permitsDeck);
-		fixture.setBalcony(balcony);
-		fixture.setColorGroups(new ColorGroupDTO[5] );
-		fixture.setAssistants(assistants);
-
-		PlayerDTO[] result = fixture.getPlayers();
-
-		assertNotNull(result);
-		assertEquals(3, result.length);
-	}
 
 	@Test
 	public void testGetPoliticsDeck_1()
@@ -524,10 +457,8 @@ public class MapDTOTest {
 		fixture.setNobilityTrack(new NobilityTrackDTO());
 		fixture.setKingBonus(new ArrayList());
 		fixture.setKing(king);
-		fixture.setPlayers(players);
 		fixture.setCouncilors(councilors);
 		fixture.setRegions(region);
-		fixture.setEmporiums(new EmporiumDTO[10] );
 		fixture.setCity(new CityDTO[15] );
 		fixture.setPoliticsDeck(politicDeck);
 		fixture.setPermitsDeck(permitsDeck);
@@ -550,10 +481,8 @@ public class MapDTOTest {
 		fixture.setNobilityTrack(new NobilityTrackDTO());
 		fixture.setKingBonus(new ArrayList());
 		fixture.setKing(king);
-		fixture.setPlayers(players);
 		fixture.setCouncilors(councilors);
 		fixture.setRegions(region);
-		fixture.setEmporiums(new EmporiumDTO[10] );
 		fixture.setCity(new CityDTO[15] );
 		fixture.setPoliticsDeck(politicDeck);
 		fixture.setPermitsDeck(permitsDeck);

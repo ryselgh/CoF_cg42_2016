@@ -93,7 +93,7 @@ public class CityTest {
 	public void testHasEmporium_1()
 		throws Exception {
 		City fixture = new City("", CityColor.BLUE, new String[] {}, 1, new BonusToken(new Bonus[] {}));
-		Player p = new Player(1);
+		Player p = new Player("1");
 
 		boolean result = fixture.hasEmporium(p);
 
@@ -104,7 +104,7 @@ public class CityTest {
 	public void testHasEmporium_2()
 		throws Exception {
 		City fixture = new City("", CityColor.BLUE, new String[] {}, 1, new BonusToken(new Bonus[] {}));
-		Player p = new Player(1);
+		Player p = new Player("1");
 
 		boolean result = fixture.hasEmporium(p);
 
@@ -115,7 +115,7 @@ public class CityTest {
 	public void testHasEmporium_3()
 		throws Exception {
 		City fixture = new City("", CityColor.BLUE, new String[] {}, 1, new BonusToken(new Bonus[] {}));
-		Player p = new Player(1);
+		Player p = new Player("1");
 
 		boolean result = fixture.hasEmporium(p);
 
@@ -126,7 +126,7 @@ public class CityTest {
 	public void testHasEmporium_4()
 		throws Exception {
 		City fixture = new City("", CityColor.BLUE, new String[] {}, 1, new BonusToken(new Bonus[] {}));
-		Player p = new Player(1);
+		Player p = new Player("1");
 
 		boolean result = fixture.hasEmporium(p);
 
@@ -170,7 +170,7 @@ public class CityTest {
 	public void testSetEmporium_1()
 		throws Exception {
 		City fixture = new City("", CityColor.BLUE, new String[] {}, 1, new BonusToken(new Bonus[] {}));
-		Emporium e = new Emporium(new Player(1));
+		Emporium e = new Emporium(new Player("1"));
 
 		int result = fixture.setEmporium(e);
 
@@ -181,7 +181,7 @@ public class CityTest {
 	public void testSetEmporium_2()
 		throws Exception {
 		City fixture = new City("", CityColor.BLUE, new String[] {}, 1, new BonusToken(new Bonus[] {}));
-		Emporium e = new Emporium(new Player(1));
+		Emporium e = new Emporium(new Player("1"));
 
 		int result = fixture.setEmporium(e);
 
@@ -192,7 +192,7 @@ public class CityTest {
 	public void testSetEmporium_3()
 		throws Exception {
 		City fixture = new City("", CityColor.BLUE, new String[] {}, 1, new BonusToken(new Bonus[] {}));
-		Emporium e = new Emporium(new Player(1));
+		Emporium e = new Emporium(new Player("1"));
 
 		int result = fixture.setEmporium(e);
 

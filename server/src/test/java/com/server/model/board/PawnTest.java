@@ -14,7 +14,7 @@ public class PawnTest {
 	public void setUp()
 		throws Exception {
 		
-		player = new Player(1);
+		player = new Player("1");
 		hexColor = "#66FF00";
 	}
 	

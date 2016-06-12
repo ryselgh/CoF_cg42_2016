@@ -29,7 +29,7 @@ public class Player {
 	private Pawn pawn;
 	private int coins;
 	private int score;
-	private int playerID;
+	private String playerID;
 
 	/**
 	 * Constructs an object of type Player
@@ -42,7 +42,7 @@ public class Player {
 	 *            The chosen color of the player
 	 */
 
-	public Player(int ID) {
+	public Player(String ID) {
 		availableEmporiums = new ArrayList<Emporium>(10);
 		availableAssistants = new ArrayList<Assistant>();
 		bonusCards = new ArrayList<BonusCard>();
@@ -164,7 +164,7 @@ public class Player {
 	/**
 	 * @return the playerID
 	 */
-	public int getID() {
+	public String getID() {
 		return playerID;
 	}
 
@@ -287,7 +287,7 @@ public class Player {
 			assDTO.add(ass.toDTO());
 		playerDTO.setAvailableAssistants(assDTO);
 		for(Emporium emp: availableEmporiums)
-			empDTO.add(emp.toDTO());
+			empDTO.add(emp.toDTO(playerDTO));
 		playerDTO.setAvailableEmporiums(empDTO);
 		for(BonusCard bc: bonusCards)
 			bcDTO.add(bc.toDTO());
@@ -305,6 +305,12 @@ public class Player {
 		return playerDTO;
 	}
 	
+	public PlayerDTO compareToDTOs(ArrayList<PlayerDTO> plsDTO){
+		for(PlayerDTO pDTO: plsDTO)
+			if(pDTO.getPlayerID().equals(this.getID()))
+				return pDTO;
+		return null;
+	}
 	// <--------- MARKET END ---------->
 	
 }

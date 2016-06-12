@@ -27,10 +27,11 @@ public class Game {
 	private Player actualPlayer;
 	private boolean finalTurn;
 	private boolean defaultMap;
-	private Document rawMap;
+	private String rawMap;
 	private MainAction mainAction;
 	private SpeedAction speedAction;
 	private GraphMap graphMap;
+	private String[] clientNames;
 	
 	/**
 	 * Constructs a new object of type Game
@@ -40,7 +41,8 @@ public class Game {
 	 * @throws Exception if the number of players is less than 2 or greater than {@value #MAXPLAYERS}
 	 */
 	
-	public Game(int playersQty, boolean defaultMap, Document rawMap) {
+	public Game(int playersQty, boolean defaultMap, String rawMap, String[] clientNames) {
+		this.clientNames = clientNames;
 		this.playersQty = playersQty;
 		this.defaultMap = defaultMap;
 		this.rawMap = rawMap;
@@ -63,7 +65,7 @@ public class Game {
 				
 		//Players initialize
 		for(int i=0; i<playersQty; i++){
-			players.add(new Player(i+1));
+			players.add(new Player(clientNames[i]));
 		}
 		actualPlayer = players.get(0);
 		
@@ -187,15 +189,15 @@ public class Game {
 	
 	public GameDTO toDto(){
 		GameDTO gameDTO = new GameDTO();
-		gameDTO.setActualPlayer(actualPlayer.toDTO());
-		gameDTO.setDefaultMap(defaultMap);
-		gameDTO.setFinalTurn(finalTurn);
-		gameDTO.setMap(map.toDTO());
-		gameDTO.setMarket(market.toDTO());
 		ArrayList<PlayerDTO> plsDTO = new ArrayList<PlayerDTO>();
 		for(Player p: players)
 			plsDTO.add(p.toDTO());
 		gameDTO.setPlayers(plsDTO);
+		gameDTO.setActualPlayer(actualPlayer.toDTO());
+		gameDTO.setDefaultMap(defaultMap);
+		gameDTO.setFinalTurn(finalTurn);
+		gameDTO.setMap(map.toDTO(plsDTO));
+		gameDTO.setMarket(market.toDTO());
 		gameDTO.setPlayersQty(playersQty);
 		return gameDTO;
 	}

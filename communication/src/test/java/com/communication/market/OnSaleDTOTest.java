@@ -5,7 +5,6 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 
-import com.communication.SerObject;
 import com.communication.board.AssistantDTO;
 import com.communication.board.BonusCardDTO;
 import com.communication.board.EmporiumDTO;
@@ -24,7 +23,7 @@ public class OnSaleDTOTest {
 	ArrayList<PoliticsCardDTO> hand = new ArrayList();
 	ArrayList<PermitsCardDTO> permits = new ArrayList();
 	PawnDTO pawn;
-	SerObject obj;
+	Object obj;
 	
 	
 	@Before
@@ -45,11 +44,11 @@ public class OnSaleDTOTest {
 		player.setHand(hand);
 		player.setPawn(pawn);
 		player.setPermits(permits);
-		player.setPlayerID(5);
+		player.setPlayerID("5");
 		player.setScore(20);
 		
 		assistant= new AssistantDTO();
-		obj=new SerObject();
+		obj=new Object();
 		
 		
 		

@@ -19,7 +19,7 @@ public class AssistantOnSaleTest {
 	public void setUp()
 		throws Exception {
 		
-		player = new Player(1);
+		player = new Player("1");
 		as = new Assistant();
 		
 	}
@@ -60,7 +60,7 @@ public class AssistantOnSaleTest {
 		AssistantOnSale fixture = new AssistantOnSale(player, as, 1);
 		
 		
-		Player buyer = new Player(1);
+		Player buyer = new Player("1");
 		buyer.setCoins(1);
 		
 

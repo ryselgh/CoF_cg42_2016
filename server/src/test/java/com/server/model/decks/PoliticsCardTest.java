@@ -75,7 +75,7 @@ public class PoliticsCardTest {
 		PoliticsCard fixture2 = new PoliticsCard(CouncilorColor.WHITE);
 		PoliticsCardDTO pcDTO = new PoliticsCardDTO();
 		pcDTO.setColor(CouncilorColor.BLACK);
-		Player player = new Player(1);
+		Player player = new Player("1");
 		player.addPolitics(fixture);
 		PoliticsCard pc = new PoliticsCard(CouncilorColor.BLACK);
 		PoliticsCard pc2 = pc.fromDTO(pcDTO, player);

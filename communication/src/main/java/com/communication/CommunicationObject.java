@@ -9,9 +9,9 @@ public class CommunicationObject implements Serializable{
 	 */
 	private static final long serialVersionUID = -8740453071641140457L;
 	private String msg;
-	private SerObject obj;
+	private Object obj;
 	
-	public CommunicationObject(String s, SerObject o){
+	public CommunicationObject(String s, Object o){
 		this.msg = s;
 		this.obj = o;
 	}

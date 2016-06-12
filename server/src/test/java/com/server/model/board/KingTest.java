@@ -2,7 +2,11 @@ package com.server.model.board;
 
 import org.junit.*;
 import static org.junit.Assert.*;
+
+import java.util.ArrayList;
+
 import com.communication.board.KingDTO;
+import com.communication.gamelogic.PlayerDTO;
 import com.communication.values.BonusType;
 import com.communication.values.CityColor;
 
@@ -78,7 +82,7 @@ public class KingTest {
 		King fixture = new King(city);
 		fixture.setLocation(city);
 
-		KingDTO result = fixture.toDTO();
+		KingDTO result = fixture.toDTO(new ArrayList<PlayerDTO>());
 
 		// An unexpected exception was thrown in user code while executing this test:
 		//    java.lang.NullPointerException

@@ -1,7 +1,10 @@
 package com.server.model.board ;
 
+import java.util.ArrayList;
+
 import com.communication.board.CityDTO;
 import com.communication.board.EmporiumDTO;
+import com.communication.gamelogic.PlayerDTO;
 import com.server.model.gamelogic.Player;
 import com.communication.values.CityColor;
 import com.communication.values.CityName;
@@ -20,12 +23,12 @@ public class City
 	private int playerNum;
 	
 
-	public CityDTO toDTO(){
+	public CityDTO toDTO(ArrayList<PlayerDTO> plsDTO){
 		CityDTO cDTO = new CityDTO();
 		EmporiumDTO[] slotDTO = new EmporiumDTO[this.slot.length];
 		for(int i=0;i<this.slot.length;i++){
 			if(slot[i] != null)
-				slotDTO[i] = this.slot[i].toDTO();
+				slotDTO[i] = this.slot[i].toDTO(slot[i].getPlayer().compareToDTOs(plsDTO));
 		}
 		cDTO.setSlot(slotDTO);
 		cDTO.setColor(color);

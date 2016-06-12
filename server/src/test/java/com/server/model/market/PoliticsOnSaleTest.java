@@ -11,7 +11,7 @@ public class PoliticsOnSaleTest {
 	@Test
 	public void testPoliticsOnSale_1()
 		throws Exception {
-		Player pl = new Player(1);
+		Player pl = new Player("1");
 		PoliticsCard pc = new PoliticsCard(CouncilorColor.BLACK);
 		int pr = 1;
 
@@ -25,7 +25,7 @@ public class PoliticsOnSaleTest {
 	@Test
 	public void testGetPrice_1()
 		throws Exception {
-		PoliticsOnSale fixture = new PoliticsOnSale(new Player(1), new PoliticsCard(CouncilorColor.BLACK), 1);
+		PoliticsOnSale fixture = new PoliticsOnSale(new Player("1"), new PoliticsCard(CouncilorColor.BLACK), 1);
 
 		int result = fixture.getPrice();
 
@@ -35,8 +35,8 @@ public class PoliticsOnSaleTest {
 	@Test
 	public void testObtain_1()
 		throws Exception {
-		PoliticsOnSale fixture = new PoliticsOnSale(new Player(1), new PoliticsCard(CouncilorColor.BLACK), 1);
-		Player buyer = new Player(1);
+		PoliticsOnSale fixture = new PoliticsOnSale(new Player("1"), new PoliticsCard(CouncilorColor.BLACK), 1);
+		Player buyer = new Player("1");
 		buyer.setCoins(1);
 
 		fixture.obtain(buyer);
@@ -46,7 +46,7 @@ public class PoliticsOnSaleTest {
 	@Test
 	public void testPrintDetails_1()
 		throws Exception {
-		PoliticsOnSale fixture = new PoliticsOnSale(new Player(1), new PoliticsCard(CouncilorColor.BLACK), 1);
+		PoliticsOnSale fixture = new PoliticsOnSale(new Player("1"), new PoliticsCard(CouncilorColor.BLACK), 1);
 
 		String result = fixture.printDetails();
 
@@ -56,7 +56,7 @@ public class PoliticsOnSaleTest {
 	@Test
 	public void testToDTO_1()
 		throws Exception {
-		PoliticsOnSale fixture = new PoliticsOnSale(new Player(1), new PoliticsCard(CouncilorColor.BLACK), 1);
+		PoliticsOnSale fixture = new PoliticsOnSale(new Player("1"), new PoliticsCard(CouncilorColor.BLACK), 1);
 
 		PoliticsOnSaleDTO result = fixture.toDTO();
 

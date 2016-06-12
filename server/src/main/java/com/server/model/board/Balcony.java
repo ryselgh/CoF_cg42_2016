@@ -43,6 +43,7 @@ public class Balcony
 		CouncilorDTO[] councDTO = new CouncilorDTO[this.getCouncilors().length];
 		for(int i=0;i<this.getCouncilors().length;i++)
 			councDTO[i]=this.getCouncilors()[i].toDTO();
+		bDTO.setCouncilor(councDTO);
 		return bDTO;
 			
 		

@@ -7,7 +7,6 @@ import java.util.logging.Logger;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
 import com.communication.board.AssistantDTO;
@@ -16,7 +15,6 @@ import com.communication.board.BonusDTO;
 import com.communication.board.CityDTO;
 import com.communication.board.ColorGroupDTO;
 import com.communication.board.CouncilorDTO;
-import com.communication.board.EmporiumDTO;
 import com.communication.board.KingDTO;
 import com.communication.board.MapDTO;
 import com.communication.board.NobilityTrackDTO;
@@ -55,23 +53,18 @@ public class Map {
 	private King king;
 	private Logger logger;
 	
-	public MapDTO toDTO(){
+	public MapDTO toDTO(ArrayList<PlayerDTO> plsDTO){
 		MapDTO mapDTO = new MapDTO();
 		
 		RegionDTO[] regDTO = new RegionDTO[regions.length];
 		for(int i=0;i<regions.length;i++)
-			regDTO[i] = regions[i].toDTO();
+			regDTO[i] = regions[i].toDTO(plsDTO);
 		mapDTO.setRegions(regDTO);
-		
-		PlayerDTO[] plDTO = new PlayerDTO[players.length];
-		for(int i=0;i<players.length;i++)
-			plDTO[i] = players[i].toDTO();
-		mapDTO.setPlayers(plDTO);
 		
 		ColorGroupDTO[] cgDTO = new ColorGroupDTO[colorGroups.length];
 		for(int i=0;i<colorGroups.length;i++){
 			if(colorGroups[i].getBonus()!=null)
-				cgDTO[i] = colorGroups[i].toDTO();
+				cgDTO[i] = colorGroups[i].toDTO(plsDTO);
 		}
 		mapDTO.setColorGroups(cgDTO);
 		
@@ -90,10 +83,6 @@ public class Map {
 			assistDTO.add(assistants.get(i).toDTO());
 		mapDTO.setAssistants(assistDTO);
 		
-		EmporiumDTO[] empDTO = new EmporiumDTO[emporiums.length];
-		for(int i=0;i<emporiums.length;i++)
-			empDTO[i] = emporiums[i].toDTO();
-		mapDTO.setEmporiums(empDTO);
 		
 		PawnDTO[] pawnDTO = new PawnDTO[pawn.length];
 		for(int i=0;i<pawn.length;i++)
@@ -106,7 +95,7 @@ public class Map {
 		
 		CityDTO[] citiesDTO = new CityDTO[city.length];
 		for(int i=0;i<city.length;i++)
-			citiesDTO[i] = city[i].toDTO();
+			citiesDTO[i] = city[i].toDTO(plsDTO);
 		mapDTO.setCity(citiesDTO);
 	
 		
@@ -125,7 +114,7 @@ public class Map {
 		mapDTO.setPermitsDeck(permitsDeckDTO);
 		
 		KingDTO kingDTO = new KingDTO();
-		kingDTO = king.toDTO();
+		kingDTO = king.toDTO(plsDTO);
 		mapDTO.setKing(kingDTO);
 		return mapDTO;
 		
@@ -138,7 +127,7 @@ public class Map {
 	 */
 	
 	
-	public Map(Player[] p, boolean _default, Document rawMap) {
+	public Map(Player[] p, boolean _default, String rawMap) {
 		this.players = p;
 		initializeMapObjects();
 		try {
@@ -148,7 +137,7 @@ public class Map {
 		}
 	}
 
-	public int importMap(Document file, boolean _default) throws ParserConfigurationException, SAXException, IOException{
+	public int importMap(String file, boolean _default) throws ParserConfigurationException, SAXException, IOException{
 		Importer reader = new Importer(file,_default, this, players);
 		reader.startImport();
 		

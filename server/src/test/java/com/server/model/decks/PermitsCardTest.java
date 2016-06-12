@@ -129,7 +129,7 @@ public class PermitsCardTest {
 	
 	@Test
 	public void testFromDTO(){
-		Player p = new Player(1);
+		Player p = new Player("1");
 		PermitsCard fixture = new PermitsCard(b,l);
 		PermitsCard fixture2 = new PermitsCard(b2,l);
 	

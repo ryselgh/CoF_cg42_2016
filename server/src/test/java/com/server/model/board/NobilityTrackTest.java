@@ -20,9 +20,9 @@ public class NobilityTrackTest {
 		
 		players= new Player[3];
 		
-		players[0] = new Player(1);
-		players[1] = new Player(2);
-		players[2] = new Player(3);
+		players[0] = new Player("1");
+		players[1] = new Player("2");
+		players[2] = new Player("3");
 		
 		pawns = new Pawn[3];
 		pawns[0] = new Pawn(players[0], "#FF0000");

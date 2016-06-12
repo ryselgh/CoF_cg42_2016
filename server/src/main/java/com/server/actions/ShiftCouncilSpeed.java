@@ -30,6 +30,7 @@ public class ShiftCouncilSpeed extends Action{
 		for(Councilor c : game.getMap().getCouncilorsPool()){
 			if(c.equals(councilor)){
 				councilor = c;//aggiorno l'istanza per l'execute
+				game.getMap().getCouncilorsPool().remove(c);
 				return true;
 			}
 		}
@@ -58,6 +59,7 @@ public class ShiftCouncilSpeed extends Action{
 	}
 	
 	public void setterFromDTO(ShiftCouncilMainDTO scmDTO,Player player,Game game){
+		this.game = game;
 		this.balconyIndex = scmDTO.getBalconyIndex();
 		this.councilor = getCouncilorFromDTO(scmDTO.getCouncilor());
 	}

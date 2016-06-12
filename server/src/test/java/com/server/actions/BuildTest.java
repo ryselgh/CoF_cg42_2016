@@ -11,6 +11,7 @@ import org.w3c.dom.Document;
 import com.communication.actions.BuildDTO;
 import com.communication.board.CityDTO;
 import com.communication.decks.PermitsCardDTO;
+import com.communication.gamelogic.PlayerDTO;
 import com.communication.values.BonusType;
 import com.communication.values.CityColor;
 import com.server.model.board.Bonus;
@@ -46,7 +47,7 @@ public class BuildTest {
 		b = new Bonus[2];
 		b[0] = new Bonus(BonusType.ASSISTANT,1);
 		b[1] = new Bonus(BonusType.COIN,1);
-		game = new Game(2, true, null);
+		game = new Game(2, true, null, null);
 	}
 
 	@Test
@@ -248,7 +249,7 @@ public class BuildTest {
 		Build fixture = new Build(game.getMap().getCity()[4], game.getActualPlayer().getPermits().get(0));
 		fixture.setGame(game);
 		BuildDTO buildDTO = new BuildDTO();
-		buildDTO.setCity(game.getMap().getCity()[4].toDTO());
+		buildDTO.setCity(game.getMap().getCity()[4].toDTO(new ArrayList<PlayerDTO>()));
 		buildDTO.setPermit(game.getActualPlayer().getPermits().get(0).toDTO());
 		
 		

@@ -1,6 +1,9 @@
 package com.server.model.board ;
 
+import java.util.ArrayList;
+
 import com.communication.board.KingDTO;
+import com.communication.gamelogic.PlayerDTO;
 
 public class King
 {
@@ -36,9 +39,9 @@ public class King
 		this.location = l;	
 	}
 	
-	public KingDTO toDTO(){
+	public KingDTO toDTO(ArrayList<PlayerDTO> plsDTO){
 		KingDTO kDTO = new KingDTO();
-		kDTO.setLocation(this.getLocation().toDTO());
+		kDTO.setLocation(this.getLocation().toDTO(plsDTO));
 		return kDTO;
 	}
 }

@@ -23,12 +23,9 @@ public class ObtainPermit extends Action {
 	int counter = 0;
     int jollycnt = 0;
     private ArrayList<String> errors;
-	private boolean disable = false;
     
     
 	public ObtainPermit(PoliticsCard[] politics, int regionIndex, int slot){
-		if (politics==null)
-			throw new NullPointerException();
 		this.politics = politics;
 		this.regionIndex = regionIndex;
 		this.slot = slot;
@@ -83,10 +80,10 @@ public class ObtainPermit extends Action {
 	    /* you have the right cards and enough money */
 	    if(!(counter == politics.length))
 	    	errors.add("Invalid input cards");
-	    else if(!((counter==1 && game.getActualPlayer().getCoins()>=(10 + jollycnt)) ||
+	    else if(!(counter==1 && game.getActualPlayer().getCoins()>=(10 + jollycnt)) ||
 	        (counter==2 && game.getActualPlayer().getCoins()>=(7 + jollycnt)) ||
 	        (counter==3 && game.getActualPlayer().getCoins()>=(4 + jollycnt)) ||
-	        (counter==4 && game.getActualPlayer().getCoins()>=(0 + jollycnt))))
+	        (counter==4 && game.getActualPlayer().getCoins()>=(0 + jollycnt)))
 	    		errors.add("You have not enought money");
 	  }
 	  

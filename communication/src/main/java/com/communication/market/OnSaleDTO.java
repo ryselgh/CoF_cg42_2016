@@ -2,7 +2,6 @@ package com.communication.market ;
 
 import java.io.Serializable;
 
-import com.communication.SerObject;
 import com.communication.gamelogic.PlayerDTO;
 
 public class OnSaleDTO implements Serializable{

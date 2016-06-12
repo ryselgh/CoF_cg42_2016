@@ -4,19 +4,23 @@ import java.util.ArrayList;
 
 import org.w3c.dom.Document;
 
+import com.communication.values.RoomState;
+
 public class Room {
 	private ArrayList<ClientHandler> players;
-	private Document rawMap;
+	private String rawMap;
 	private ClientHandler admin;
 	private int maxPlayers, minPlayers;
 	private String name;
 	private boolean defaultMap = true;
+	private RoomState status;
 	
 	public Room(String name, ClientHandler adm, int maxPlayers, int minPlayers){
 		this.name = name;
 		this.admin = adm;
 		this.maxPlayers = maxPlayers;
 		this.minPlayers = minPlayers;
+		this.status = RoomState.WAITING_PLAYERS;
 		players = new ArrayList<ClientHandler>();
 		players.add(admin);
 	}
@@ -34,20 +38,28 @@ public class Room {
 	}
 	
 	public void startRoom(){
-		for(ClientHandler ch : players)
-			ch.inGame = true;//blocca il loop mvc della lobby
+		for(ClientHandler ch : players){
+			ch.inGame = true;
+		}
+		this.status = RoomState.IN_GAME;
 		GameHandler gh = new GameHandler(players,defaultMap,rawMap);
 		Thread thread = new Thread(gh);
 		thread.start();
 	}
 	
-	public boolean leaveRoom(ClientHandler player){
-		for(int i=0;i<players.size();i++)
-			if(players.get(i).equals(player)){
-				players.remove(i);
-				return true;}
-		return false;
+	public ClientHandler leaveRoom(ClientHandler player) {//ritorna il nuovo admin, se l'admin lefta
+		for (int i = 0; i < players.size(); i++)
+			if (players.get(i).equals(player)) {
+				if (players.get(i).equals(admin)) {
+					players.remove(i);
+					this.admin = players.get(0);
+					return this.admin;
+				} else
+					players.remove(i);
+			}
+		return null;
 	}
+
 	public boolean addPlayer(ClientHandler pl){
 		if(players.size()==maxPlayers)
 			return false;
@@ -55,12 +67,18 @@ public class Room {
 		return true;
 	}
 	
+	public boolean isFull(){
+		if(this.maxPlayers==this.players.size())
+			return true;
+		return false;
+	}
+	
 	public boolean hasJoined(ClientHandler player){
 		if(players.contains(player))
 			return true;
 		return false;
 	}
-	public void setMap(Document map){//non lo metto nel costruttore perchè va passata serializzata, credo
+	public void setMap(String map){//non lo metto nel costruttore perchè va passata serializzata, credo
 		this.rawMap = map;
 		this.defaultMap = false;
 	}
@@ -81,6 +99,15 @@ public class Room {
 	public int getMinPlayers() {
 		return minPlayers;
 	}
+	
+	public RoomState getState(){
+		return this.status;
+	}
+	
+	public boolean isDefaultMap() {
+		return defaultMap;
+	}
+
 	
 	
 }

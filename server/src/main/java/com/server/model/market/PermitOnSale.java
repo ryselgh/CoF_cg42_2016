@@ -1,6 +1,5 @@
 package com.server.model.market ;
 
-import com.communication.SerObject;
 import com.communication.market.PermitOnSaleDTO;
 import com.server.model.board.Bonus;
 import com.server.model.decks.PermitsCard;

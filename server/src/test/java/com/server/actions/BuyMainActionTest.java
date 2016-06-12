@@ -16,7 +16,7 @@ public class BuyMainActionTest {
 	public void setUp()
 		throws Exception {
 		
-		game= new Game(3, true, null);
+		game= new Game(3, true, null, null);
 		
 	}
 

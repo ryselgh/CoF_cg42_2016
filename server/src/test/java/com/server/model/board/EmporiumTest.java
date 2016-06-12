@@ -2,7 +2,11 @@ package com.server.model.board;
 
 import org.junit.*;
 import static org.junit.Assert.*;
+
+import java.util.ArrayList;
+
 import com.communication.board.EmporiumDTO;
+import com.communication.gamelogic.PlayerDTO;
 import com.server.model.gamelogic.Player;
 
 public class EmporiumTest {
@@ -13,7 +17,7 @@ public class EmporiumTest {
 	public void setUp()
 		throws Exception {
 		
-		player= new Player(1);
+		player= new Player("1");
 		
 	}
 	
@@ -47,7 +51,7 @@ public class EmporiumTest {
 		throws Exception {
 		Emporium fixture = new Emporium(player);
 
-		EmporiumDTO result = fixture.toDTO();
+		EmporiumDTO result = fixture.toDTO(new PlayerDTO());
 
 		// An unexpected exception was thrown in user code while executing this test:
 		//    java.lang.NullPointerException

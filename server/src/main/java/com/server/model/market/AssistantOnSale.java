@@ -1,6 +1,5 @@
 package com.server.model.market;
 
-import com.communication.SerObject;
 import com.communication.market.AssistantOnSaleDTO;
 import com.server.model.board.Assistant;
 import com.server.model.gamelogic.Player;

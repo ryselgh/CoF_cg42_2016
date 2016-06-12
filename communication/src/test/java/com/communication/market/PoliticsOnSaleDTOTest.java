@@ -42,7 +42,7 @@ public class PoliticsOnSaleDTOTest {
 		player.setHand(hand);
 		player.setPawn(pawn);
 		player.setPermits(permits);
-		player.setPlayerID(5);
+		player.setPlayerID("5");
 		player.setScore(20);
 		
 		politicsCard=new PoliticsCardDTO();
