@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import com.communication.board.BonusDTO;
 
-public class ActionReturn implements Serializable{
+public class ActionReturnDTO implements Serializable{
 	
 	/**
 	 * 

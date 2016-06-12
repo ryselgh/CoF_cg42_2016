@@ -94,7 +94,7 @@ public class AssistantOnSaleDTOTest {
 		assertEquals(pawn, result.getPawn());
 		assertEquals(2, result.getCoins());
 		assertEquals(availableAssistants, result.getAvailableAssistants());
-		assertEquals(5, result.getPlayerID());
+		assertEquals("5", result.getPlayerID());
 		assertEquals(availableEmporiums, result.getAvailableEmporiums());
 		assertEquals(hand, result.getHand());
 		assertEquals(bonusCards, result.getBonusCards());

@@ -7,17 +7,14 @@ import com.server.model.gamelogic.Game;
 import com.communication.values.BonusType;
 
 public class BuyMainAction extends Action{
-	private Game game;
 	private ArrayList<String> errors;
 	private boolean disable = false;
 	
 	public BuyMainAction(){
-		errors = new ArrayList<String>();};
-	
-	public void setGame(Game game){
-		this.game = game;
 		errors = new ArrayList<String>();
+		
 	}
+		
 	public boolean isValid(){
 		if(game.getActualPlayer().getAvailableAssistants().size()>=3)
 			return true;

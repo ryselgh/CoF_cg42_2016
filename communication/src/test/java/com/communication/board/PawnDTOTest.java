@@ -73,7 +73,7 @@ public class PawnDTOTest {
 
 		assertNotNull(result);
 		
-		assertEquals(5, result.getPlayerID());
+		assertEquals("5", result.getPlayerID());
 		
 	}
 

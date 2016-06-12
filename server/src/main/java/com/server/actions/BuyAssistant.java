@@ -6,16 +6,10 @@ import com.server.model.gamelogic.Game;
 
 public class BuyAssistant extends Action{
 
-	private Game game;
 	private ArrayList<String> errors;
 	private boolean disable = false;
 	
 	public BuyAssistant(){
-		errors = new ArrayList<String>();
-	}
-	
-	public void setGame(Game game){
-		this.game = game;
 		errors = new ArrayList<String>();
 	}
 	

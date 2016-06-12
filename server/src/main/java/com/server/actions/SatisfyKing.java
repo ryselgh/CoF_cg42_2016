@@ -22,7 +22,6 @@ public class SatisfyKing extends Action {
 	 */
 	private PoliticsCard[] politics; 
 	private City destination;
-	private Game game;
 	private int counter = 0;
     private int jollycnt = 0;
     private ArrayList<String> errors;
@@ -33,10 +32,6 @@ public class SatisfyKing extends Action {
 		this.politics = politics;
 		this.destination=destination;
 		errors = new ArrayList<String>();
-	}
-	
-	public void setGame(Game game){
-		this.game = game;
 	}
 	
 	
