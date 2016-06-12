@@ -21,7 +21,7 @@ public class BuyMainActionTest {
 	}
 
 	@Test
-	public void testBuyMainAction_1()
+	public void testTheConstructor()
 		throws Exception {
 
 		BuyMainAction result = new BuyMainAction();
@@ -29,7 +29,7 @@ public class BuyMainActionTest {
 	}
 
 	@Test
-	public void testExecute_1()
+	public void testIfTheMethodExecuteReturnsAnActionReturn()
 		throws Exception {
 		BuyMainAction fixture = new BuyMainAction();
 		fixture.setGame(game);
@@ -47,7 +47,7 @@ public class BuyMainActionTest {
 	}
 
 	@Test
-	public void testExecute_2()
+	public void testIfTheMethodExecuteReturnsTheRightBonus()
 		throws Exception {
 		Bonus bonus = new Bonus(BonusType.MAINACTION,1);
 		BuyMainAction fixture = new BuyMainAction();
@@ -56,7 +56,8 @@ public class BuyMainActionTest {
 		Assistant ass2 = new Assistant();
 		game.getActualPlayer().addAssistant(ass);
 		game.getActualPlayer().addAssistant(ass2);
-
+		
+		fixture.isValid();
 		ActionReturn result = fixture.execute();
 
 		// An unexpected exception was thrown in user code while executing this test:
@@ -72,7 +73,7 @@ public class BuyMainActionTest {
 	}
 
 	@Test
-	public void testExecute_3()
+	public void testIfTheMethodReturnErrorsAndNotBonus()
 		throws Exception {
 		BuyMainAction fixture = new BuyMainAction();
 		

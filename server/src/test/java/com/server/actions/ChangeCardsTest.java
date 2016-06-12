@@ -2,6 +2,8 @@ package com.server.actions;
 
 import org.junit.*;
 
+import com.server.model.decks.PermitsCard;
+import com.server.model.decks.PermitsDeck;
 import com.server.model.gamelogic.Game;
 
 import static org.junit.Assert.*;
@@ -19,7 +21,7 @@ public class ChangeCardsTest {
 	}
 	
 	@Test
-	public void testChangeCards_1()
+	public void testTheConstructorOfChangeCards()
 		throws Exception {
 		int balconyIndex = 1;
 
@@ -33,7 +35,7 @@ public class ChangeCardsTest {
 	public void testChangeCards_2()
 		throws Exception {
 		int balconyIndex = 1;
-		ChangeCards fixture = new ChangeCards(1);
+		ChangeCards fixture = new ChangeCards(balconyIndex);
 		fixture.setGame(game);
 		game.getActualPlayer().getAvailableAssistants().remove(0);
 		fixture.isValid();
@@ -117,10 +119,20 @@ public class ChangeCardsTest {
 
 	
 
-	@After
-	public void tearDown()
-		throws Exception {
-	}
+//	@Test
+//	public void testTheCorrectChangementOfTheCards(){
+//		PermitsCard slot0 = game.getMap().getPermitsDeck(index)
+//	
+//	}
+	
+//	@Test
+//	public void testIfTheNumberOfCardsInThePermitsDeckDoesntChange(){
+//		ChangeCards fixture = new ChangeCards(1);
+//		fixture.setGame(game);
+//		PermitsDeck permD = game.getMap().getPermitsDeck(1);
+//		permD
+//		
+//	}
 
 	public static void main(String[] args) {
 		new org.junit.runner.JUnitCore().run(ChangeCardsTest.class);

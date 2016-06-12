@@ -219,8 +219,10 @@ public class BuildTest {
 	@Test
 	public void testIfIsValidReturnFalse()
 		throws Exception {
-		Build fixture = new Build(game.getMap().getCity()[4], new PermitsCard(b,l2));
-		fixture.setGame(new Game(3, true,  null));
+		PermitsCard pec = new PermitsCard(b,l3);
+		game.getActualPlayer().addPermits(pec);
+		Build fixture = new Build(game.getMap().getCity()[4], game.getActualPlayer().getPermits().get(0));
+		fixture.setGame(game);
 
 		boolean result = fixture.isValid();
 
@@ -231,42 +233,35 @@ public class BuildTest {
 		//       at com.server.model.gamelogic.Game.<init>(Game.java:49)
 		assertFalse(result);
 	}
-//
-////	@Test
-////	public void testSetGame_1()
-////		throws Exception {
-////		Build fixture = new Build(new City("", CityColor.BLUE, new String[] {}, 1, new BonusToken(new Bonus[] {})), new PermitsCard(new Bonus[] {}, new String[] {}));
-////		fixture.setGame(new Game(1, true, (Document) null));
-////		Game game = new Game(1, true, (Document) null);
-////
-////		fixture.setGame(game);
-////
-////		// An unexpected exception was thrown in user code while executing this test:
-////		//    java.lang.NullPointerException
-////		//       at com.server.model.board.Map.<init>(Map.java:147)
-////		//       at com.server.model.gamelogic.Game.initializeObjects(Game.java:71)
-////		//       at com.server.model.gamelogic.Game.<init>(Game.java:49)
-////	}
-//
-////	@Test
-////	public void testSetterFromDTO_1()
-////		throws Exception {
-////		Build fixture = new Build(new City("", CityColor.BLUE, new String[] {}, 1, new BonusToken(new Bonus[] {})), new PermitsCard(new Bonus[] {}, new String[] {}));
-////		fixture.setGame(new Game(1, true, null));
-////		BuildDTO buildDTO = new BuildDTO();
-////		buildDTO.setCity(new CityDTO());
-////		buildDTO.setPermit(new PermitsCardDTO());
-////		Player player = new Player(1);
-////		Game game = new Game(1, true, null);
-////
-////		fixture.setterFromDTO(buildDTO, player, game);
-////
-////		// An unexpected exception was thrown in user code while executing this test:
-////		//    java.lang.NullPointerException
-////		//       at com.server.model.board.Map.<init>(Map.java:147)
-////		//       at com.server.model.gamelogic.Game.initializeObjects(Game.java:71)
-////		//       at com.server.model.gamelogic.Game.<init>(Game.java:49)
-////	}
+	
+	
+	
+	
+
+	
+
+	@Test
+	public void testSetterFromDTO_1()
+		throws Exception {
+		PermitsCard pec = new PermitsCard(b,l3);
+		game.getActualPlayer().addPermits(pec);
+		Build fixture = new Build(game.getMap().getCity()[4], game.getActualPlayer().getPermits().get(0));
+		fixture.setGame(game);
+		BuildDTO buildDTO = new BuildDTO();
+		buildDTO.setCity(game.getMap().getCity()[4].toDTO());
+		buildDTO.setPermit(game.getActualPlayer().getPermits().get(0).toDTO());
+		
+		
+
+		fixture.setterFromDTO(buildDTO, game.getActualPlayer(), game);
+
+		// An unexpected exception was thrown in user code while executing this test:
+		//    java.lang.NullPointerException
+		//       at com.server.model.board.Map.<init>(Map.java:147)
+		//       at com.server.model.gamelogic.Game.initializeObjects(Game.java:71)
+		//       at com.server.model.gamelogic.Game.<init>(Game.java:49)
+		assertTrue(fixture instanceof Build);
+	}
 //
 //	
 //
