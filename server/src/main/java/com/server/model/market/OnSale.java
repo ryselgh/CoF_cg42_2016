@@ -11,12 +11,14 @@ public class OnSale{
 	private Player seller;	
 	protected static Object obj;
 	private int price;
+	private String UID;
 
 
-	public OnSale(Player p, Object o, int pr) {
+	public OnSale(Player p, Object o, int pr, String UID) {
 		this.seller = p;
 		this.obj = o;
 		this.price = pr;
+		this.UID = UID;
 	}
 
 	public OnSale(){};
@@ -28,7 +30,7 @@ public class OnSale{
 	
 	public String printDetails(){return "";};
 	
-	public boolean equalsDTO(OnSaleDTO osDTO){
+	/*public boolean equalsDTO(OnSaleDTO osDTO){
 		if (!(osDTO == null)) {
 			if (!seller.toDTO().equals(osDTO.getSeller()))
 				return false;
@@ -56,13 +58,15 @@ public class OnSale{
 				return false;
 		else
 			return false;
-	}
-	public OnSaleDTO toDTO() {
+	}*/
+	/*public OnSaleDTO toDTO() {
 		OnSaleDTO osDTO = new OnSaleDTO();
 		osDTO.setObj(obj);
 		osDTO.setPrice(price);
 		osDTO.setSeller(seller.toDTO());
 		return osDTO;
-	}
+	}*/
+	
+	public String getUID(){ return this.UID;}
 
 }

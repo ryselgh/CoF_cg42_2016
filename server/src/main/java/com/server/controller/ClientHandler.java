@@ -55,6 +55,7 @@ public class ClientHandler extends Observable implements Observer, Runnable{
 		try {
 			outputStream.writeObject(toSend);
 			outputStream.flush();
+			outputStream.reset();
 		} catch (IOException e) {
 			logger.log(Level.SEVERE, "Failed to send", e);
 		}

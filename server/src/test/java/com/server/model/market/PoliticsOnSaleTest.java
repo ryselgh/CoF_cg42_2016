@@ -8,6 +8,7 @@ import com.server.model.decks.PoliticsCard;
 import com.server.model.gamelogic.Player;
 
 public class PoliticsOnSaleTest {
+	String UID="";
 	@Test
 	public void testPoliticsOnSale_1()
 		throws Exception {
@@ -15,7 +16,7 @@ public class PoliticsOnSaleTest {
 		PoliticsCard pc = new PoliticsCard(CouncilorColor.BLACK);
 		int pr = 1;
 
-		PoliticsOnSale result = new PoliticsOnSale(pl, pc, pr);
+		PoliticsOnSale result = new PoliticsOnSale(pl, pc, pr,UID);
 
 		assertNotNull(result);
 		assertEquals("Politic card: [Color= BLACK]\nPrice= 1\n\n", result.printDetails());
@@ -25,7 +26,7 @@ public class PoliticsOnSaleTest {
 	@Test
 	public void testGetPrice_1()
 		throws Exception {
-		PoliticsOnSale fixture = new PoliticsOnSale(new Player("1"), new PoliticsCard(CouncilorColor.BLACK), 1);
+		PoliticsOnSale fixture = new PoliticsOnSale(new Player("1"), new PoliticsCard(CouncilorColor.BLACK), 1,UID);
 
 		int result = fixture.getPrice();
 
@@ -35,7 +36,7 @@ public class PoliticsOnSaleTest {
 	@Test
 	public void testObtain_1()
 		throws Exception {
-		PoliticsOnSale fixture = new PoliticsOnSale(new Player("1"), new PoliticsCard(CouncilorColor.BLACK), 1);
+		PoliticsOnSale fixture = new PoliticsOnSale(new Player("1"), new PoliticsCard(CouncilorColor.BLACK), 1,UID);
 		Player buyer = new Player("1");
 		buyer.setCoins(1);
 
@@ -46,7 +47,7 @@ public class PoliticsOnSaleTest {
 	@Test
 	public void testPrintDetails_1()
 		throws Exception {
-		PoliticsOnSale fixture = new PoliticsOnSale(new Player("1"), new PoliticsCard(CouncilorColor.BLACK), 1);
+		PoliticsOnSale fixture = new PoliticsOnSale(new Player("1"), new PoliticsCard(CouncilorColor.BLACK), 1,UID);
 
 		String result = fixture.printDetails();
 
@@ -56,7 +57,7 @@ public class PoliticsOnSaleTest {
 	@Test
 	public void testToDTO_1()
 		throws Exception {
-		PoliticsOnSale fixture = new PoliticsOnSale(new Player("1"), new PoliticsCard(CouncilorColor.BLACK), 1);
+		PoliticsOnSale fixture = new PoliticsOnSale(new Player("1"), new PoliticsCard(CouncilorColor.BLACK), 1,UID);
 
 		PoliticsOnSaleDTO result = fixture.toDTO();
 

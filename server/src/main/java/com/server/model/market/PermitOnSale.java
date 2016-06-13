@@ -11,12 +11,14 @@ public class PermitOnSale extends OnSale
 	private PermitsCard permit;
 	private Player seller;
 	private int price;
+	private String UID;
 	
 	
-	public PermitOnSale(Player pl, PermitsCard pc, int pr) {
+	public PermitOnSale(Player pl, PermitsCard pc, int pr, String UID) {
 		this.permit=pc;
 		this.price = pr;
 		this.seller = pl;	
+		this.UID = UID;
 	}
 	
 	public void obtain(Player buyer)
@@ -46,9 +48,13 @@ public class PermitOnSale extends OnSale
 		posDTO.setPermit(permit.toDTO());
 		posDTO.setPrice(price);
 		posDTO.setSeller(seller.toDTO());
+		posDTO.setUID(this.UID);
 		return posDTO;
 	}
-	
+
+	public String getUID() {
+		return UID;
+	}
 	
 }
 

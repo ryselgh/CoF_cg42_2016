@@ -42,6 +42,13 @@ public class Market implements Iterator{
 		objectsOnSale.remove(o);
 	}
 	
+	public void removeObj(String UID)
+	{
+		for(int i=0;i<objectsOnSale.size();i++)
+			if(objectsOnSale.get(i).getUID().equals(UID))
+				objectsOnSale.remove(i);
+	}
+	
 	public int getObjNumber()
 	{
 		return objectsOnSale.size();
@@ -63,7 +70,12 @@ public class Market implements Iterator{
 		MarketDTO marketDTO = new MarketDTO();
 		ArrayList<OnSaleDTO> osDTO = new ArrayList<OnSaleDTO>();
 		for(OnSale os : objectsOnSale)
-			osDTO.add(os.toDTO());
+			if(os instanceof AssistantOnSale)
+				osDTO.add(((AssistantOnSale)os).toDTO());
+			else if(os instanceof PermitOnSale)
+				osDTO.add(((PermitOnSale)os).toDTO());
+			else if(os instanceof PoliticsOnSale)
+				osDTO.add(((PoliticsOnSale)os).toDTO());
 		marketDTO.setObjectsOnSale(osDTO);
 		return marketDTO;
 	}

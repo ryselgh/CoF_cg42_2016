@@ -82,7 +82,8 @@ public class ActionState implements State {
 		clienthandler = context.getClienthandler();
 		gamehandler = context.getGamehandler();
 		this.game = gamehandler.getGame();
-		PoliticsCard draw = game.getMap().getPoliticsDeck().draw();
+		PoliticsCard draw = game.getMap().getPoliticsDeck().draw();//da aggiungere alla mano del giocatore
+		this.game.getActualPlayer().addPolitics(draw);
 		clienthandler.sendToClient("StartTurn", draw.toDTO());
 		gamehandler.updateClientGame();
 		

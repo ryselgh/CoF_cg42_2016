@@ -15,8 +15,15 @@ public class PoliticsOnSaleDTO extends OnSaleDTO implements Serializable{
 	private PoliticsCardDTO politicsCard;
 	private int price;
 	private PlayerDTO seller;
+	private String UID;
 	
 	
+	public String getUID() {
+		return UID;
+	}
+	public void setUID(String uID) {
+		UID = uID;
+	}
 	/**
 	 * @return the politicsCard
 	 */

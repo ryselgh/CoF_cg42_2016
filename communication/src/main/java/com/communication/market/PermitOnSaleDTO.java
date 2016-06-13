@@ -14,8 +14,15 @@ public class PermitOnSaleDTO extends OnSaleDTO implements Serializable{
 	private PermitsCardDTO permit;
 	private PlayerDTO seller;
 	private int price;
+	private String UID;
 	
 	
+	public String getUID() {
+		return UID;
+	}
+	public void setUID(String uID) {
+		UID = uID;
+	}
 	/**
 	 * @return the permit
 	 */

@@ -12,13 +12,13 @@ public class MarketTest {
 	OnSale o;
 	OnSale o2;
 	Player p;
-	
+	String UID="";
 	@Before
 	public void setUp()
 		throws Exception {
 		p = new Player("1");
-		o = new OnSale(p,new Assistant(), 3);
-		o2 = new OnSale(p,new Assistant(), 2);
+		o = new OnSale(p,new Assistant(), 3,UID);
+		o2 = new OnSale(p,new Assistant(), 2,UID);
 	}
 
 	
@@ -39,8 +39,8 @@ public class MarketTest {
 	public void testAddObj_1()
 		throws Exception {
 		Market fixture = new Market();
-		fixture.addObj(new OnSale(p,new Assistant(), 3));
-		OnSale o = new OnSale(p,new Assistant(), 3);
+		fixture.addObj(new OnSale(p,new Assistant(), 3,UID));
+		OnSale o = new OnSale(p,new Assistant(), 3,UID);
 
 		fixture.addObj(o);
 
@@ -104,7 +104,7 @@ public class MarketTest {
 	public void testNext_1()
 		throws Exception {
 		Market fixture = new Market();
-		fixture.addObj(new OnSale(p,new Assistant(), 3));
+		fixture.addObj(new OnSale(p,new Assistant(), 3,UID));
 
 		Object result = fixture.next();
 

@@ -12,6 +12,7 @@ public class OnSaleDTO implements Serializable{
 	private PlayerDTO seller;
 	private Object obj;	
 	private int price;
+	private String UID;
 	
 	
 	/**
@@ -49,6 +50,12 @@ public class OnSaleDTO implements Serializable{
 	 */
 	public void setPrice(int price) {
 		this.price = price;
+	}
+	public String getUID() {
+		return UID;
+	}
+	public void setUID(String uID) {
+		UID = uID;
 	}
 	
 }

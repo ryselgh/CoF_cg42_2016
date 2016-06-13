@@ -50,9 +50,10 @@ public class ClientController extends Observable implements Observer{
 	private SocketConnection connection;
 	private Logger logger;
 	private LobbyStatus lobbyStatus;
-	private int playerID; // <------------------------------------ PROVVISORIO, serve comunque un identificativo
+	private int playerID;
 	private ConsoleListener consoleListener;
 	private Thread consoleThread;
+	private boolean inGame = false;
 
 	public ClientController(){
 		cli = new ClientCLI(this);
@@ -159,7 +160,7 @@ public class ClientController extends Observable implements Observer{
 				connection.sendToServer("INSERTNICKNAME",nick);
 				break;
 			case "INSERTNICKNAMEACK":
-				consoleListener = new ConsoleListener();
+				consoleListener = new ConsoleListener(this);
 				consoleListener.addObserver(this);
 				consoleThread = new Thread(consoleListener);
 				consoleThread.start();
@@ -262,10 +263,10 @@ public class ClientController extends Observable implements Observer{
 				break;
 
 			case "TOBUY":					//Anche questa
-				OnSaleDTO onSaleDTO = null;
+				String onSaleUID;
 				ArrayList<OnSaleDTO> availableOnSale = new ArrayList<OnSaleDTO>(game.getMarket().getObjectsOnSale());
-				onSaleDTO = availableOnSale.get(cli.getObjectToBuyIndex(availableOnSale.size(), playerID));
-				connection.sendToServer("INPUT_TOBUY", onSaleDTO);
+				onSaleUID = cli.getObjectToBuyUID(availableOnSale.size(), playerID, availableOnSale);
+				connection.sendToServer("INPUT_TOBUY", onSaleUID);
 				break;
 
 			case "TOBUYACK":
@@ -312,7 +313,8 @@ public class ClientController extends Observable implements Observer{
 				this.game = (GameDTO) obj;
 				break;
 			case "STARTGAME":
-				//consoleListener.deleteObserver(this);//in gioco gli input sono ad invocazione  commentanto perchè credo sia inutile
+				this.inGame = true;
+				//consoleListener.deleteObserver(this);//in gioco gli input sono ad invocazione  
 				this.cli.setGameAndBuildMap((GameDTO) obj);
 				this.game = (GameDTO) obj;
 				break;
@@ -401,5 +403,7 @@ public class ClientController extends Observable implements Observer{
 		return null;
 	}
 
-
+	public boolean isInGame(){
+		return this.inGame;
+	}
 }

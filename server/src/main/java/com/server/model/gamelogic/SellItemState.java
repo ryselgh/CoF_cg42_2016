@@ -1,6 +1,11 @@
 package com.server.model.gamelogic;
 
+import java.util.ArrayList;
+import java.util.UUID;
 import com.communication.ItemOnSale;
+import com.communication.board.AssistantDTO;
+import com.communication.decks.PermitsCardDTO;
+import com.communication.decks.PoliticsCardDTO;
 import com.communication.market.AssistantOnSaleDTO;
 import com.communication.market.OnSaleDTO;
 import com.communication.market.PermitOnSaleDTO;
@@ -58,18 +63,25 @@ public class SellItemState implements State{
 	private OnSale DTOtoObj(ItemOnSale itemOnSale){
 		Object DTO = itemOnSale.getObj();
 		int price = itemOnSale.getPrice();
-		if (DTO instanceof AssistantOnSaleDTO)
-			if(game.getActualPlayer().getAvailableAssistants().size()>0)
-				return new AssistantOnSale(game.getActualPlayer(),game.getActualPlayer().getAvailableAssistants().get(0),price);
+		String UID = UUID.randomUUID().toString().substring(0, 15);
+		if (DTO instanceof AssistantDTO){
+			ArrayList<Assistant> assList = game.getActualPlayer().getAvailableAssistants();
+			if(assList.size()>0){
+				AssistantOnSale assOS = new AssistantOnSale(game.getActualPlayer(),game.getActualPlayer().getAvailableAssistants().get(0),price, UID);
+				return assOS;
+			}
 			else
 				return null;
-		else if (DTO instanceof PermitOnSaleDTO){
-			PermitsCard perm = PermitsCard.fromDTO(((PermitOnSaleDTO) DTO).getPermit(), game.getActualPlayer());
-			return new PermitOnSale(game.getActualPlayer(),perm, price);
 		}
-		else if (DTO instanceof PoliticsOnSale){
-			PoliticsCard politic = PoliticsCard.fromDTO(((PoliticsOnSaleDTO) DTO).getPoliticsCard(),game.getActualPlayer());
-			return new PoliticsOnSale(game.getActualPlayer(),politic, price);
+		else if (DTO instanceof PermitsCardDTO){
+			PermitsCard perm = PermitsCard.fromDTO((PermitsCardDTO) DTO, game.getActualPlayer());
+			PermitOnSale permOS = new PermitOnSale(game.getActualPlayer(),perm, price, UID);
+			return permOS;
+		}
+		else if (DTO instanceof PoliticsCardDTO){
+			PoliticsCard politic = PoliticsCard.fromDTO((PoliticsCardDTO) DTO,game.getActualPlayer());
+			PoliticsOnSale polOS = new PoliticsOnSale(game.getActualPlayer(),politic, price, UID);
+			return polOS;
 		}
 		
 		return null;
