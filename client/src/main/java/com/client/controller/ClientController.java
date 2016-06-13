@@ -79,16 +79,24 @@ public class ClientController extends Observable implements Observer{
 	}
 
 	private void printLobbyStatus(){
+		cli.printMsg("\n\n");
 		String clientsInLobby = "";
+		if(lobbyStatus.getFreeClients().size()==0)
+			clientsInLobby = "none";
+		else{
 		for(int i=0;i<lobbyStatus.getFreeClients().size();i++){
 			clientsInLobby += lobbyStatus.getFreeClients().get(i);
 			if(i!=lobbyStatus.getFreeClients().size()-1)
 				clientsInLobby += ", ";
 		}
+		}
 		cli.printMsg("Clients in lobby: " + clientsInLobby);
-		cli.printMsg("Rooms:");
+		if(lobbyStatus.getRooms().size()==0)
+			cli.printMsg("Rooms: none");
+		else{
+		cli.printMsg("\nRooms:");
 		for(RoomStatus rs : lobbyStatus.getRooms()){
-			cli.printMsg("[" + rs.getRoomName() + "]");
+			cli.printMsg("\n[" + rs.getRoomName() + "]");
 			String clientsInRoom = "";
 			for(int i=0;i<rs.getPlayers().size();i++){
 				clientsInRoom += rs.getPlayers().get(i);
@@ -103,6 +111,7 @@ public class ClientController extends Observable implements Observer{
 				cli.printMsg("Map: default");
 			else
 				cli.printMsg("Map: custom");
+		}
 		}
 	}
 

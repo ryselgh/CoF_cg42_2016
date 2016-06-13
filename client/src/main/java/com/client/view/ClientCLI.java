@@ -147,9 +147,9 @@ public class ClientCLI extends Observable implements Observer, Runnable{
 	public void printMap(){
 		for(int i=0;i<5;i++){
 			for(int j=0;j<15;j++){
-				System.out.print(map[j][i]);
+				out.print(map[j][i]);
 			}
-			System.out.print("\n");
+			out.print("\n");
 		}
 	}
 
@@ -331,6 +331,7 @@ public class ClientCLI extends Observable implements Observer, Runnable{
 	 */
 
 	public void printGameStatus(){
+		out.print("\n\n\n\n\n");  
 		this.printMap();
 		this.printCouncils();
 		this.printPlayerHand(game.getActualPlayer());

@@ -63,6 +63,7 @@ public class SocketConnection extends Observable{
 		try {
 			outputStream.writeObject(toSend);
 			outputStream.flush();
+			outputStream.reset();
 		} catch (IOException e) {
 			logger.log(Level.SEVERE, "Failed to send", e);
 		}

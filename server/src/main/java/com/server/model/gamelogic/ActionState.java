@@ -149,6 +149,8 @@ public class ActionState implements State {
 				toRet[i]=true;
 			toRet[8]=false;//non puoi passare senza aver fatto la main
 		}
+		else
+			toRet[8]=true;
 		if(speedCounter>0)
 			for(int i=4;i<8;i++)
 				toRet[i]=true;
