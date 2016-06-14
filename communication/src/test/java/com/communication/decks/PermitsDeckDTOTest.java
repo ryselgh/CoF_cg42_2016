@@ -16,6 +16,7 @@ public class PermitsDeckDTOTest {
 	String[] cityLetters;
 	PermitsCardDTO[] permitsDeckDTO;
 	ArrayList<PermitsCardDTO> permitsDeck; 
+	PermitsCardDTO[] slot;
 	
 	@Before
 	public void setUp()
@@ -33,23 +34,22 @@ public class PermitsDeckDTOTest {
 		cityLetters[0]="l";
 		cityLetters[1]="m";
 		permitsDeckDTO=new PermitsCardDTO[15];
-		for(PermitsCardDTO pc: permitsDeckDTO){
-			pc= new PermitsCardDTO();
-			pc.setBonuses(bonuses);
-			pc.setCityLetter(cityLetters);
-			
-		}
-		
 		permitsDeck = new ArrayList<PermitsCardDTO>(Arrays.asList(permitsDeckDTO));
+		slot = new PermitsCardDTO[2];
+		slot[0] = new PermitsCardDTO();
+		slot[0].setBonuses(bonuses);
+		slot[0].setCityLetter(cityLetters);
+		slot[0].setFaceDown(false);
+				
 	}
 	
 	
-//	@Test
-//	public void testPermitsDeckDTO_1()
-//		throws Exception {
-//		PermitsDeckDTO result = new PermitsDeckDTO();
-//		assertNotNull(result);
-//	}
+	@Test
+	public void testPermitsDeckDTO_1()
+		throws Exception {
+		PermitsDeckDTO result = new PermitsDeckDTO();
+		assertNotNull(result);
+	}
 
 	@Test
 	public void testGetPermitsDeck_1()
@@ -78,58 +78,21 @@ public class PermitsDeckDTOTest {
 		assertEquals(1, result);
 	}
 
-//	@Test
-//	public void testGetSlot_1()
-//		throws Exception {
-//		PermitsDeckDTO fixture = new PermitsDeckDTO();
-//		fixture.setRegionCode(1);
-//		fixture.setSlot(new PermitsCardDTO[2] );
-//		fixture.setPermitsDeck(permitsDeck);
-//
-//		PermitsCardDTO[] result = fixture.getSlot();
-//
-//		assertNotNull(result);
-//		assertEquals(2, result.length);
-//	}
+	@Test
+	public void testGetSlot_1()
+		throws Exception {
+		PermitsDeckDTO fixture = new PermitsDeckDTO();
+		fixture.setRegionCode(1);
+		fixture.setSlot(slot);
+		fixture.setPermitsDeck(permitsDeck);
 
-//	@Test
-//	public void testSetPermitsDeck_1()
-//		throws Exception {
-//		PermitsDeckDTO fixture = new PermitsDeckDTO();
-//		fixture.setRegionCode(1);
-//		fixture.setSlot(new PermitsCardDTO[] {});
-//		fixture.setPermitsDeck(new ArrayList());
-//		ArrayList<PermitsCardDTO> permitsDeck = new ArrayList();
-//
-//		fixture.setPermitsDeck(permitsDeck);
-//
-//	}
-//
-//	@Test
-//	public void testSetRegionCode_1()
-//		throws Exception {
-//		PermitsDeckDTO fixture = new PermitsDeckDTO();
-//		fixture.setRegionCode(1);
-//		fixture.setSlot(new PermitsCardDTO[] {});
-//		fixture.setPermitsDeck(new ArrayList());
-//		int regionCode = 1;
-//
-//		fixture.setRegionCode(regionCode);
-//
-//	}
-//
-//	@Test
-//	public void testSetSlot_1()
-//		throws Exception {
-//		PermitsDeckDTO fixture = new PermitsDeckDTO();
-//		fixture.setRegionCode(1);
-//		fixture.setSlot(new PermitsCardDTO[] {});
-//		fixture.setPermitsDeck(new ArrayList());
-//		PermitsCardDTO[] slot = new PermitsCardDTO[] {};
-//
-//		fixture.setSlot(slot);
-//
-//	}
+		PermitsCardDTO result = fixture.getSlot(0);
+
+		assertNotNull(result);
+		assertEquals(slot[0], result);
+	}
+
+
 
 	
 
