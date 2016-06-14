@@ -43,6 +43,19 @@ public class PoliticsDeckTest {
 		
 	}
 	
+//	@Test
+//	public void testTheEmptiness(){
+//		PoliticsDeck pd = new PoliticsDeck();
+//		for(PoliticsCard pc: pd)
+//			pd.discard(pc);
+//		
+//		PoliticsCard pol = pd.draw();
+//		
+//		
+//	}
+//	
+	
+	
 
 	
 

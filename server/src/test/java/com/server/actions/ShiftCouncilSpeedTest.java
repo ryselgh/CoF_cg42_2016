@@ -84,22 +84,99 @@ public class ShiftCouncilSpeedTest {
 		//       at com.server.model.gamelogic.Game.<init>(Game.java:49)
 		assertTrue(game.getActualPlayer().getAvailableAssistants().isEmpty());
 	}
+	
+	@Test
+	public void testExecute_4()
+		throws Exception {
+		
+		ShiftCouncilSpeed fixture = new ShiftCouncilSpeed(1, game.getMap().getCouncilorsPool().get(0));
+		fixture.setGame(game);
 
-//	@Test
-//	public void testIsValid_1()
-//		throws Exception {
-//		ShiftCouncilSpeed fixture = new ShiftCouncilSpeed(1, new Councilor(CouncilorColor.BLACK));
-//		fixture.setGame(new Game(1, true, (Document) null));
-//
-//		boolean result = fixture.isValid();
-//
-//		// An unexpected exception was thrown in user code while executing this test:
-//		//    java.lang.NullPointerException
-//		//       at com.server.model.board.Map.<init>(Map.java:147)
-//		//       at com.server.model.gamelogic.Game.initializeObjects(Game.java:71)
-//		//       at com.server.model.gamelogic.Game.<init>(Game.java:49)
-//		assertTrue(result);
-//	}
+		ActionReturn result = fixture.execute();
+
+		// An unexpected exception was thrown in user code while executing this test:
+		//    java.lang.NullPointerException
+		//       at com.server.model.board.Map.<init>(Map.java:147)
+		//       at com.server.model.gamelogic.Game.initializeObjects(Game.java:71)
+		//       at com.server.model.gamelogic.Game.<init>(Game.java:49)
+		assertEquals(game.getMap().getCouncilorsPool().size(),8);
+	}
+	
+	@Test
+	public void testExecute_7()
+		throws Exception {
+		ShiftCouncilMain fixture = new ShiftCouncilMain(1, game.getMap().getCouncilorsPool().get(0));
+		fixture.setGame(game);
+
+		ActionReturn result = fixture.execute();
+		
+		
+
+		// An unexpected exception was thrown in user code while executing this test:
+		//    java.lang.NullPointerException
+		//       at com.server.model.board.Map.<init>(Map.java:147)
+		//       at com.server.model.gamelogic.Game.initializeObjects(Game.java:71)
+		//       at com.server.model.gamelogic.Game.<init>(Game.java:49)
+		assertEquals(result.getError(),"");
+	}
+	
+	@Test
+	public void testExecute_8()
+		throws Exception {
+		ShiftCouncilSpeed fixture = new ShiftCouncilSpeed(1, game.getMap().getCouncilorsPool().get(0));
+		fixture.setGame(game);
+		game.getMap().getCouncilorsPool().clear();
+		fixture.isValid();
+
+		ActionReturn result = fixture.execute();
+		
+		
+		
+
+		// An unexpected exception was thrown in user code while executing this test:
+		//    java.lang.NullPointerException
+		//       at com.server.model.board.Map.<init>(Map.java:147)
+		//       at com.server.model.gamelogic.Game.initializeObjects(Game.java:71)
+		//       at com.server.model.gamelogic.Game.<init>(Game.java:49)
+		assertEquals(result.getError(), "\nInvalid input councilor");
+	}
+
+	@Test
+	public void testIsValid_1()
+		throws Exception {
+		ShiftCouncilSpeed fixture = new ShiftCouncilSpeed(1, game.getMap().getCouncilorsPool().get(0));
+		fixture.setGame(game);
+
+		boolean result = fixture.isValid();
+
+		// An unexpected exception was thrown in user code while executing this test:
+		//    java.lang.NullPointerException
+		//       at com.server.model.board.Map.<init>(Map.java:147)
+		//       at com.server.model.gamelogic.Game.initializeObjects(Game.java:71)
+		//       at com.server.model.gamelogic.Game.<init>(Game.java:49)
+		assertTrue(result);
+	}
+	
+	@Test
+	public void testIsValid_2()
+		throws Exception {
+		
+		ShiftCouncilSpeed fixture = new ShiftCouncilSpeed(1, game.getMap().getCouncilorsPool().get(0));
+		fixture.setGame(game);
+		game.getMap().getCouncilorsPool().clear();
+				
+		
+		
+
+		boolean result = fixture.isValid();
+
+		// An unexpected exception was thrown in user code while executing this test:
+		//    java.lang.NullPointerException
+		//       at com.server.model.board.Map.<init>(Map.java:147)
+		//       at com.server.model.gamelogic.Game.initializeObjects(Game.java:71)
+		//       at com.server.model.gamelogic.Game.<init>(Game.java:49)
+		assertFalse(result);
+	}
 //
 //	@Test
 //	public void testIsValid_2()

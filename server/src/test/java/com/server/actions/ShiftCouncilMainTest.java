@@ -40,10 +40,11 @@ public class ShiftCouncilMainTest {
 	@Test
 	public void testExecute_1()
 		throws Exception {
-		ShiftCouncilMain fixture = new ShiftCouncilMain(1, new Councilor(CouncilorColor.BLACK));
+		ShiftCouncilMain fixture = new ShiftCouncilMain(1, game.getMap().getCouncilorsPool().get(0));
 		fixture.setGame(game);
 
 		ActionReturn result = fixture.execute();
+		
 
 		// An unexpected exception was thrown in user code while executing this test:
 		//    java.lang.NullPointerException
@@ -57,7 +58,7 @@ public class ShiftCouncilMainTest {
 	public void testExecute_2()
 		throws Exception {
 		
-		ShiftCouncilMain fixture = new ShiftCouncilMain(1, new Councilor(CouncilorColor.BLACK));
+		ShiftCouncilMain fixture = new ShiftCouncilMain(1, game.getMap().getCouncilorsPool().get(0));
 		fixture.setGame(game);
 
 		ActionReturn result = fixture.execute();
@@ -74,7 +75,7 @@ public class ShiftCouncilMainTest {
 	public void testExecute_3()
 		throws Exception {
 		Councilor[] balcony = game.getMap().getBalcony(1).getCouncilors();
-		ShiftCouncilMain fixture = new ShiftCouncilMain(1, new Councilor(CouncilorColor.BLACK));
+		ShiftCouncilMain fixture = new ShiftCouncilMain(1, game.getMap().getCouncilorsPool().get(0));
 		fixture.setGame(game);
 
 		ActionReturn result = fixture.execute();
@@ -86,89 +87,141 @@ public class ShiftCouncilMainTest {
 		//       at com.server.model.gamelogic.Game.<init>(Game.java:49)
 		assertNotEquals(balcony,game.getMap().getBalcony(1).getCouncilors());
 	}
+	@Test
+	public void testExecute_4()
+		throws Exception {
+		
+		ShiftCouncilMain fixture = new ShiftCouncilMain(1, game.getMap().getCouncilorsPool().get(0));
+		fixture.setGame(game);
 
-//	@Test
-//	public void testIsValid_1()
-//		throws Exception {
-//		ShiftCouncilMain fixture = new ShiftCouncilMain(1, new Councilor(CouncilorColor.BLACK));
-//		fixture.setGame(game);
-//
-//		boolean result = fixture.isValid();
-//
-//		// An unexpected exception was thrown in user code while executing this test:
-//		//    java.lang.NullPointerException
-//		//       at com.server.model.board.Map.<init>(Map.java:147)
-//		//       at com.server.model.gamelogic.Game.initializeObjects(Game.java:71)
-//		//       at com.server.model.gamelogic.Game.<init>(Game.java:49)
-//		assertTrue(result);
-//	}
-//
-//	@Test
-//	public void testIsValid_2()
-//		throws Exception {
-//		ShiftCouncilMain fixture = new ShiftCouncilMain(1, new Councilor(CouncilorColor.BLACK));
-//		fixture.setGame(game);
-//
-//		boolean result = fixture.isValid();
-//
-//		// An unexpected exception was thrown in user code while executing this test:
-//		//    java.lang.NullPointerException
-//		//       at com.server.model.board.Map.<init>(Map.java:147)
-//		//       at com.server.model.gamelogic.Game.initializeObjects(Game.java:71)
-//		//       at com.server.model.gamelogic.Game.<init>(Game.java:49)
-//		assertTrue(result);
-//	}
-//
-//	@Test
-//	public void testIsValid_3()
-//		throws Exception {
-//		ShiftCouncilMain fixture = new ShiftCouncilMain(1, new Councilor(CouncilorColor.BLACK));
-//		fixture.setGame(new Game(1, true, (Document) null));
-//
-//		boolean result = fixture.isValid();
-//
-//		// An unexpected exception was thrown in user code while executing this test:
-//		//    java.lang.NullPointerException
-//		//       at com.server.model.board.Map.<init>(Map.java:147)
-//		//       at com.server.model.gamelogic.Game.initializeObjects(Game.java:71)
-//		//       at com.server.model.gamelogic.Game.<init>(Game.java:49)
-//		assertTrue(result);
-//	}
+		ActionReturn result = fixture.execute();
 
-//	@Test
-//	public void testSetGame_1()
-//		throws Exception {
-//		ShiftCouncilMain fixture = new ShiftCouncilMain(1, new Councilor(CouncilorColor.BLACK));
-//		fixture.setGame(new Game(1, true, (Document) null));
-//		Game game = new Game(1, true, (Document) null);
-//
-//		fixture.setGame(game);
-//
-//		// An unexpected exception was thrown in user code while executing this test:
-//		//    java.lang.NullPointerException
-//		//       at com.server.model.board.Map.<init>(Map.java:147)
-//		//       at com.server.model.gamelogic.Game.initializeObjects(Game.java:71)
-//		//       at com.server.model.gamelogic.Game.<init>(Game.java:49)
-//	}
-//
+		// An unexpected exception was thrown in user code while executing this test:
+		//    java.lang.NullPointerException
+		//       at com.server.model.board.Map.<init>(Map.java:147)
+		//       at com.server.model.gamelogic.Game.initializeObjects(Game.java:71)
+		//       at com.server.model.gamelogic.Game.<init>(Game.java:49)
+		assertEquals(game.getMap().getCouncilorsPool().size(),8);
+	}
+	
+	@Test
+	public void testExecute_5()
+		throws Exception {
+		ShiftCouncilMain fixture = new ShiftCouncilMain(1, game.getMap().getCouncilorsPool().get(0));
+		fixture.setGame(game);
+
+		ActionReturn result = fixture.execute();
+		
+		
+
+		// An unexpected exception was thrown in user code while executing this test:
+		//    java.lang.NullPointerException
+		//       at com.server.model.board.Map.<init>(Map.java:147)
+		//       at com.server.model.gamelogic.Game.initializeObjects(Game.java:71)
+		//       at com.server.model.gamelogic.Game.<init>(Game.java:49)
+		assertNull(result.getBonus());
+	}
+	
+	
+	@Test
+	public void testExecute_7()
+		throws Exception {
+		ShiftCouncilMain fixture = new ShiftCouncilMain(1, game.getMap().getCouncilorsPool().get(0));
+		fixture.setGame(game);
+
+		ActionReturn result = fixture.execute();
+		
+		
+
+		// An unexpected exception was thrown in user code while executing this test:
+		//    java.lang.NullPointerException
+		//       at com.server.model.board.Map.<init>(Map.java:147)
+		//       at com.server.model.gamelogic.Game.initializeObjects(Game.java:71)
+		//       at com.server.model.gamelogic.Game.<init>(Game.java:49)
+		assertEquals(result.getError(),"");
+	}
+	
+	@Test
+	public void testExecute_8()
+		throws Exception {
+		ShiftCouncilMain fixture = new ShiftCouncilMain(1, game.getMap().getCouncilorsPool().get(0));
+		fixture.setGame(game);
+		game.getMap().getCouncilorsPool().clear();
+		fixture.isValid();
+
+		ActionReturn result = fixture.execute();
+		
+		
+		
+
+		// An unexpected exception was thrown in user code while executing this test:
+		//    java.lang.NullPointerException
+		//       at com.server.model.board.Map.<init>(Map.java:147)
+		//       at com.server.model.gamelogic.Game.initializeObjects(Game.java:71)
+		//       at com.server.model.gamelogic.Game.<init>(Game.java:49)
+		assertEquals(result.getError(), "\nInvalid input councilor");
+	}
+
+	@Test
+	public void testIsValid_1()
+		throws Exception {
+		ShiftCouncilMain fixture = new ShiftCouncilMain(1, game.getMap().getCouncilorsPool().get(0));
+		fixture.setGame(game);
+
+		boolean result = fixture.isValid();
+
+		// An unexpected exception was thrown in user code while executing this test:
+		//    java.lang.NullPointerException
+		//       at com.server.model.board.Map.<init>(Map.java:147)
+		//       at com.server.model.gamelogic.Game.initializeObjects(Game.java:71)
+		//       at com.server.model.gamelogic.Game.<init>(Game.java:49)
+		assertTrue(result);
+	}
+	@Test
+	public void testIsValid_2()
+		throws Exception {
+		
+		ShiftCouncilMain fixture = new ShiftCouncilMain(1, game.getMap().getCouncilorsPool().get(0));
+		fixture.setGame(game);
+		game.getMap().getCouncilorsPool().clear();
+				
+		
+		
+
+		boolean result = fixture.isValid();
+
+		// An unexpected exception was thrown in user code while executing this test:
+		//    java.lang.NullPointerException
+		//       at com.server.model.board.Map.<init>(Map.java:147)
+		//       at com.server.model.gamelogic.Game.initializeObjects(Game.java:71)
+		//       at com.server.model.gamelogic.Game.<init>(Game.java:49)
+		assertFalse(result);
+	}
+
+
+
 //	@Test
 //	public void testSetterFromDTO_1()
 //		throws Exception {
+//		CouncilorDTO councilorDTO = new CouncilorDTO();
+//		councilorDTO.setColor(CouncilorColor.BLACK);
 //		ShiftCouncilMain fixture = new ShiftCouncilMain(1, new Councilor(CouncilorColor.BLACK));
-//		fixture.setGame(new Game(1, true, (Document) null));
+//		fixture.setGame(game);
 //		ShiftCouncilMainDTO scmDTO = new ShiftCouncilMainDTO();
 //		scmDTO.setBalconyIndex(1);
-//		scmDTO.setCouncilor(new CouncilorDTO());
-//		Player player = new Player(1);
-//		Game game = new Game(1, true, (Document) null);
+//		scmDTO.setCouncilor(councilorDTO);
+//		
+//		
 //
-//		fixture.setterFromDTO(scmDTO, player, game);
-//
+//		fixture.setterFromDTO(scmDTO, game.getActualPlayer(), game);
+//		
 //		// An unexpected exception was thrown in user code while executing this test:
 //		//    java.lang.NullPointerException
 //		//       at com.server.model.board.Map.<init>(Map.java:147)
 //		//       at com.server.model.gamelogic.Game.initializeObjects(Game.java:71)
 //		//       at com.server.model.gamelogic.Game.<init>(Game.java:49)
+//		
+//		
 //	}
 
 	
