@@ -39,7 +39,7 @@ public class EmporiumTest {
 		Player result = emp.getPlayer();
 
 		assertNotNull(result);
-		assertEquals(1, result.getID());
+		assertEquals("1", result.getID());
 		assertEquals(0, result.getScore());
 		assertEquals(null, result.getPawn());
 		assertEquals(false, result.hasUncoveredPermits());

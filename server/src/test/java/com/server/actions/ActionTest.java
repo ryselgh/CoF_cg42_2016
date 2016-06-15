@@ -10,12 +10,17 @@ import com.server.model.gamelogic.Player;
 public class ActionTest {
 	
 	Game game;
+	String[] players;
 	
 	@Before
 	public void setUp()
 		throws Exception {
+		players = new String[3];
+		players[0] = "1";
+		players[1] = "2";
+		players[2] = "3";
 		
-		game = new Game (3,true,null, null);
+		game = new Game (3,true,null, players);
 	}
 
 	@Test

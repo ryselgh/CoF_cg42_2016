@@ -12,12 +12,17 @@ public class ChangeCardsTest {
 	
 	
 	Game game;
+	String[] players;
 	
 	
 	@Before
 	public void setUp()
 		throws Exception {
-		game = new Game(2,true,null,null);
+		players = new String[3];
+		players[0] = "1";
+		players[1] = "2";
+		players[2] = "3";
+		game = new Game(3,true,null,players);
 	}
 	
 	@Test
@@ -26,6 +31,7 @@ public class ChangeCardsTest {
 		int balconyIndex = 1;
 
 		ChangeCards result = new ChangeCards(balconyIndex);
+		result.setGame(game);
 
 		assertNotNull(result);
 		

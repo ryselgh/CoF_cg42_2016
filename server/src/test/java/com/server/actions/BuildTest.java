@@ -28,6 +28,7 @@ public class BuildTest {
 	String[] l3;
 	Bonus[] b;
 	Game game;
+	String[] players;
 	
 	
 	@Before
@@ -47,7 +48,11 @@ public class BuildTest {
 		b = new Bonus[2];
 		b[0] = new Bonus(BonusType.ASSISTANT,1);
 		b[1] = new Bonus(BonusType.COIN,1);
-		game = new Game(2, true, null, null);
+		players = new String[3];
+		players[0] = "1";
+		players[1] = "2";
+		players[2] = "3";
+		game = new Game(3, true, null, players);
 	}
 
 	@Test

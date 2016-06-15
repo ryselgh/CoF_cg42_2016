@@ -6,7 +6,6 @@ import com.server.model.gamelogic.Game;
 
 public class ChangeCards extends Action{
 
-	private Game game;
 	private int balconyIndex;
 	private ArrayList<String> errors;
 	private boolean disable = false;

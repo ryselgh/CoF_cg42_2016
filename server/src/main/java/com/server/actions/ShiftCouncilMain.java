@@ -11,8 +11,7 @@ import com.server.model.gamelogic.Game;
 import com.server.model.gamelogic.Player;
 
 public class ShiftCouncilMain extends Action{
-		
-	private Game game;
+	
 	private int balconyIndex;
 	private Councilor councilor;
 	private ArrayList<String> errors;
@@ -22,9 +21,6 @@ public class ShiftCouncilMain extends Action{
 		this.balconyIndex = balconyIndex;
 		this.councilor = councilor;
 		errors = new ArrayList<String>();
-	}
-	public void setGame(Game game){
-		this.game = game;
 	}
 	
 	public boolean isValid(){

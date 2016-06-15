@@ -16,7 +16,6 @@ import com.server.model.gamelogic.Player;
 
 public class ObtainPermit extends Action {
 	
-	private Game game;
 	private PoliticsCard[] politics;
 	private int regionIndex;
     private int slot;
@@ -26,14 +25,12 @@ public class ObtainPermit extends Action {
     
     
 	public ObtainPermit(PoliticsCard[] politics, int regionIndex, int slot){
+		if(politics==null)
+			throw new NullPointerException();
 		this.politics = politics;
 		this.regionIndex = regionIndex;
 		this.slot = slot;
 		errors = new ArrayList<String>();
-	}
-	
-	public void setGame(Game game){
-		this.game = game;
 	}
 	
 	public boolean isValid(){
@@ -80,10 +77,10 @@ public class ObtainPermit extends Action {
 	    /* you have the right cards and enough money */
 	    if(!(counter == politics.length))
 	    	errors.add("Invalid input cards");
-	    else if(!(counter==1 && game.getActualPlayer().getCoins()>=(10 + jollycnt)) ||
+	    else if(!((counter==1 && game.getActualPlayer().getCoins()>=(10 + jollycnt)) ||
 	        (counter==2 && game.getActualPlayer().getCoins()>=(7 + jollycnt)) ||
 	        (counter==3 && game.getActualPlayer().getCoins()>=(4 + jollycnt)) ||
-	        (counter==4 && game.getActualPlayer().getCoins()>=(0 + jollycnt)))
+	        (counter==4 && game.getActualPlayer().getCoins()>=(0 + jollycnt))))
 	    		errors.add("You have not enought money");
 	  }
 	  
