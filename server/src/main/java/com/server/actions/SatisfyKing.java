@@ -84,10 +84,11 @@ public class SatisfyKing extends Action {
 	
 	private void isOperationValid() {
 		int tempCoin = 0;
-		if(game.getGraphMap().shortestPathCost(destination)>game.getActualPlayer().getCoins())
-			errors.add("You have not enought money");
+		int needCoin = game.getGraphMap().shortestPathCost(destination);
+		if(needCoin>game.getActualPlayer().getCoins())
+			errors.add("You have not enought money for the move [" + game.getMap().getKing().getLocation().getName() + " --> " + destination.getName() + "s, you need " + needCoin);
 		else
-			tempCoin = game.getActualPlayer().getCoins() - game.getGraphMap().shortestPathCost(destination);
+			tempCoin = needCoin;
 	    Balcony chosenBalcony = game.getMap().getBalcony(3);
 	    ArrayList<Councilor> tmpBalcony = new ArrayList<Councilor>(Arrays.asList(chosenBalcony.getCouncilors()));
 	    for(PoliticsCard p: politics){
@@ -107,11 +108,19 @@ public class SatisfyKing extends Action {
 	    /* you have the right cards and enough money */
 	    if(!(counter == politics.length))
 	    	errors.add("Invalid input cards");
-	    else if(!((counter==1 && tempCoin>=(10 + jollycnt)) ||
-	        (counter==2 && tempCoin>=(7 + jollycnt)) ||
-	        (counter==3 && tempCoin>=(4 + jollycnt)) ||
-	        (counter==4 && tempCoin>=(0 + jollycnt))))
-	    		errors.add("You have not enought money");
+	    else {
+	    	if(counter==1) 
+	    		needCoin= 10 + jollycnt;
+	    	else if(counter==2) 
+	    		needCoin= 7 + jollycnt;
+	    	else if(counter==3) 
+	    		needCoin= 4 + jollycnt;
+	    	else if(counter==4) 
+	    		needCoin= 0 + jollycnt;
+	    	if(needCoin+tempCoin>game.getActualPlayer().getCoins())
+	    		errors.add("You have not enought money, the action needs "+ tempCoin + " for the move and " + needCoin + " to pay the missing cards and jolly");
+	    }
+	        
 	  }
 	  
 	  private void payCards() {
@@ -137,7 +146,6 @@ public class SatisfyKing extends Action {
 			ArrayList<City> tocheck = new ArrayList<City>();
 			ArrayList<Bonus> found = new ArrayList<Bonus>();
 			found.addAll(new ArrayList<Bonus>(Arrays.asList(startcity.getBonusToken().getBonus())));//aggiungo i bonus della città di partenza
-			checked.add(startcity);
 			for (String c : startcity.getCloseCity())
 				tocheck.add(game.getCityFromName(c));//aggiungo le città vicine alla lista da controllare
 			while (true) {
@@ -151,17 +159,11 @@ public class SatisfyKing extends Action {
 							if (!checked.contains(game.getCityFromName(c)))
 								tocheck.add(game.getCityFromName(c));
 						tocheck.remove(i);//rimuovo la città appena controllata
-					}else{
-						checked.add(tocheck.get(i));
-						tocheck.remove(i);
 					}
+					else
+						tocheck.remove(i);
 				}
 			}
-			Bonus toRemove = null;
-			for(Bonus b: found)
-				if(b==null)
-					toRemove = b;
-			found.remove(toRemove);
 			Bonus[] stockArr = new Bonus[found.size()];
 			stockArr = found.toArray(stockArr);
 			return stockArr;
