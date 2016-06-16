@@ -309,6 +309,94 @@ public class SatisfyKingTest {
 		assertEquals(result,bonusReturn.getBonus());
 		assertEquals(game.getActualPlayer().getCoins(),26);
 	}
+	
+	
+	
+	@Test
+	public void testExecute_8()
+		throws Exception {
+		
+		PoliticsCard card1= new PoliticsCard(CouncilorColor.JOLLY);
+		
+		
+		game.getActualPlayer().getHand().add(0, card1);
+		
+		
+		PoliticsCard[] tempHand= new PoliticsCard[1];
+		tempHand[0] = game.getActualPlayer().getHand().get(0);
+		
+		
+		SatisfyKing fixture = new SatisfyKing(tempHand,destination);
+		fixture.setGame(game);
+		game.getActualPlayer().setCoins(30);
+		
+		
+		
+
+		fixture.isValid();
+		fixture.execute();
+		assertEquals(game.getActualPlayer().getCoins(),13);
+	}
+	@Test
+	public void testExecute_9()
+		throws Exception {
+		
+		PoliticsCard card1= new PoliticsCard(CouncilorColor.JOLLY);
+		PoliticsCard card2= new PoliticsCard(CouncilorColor.JOLLY);
+		
+		
+		game.getActualPlayer().getHand().add(0, card1);
+		game.getActualPlayer().getHand().add(0, card2);
+		
+		
+		PoliticsCard[] tempHand= new PoliticsCard[2];
+		tempHand[0] = game.getActualPlayer().getHand().get(0);
+		tempHand[1] = game.getActualPlayer().getHand().get(1);
+		
+		SatisfyKing fixture = new SatisfyKing(tempHand,destination);
+		fixture.setGame(game);
+		game.getActualPlayer().setCoins(30);
+		
+		
+		
+
+		fixture.isValid();
+		fixture.execute();
+		assertEquals(game.getActualPlayer().getCoins(),15);
+	}
+	@Test
+	public void testExecute_10()
+		throws Exception {
+		
+		PoliticsCard card1= new PoliticsCard(CouncilorColor.JOLLY);
+		PoliticsCard card2= new PoliticsCard(CouncilorColor.JOLLY);
+		PoliticsCard card3= new PoliticsCard(CouncilorColor.JOLLY);
+		
+		
+		game.getActualPlayer().getHand().add(0, card1);
+		game.getActualPlayer().getHand().add(0, card2);
+		game.getActualPlayer().getHand().add(0, card3);
+		
+		
+		PoliticsCard[] tempHand= new PoliticsCard[3];
+		tempHand[0] = game.getActualPlayer().getHand().get(0);
+		tempHand[1] = game.getActualPlayer().getHand().get(1);
+		tempHand[2] = game.getActualPlayer().getHand().get(2);
+		
+		
+		SatisfyKing fixture = new SatisfyKing(tempHand,destination);
+		fixture.setGame(game);
+		game.getActualPlayer().setCoins(30);
+		
+		
+		
+
+		fixture.isValid();
+		fixture.execute();
+		assertEquals(game.getActualPlayer().getCoins(),17);
+	}
+	
+	
 	@Test
 	public void testIsValid_2()
 		throws Exception {

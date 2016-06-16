@@ -1,4 +1,4 @@
-package com.server.model;
+package com.server.model.gamelogic;
 
 import org.junit.runner.JUnitCore;
 import org.junit.runner.RunWith;
@@ -6,10 +6,7 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-	com.server.model.board.TestAll.class,
-	com.server.model.decks.TestAll.class,
-	com.server.model.gamelogic.TestAll.class,
-	com.server.model.market.TestAll.class,
+	PlayerTest.class,
 })
 public class TestAll {
 
