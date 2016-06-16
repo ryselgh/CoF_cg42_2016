@@ -61,9 +61,9 @@ public class SocketConnection extends Observable{
 	public void sendToServer(String s, Object o){
 		CommunicationObject toSend = new CommunicationObject(s,(Object) ((Object)o));
 		try {
+			outputStream.reset();
 			outputStream.writeObject(toSend);
 			outputStream.flush();
-			outputStream.reset();
 		} catch (IOException e) {
 			logger.log(Level.SEVERE, "Failed to send", e);
 		}

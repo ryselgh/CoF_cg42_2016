@@ -25,8 +25,6 @@ public class ObtainPermit extends Action {
     
     
 	public ObtainPermit(PoliticsCard[] politics, int regionIndex, int slot){
-		if(politics==null)
-			throw new NullPointerException();
 		this.politics = politics;
 		this.regionIndex = regionIndex;
 		this.slot = slot;

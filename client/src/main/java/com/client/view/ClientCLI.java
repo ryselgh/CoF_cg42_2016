@@ -447,12 +447,13 @@ public class ClientCLI extends Observable implements Observer, Runnable{
 	
 	public int getBuildPermit(int playerID){
 		int i = 1;
-		for(PermitsCardDTO perm: game.getPlayers().get(playerID).getPermits()){
+		for(PermitsCardDTO perm: game.getActualPlayer().getPermits()){
 			if(!perm.isFaceDown()){
-				out.println(Integer.toString(i)+"-[");
+				out.print(Integer.toString(i)+"-[");
 				for(String c: perm.getCityLetter())
 					out.print(c+",");
 				out.print("]\n");
+				i++;
 			}
 		}
 		return waitCorrectIntInput("Select the permit you want to use to build.",1,i) -1;
@@ -530,8 +531,8 @@ public class ClientCLI extends Observable implements Observer, Runnable{
 		return waitCorrectIntInput("\nInsert the index of the card you want to choose.\n",1,cards.size()) - 1;
 	}
 	
-	public int getInputCities(CityDTO[] cities){
-		out.print("\nInsert the indexes of the cities:\n");
+	public int getInputCity(CityDTO[] cities){
+		out.print("\nInsert the index of the city:\n");
 		for(int i=0; i< cities.length;i++)
 			out.print(i+1 + "-" + cities[i].getName() + "\n");
 		return waitCorrectIntInput("",1,cities.length) - 1;

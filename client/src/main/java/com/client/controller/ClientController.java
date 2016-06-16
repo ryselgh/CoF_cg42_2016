@@ -31,6 +31,7 @@ import com.communication.actions.BuyAssistantDTO;
 import com.communication.actions.BuyMainActionDTO;
 import com.communication.actions.ChangeCardsDTO;
 import com.communication.actions.ObtainPermitDTO;
+import com.communication.actions.PassDTO;
 import com.communication.actions.SatisfyKingDTO;
 import com.communication.actions.ShiftCouncilMainDTO;
 import com.communication.actions.ShiftCouncilSpeedDTO;
@@ -151,7 +152,7 @@ public class ClientController extends Observable implements Observer{
 			cli.printMsg(cmd + "\n");
 		} 
 		else {// messaggio di gioco / input
-			boolean[] availableActions;
+			boolean[] availableActions = null;
 			int selectedAction;
 			ActionDTO compiledAction;
 			switch (cmd) {
@@ -311,8 +312,6 @@ public class ClientController extends Observable implements Observer{
 
 			case "ActionNotValid":
 				cli.printMsg(((String) obj)+ "\n");
-				
-				availableActions = (boolean[]) obj;
 				selectedAction = cli.getAction(availableActions);
 				compiledAction = getActionInstance(selectedAction);
 				connection.sendToServer("INPUT_ACTION", compiledAction);
@@ -340,10 +339,19 @@ public class ClientController extends Observable implements Observer{
 		switch(selectedAction){
 		case 3:
 			BuildDTO build = new BuildDTO();
+			PermitsCardDTO usedPermit = game.getActualPlayer().getPermits().get(cli.getBuildPermit(playerID));
+			CityDTO[] avCity = new CityDTO[usedPermit.getCityLetter().length];
+			int count = 0;
+			for(int i=0;i<game.getMap().getCity().length;i++){
+				for(String lett : usedPermit.getCityLetter())
+					if(game.getMap().getCity()[i].getName().substring(0, 1).toLowerCase().equals(lett)){
+						avCity[count] = game.getMap().getCity()[i];
+						count++;
+					}
+			}
 			cli.printMsg("Where do you want to build?");
-			int buildHere = cli.getInputCities(game.getMap().getCity());
-			build.setCity(game.getMap().getCity()[buildHere]);
-			PermitsCardDTO usedPermit = game.getPlayers().get(playerID).getPermits().get(cli.getBuildPermit(playerID));
+			int buildHere = cli.getInputCity(avCity);
+			build.setCity(avCity[buildHere]);
 			build.setPermit(usedPermit);
 			return build;
 		case 0:
@@ -363,17 +371,19 @@ public class ClientController extends Observable implements Observer{
 			cardsRet = new PoliticsCardDTO[polCards.size()];
 			cardsRet = polCards.toArray(cardsRet);
 			CityDTO[] cities = this.game.getMap().getCity();
-			CityDTO[] validCities = new CityDTO[cities.length - 1];
+			CityDTO[] validCities = new CityDTO[cities.length-1];
 			int i=0;
-			for(CityDTO c : cities)
-				if(!c.equals(this.game.getMap().getKing().getLocation())){
+			for(CityDTO c : cities){
+				CityDTO kingLoc = this.game.getMap().getKing().getLocation();
+				if(!c.equals(kingLoc)){
 					validCities[i]=c;
 					i++;
 				}
-			CityDTO dest = validCities[cli.getInputCities(validCities)];
+			}
+			CityDTO dest = validCities[cli.getInputCity(validCities)];
 			satKing.setDestination(dest);
 			satKing.setPolitics(cardsRet);
-			break;
+			return satKing;
 		case 2:
 			ShiftCouncilMainDTO shiftMain = new ShiftCouncilMainDTO();
 			ArrayList<CouncilorColor> avColors = new ArrayList<CouncilorColor>();
@@ -394,7 +404,7 @@ public class ClientController extends Observable implements Observer{
 		case 5:
 			ChangeCardsDTO changeDTO = new ChangeCardsDTO();
 			changeDTO.setBalconyIndex(cli.getTargetBalcony());
-			break;
+			return changeDTO;
 		case 6:
 			ShiftCouncilSpeedDTO shiftSpeed = new ShiftCouncilSpeedDTO();
 			ArrayList<CouncilorColor> availColors = new ArrayList<CouncilorColor>();
@@ -408,6 +418,9 @@ public class ClientController extends Observable implements Observer{
 					shiftSpeed.setCouncilor(c);
 			shiftSpeed.setBalconyIndex(balcIndex);
 			return shiftSpeed;
+		case 8:
+			PassDTO pass = new PassDTO();
+			return pass;
 		}
 		return null;
 	}

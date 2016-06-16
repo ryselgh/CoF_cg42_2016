@@ -134,6 +134,7 @@ public class Build extends Action{
 		city.setEmporium(game.getActualPlayer().getAvailableEmporiums().get(0));
 		game.getActualPlayer().getAvailableEmporiums().remove(0);
 		Bonus[] bonusToCollect = getCitiesBonus(city);
+		permit.setFaceDown(true);
 		return new ActionReturn(true,"",bonusToCollect);
 	}
 	

@@ -73,6 +73,8 @@ public class GameHandler extends Observable implements Runnable, Observer{
 		}
 		else{//è l'ultimo del giro
 			State newState = nextState(context.getState());//ricavo lo stato successivo
+			if(newState.getStateID().equals("BuyItemState") && this.game.getMarket().getObjectsOnSale().size()==0)
+				newState = nextState(newState);//se nessuno ha venduto niente si skippa il giro di buy
 			context.setClienthandler(players.get(0));//setto il turno al primo giocatore
 			game.setActualPlayer(0);//aggiorno il giocatore in game
 			newState.doAction(context);//avvio lo stato

@@ -28,6 +28,10 @@ public class SellItemState implements State{
 	private Context context;
 	public SellItemState(){}
 	
+	public String getStateID(){
+		return "SellItemState";
+	}
+	
 	@Override
 	public void doAction(Context context) {
 		this.context = context;
@@ -45,7 +49,7 @@ public class SellItemState implements State{
 			gamehandler.waitForInput("TOSELL", this);
 			return;
 		}
-		if(toSell.getObj() == null)
+		if(toSell == null)
 			clienthandler.sendToClient("TOSELLACK","NullSellReceived");
 		else {
 			OnSale soldObj = DTOtoObj(toSell);

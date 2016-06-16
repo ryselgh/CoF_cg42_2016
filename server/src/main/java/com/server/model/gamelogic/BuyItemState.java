@@ -16,6 +16,10 @@ public class BuyItemState implements State{
 	private Context context;
 	public BuyItemState(){}
 	
+	public String getStateID(){
+		return "BuyItemState";
+	}
+	
 	@Override
 	public void doAction(Context context) {
 		this.context = context;
