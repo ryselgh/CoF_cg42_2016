@@ -1,5 +1,5 @@
 @font-face {
-    font-family: 'PerryGothic';
+    font-family: 'PerryGothic Regular';
     src: url('font/PERRYGOT.TTF');
 }
 
@@ -9,7 +9,7 @@
 
 #lblNickname {
     -fx-font-size: 20pt;
-    -fx-font-family: "PerryGothic";
+    -fx-font-family: "PerryGothic Regular";
     -fx-text-fill: #A11212;
    	-fx-effect: dropshadow(one-pass-box, rgba(209,181,82,1), 5, 2, 0, 0);
 }
