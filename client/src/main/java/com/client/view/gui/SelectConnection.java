@@ -8,8 +8,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.stage.Stage;
 
 public class SelectConnection implements javafx.fxml.Initializable {
 	private ObservableList<String> connectionList = FXCollections.observableArrayList("Socket","RMI");
@@ -26,6 +30,23 @@ public class SelectConnection implements javafx.fxml.Initializable {
 	}	
 	
 	public void launch(ActionEvent e) throws Exception{
-		btnLaunch.setText("OK");
+		// if(connectionChoice.getValue().toString()=="Socket")
+			// SET CONNECTION: Socket
+		// else
+			// SET CONNECTION: RMI
+		//Launch client
+		Stage launcher = (Stage) btnLaunch.getScene().getWindow();
+		Stage primaryStage = new Stage();
+		Parent root = FXMLLoader.load(getClass().getResource("MainMenu.fxml"));
+		Scene scene = new Scene(root);
+		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+		primaryStage.setScene(scene);
+		primaryStage.setTitle("Council of Four");
+	    primaryStage.setResizable(false);
+	    primaryStage.setMaxHeight(768);
+	    primaryStage.setMaxWidth(1024);
+		primaryStage.show();
+		launcher.close();
+		
 	}
 }

@@ -1,1 +1,30 @@
-/* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+@font-face {
+    font-family: 'PerryGothic';
+    src: url('font/PERRYGOT.TTF');
+}
+
+.background {
+    -fx-background-color: #000000;
+}
+
+#lblNickname {
+    -fx-font-size: 20pt;
+    -fx-font-family: "PerryGothic";
+    -fx-text-fill: #A11212;
+   	-fx-effect: dropshadow(one-pass-box, rgba(209,181,82,1), 5, 2, 0, 0);
+}
+
+#btnNickname {
+    -fx-background-image: url('img/cof-btn-plain.png');
+    -fx-background-color: transparent;
+}
+
+#btnNickname:hover {
+  -fx-background-image: url('img/cof-btn-hover.png');
+    -fx-background-color: transparent;
+}
+
+#btnNickname:pressed {
+	-fx-background-image: url('img/cof-btn-pressed.png');
+    -fx-background-color: transparent;
+}
