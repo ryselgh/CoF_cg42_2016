@@ -46,6 +46,10 @@ public class ActionState implements State {
 
 	public ActionState(){}
 	
+	public String getStateID(){
+		return "ActionState";
+	}
+	
 	public void execute(ActionDTO actionDTO){
 		boolean pass = false;
 		Action action = null;
@@ -82,7 +86,8 @@ public class ActionState implements State {
 		clienthandler = context.getClienthandler();
 		gamehandler = context.getGamehandler();
 		this.game = gamehandler.getGame();
-		PoliticsCard draw = game.getMap().getPoliticsDeck().draw();
+		PoliticsCard draw = game.getMap().getPoliticsDeck().draw();//da aggiungere alla mano del giocatore
+		this.game.getActualPlayer().addPolitics(draw);
 		clienthandler.sendToClient("StartTurn", draw.toDTO());
 		gamehandler.updateClientGame();
 		
@@ -93,7 +98,7 @@ public class ActionState implements State {
 		Action act;
 		if(actDTO instanceof BuildDTO){
 			act = new Build(null,null);
-			act.setterFromDTO((BuildDTO) actDTO, game.getActualPlayer(), game);
+			((Build)act).setterFromDTO((BuildDTO) actDTO, game.getActualPlayer(), game);
 			return act;}
 		else if(actDTO instanceof BuyAssistantDTO){
 			act = new BuyAssistant();
@@ -108,7 +113,7 @@ public class ActionState implements State {
 		}
 		else if(actDTO instanceof ObtainPermitDTO){
 			act = new ObtainPermit(null,0,0);
-			act.setterFromDTO((ObtainPermitDTO) actDTO, game.getActualPlayer(), game);
+			((ObtainPermit)act).setterFromDTO((ObtainPermitDTO) actDTO, game.getActualPlayer(), game);
 			return act;}
 		else if(actDTO instanceof PassDTO){
 			act = new Pass();
@@ -116,15 +121,15 @@ public class ActionState implements State {
 		}
 		else if(actDTO instanceof SatisfyKingDTO){
 			act = new SatisfyKing(null,null);
-			act.setterFromDTO((SatisfyKingDTO) actDTO, game.getActualPlayer(), game);
+			((SatisfyKing)act).setterFromDTO((SatisfyKingDTO) actDTO, game.getActualPlayer(), game);
 			return act;}
 		else if(actDTO instanceof ShiftCouncilMainDTO){
 			act = new ShiftCouncilMain(0,null);
-			act.setterFromDTO((ShiftCouncilMainDTO) actDTO, game.getActualPlayer(), game);
+			((ShiftCouncilMain)act).setterFromDTO((ShiftCouncilMainDTO) actDTO, game.getActualPlayer(), game);
 			return act;}
 		else if(actDTO instanceof ShiftCouncilSpeedDTO){
 			act = new ShiftCouncilSpeed(0,null);
-			act.setterFromDTO((ShiftCouncilSpeedDTO) actDTO, game.getActualPlayer(), game);
+			((ShiftCouncilSpeed)act).setterFromDTO((ShiftCouncilSpeedDTO) actDTO, game.getActualPlayer(), game);
 			return act;}
 		else
 			return null;
@@ -148,6 +153,8 @@ public class ActionState implements State {
 				toRet[i]=true;
 			toRet[8]=false;//non puoi passare senza aver fatto la main
 		}
+		else
+			toRet[8]=true;
 		if(speedCounter>0)
 			for(int i=4;i<8;i++)
 				toRet[i]=true;

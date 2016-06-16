@@ -18,6 +18,10 @@ import com.communication.decks.PermitsCardDTO;
 import com.communication.decks.PoliticsCardDTO;
 import com.communication.gamelogic.GameDTO;
 import com.communication.gamelogic.PlayerDTO;
+import com.communication.market.AssistantOnSaleDTO;
+import com.communication.market.OnSaleDTO;
+import com.communication.market.PermitOnSaleDTO;
+import com.communication.market.PoliticsOnSaleDTO;
 import com.communication.values.*;
 
 public class ClientCLI extends Observable implements Observer, Runnable{
@@ -143,9 +147,9 @@ public class ClientCLI extends Observable implements Observer, Runnable{
 	public void printMap(){
 		for(int i=0;i<5;i++){
 			for(int j=0;j<15;j++){
-				System.out.print(map[j][i]);
+				out.print(map[j][i]);
 			}
-			System.out.print("\n");
+			out.print("\n");
 		}
 	}
 
@@ -327,6 +331,7 @@ public class ClientCLI extends Observable implements Observer, Runnable{
 	 */
 
 	public void printGameStatus(){
+		out.print("\n\n\n\n\n");  
 		this.printMap();
 		this.printCouncils();
 		this.printPlayerHand(game.getActualPlayer());
@@ -442,12 +447,13 @@ public class ClientCLI extends Observable implements Observer, Runnable{
 	
 	public int getBuildPermit(int playerID){
 		int i = 1;
-		for(PermitsCardDTO perm: game.getPlayers().get(playerID).getPermits()){
+		for(PermitsCardDTO perm: game.getActualPlayer().getPermits()){
 			if(!perm.isFaceDown()){
-				out.println(Integer.toString(i)+"-[");
+				out.print(Integer.toString(i)+"-[");
 				for(String c: perm.getCityLetter())
 					out.print(c+",");
 				out.print("]\n");
+				i++;
 			}
 		}
 		return waitCorrectIntInput("Select the permit you want to use to build.",1,i) -1;
@@ -469,8 +475,46 @@ public class ClientCLI extends Observable implements Observer, Runnable{
 		return waitCorrectIntInput("\nHi Player" + playerIndex + ", insert the index of the PermitsCard you want to sell. Insert 0 to go back.\n",0,size) - 1;
 	}
 	
-	public int getObjectToBuyIndex(int size, int playerIndex){
-		return waitCorrectIntInput("\nHi Player" + playerIndex + ", insert the index of the item you want to buy on the market. Insert 0 to pass.\n",0,size) - 1;
+	public String getObjectToBuyUID(int size, int playerIndex, ArrayList<OnSaleDTO> availableOnSale){
+		String UIDs[] = new String[availableOnSale.size()];
+		int count =0;
+		String whatIs = "";
+		for(OnSaleDTO osDTO : availableOnSale){
+			if(osDTO instanceof AssistantOnSaleDTO){
+				whatIs = "Assistant";
+				UIDs[count]= ((AssistantOnSaleDTO) osDTO).getUID();
+				count++;
+			}
+			else if(osDTO instanceof PermitOnSaleDTO){
+				PermitOnSaleDTO posDTO = (PermitOnSaleDTO) osDTO;
+				PermitsCardDTO pcDTO = posDTO.getPermit();
+				String pcBonus = "";
+				String pcLetters = "";
+				for(BonusDTO bDTO : pcDTO.getBonuses())
+					pcBonus += bDTO.getType().toString() + "x" + bDTO.getQnt() + ", ";
+				for(int i=0;i<pcDTO.getCityLetter().length; i++){
+					pcLetters += pcDTO.getCityLetter()[i];
+					if(i!=pcDTO.getCityLetter().length-1)
+						pcLetters += ", ";
+				}
+				whatIs = "PermitCard, Bonus: " + pcBonus + " Letters: " + pcLetters;
+				UIDs[count]= ((PermitOnSaleDTO) osDTO).getUID();
+				count++;
+			}
+			else if(osDTO instanceof PoliticsOnSaleDTO){
+				PoliticsOnSaleDTO posDTO = (PoliticsOnSaleDTO) osDTO;
+				PoliticsCardDTO pcDTO = posDTO.getPoliticsCard();
+				whatIs = "PoliticCard, Color: " + pcDTO.getColor().toString();
+				UIDs[count]= ((PoliticsOnSaleDTO) osDTO).getUID();
+				count++;
+			}
+			else return "";
+			out.print("Seller: Player" + osDTO.getSeller().getPlayerID() + ", item: " + whatIs + ", price: " + osDTO.getPrice() + "\n");
+		}
+		int input = waitCorrectIntInput("\nHi Player" + playerIndex + ", insert the index of the item you want to buy on the market. Insert 0 to pass.\n",0,size);
+		if(input==0)
+			return "";
+		return UIDs[input - 1];
 	}
 	
 	
@@ -487,8 +531,8 @@ public class ClientCLI extends Observable implements Observer, Runnable{
 		return waitCorrectIntInput("\nInsert the index of the card you want to choose.\n",1,cards.size()) - 1;
 	}
 	
-	public int getInputCities(CityDTO[] cities){
-		out.print("\nInsert the indexes of the cities:\n");
+	public int getInputCity(CityDTO[] cities){
+		out.print("\nInsert the index of the city:\n");
 		for(int i=0; i< cities.length;i++)
 			out.print(i+1 + "-" + cities[i].getName() + "\n");
 		return waitCorrectIntInput("",1,cities.length) - 1;

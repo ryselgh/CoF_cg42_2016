@@ -7,20 +7,29 @@ import com.client.ClientObservable;
 
 public class ConsoleListener extends Observable implements Runnable{
 	private Scanner in;
+	private ClientController clientController;
 	
-	public ConsoleListener(){
-
+	public ConsoleListener(ClientController c){
+		this.clientController = c;
 		this.in = new Scanner(System.in);
 	}
 
 	@Override
 	public void run() {
 		String cmd = "";
-		do{
-			cmd = in.nextLine();
-			this.setChanged();
-			this.notifyObservers(cmd);
-		}while(!cmd.equals("\\STARTGAME"));
+		do {
+			if (in.hasNextLine()) {
+				cmd = in.nextLine();
+				this.setChanged();
+				this.notifyObservers(cmd);
+			} else
+				try {
+					Thread.sleep(500);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		} while (!clientController.isInGame());
 	}
 	
 }

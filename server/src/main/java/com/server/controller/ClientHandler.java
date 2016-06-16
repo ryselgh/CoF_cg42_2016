@@ -53,6 +53,7 @@ public class ClientHandler extends Observable implements Observer, Runnable{
 	public void sendToClient(String msg, Object o){
 		CommunicationObject toSend = new CommunicationObject(msg,(Object) o);
 		try {
+			outputStream.reset();
 			outputStream.writeObject(toSend);
 			outputStream.flush();
 		} catch (IOException e) {

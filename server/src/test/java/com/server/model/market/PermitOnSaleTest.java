@@ -8,6 +8,7 @@ import com.server.model.decks.PermitsCard;
 import com.server.model.gamelogic.Player;
 
 public class PermitOnSaleTest {
+	String UID="";
 	@Test
 	public void testPermitOnSale_1()
 		throws Exception {
@@ -15,7 +16,7 @@ public class PermitOnSaleTest {
 		PermitsCard pc = new PermitsCard(new Bonus[] {}, new String[] {});
 		int pr = 1;
 
-		PermitOnSale result = new PermitOnSale(pl, pc, pr);
+		PermitOnSale result = new PermitOnSale(pl, pc, pr,UID);
 
 		assertNotNull(result);
 		assertEquals("Permit card: {[Letters= ], [Bonus= ]}\nPrice= 1\n\n", result.printDetails());
@@ -25,7 +26,7 @@ public class PermitOnSaleTest {
 	@Test
 	public void testGetPrice_1()
 		throws Exception {
-		PermitOnSale fixture = new PermitOnSale(new Player("1"), new PermitsCard(new Bonus[] {}, new String[] {}), 1);
+		PermitOnSale fixture = new PermitOnSale(new Player("1"), new PermitsCard(new Bonus[] {}, new String[] {}), 1,UID);
 
 		int result = fixture.getPrice();
 
@@ -35,7 +36,7 @@ public class PermitOnSaleTest {
 	@Test
 	public void testObtain_1()
 		throws Exception {
-		PermitOnSale fixture = new PermitOnSale(new Player("1"), new PermitsCard(new Bonus[] {}, new String[] {}), 1);
+		PermitOnSale fixture = new PermitOnSale(new Player("1"), new PermitsCard(new Bonus[] {}, new String[] {}), 1,UID);
 		Player buyer = new Player("1");
 		buyer.setCoins(1);
 
@@ -46,7 +47,7 @@ public class PermitOnSaleTest {
 	@Test
 	public void testPrintDetails_1()
 		throws Exception {
-		PermitOnSale fixture = new PermitOnSale(new Player("1"), new PermitsCard(new Bonus[] {}, new String[] {}), 1);
+		PermitOnSale fixture = new PermitOnSale(new Player("1"), new PermitsCard(new Bonus[] {}, new String[] {}), 1,UID);
 
 		String result = fixture.printDetails();
 
@@ -56,7 +57,7 @@ public class PermitOnSaleTest {
 	@Test
 	public void testPrintDetails_2()
 		throws Exception {
-		PermitOnSale fixture = new PermitOnSale(new Player("1"), new PermitsCard(new Bonus[] {}, new String[] {}), 1);
+		PermitOnSale fixture = new PermitOnSale(new Player("1"), new PermitsCard(new Bonus[] {}, new String[] {}), 1,UID);
 
 		String result = fixture.printDetails();
 
@@ -66,7 +67,7 @@ public class PermitOnSaleTest {
 	@Test
 	public void testToDTO_1()
 		throws Exception {
-		PermitOnSale fixture = new PermitOnSale(new Player("1"), new PermitsCard(new Bonus[] {}, new String[] {}), 1);
+		PermitOnSale fixture = new PermitOnSale(new Player("1"), new PermitsCard(new Bonus[] {}, new String[] {}), 1,UID);
 
 		PermitOnSaleDTO result = fixture.toDTO();
 

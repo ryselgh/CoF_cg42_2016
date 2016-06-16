@@ -106,29 +106,48 @@ public class Lobby extends Observable implements Runnable, Observer  {
 				return r;
 		return null;
 	}
+
 	@Override
 	public void update(Observable arg0, Object arg1) {
-		if(arg0 instanceof IdentifyPlayer){//ricevo un nuovo client
+		if (arg0 instanceof IdentifyPlayer) {// ricevo un nuovo client
 			clients.add((ClientHandler) arg1);
 			lobbyStatus = generateLobbyStatus();
 			setChanged();
-		    notifyObservers(lobbyStatus);
-		}
-		else if(arg0 instanceof ClientHandler){//ricevo un comando da un client
+			notifyObservers(lobbyStatus);
+		} else if (arg0 instanceof ClientHandler) {// ricevo un comando da un
+													// client
 			String command = ((CommunicationObject) arg1).getMsg();
 			Object object = ((CommunicationObject) arg1).getObj();
 			ClientHandler sender = (ClientHandler) arg0;
-			int resp = commandParser(command, sender, object);
-			if(resp!=0)//se c'è un errore, altrimenti l'esito corretto viene già comunicato
-				sendToClient(sender, "lobby_msg-" + commandResponse[resp]);
-			else{
-				lobbyStatus = generateLobbyStatus();
-				setChanged();
-			    notifyObservers(lobbyStatus);
+			if (command.equals("DisconnectedFromLobby")){ //se il giocatore chiude il client
+				 removePlayer((ClientHandler) arg0);
+				 sendLobbyStatus();
 			}
+			else {
+				int resp = commandParser(command, sender, object);
+				if (resp != 0)// se c'è un errore, altrimenti l'esito corretto viene già comunicato
+					sendToClient(sender, "lobby_msg-" + commandResponse[resp]);
+				else 
+					sendLobbyStatus();
 			}
 		}
+	}
 	
+	private void sendLobbyStatus(){
+		lobbyStatus = generateLobbyStatus();
+		setChanged();
+		notifyObservers(lobbyStatus);
+	}
+	
+	private void removePlayer(ClientHandler clientHandler){
+		for(Room r : this.rooms)
+			for(int i=0;i<r.getPlayers().size();i++)
+				if(r.getPlayers().get(i).equals(clientHandler))
+					r.getPlayers().remove(i);
+		for(int i=0;i<this.clients.size();i++)
+			if(this.clients.get(i).equals(clientHandler))
+				this.clients.remove(i);
+	}
 	
 	private LobbyStatus generateLobbyStatus(){
 		ArrayList<String> freeClients = new ArrayList<String>(); 

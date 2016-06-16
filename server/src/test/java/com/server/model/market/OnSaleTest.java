@@ -7,6 +7,7 @@ import com.communication.market.OnSaleDTO;
 import com.server.model.gamelogic.Player;
 
 public class OnSaleTest {
+	String UID="";
 	@Test
 	public void testOnSale_1()
 		throws Exception {
@@ -25,78 +26,18 @@ public class OnSaleTest {
 		Object o = new Object();
 		int pr = 1;
 
-		OnSale result = new OnSale(p, o, pr);
+		OnSale result = new OnSale(p, o, pr,UID);
 
 		assertNotNull(result);
 		assertEquals("", result.printDetails());
 		assertEquals(0, result.getPrice());
 	}
 
-	@Test
-	public void testEqualsDTO_1()
-		throws Exception {
-		OnSale fixture = new OnSale(new Player("1"), new Object(), 1);
-		OnSaleDTO osDTO = new OnSaleDTO();
-		osDTO.setSeller(new PlayerDTO());
-
-		boolean result = fixture.equalsDTO(osDTO);
-
-		assertEquals(false, result);
-	}
-
-	@Test
-	public void testEqualsDTO_2()
-		throws Exception {
-		OnSale fixture = new OnSale(new Player("1"), new Object(), 1);
-		OnSaleDTO osDTO = new OnSaleDTO();
-		osDTO.setSeller(new PlayerDTO());
-
-		boolean result = fixture.equalsDTO(osDTO);
-
-		assertEquals(false, result);
-	}
-
-	@Test
-	public void testEqualsDTO_3()
-		throws Exception {
-		OnSale fixture = new OnSale(new Player("1"), new Object(), 1);
-		OnSaleDTO osDTO = new OnSaleDTO();
-		osDTO.setPrice(1);
-		osDTO.setSeller(new PlayerDTO());
-
-		boolean result = fixture.equalsDTO(osDTO);
-
-		assertEquals(false, result);
-	}
-
-	@Test
-	public void testEqualsDTO_4()
-		throws Exception {
-		OnSale fixture = new OnSale(new Player("1"), new Object(), 1);
-		OnSaleDTO osDTO = new OnSaleDTO();
-		osDTO.setPrice(1);
-		osDTO.setSeller(new PlayerDTO());
-
-		boolean result = fixture.equalsDTO(osDTO);
-
-		assertEquals(false, result);
-	}
-
-	@Test(expected = java.lang.NullPointerException.class)
-	public void testEqualsDTO_5()
-		throws Exception {
-		OnSale fixture = new OnSale(new Player("1"), new Object(), 1);
-		OnSaleDTO osDTO = null;
-
-		boolean result = fixture.equalsDTO(osDTO);
-
-		assertTrue(result);
-	}
 
 	@Test
 	public void testGetPrice_1()
 		throws Exception {
-		OnSale fixture = new OnSale(new Player("1"), new Object(), 1);
+		OnSale fixture = new OnSale(new Player("1"), new Object(), 1,UID);
 
 		int result = fixture.getPrice();
 
@@ -106,7 +47,7 @@ public class OnSaleTest {
 	@Test
 	public void testObtain_1()
 		throws Exception {
-		OnSale fixture = new OnSale(new Player("1"), new Object(), 1);
+		OnSale fixture = new OnSale(new Player("1"), new Object(), 1,UID);
 		Player buyer = new Player("1");
 
 		fixture.obtain(buyer);
@@ -116,25 +57,13 @@ public class OnSaleTest {
 	@Test
 	public void testPrintDetails_1()
 		throws Exception {
-		OnSale fixture = new OnSale(new Player("1"), new Object(), 1);
+		OnSale fixture = new OnSale(new Player("1"), new Object(), 1,UID);
 
 		String result = fixture.printDetails();
 
 		assertEquals("", result);
 	}
 
-	@Test
-	public void testToDTO_1()
-		throws Exception {
-		OnSale fixture = new OnSale(new Player("1"), new Object(), 1);
-
-		OnSaleDTO result = fixture.toDTO();
-
-		// An unexpected exception was thrown in user code while executing this test:
-		//    java.lang.ClassCastException: java.lang.Object cannot be cast to com.communication.SerObject
-		//       at com.server.model.market.OnSale.toDTO(OnSale.java:63)
-		assertNotNull(result);
-	}
 
 	@Before
 	public void setUp()

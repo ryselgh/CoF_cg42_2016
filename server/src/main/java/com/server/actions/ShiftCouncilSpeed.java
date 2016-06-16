@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import com.communication.actions.ShiftCouncilMainDTO;
+import com.communication.actions.ShiftCouncilSpeedDTO;
 import com.communication.board.CouncilorDTO;
 import com.server.model.board.Councilor;
 import com.server.model.gamelogic.Game;
@@ -54,7 +55,7 @@ public class ShiftCouncilSpeed extends Action{
 		
 	}
 	
-	public void setterFromDTO(ShiftCouncilMainDTO scmDTO,Player player,Game game){
+	public void setterFromDTO(ShiftCouncilSpeedDTO scmDTO,Player player,Game game){
 		this.game = game;
 		this.balconyIndex = scmDTO.getBalconyIndex();
 		this.councilor = getCouncilorFromDTO(scmDTO.getCouncilor());

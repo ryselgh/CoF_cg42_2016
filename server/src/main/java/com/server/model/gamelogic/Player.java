@@ -67,9 +67,9 @@ public class Player {
 	}
 	
 	public void removeAssistant(Assistant ass){
-		for(Assistant a : availableAssistants)
-			if(a.equals(ass))
-				availableAssistants.remove(a);
+		for(int i=0;i<availableAssistants.size();i++)
+			if(availableAssistants.get(i).equals(ass))
+				availableAssistants.remove(i);
 	}
 
 	/**

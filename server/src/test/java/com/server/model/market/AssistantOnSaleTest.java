@@ -14,7 +14,7 @@ public class AssistantOnSaleTest {
 	
 	Player player;
 	Assistant as;
-	
+	String UID="";
 	@Before
 	public void setUp()
 		throws Exception {
@@ -31,7 +31,7 @@ public class AssistantOnSaleTest {
 		
 		int pr = 1;
 
-		AssistantOnSale result = new AssistantOnSale(player, as, pr);
+		AssistantOnSale result = new AssistantOnSale(player, as, pr,UID);
 
 		assertNotNull(result);
 		assertEquals(1, result.getPrice());
@@ -41,13 +41,13 @@ public class AssistantOnSaleTest {
 	public void youHaveToSellSomething(){
 		
 		int pr = 1;
-		AssistantOnSale asOnSale = new AssistantOnSale(player,null,pr);
+		AssistantOnSale asOnSale = new AssistantOnSale(player,null,pr,UID);
 	}
 
 	@Test
 	public void testGetPrice_1()
 		throws Exception {
-		AssistantOnSale fixture = new AssistantOnSale(player, as, 1);
+		AssistantOnSale fixture = new AssistantOnSale(player, as, 1,UID);
 
 		int result = fixture.getPrice();
 
@@ -57,7 +57,7 @@ public class AssistantOnSaleTest {
 	@Test
 	public void testObtain_1()
 		throws Exception {
-		AssistantOnSale fixture = new AssistantOnSale(player, as, 1);
+		AssistantOnSale fixture = new AssistantOnSale(player, as, 1,UID);
 		
 		
 		Player buyer = new Player("1");
@@ -79,7 +79,7 @@ public class AssistantOnSaleTest {
 	@Test
 	public void testPrintDetails_1()
 		throws Exception {
-		AssistantOnSale fixture = new AssistantOnSale(player, as, 1);
+		AssistantOnSale fixture = new AssistantOnSale(player, as, 1,UID);
 
 		String result = fixture.printDetails();
 
@@ -89,7 +89,7 @@ public class AssistantOnSaleTest {
 	@Test
 	public void testToDTO_1()
 		throws Exception {
-		AssistantOnSale fixture = new AssistantOnSale(player, as, 1);
+		AssistantOnSale fixture = new AssistantOnSale(player, as, 1,UID);
 
 		AssistantOnSaleDTO result = fixture.toDTO();
 

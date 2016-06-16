@@ -11,6 +11,7 @@ public class AssistantOnSaleDTO extends OnSaleDTO implements Serializable{
 	private AssistantDTO assistant;
 	private PlayerDTO seller;
 	private int price;
+	private String UID;
 	
 	
 	/**
@@ -48,6 +49,12 @@ public class AssistantOnSaleDTO extends OnSaleDTO implements Serializable{
 	 */
 	public void setPrice(int price) {
 		this.price = price;
+	}
+	public String getUID() {
+		return UID;
+	}
+	public void setUID(String uID) {
+		UID = uID;
 	}
 	
 	
