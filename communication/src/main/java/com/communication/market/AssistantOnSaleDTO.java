@@ -57,6 +57,11 @@ public class AssistantOnSaleDTO extends OnSaleDTO implements Serializable{
 		UID = uID;
 	}
 	
+	@Override
+	public AssistantDTO getObj(){
+		return assistant;
+	}
+	
 	
 }
 

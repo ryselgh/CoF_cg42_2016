@@ -146,6 +146,7 @@ public class SatisfyKing extends Action {
 			ArrayList<City> tocheck = new ArrayList<City>();
 			ArrayList<Bonus> found = new ArrayList<Bonus>();
 			found.addAll(new ArrayList<Bonus>(Arrays.asList(startcity.getBonusToken().getBonus())));//aggiungo i bonus della città di partenza
+			checked.add(startcity);
 			for (String c : startcity.getCloseCity())
 				tocheck.add(game.getCityFromName(c));//aggiungo le città vicine alla lista da controllare
 			while (true) {
@@ -159,11 +160,17 @@ public class SatisfyKing extends Action {
 							if (!checked.contains(game.getCityFromName(c)))
 								tocheck.add(game.getCityFromName(c));
 						tocheck.remove(i);//rimuovo la città appena controllata
-					}
-					else
+					}else{
+						checked.add(tocheck.get(i));
 						tocheck.remove(i);
+					}
 				}
 			}
+			Bonus toRemove = null;
+			for(Bonus b: found)
+				if(b==null)
+					toRemove = b;
+			found.remove(toRemove);
 			Bonus[] stockArr = new Bonus[found.size()];
 			stockArr = found.toArray(stockArr);
 			return stockArr;

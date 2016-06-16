@@ -19,7 +19,7 @@ public class PassTest {
 
 		assertNotNull(result);
 		assertEquals(true, result.isValid());
-		assertEquals(null, result.execute());
+		assertNotNull(result.execute());
 	}
 
 	
