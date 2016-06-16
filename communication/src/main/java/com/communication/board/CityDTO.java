@@ -92,7 +92,9 @@ public class CityDTO implements Serializable{
 		this.playerNum = playerNum;
 	}
 	
-	public boolean equals(CityDTO c){
+	public boolean equalsDTO(CityDTO c){
+		if(c==null)
+			throw new NullPointerException("CityDTO cannot be null");
 		if(this.name.equals(c.getName()))
 			return true;
 		return false;

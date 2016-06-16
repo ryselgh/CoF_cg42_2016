@@ -375,7 +375,7 @@ public class ClientController extends Observable implements Observer{
 			int i=0;
 			for(CityDTO c : cities){
 				CityDTO kingLoc = this.game.getMap().getKing().getLocation();
-				if(!c.equals(kingLoc)){
+				if(!c.equalsDTO(kingLoc)){
 					validCities[i]=c;
 					i++;
 				}
