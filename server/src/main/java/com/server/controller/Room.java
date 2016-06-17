@@ -14,8 +14,12 @@ public class Room {
 	private String name;
 	private boolean defaultMap = true;
 	private RoomState status;
+	private GameHandler gameHandler;
+	private Lobby lobby;
+	private Thread threadGameHandler;
 	
-	public Room(String name, ClientHandler adm, int maxPlayers, int minPlayers){
+	public Room(String name, ClientHandler adm, int maxPlayers, int minPlayers, Lobby lobby){
+		this.lobby=lobby;
 		this.name = name;
 		this.admin = adm;
 		this.maxPlayers = maxPlayers;
@@ -42,11 +46,18 @@ public class Room {
 			ch.inGame = true;
 		}
 		this.status = RoomState.IN_GAME;
-		GameHandler gh = new GameHandler(players,defaultMap,rawMap);
-		Thread thread = new Thread(gh);
-		thread.start();
+		gameHandler = new GameHandler(players,defaultMap,rawMap,lobby, this);
+		threadGameHandler = new Thread(gameHandler);
+		threadGameHandler.start();
 	}
 	
+	public void stopThreadGameHandler(){
+		try {
+			threadGameHandler.join();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
 	public ClientHandler leaveRoom(ClientHandler player) {//ritorna il nuovo admin, se l'admin lefta
 		for (int i = 0; i < players.size(); i++)
 			if (players.get(i).equals(player)) {
@@ -106,6 +117,10 @@ public class Room {
 	
 	public boolean isDefaultMap() {
 		return defaultMap;
+	}
+
+	public GameHandler getGameHandler() {
+		return gameHandler;
 	}
 
 	

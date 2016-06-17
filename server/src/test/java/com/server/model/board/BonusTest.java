@@ -67,17 +67,6 @@ public class BonusTest {
 	}
 	
 	@Test
-	public void testingFalseEqualMethod(){
-			
-		BonusDTO b = new BonusDTO();
-		b.setQuantity(2);
-		b.setType(BonusType.CARD);
-		Bonus bn = new Bonus(BonusType.ASSISTANT,2);
-		
-		assertFalse(bn.equalsDTO(b));
-	}
-	
-	@Test
 	public void testToDTO(){
 		
 		Bonus bn= new Bonus(BonusType.ASSISTANT,2);
@@ -93,14 +82,6 @@ public class BonusTest {
 		BonusType type= bn.getType();
 		assertTrue(type.equals(BonusType.NOBILITY));
 	}
-	
-	@Test
-	public void testHasNoNobility(){
-		Bonus bn = new Bonus(BonusType.ASSISTANT,3);
-		BonusType type= bn.getType();
-		assertFalse(type.equals(BonusType.NOBILITY));
-	}
-	
 	
 
 }

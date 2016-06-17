@@ -15,10 +15,12 @@ import com.communication.values.RoomState;
 
 public class Lobby extends Observable implements Runnable, Observer  {
 	private ArrayList<ClientHandler> clients;
+	private ArrayList<ClientHandler> inactiveClients;
 	private ArrayList<Room> rooms;
 	private String[] commandResponse;
 	private LobbyStatus lobbyStatus;
 	public Lobby(){ 
+		inactiveClients = new ArrayList<ClientHandler>();
 		clients = new ArrayList<ClientHandler>();
 		rooms = new ArrayList<Room>();
 		commandResponse = new String[] {"Success", "Command not recognized","The game already started","There are not enought players",
@@ -54,7 +56,11 @@ public class Lobby extends Observable implements Runnable, Observer  {
 			sendToClient(sender, "lobby_msg-" + "Map successfully changed");
 			break;
 		case "\\NEWROOM":
-			if(Integer.parseInt(ret[2])<Integer.parseInt(ret[3])){
+			if(ret.length!=4){
+				sendToClient(sender, "lobby_msg-" + "Wrong input format");
+				break;
+			}
+			else if(Integer.parseInt(ret[2])<Integer.parseInt(ret[3])){
 				sendToClient(sender, "lobby_msg-" + "MaxPlayers can't be lower than MinPlayers");
 				break;
 			}
@@ -79,6 +85,10 @@ public class Lobby extends Observable implements Runnable, Observer  {
 			break;
 		case "\\STARTGAME":
 			r = findRoomByClient(sender);
+			if(r==null){
+				sendToClient(sender, "lobby_msg-" + "You are in the lobby, you can't start the game");
+				return 0;
+			}
 			int retg = startRoom(r,sender);
 			return retg;
 		case "\\LEAVEROOM":
@@ -106,11 +116,36 @@ public class Lobby extends Observable implements Runnable, Observer  {
 				return r;
 		return null;
 	}
-
+	
+	private void restorePlayer(ClientHandler newInstance, ClientHandler oldInstance){
+		Room room = findPlayerRoom(oldInstance);
+		GameHandler roomGH = room.getGameHandler();
+		ArrayList<ClientHandler> oldInst = roomGH.getPlayers();
+		ArrayList<ClientHandler> newInst = new ArrayList<ClientHandler>();
+		for(ClientHandler ch : oldInst){//sostituisco la vecchia istanza con la nuova (quindi cambio socket e ClientListener)
+			if(ch.equals(newInstance))//uso il for per mantenere l'ordine se no va tutto a puttane
+				newInst.add(newInstance);//sostituendo l'istanza non devo settare active=true perchè lo è di default
+			else
+				newInst.add(ch);
+		}
+		roomGH.setPlayers(newInst);
+		this.deleteObserver(newInstance);
+		newInstance.deleteObserver(this);
+		newInstance.addObserver(roomGH);
+		inactiveClients.remove(newInstance);
+		room.getGameHandler().broadcastAnnounce("CLIENTCONNECTED", newInstance.getUserName());
+	}
+	
 	@Override
 	public void update(Observable arg0, Object arg1) {
 		if (arg0 instanceof IdentifyPlayer) {// ricevo un nuovo client
-			clients.add((ClientHandler) arg1);
+			ClientHandler toAdd = (ClientHandler) arg1;
+			for(ClientHandler ch : this.inactiveClients)
+				if(ch.equals(toAdd)){//l'equals confronta solo i nomi 
+					restorePlayer(toAdd,ch);
+						return;
+					}
+			clients.add(toAdd);
 			lobbyStatus = generateLobbyStatus();
 			setChanged();
 			notifyObservers(lobbyStatus);
@@ -120,8 +155,11 @@ public class Lobby extends Observable implements Runnable, Observer  {
 			Object object = ((CommunicationObject) arg1).getObj();
 			ClientHandler sender = (ClientHandler) arg0;
 			if (command.equals("DisconnectedFromLobby")){ //se il giocatore chiude il client
-				 removePlayer((ClientHandler) arg0);
-				 sendLobbyStatus();
+				ClientHandler c = (ClientHandler) arg0;
+				this.deleteObserver(c);
+				c.closeSocket();
+				removePlayer(c);
+				sendLobbyStatus();
 			}
 			else {
 				int resp = commandParser(command, sender, object);
@@ -133,20 +171,43 @@ public class Lobby extends Observable implements Runnable, Observer  {
 		}
 	}
 	
+	public void disconnectFromGame(ClientHandler sender){
+		sender.closeSocket();
+		Room room = findPlayerRoom(sender);
+		room.getGameHandler().deleteObserver(sender);
+		removePlayer(sender);
+	}
+	
 	private void sendLobbyStatus(){
 		lobbyStatus = generateLobbyStatus();
 		setChanged();
 		notifyObservers(lobbyStatus);
 	}
 	
-	private void removePlayer(ClientHandler clientHandler){
-		for(Room r : this.rooms)
-			for(int i=0;i<r.getPlayers().size();i++)
-				if(r.getPlayers().get(i).equals(clientHandler))
-					r.getPlayers().remove(i);
-		for(int i=0;i<this.clients.size();i++)
-			if(this.clients.get(i).equals(clientHandler))
-				this.clients.remove(i);
+	private Room findPlayerRoom(ClientHandler clientHandler){
+		for (Room r : this.rooms)
+			for (int i = 0; i < r.getPlayers().size(); i++)
+				if (r.getPlayers().get(i).equals(clientHandler))
+					return r;
+		return null;
+	}
+
+	private void removePlayer(ClientHandler clientHandler) {
+		Room room = findPlayerRoom(clientHandler); // trovo la room di appartenenza, se c'è
+		if (room == null) {
+			for (int i = 0; i < this.clients.size(); i++)
+				if (this.clients.get(i).equals(clientHandler))
+					this.clients.remove(i);// rimuovo il client dalla lista dei clients nella lobby
+		} else {
+			if (!clientHandler.inGame) {// se il giocatore non è il gioco viene cancellato forever
+				if (room != null)
+					room.getPlayers().remove(clientHandler);
+			} else {// se il giocatore sta giocando
+				clientHandler.setActive(false);
+				inactiveClients.add(clientHandler);
+				room.getGameHandler().broadcastAnnounce("CLIENTDISCONNECTED", clientHandler.getUserName());
+			}
+		}
 	}
 	
 	private LobbyStatus generateLobbyStatus(){
@@ -185,7 +246,31 @@ public class Lobby extends Observable implements Runnable, Observer  {
 		return null;
 	}
 	private void createRoom(String name, ClientHandler admin, int maxPl, int minPl){
-		rooms.add(new Room(name,admin,maxPl,minPl));
+		rooms.add(new Room(name,admin,maxPl,minPl,this));
+	}
+	
+	public void endGame(Room r, GameHandler gameHandler, ClientHandler winner){
+		gameHandler.broadcastAnnounce("ENDGAME", winner.getUserName());
+		gameHandler.deleteObservers();
+		for(ClientHandler ch : gameHandler.getPlayers()){
+			ch.deleteObservers();
+			if(ch.isActive())//se il client non è disconnesso lo rimando alla lobby
+				clients.add(ch);
+			else//se invece è ancora disconnesso alla fine della partita, lo tolgo dai clients inattivi
+				for(int i=0;i<this.inactiveClients.size();i++)
+					if(ch.getUserName().equals(this.inactiveClients.get(i).getUserName()))
+						this.inactiveClients.remove(i);
+			ch.addObserver(this);
+			this.addObserver(ch);
+			ch.inGame=false;
+		}
+			for(int i=0;i<rooms.size();i++)
+				if(r.getName().equals(rooms.get(i).getName()))
+						rooms.remove(i);
+			lobbyStatus = generateLobbyStatus();
+			setChanged();
+			notifyObservers(lobbyStatus);
+			
 	}
 	
 	private int startRoom(Room r, ClientHandler player){
@@ -211,7 +296,7 @@ public class Lobby extends Observable implements Runnable, Observer  {
 					return true;
 		for(Room r : this.rooms)
 			for(ClientHandler ch : r.getPlayers())
-				if(ch.getUserName().equals(nick))
+				if(ch.getUserName().equals(nick) && ch.isActive())
 					return true;
 		return false;
 	}

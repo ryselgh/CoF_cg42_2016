@@ -8,6 +8,7 @@ import com.client.ClientObservable;
 public class ConsoleListener extends Observable implements Runnable{
 	private Scanner in;
 	private ClientController clientController;
+	private boolean active = true;
 	
 	public ConsoleListener(ClientController c){
 		this.clientController = c;
@@ -31,5 +32,14 @@ public class ConsoleListener extends Observable implements Runnable{
 				}
 		} while (!clientController.isInGame());
 	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+	
 	
 }

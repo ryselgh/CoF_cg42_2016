@@ -25,7 +25,7 @@ import com.server.model.gamelogic.SellItemState;
 import com.server.model.gamelogic.State;
 
 public class GameHandler extends Observable implements Runnable, Observer{
-	ArrayList<ClientHandler> players;
+	private ArrayList<ClientHandler> players;
 	private Game game;
 	private String rawMap;
 	private Context context;
@@ -33,9 +33,13 @@ public class GameHandler extends Observable implements Runnable, Observer{
 	private String toResumeStr;
 	private boolean waitingInput = false;
 	private Logger logger;
+	private Lobby lobby;
+	private Room room;
 	
-	public GameHandler(ArrayList<ClientHandler> pl, boolean defaultMap, String map){
+	public GameHandler(ArrayList<ClientHandler> pl, boolean defaultMap, String map, Lobby lobby, Room room){
 		players = pl;
+		this.lobby = lobby;
+		this.room = room;
 		this.game = new Game(players.size(),defaultMap,map, clientNames(players));
 		GameDTO gameDTO = this.game.toDto();
 		for(ClientHandler ch : pl){
@@ -62,13 +66,21 @@ public class GameHandler extends Observable implements Runnable, Observer{
 		return ret;
 	}
 	
+	public void endGame(ClientHandler winner){
+		lobby.endGame(room, this, winner);
+	}
 	
 	public void changeState(Context context){
 		ClientHandler client = context.getClienthandler();
 		if(!client.equals(players.get(players.size()-1))){//se non è l'ultimo del giro
 			context.getState().restoreState();//refresho lo stato
-			context.setClienthandler(nextPlayer(client));//aggiorno il riferimento al client
+			ClientHandler nextPl = nextPlayer(client);
+			context.setClienthandler(nextPl);//aggiorno il riferimento al client
 			game.setActualPlayer(game.getActualPlayerIndex() +1);//aggiorno il giocatore in game
+			if(!nextPl.isActive()){//se il giocatore è disconnesso skippa il turno
+				changeState(context);
+				return;
+			}
 			context.getState().doAction(context);//avvio lo stato
 		}
 		else{//è l'ultimo del giro
@@ -77,6 +89,10 @@ public class GameHandler extends Observable implements Runnable, Observer{
 				newState = nextState(newState);//se nessuno ha venduto niente si skippa il giro di buy
 			context.setClienthandler(players.get(0));//setto il turno al primo giocatore
 			game.setActualPlayer(0);//aggiorno il giocatore in game
+			if(!players.get(0).isActive()){
+				changeState(context);
+				return;
+			}
 			newState.doAction(context);//avvio lo stato
 		}
 		updateClientGame();
@@ -86,6 +102,12 @@ public class GameHandler extends Observable implements Runnable, Observer{
 		GameDTO gameDTO = this.game.toDto();
 		for(ClientHandler ch : this.players){
 			ch.sendToClient("GAMEDTO", (Object) gameDTO);
+		}
+	}
+	
+	public void broadcastAnnounce(String msg, Object obj){
+		for(ClientHandler ch : this.players){
+			ch.sendToClient(msg, obj);
 		}
 	}
 	public ClientHandler nextPlayer(ClientHandler pl){
@@ -155,6 +177,14 @@ public class GameHandler extends Observable implements Runnable, Observer{
 	
 	
 	
+	public void setPlayers(ArrayList<ClientHandler> players) {
+		this.players = players;
+	}
+
+	public ArrayList<ClientHandler> getPlayers() {
+		return players;
+	}
+
 	public void waitForInput(String ID, Object action){//da spostare qui le richieste al client dal clienthandler che riceverà soltante
 		this.waitingInput = true;
 		this.toResume = action;

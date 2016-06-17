@@ -143,4 +143,10 @@ public class Build extends Action{
 		this.game = game;
 		this.city = game.getCityFromName(buildDTO.getCity().getName());
 	}
+
+	public City getCity() {
+		return city;
+	}
+	
+	
 }

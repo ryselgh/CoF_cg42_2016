@@ -32,18 +32,23 @@ public class ClientHandler extends Observable implements Observer, Runnable{
 	private String userName;
 	private Logger logger;
 	public boolean inGame = false;
+	private boolean active = true;
+	private ClientListener listener;
+	private Lobby lobby;
 	
-	public ClientHandler(Socket s, ObjectInputStream si, ObjectOutputStream so, String un){
+	public ClientHandler(Socket s, ObjectInputStream si, ObjectOutputStream so, String un, Lobby l){
 		this.socket = s;
 		this.inputStream = si;
 		this.outputStream = so;
 		this.userName = un;
+		this.lobby=l;
 	}
 	
-	private void startListen(){
-		ClientListener listener = new ClientListener(inputStream);
+	public void startListen(){
+		listener = new ClientListener(inputStream);
+		Thread clListThread = new Thread(listener);
 		listener.addObserver(this);
-		listener.startListen();
+		clListThread.run();
 	}
 	
 	public String getUserName() {
@@ -51,14 +56,17 @@ public class ClientHandler extends Observable implements Observer, Runnable{
 	}
 	
 	public void sendToClient(String msg, Object o){
+		if(this.active){
 		CommunicationObject toSend = new CommunicationObject(msg,(Object) o);
 		try {
 			outputStream.reset();
 			outputStream.writeObject(toSend);
 			outputStream.flush();
-		} catch (IOException e) {
-			logger.log(Level.SEVERE, "Failed to send", e);
-		}
+		} catch (Exception e) {
+			lobby.disconnectFromGame(this);
+		    return;
+		}}
+		else{String br = "breakpointami e correggi";}
 	}
 	
 	private CommunicationObject getClientInput(){
@@ -94,11 +102,48 @@ public class ClientHandler extends Observable implements Observer, Runnable{
 		    notifyObservers(arg);//passa alla lobby
 		}
 	}
+	
+	public void closeSocket(){
+		try {
+			this.socket.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 	@Override
 	public void run() {
 		startListen();
 		
 	}
+	
+	public boolean equals(ClientHandler c){
+		if(c==null)
+			throw new NullPointerException("ClientHandler cannot be null.");
+		if(c.getUserName().equals(this.getUserName()))
+			return true;
+		return false;
+	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+
+	public void setSocket(Socket socket) {
+		this.socket = socket;
+		try {
+			outputStream = new ObjectOutputStream(socket.getOutputStream());
+			inputStream = new ObjectInputStream(socket.getInputStream());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	
 
 }

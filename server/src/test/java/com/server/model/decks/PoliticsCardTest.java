@@ -58,17 +58,6 @@ public class PoliticsCardTest {
 		
 		
 	}
-	@Test
-	public void testFalseEqualsDTO(){
-		
-		PoliticsCard fixture = new PoliticsCard(CouncilorColor.BLACK);
-		PoliticsCardDTO pcDTO = new PoliticsCardDTO();
-		pcDTO.setColor(CouncilorColor.BLUESKY);
-		
-		assertFalse(fixture.equalsDTO(pcDTO));
-		
-		
-	}
 	
 	@Test (expected=NullPointerException.class)
 	public void testEqualsNull(){
@@ -96,22 +85,6 @@ public class PoliticsCardTest {
 		
 		
 	}
-//	@Test(expected = NullPointerException.class)
-//	public void testFromDTO_2(){
-//		
-//		PoliticsCard fixture = new PoliticsCard(CouncilorColor.BLACK);
-//		PoliticsCardDTO pcDTO=new PoliticsCardDTO();
-//		
-//		Player player = new Player("1");
-//		player.addPolitics(fixture);
-//		PoliticsCard pc = new PoliticsCard(CouncilorColor.BLACK);
-//		PoliticsCard pc2 = pc.fromDTO(pcDTO, player);
-//		
-//		
-//		
-//		
-//		
-//	}
 
 	public static void main(String[] args) {
 		new org.junit.runner.JUnitCore().run(PoliticsCardTest.class);

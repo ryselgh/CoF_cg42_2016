@@ -33,6 +33,7 @@ import com.server.model.board.Assistant;
 import com.server.model.board.Bonus;
 import com.server.model.board.BonusToken;
 import com.server.model.board.City;
+import com.server.model.board.Emporium;
 import com.server.model.decks.PermitsCard;
 import com.server.model.decks.PoliticsCard;
 
@@ -75,11 +76,30 @@ public class ActionState implements State {
 				collectBonus(b);
 		decreaseCounter(action);
 		gamehandler.updateClientGame();
+		if(action instanceof Build)
+			if(checkWin())
+				return;
 		if(pass || !(mainCounter > 0 || speedCounter > 0))
 			gamehandler.changeState(context);
 		else
 			this.execute(null);
+		
 	}
+	
+	private boolean checkWin() {
+		int count = 0;
+		for (City city : gamehandler.getGame().getMap().getCity())
+			for (Emporium e : city.getEmporium())
+				if (e.getPlayer().getID().equals(clienthandler.getUserName()))
+					count++;
+		if (count >= 10) {
+			this.gamehandler.endGame(clienthandler);
+			return true;
+		}
+		return false;
+
+	}
+	
 	public void doAction(Context context) {
 		this.context = context;
 		context.setState(this);

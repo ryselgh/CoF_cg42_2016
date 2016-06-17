@@ -52,12 +52,6 @@ public class SocketConnection extends Observable{
 		}
 	}
 
-	public boolean isNicknameCorrect(String name){
-		if(name.contains("[^abcdefghilmnopqrstuvzjkywxABCDEFGHILMNOPQRSTUVZJKYWX0123456789]")|| name.length()<NICKNAME_MAX_LENGHT)//regex equivalente a tutti i caratteri a parte le lettere
-			return false;
-		return true;
-	}
-
 	public void sendToServer(String s, Object o){
 		CommunicationObject toSend = new CommunicationObject(s,(Object) ((Object)o));
 		try {

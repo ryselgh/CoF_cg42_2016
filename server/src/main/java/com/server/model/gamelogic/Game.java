@@ -50,9 +50,9 @@ public class Game {
 		speedAction = new SpeedAction(this);
 		this.initializeObjects();
 		
-		//exception
-		if(playersQty < 2 || playersQty > MAXPLAYERS)
-			throw new IllegalArgumentException("The quantity of players indicated is not in the permitted range");
+		//tolto perchè è il num di giocatori è gestito da lobby e gamehandler
+		//if(playersQty < 2 || playersQty > MAXPLAYERS)
+			//throw new IllegalArgumentException("The quantity of players indicated is not in the permitted range");
 	}
 	
 	/**
@@ -88,6 +88,7 @@ public class Game {
 		}
 		
 	}
+	
 	
 	/**
 	 * @return an array of Player(s)

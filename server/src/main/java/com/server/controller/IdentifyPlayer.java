@@ -52,7 +52,7 @@ public class IdentifyPlayer extends Observable implements Runnable  {
 		outputStream.writeObject(new CommunicationObject("INSERTNICKNAMEACK",null));
 		outputStream.flush();
 		this.userName = inputName;
-		ClientHandler client = new ClientHandler(socket,inputStream,outputStream,userName);
+		ClientHandler client = new ClientHandler(socket,inputStream,outputStream,userName,lobby);
 		Thread thread = new Thread(client);
 		thread.start();
 		lobby.addObserver(client);

@@ -55,12 +55,13 @@ public class ClientController extends Observable implements Observer{
 	private ConsoleListener consoleListener;
 	private Thread consoleThread;
 	private boolean inGame = false;
+	private Thread cliListThread;
 
 	public ClientController(){
 		cli = new ClientCLI(this);
 		cli.addObserver(this);
-		Thread thread = new Thread(cli);
-		thread.start();
+		cliListThread = new Thread(cli);
+		cliListThread.start();
 	}
 
 	public void run() throws IOException{
@@ -125,10 +126,27 @@ public class ClientController extends Observable implements Observer{
 		return new String(encoded, encoding);
 	}
 
-
+	private String isCorrect(String name){
+		if(name.contains("[^abcdefghilmnopqrstuvzjkywxABCDEFGHILMNOPQRSTUVZJKYWX]"))//regex equivalente a tutti i caratteri a parte le lettere
+			return "Illegal characters";
+		if(name.length()<5 || name.length()>13)
+			return "Nickname size must be >5 and <13";
+		return "";
+	}
+	
+	private void newConsoleListenerThread(){//quando il player entra in gioco il thread si fotte, quindi ogni volta che torna nella lobby ne creo uno
+		consoleListener = new ConsoleListener(this);
+		consoleListener.addObserver(this);
+		consoleThread = new Thread(consoleListener);
+		consoleThread.start();
+		printLobbyCommand();
+	}
+	
 	@Override
 	public void update(Observable o, Object change){
 		if(o instanceof ConsoleListener){
+			if(this.inGame)//this.ingame è una pezza temporanea, comunque il primo input va inserito due volte, ma almeno non rompe il cazzo al server
+				return;
 			String[] split = ((String) change).split("_");
 			if(split[0].equals("\\SETMAP")){
 				String newMap;
@@ -156,6 +174,12 @@ public class ClientController extends Observable implements Observer{
 			int selectedAction;
 			ActionDTO compiledAction;
 			switch (cmd) {
+			case "CLIENTCONNECTED":
+				cli.printMsg("Player " + (String) obj + " reconnected to the game");
+				break;
+			case "CLIENTDISCONNECTED":
+				cli.printMsg("Player " + (String) obj + " disconnected from the game");
+				break;
 			case "LOBBYSTATUS":
 				this.lobbyStatus = (LobbyStatus) obj;
 				printLobbyStatus();
@@ -163,18 +187,14 @@ public class ClientController extends Observable implements Observer{
 			case "INSERTNICKNAME":
 				cli.printMsg("Insert your nickname:");
 				String nick = cli.getMsg();
-				while(!connection.isNicknameCorrect(nick)){
-					cli.printMsg("Only characters and numbers are allowed, try again:");
+				while(!isCorrect(nick).equals("")){
+					cli.printMsg(isCorrect(nick));
 					nick = cli.getMsg();
 				}
 				connection.sendToServer("INSERTNICKNAME",nick);
 				break;
 			case "INSERTNICKNAMEACK":
-				consoleListener = new ConsoleListener(this);
-				consoleListener.addObserver(this);
-				consoleThread = new Thread(consoleListener);
-				consoleThread.start();
-				printLobbyCommand();
+				this.newConsoleListenerThread();
 				break;
 			case "INSERTNICKNAMENACK":
 				cli.printMsg(((String) obj)+ "\n");
@@ -317,6 +337,7 @@ public class ClientController extends Observable implements Observer{
 				connection.sendToServer("INPUT_ACTION", compiledAction);
 				break;
 			case "GAMEDTO":
+				this.inGame = true;//se il player si riconnette dopo una disconnessione 
 				this.cli.setGameAndBuildMap((GameDTO) obj);
 				this.game = (GameDTO) obj;
 				break;
@@ -325,6 +346,11 @@ public class ClientController extends Observable implements Observer{
 				//consoleListener.deleteObserver(this);//in gioco gli input sono ad invocazione  
 				this.cli.setGameAndBuildMap((GameDTO) obj);
 				this.game = (GameDTO) obj;
+				break;
+			case "ENDGAME":
+				cli.printMsg("Player " + ((String) obj) + " won the game. You will return to lobby");
+				this.inGame=false;
+				newConsoleListenerThread();//da problemi se c'è ancora attivo l'altro thread (se il giocatore non fa neanche una mossa (caso di test, non si dovrebbe mai avverare))
 				break;
 			default:
 				throw new IllegalArgumentException("Command not recognized: " + cmd);

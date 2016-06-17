@@ -4,7 +4,6 @@ import org.junit.*;
 
 import com.communication.decks.PoliticsDeckDTO;
 import com.communication.values.CouncilorColor;
-import com.server.model.gamelogic.Game;
 
 import static org.junit.Assert.*;
 
@@ -17,31 +16,12 @@ public class PoliticsDeckTest {
 		assertNotNull(pd);
 	}
 	
-	@Test
-	public void testTheConstructor2(){
-		PoliticsDeck pd= new PoliticsDeck();
-		
-			
-	}
-	
-	
 
 	@Test(expected=NullPointerException.class)
 	public void testDiscard_1()
 		throws Exception {
 		PoliticsDeck fixture = new PoliticsDeck();
 		fixture.discard(null);
-
-		}
-	@Test
-	public void testDiscard_2()
-		throws Exception {
-		PoliticsCard pc = new PoliticsCard(CouncilorColor.BLACK);
-		PoliticsDeck fixture = new PoliticsDeck();
-		fixture.discard(pc);
-		
-		
-		
 
 		}
 	
@@ -62,19 +42,6 @@ public class PoliticsDeckTest {
 		assertTrue(pcDTO instanceof PoliticsDeckDTO);
 		
 	}
-	
-//	@Test
-//	public void testTheEmptiness(){
-//		PoliticsDeck pd = new PoliticsDeck();
-//		for(PoliticsCard pc: pd)
-//			pd.discard(pc);
-//		
-//		PoliticsCard pol = pd.draw();
-//		
-//		
-//	}
-//	
-	
 	
 
 	

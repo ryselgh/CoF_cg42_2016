@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 
 import com.communication.CommunicationObject;
 
-public class ClientListener extends Observable{
+public class ClientListener extends Observable implements Runnable{
 
 	private ObjectInputStream inputStream;
 	private Logger logger;
@@ -23,23 +23,28 @@ public class ClientListener extends Observable{
 			CommunicationObject in = null;
 			try {
 				in = (CommunicationObject) inputStream.readObject();
+				if(in == null)
+					throw new NullPointerException("Something went wrong with the CommunicationObject");//da cambiare
+				else{
+					setChanged();
+				    notifyObservers(in);
+				}
 			} 
 			catch(SocketException e){
-				String msg = e.getMessage();
 				setChanged();
 			    notifyObservers(new CommunicationObject("DisconnectedFromLobby",null));
+			    return;
 			}
 			catch (ClassNotFoundException | IOException e) {
 				logger.log(Level.SEVERE,"Failed to read the CommunicationObject\n" + e.toString(),e);
-				return;
-			}
-			if(in == null)
-				throw new NullPointerException("Something went wrong with the CommunicationObject");
-			else{
-				setChanged();
-			    notifyObservers(in);
 			}
 		}
+	}
+
+	@Override
+	public void run() {
+		startListen();
+		
 	}
 	
 }

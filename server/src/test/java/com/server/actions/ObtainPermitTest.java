@@ -27,6 +27,19 @@ public class ObtainPermitTest {
 
 	}
 	
+	
+	@Test
+	public void testObtainPermit_1()
+		throws Exception {
+		
+		int regionIndex = 1;
+		int slot = 1;
+
+		ObtainPermit result = new ObtainPermit(null, regionIndex, slot);
+
+		assertNotNull(result);
+	}
+
 	@Test
 	public void testExecute_1()
 		throws Exception {
