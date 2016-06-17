@@ -35,6 +35,7 @@ public class GameHandler extends Observable implements Runnable, Observer{
 	private Logger logger;
 	private Lobby lobby;
 	private Room room;
+	private ClientHandler skippedTurn;
 	
 	public GameHandler(ArrayList<ClientHandler> pl, boolean defaultMap, String map, Lobby lobby, Room room){
 		players = pl;
@@ -72,7 +73,7 @@ public class GameHandler extends Observable implements Runnable, Observer{
 	
 	public void changeState(Context context){
 		ClientHandler client = context.getClienthandler();
-		if(!client.equals(players.get(players.size()-1))){//se non è l'ultimo del giro
+		if(!client.isEquals(players.get(players.size()-1))){//se non è l'ultimo del giro
 			context.getState().restoreState();//refresho lo stato
 			ClientHandler nextPl = nextPlayer(client);
 			context.setClienthandler(nextPl);//aggiorno il riferimento al client
@@ -112,7 +113,7 @@ public class GameHandler extends Observable implements Runnable, Observer{
 	}
 	public ClientHandler nextPlayer(ClientHandler pl){
 		for(int i=0;i<players.size();i++)
-			if(players.get(i).equals(pl))
+			if(players.get(i).isEquals(pl))
 				return players.get(i+1);//viene chiamata dopo il check su pl che non deve essere l'ultimo, quindi questa funz non dovrebbe mai ritornare null
 		return null;
 	}
@@ -134,7 +135,20 @@ public class GameHandler extends Observable implements Runnable, Observer{
 	}
 
 	@Override
-	public void update(Observable o, Object arg) {//intestazioni: SETTINGS_ , INPUT_
+	public synchronized void update(Observable o, Object arg) {//synchronyzed perchè il thread di InputTimer e ClientHandler si potrebbero pestare i piedi
+		if(o instanceof InputTimer)
+			if(this.context.getClienthandler().getUserName().equals((String) arg)){
+			skippedTurn = this.context.getClienthandler();
+			this.broadcastAnnounce("TIMEOUT", this.context.getClienthandler().getUserName());
+			this.changeState(this.context);
+			return;			
+		}
+		else{ 
+			if(skippedTurn != null && skippedTurn.isEquals(((ClientHandler) o )))
+				return;//mossa del giocatore che ha saltato il turno
+			else
+				skippedTurn = null;
+		}
 		String[] msg = ((CommunicationObject) arg).getMsg().split("_");
 		Object obj = ((CommunicationObject) arg).getObj();
 		if(msg[0].equals("INPUT")){
@@ -189,5 +203,9 @@ public class GameHandler extends Observable implements Runnable, Observer{
 		this.waitingInput = true;
 		this.toResume = action;
 		this.toResumeStr = ID;
+		InputTimer timer = new InputTimer(this.context.getClienthandler().getUserName());
+		timer.addObserver(this);
+		Thread timerThread = new Thread(timer);
+		timerThread.start();
 	}
 }

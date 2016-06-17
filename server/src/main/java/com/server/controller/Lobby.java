@@ -50,7 +50,7 @@ public class Lobby extends Observable implements Runnable, Observer  {
 		switch(ret[0]){
 		case "\\SETMAP":
 			r = findRoomByClient(sender);
-			if(!sender.equals(r.getAdmin()))
+			if(!sender.isEquals(r.getAdmin()))
 				return 9;
 			r.setMap((String) obj);
 			sendToClient(sender, "lobby_msg-" + "Map successfully changed");
@@ -112,7 +112,7 @@ public class Lobby extends Observable implements Runnable, Observer  {
 	private Room findRoomByClient(ClientHandler client){
 		for(Room r : this.rooms)
 			for(ClientHandler c : r.getPlayers())
-				if (c.equals(client))
+				if (c.isEquals(client))
 				return r;
 		return null;
 	}
@@ -123,7 +123,7 @@ public class Lobby extends Observable implements Runnable, Observer  {
 		ArrayList<ClientHandler> oldInst = roomGH.getPlayers();
 		ArrayList<ClientHandler> newInst = new ArrayList<ClientHandler>();
 		for(ClientHandler ch : oldInst){//sostituisco la vecchia istanza con la nuova (quindi cambio socket e ClientListener)
-			if(ch.equals(newInstance))//uso il for per mantenere l'ordine se no va tutto a puttane
+			if(ch.isEquals(newInstance))//uso il for per mantenere l'ordine se no va tutto a puttane
 				newInst.add(newInstance);//sostituendo l'istanza non devo settare active=true perchè lo è di default
 			else
 				newInst.add(ch);
@@ -134,6 +134,7 @@ public class Lobby extends Observable implements Runnable, Observer  {
 		newInstance.addObserver(roomGH);
 		inactiveClients.remove(newInstance);
 		room.getGameHandler().broadcastAnnounce("CLIENTCONNECTED", newInstance.getUserName());
+		roomGH.updateClientGame();
 	}
 	
 	@Override
@@ -141,7 +142,7 @@ public class Lobby extends Observable implements Runnable, Observer  {
 		if (arg0 instanceof IdentifyPlayer) {// ricevo un nuovo client
 			ClientHandler toAdd = (ClientHandler) arg1;
 			for(ClientHandler ch : this.inactiveClients)
-				if(ch.equals(toAdd)){//l'equals confronta solo i nomi 
+				if(ch.isEquals(toAdd)){//l'equals confronta solo i nomi 
 					restorePlayer(toAdd,ch);
 						return;
 					}
@@ -187,7 +188,7 @@ public class Lobby extends Observable implements Runnable, Observer  {
 	private Room findPlayerRoom(ClientHandler clientHandler){
 		for (Room r : this.rooms)
 			for (int i = 0; i < r.getPlayers().size(); i++)
-				if (r.getPlayers().get(i).equals(clientHandler))
+				if (r.getPlayers().get(i).isEquals(clientHandler))
 					return r;
 		return null;
 	}
@@ -196,7 +197,7 @@ public class Lobby extends Observable implements Runnable, Observer  {
 		Room room = findPlayerRoom(clientHandler); // trovo la room di appartenenza, se c'è
 		if (room == null) {
 			for (int i = 0; i < this.clients.size(); i++)
-				if (this.clients.get(i).equals(clientHandler))
+				if (this.clients.get(i).isEquals(clientHandler))
 					this.clients.remove(i);// rimuovo il client dalla lista dei clients nella lobby
 		} else {
 			if (!clientHandler.inGame) {// se il giocatore non è il gioco viene cancellato forever

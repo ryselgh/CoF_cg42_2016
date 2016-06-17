@@ -117,9 +117,9 @@ public class ClientHandler extends Observable implements Observer, Runnable{
 		
 	}
 	
-	public boolean equals(ClientHandler c){
+	public boolean isEquals(ClientHandler c){
 		if(c==null)
-			throw new NullPointerException("ClientHandler cannot be null.");
+			return false;
 		if(c.getUserName().equals(this.getUserName()))
 			return true;
 		return false;

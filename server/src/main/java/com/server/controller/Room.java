@@ -36,7 +36,7 @@ public class Room {
 	public int canStart(ClientHandler player){
 		if(players.size()<minPlayers)
 			return 1;
-		else if(!player.equals(admin))
+		else if(!player.isEquals(admin))
 			return 2;
 		return 0;
 	}
@@ -60,8 +60,8 @@ public class Room {
 	}
 	public ClientHandler leaveRoom(ClientHandler player) {//ritorna il nuovo admin, se l'admin lefta
 		for (int i = 0; i < players.size(); i++)
-			if (players.get(i).equals(player)) {
-				if (players.get(i).equals(admin)) {
+			if (players.get(i).isEquals(player)) {
+				if (players.get(i).isEquals(admin)) {
 					players.remove(i);
 					this.admin = players.get(0);
 					return this.admin;

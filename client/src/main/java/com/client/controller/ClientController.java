@@ -56,6 +56,7 @@ public class ClientController extends Observable implements Observer{
 	private Thread consoleThread;
 	private boolean inGame = false;
 	private Thread cliListThread;
+	public String userName, tmpUserName;
 
 	public ClientController(){
 		cli = new ClientCLI(this);
@@ -174,8 +175,17 @@ public class ClientController extends Observable implements Observer{
 			int selectedAction;
 			ActionDTO compiledAction;
 			switch (cmd) {
+			case "TIMEOUT":
+				if(this.userName.equals((String) obj))
+					cli.printMsg("You ran out of time. Turn skipped");
+				else
+					cli.printMsg("Player " + (String) obj + " ran out of time. Turn skipped");
+				break;
 			case "CLIENTCONNECTED":
-				cli.printMsg("Player " + (String) obj + " reconnected to the game");
+				if(this.userName.equals((String) obj))
+					cli.printMsg("Game session restored");
+				else
+					cli.printMsg("Player " + (String) obj + " reconnected to the game");
 				break;
 			case "CLIENTDISCONNECTED":
 				cli.printMsg("Player " + (String) obj + " disconnected from the game");
@@ -191,9 +201,11 @@ public class ClientController extends Observable implements Observer{
 					cli.printMsg(isCorrect(nick));
 					nick = cli.getMsg();
 				}
+				this.tmpUserName= nick;
 				connection.sendToServer("INSERTNICKNAME",nick);
 				break;
 			case "INSERTNICKNAMEACK":
+				this.userName = this.tmpUserName;
 				this.newConsoleListenerThread();
 				break;
 			case "INSERTNICKNAMENACK":
@@ -321,9 +333,12 @@ public class ClientController extends Observable implements Observer{
 				//pass[8]
 				// SONO DA RIORDINARE SECONDO LA SCHEDA DEL GIOCO <-------------------------------------------IMPORTANTE!!
 				availableActions = (boolean[]) obj;
-				selectedAction = cli.getAction(availableActions);
+				/*selectedAction = cli.getAction(availableActions);
 				compiledAction = getActionInstance(selectedAction);
-				connection.sendToServer("INPUT_ACTION", compiledAction);
+				connection.sendToServer("INPUT_ACTION", compiledAction);*/
+				SelectActionState actState = new SelectActionState(this.game, availableActions, cli, connection, playerID);
+				Thread actThread = new Thread(actState);
+				actThread.run();
 				break;
 
 			case "ActionAccepted": 
@@ -401,7 +416,7 @@ public class ClientController extends Observable implements Observer{
 			int i=0;
 			for(CityDTO c : cities){
 				CityDTO kingLoc = this.game.getMap().getKing().getLocation();
-				if(!c.equalsDTO(kingLoc)){
+				if(!cityDTOEquals(c,kingLoc)){
 					validCities[i]=c;
 					i++;
 				}
@@ -450,7 +465,13 @@ public class ClientController extends Observable implements Observer{
 		}
 		return null;
 	}
-
+	
+	public boolean cityDTOEquals(CityDTO c1, CityDTO c2){
+		if(c1.getName().equals(c2.getName()))
+			return true;
+		return false;
+	}
+	
 	public boolean isInGame(){
 		return this.inGame;
 	}
