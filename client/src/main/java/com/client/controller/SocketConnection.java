@@ -26,13 +26,9 @@ public class SocketConnection extends Observable{
 	}
 
 	public void run() throws IOException{
-		try {
 			socket = new Socket(IP_ADDRESS, PORT);
 			outputStream = new ObjectOutputStream(socket.getOutputStream());
 			inputStream = new ObjectInputStream(socket.getInputStream());
-		} catch (IOException e) {
-			logger.log(Level.SEVERE, "Failed to connect to "+IP_ADDRESS+":"+Integer.toString(PORT)+".",e);
-		} 
 	}
 
 	public void startListen(){

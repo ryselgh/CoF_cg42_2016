@@ -1,6 +1,5 @@
 package com.client.controller;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -9,20 +8,11 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.concurrent.ArrayBlockingQueue;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 
-import org.w3c.dom.Document;
-
-import com.client.ClientObservable;
-import com.client.ClientObserver;
 import com.client.view.ClientCLI;
 import com.communication.CommunicationObject;
-import com.communication.ItemOnSale;
 import com.communication.LobbyStatus;
 import com.communication.RoomStatus;
 import com.communication.actions.ActionDTO;
@@ -41,7 +31,6 @@ import com.communication.board.CouncilorDTO;
 import com.communication.decks.PermitsCardDTO;
 import com.communication.decks.PoliticsCardDTO;
 import com.communication.gamelogic.GameDTO;
-import com.communication.market.OnSaleDTO;
 import com.communication.values.CouncilorColor;
 
 public class ClientController extends Observable implements Observer{
@@ -49,7 +38,6 @@ public class ClientController extends Observable implements Observer{
 	private ClientCLI cli;
 	private GameDTO game; 
 	private SocketConnection connection;
-	private Logger logger;
 	private LobbyStatus lobbyStatus;
 	private int playerID;
 	private ConsoleListener consoleListener;
@@ -58,12 +46,16 @@ public class ClientController extends Observable implements Observer{
 	private Thread cliListThread;
 	private String userName, tmpUserName;
 	private SelectActionState currentActState;
+	private ArrayBlockingQueue<String> cliQueue;
 
 	public ClientController(){
-		cli = new ClientCLI(this);
+		this.cliQueue = new ArrayBlockingQueue<String>(50);
+		cli = new ClientCLI(this,this.cliQueue);
 		cli.addObserver(this);
 		cliListThread = new Thread(cli);
 		cliListThread.start();
+		this.newConsoleListenerThread();
+		
 	}
 
 	public void run() throws IOException{
@@ -72,7 +64,8 @@ public class ClientController extends Observable implements Observer{
 			connection.run();
 			connection.addObserver(this);
 		} catch (IOException e) {
-			logger.log(Level.SEVERE, "Connection lost.", e);
+			System.out.println("Failed to connect to server");
+			return;
 		}
 		cli.printMsg("Connected to the server");
 		connection.startListen();
@@ -137,19 +130,16 @@ public class ClientController extends Observable implements Observer{
 	}
 	
 	private void newConsoleListenerThread(){//quando il player entra in gioco il thread si fotte, quindi ogni volta che torna nella lobby ne creo uno
-		consoleListener = new ConsoleListener(this);
-		consoleListener.addObserver(this);
+		consoleListener = new ConsoleListener(this, this.cli, this.cliQueue);
 		consoleThread = new Thread(consoleListener);
 		consoleThread.start();
-		printLobbyCommand();
 	}
 	
 	@Override
 	public void update(Observable o, Object change){
 		if(o instanceof ConsoleListener){
-			if(this.inGame)//this.ingame è una pezza temporanea, comunque il primo input va inserito due volte, ma almeno non rompe il cazzo al server
-				return;
-			String[] split = ((String) change).split("_");
+			String inStr = this.cliQueue.poll();
+			String[] split = inStr.split("_");
 			if(split[0].equals("\\SETMAP")){
 				String newMap;
 				try {
@@ -160,7 +150,7 @@ public class ClientController extends Observable implements Observer{
 				}
 				return;
 			}
-			connection.sendToServer((String) change ,null);
+			connection.sendToServer(inStr ,null);
 			return;
 		}
 		CommunicationObject in = (CommunicationObject) change;
@@ -179,6 +169,7 @@ public class ClientController extends Observable implements Observer{
 			case "TIMEOUT":
 				if(this.userName.equals((String) obj)){
 					currentActState.setAbortFlag(true);
+					this.cliQueue.add("ABORT");
 					cli.printMsg("You ran out of time. Turn skipped");
 				}
 				else
@@ -200,8 +191,9 @@ public class ClientController extends Observable implements Observer{
 			case "INSERTNICKNAME":
 				cli.printMsg("Insert your nickname:");
 				String nick = cli.getMsg();
-				while(!isCorrect(nick).equals("")){
-					cli.printMsg(isCorrect(nick));
+				while(nick == null || !isCorrect(nick).equals("")){
+					if(nick!= null)
+						cli.printMsg(isCorrect(nick));
 					nick = cli.getMsg();
 				}
 				this.tmpUserName= nick;
@@ -209,7 +201,8 @@ public class ClientController extends Observable implements Observer{
 				break;
 			case "INSERTNICKNAMEACK":
 				this.userName = this.tmpUserName;
-				this.newConsoleListenerThread();
+				printLobbyCommand();
+				consoleListener.addObserver(this);
 				break;
 			case "INSERTNICKNAMENACK":
 				cli.printMsg(((String) obj)+ "\n");
@@ -286,17 +279,10 @@ public class ClientController extends Observable implements Observer{
 				cli.printMsg(((String) obj)+ "\n");
 				break;
 
-			case "TOSELL":						//Da aggiustare      aggiustala così: se item è null equivale a pass
-				ItemOnSale its = null;
-				//get its: l'oggetto da vendere al mercato
-				Object item = cli.getItemToSell(playerID);
-				if(item instanceof String){
-					connection.sendToServer("INPUT_TOSELL", null);
-				}else{
-					int price = cli.getSellPrice();
-					its = new ItemOnSale(price, (Object) item);
-					connection.sendToServer("INPUT_TOSELL",its);
-				}
+			case "TOSELL":
+				ToSellState sellState = new ToSellState(this.cli, this.connection, this.playerID);
+				Thread sellThread = new Thread(sellState);
+				sellThread.start();
 				break;
 
 			case "TOSELLACK":
@@ -307,11 +293,10 @@ public class ClientController extends Observable implements Observer{
 				cli.printMsg(((String) obj)+ "\n");
 				break;
 
-			case "TOBUY":					//Anche questa
-				String onSaleUID;
-				ArrayList<OnSaleDTO> availableOnSale = new ArrayList<OnSaleDTO>(game.getMarket().getObjectsOnSale());
-				onSaleUID = cli.getObjectToBuyUID(availableOnSale.size(), playerID, availableOnSale);
-				connection.sendToServer("INPUT_TOBUY", onSaleUID);
+			case "TOBUY":					
+				ToBuyState buyState = new ToBuyState(this.game, this.cli, connection, playerID);
+				Thread buyThread = new Thread(buyState);
+				buyThread.start();
 				break;
 
 			case "TOBUYACK":
@@ -339,7 +324,7 @@ public class ClientController extends Observable implements Observer{
 				/*selectedAction = cli.getAction(availableActions);
 				compiledAction = getActionInstance(selectedAction);
 				connection.sendToServer("INPUT_ACTION", compiledAction);*/
-				SelectActionState actState = new SelectActionState(this.game, availableActions, new ClientCLI(this), connection, playerID);
+				SelectActionState actState = new SelectActionState(this.game, availableActions, new ClientCLI(this,this.cliQueue), connection, playerID);
 				currentActState = actState;
 				Thread actThread = new Thread(actState);
 				actThread.start();
@@ -356,11 +341,13 @@ public class ClientController extends Observable implements Observer{
 				connection.sendToServer("INPUT_ACTION", compiledAction);
 				break;
 			case "GAMEDTO":
+				consoleListener.deleteObserver(this);//per stare sicuri, da togliere se verificato che STARTGAME arriva a tutti
 				this.inGame = true;//se il player si riconnette dopo una disconnessione 
 				this.cli.setGameAndBuildMap((GameDTO) obj);
 				this.game = (GameDTO) obj;
 				break;
 			case "STARTGAME":
+				consoleListener.deleteObserver(this);
 				this.inGame = true;
 				//consoleListener.deleteObserver(this);//in gioco gli input sono ad invocazione  
 				this.cli.setGameAndBuildMap((GameDTO) obj);

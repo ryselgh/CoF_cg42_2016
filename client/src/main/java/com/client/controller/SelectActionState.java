@@ -54,7 +54,10 @@ public class SelectActionState implements Runnable{
 		switch(selectedAction){
 		case 3:
 			BuildDTO build = new BuildDTO();
-			PermitsCardDTO usedPermit = game.getActualPlayer().getPermits().get(cli.getBuildPermit(playerID));
+			int bPermIndex = cli.getBuildPermit(playerID);
+			if(abortFlag)
+				return null;
+			PermitsCardDTO usedPermit = game.getActualPlayer().getPermits().get(bPermIndex);
 			if(abortFlag)
 				return null;
 			CityDTO[] avCity = new CityDTO[usedPermit.getCityLetter().length];
@@ -66,10 +69,10 @@ public class SelectActionState implements Runnable{
 						count++;
 					}
 			}
-			if(abortFlag)
-				return null;
 			cli.printMsg("Where do you want to build?");
 			int buildHere = cli.getInputCity(avCity);
+			if(abortFlag)
+				return null;
 			build.setCity(avCity[buildHere]);
 			build.setPermit(usedPermit);
 			return build;
@@ -107,9 +110,10 @@ public class SelectActionState implements Runnable{
 					i++;
 				}
 			}
-			CityDTO dest = validCities[cli.getInputCity(validCities)];
+			int valIndex = cli.getInputCity(validCities);
 			if(abortFlag)
 				return null;
+			CityDTO dest = validCities[valIndex];
 			satKing.setDestination(dest);
 			satKing.setPolitics(cardsRet);
 			return satKing;
@@ -122,9 +126,10 @@ public class SelectActionState implements Runnable{
 			int balIndex = cli.getTargetBalcony();
 			if(abortFlag)
 				return null;
-			CouncilorColor targetColor = avColors.get(cli.getColorIndex(avColors));
+			int avIndex = cli.getColorIndex(avColors);
 			if(abortFlag)
 				return null;
+			CouncilorColor targetColor = avColors.get(avIndex);
 			for(CouncilorDTO c : this.game.getMap().getCouncilors())
 				if(c.getColor().equals(targetColor))
 					shiftMain.setCouncilor(c);
@@ -136,9 +141,10 @@ public class SelectActionState implements Runnable{
 			return new BuyMainActionDTO();
 		case 5:
 			ChangeCardsDTO changeDTO = new ChangeCardsDTO();
-			changeDTO.setBalconyIndex(cli.getTargetBalcony());
+			int bIndex = cli.getTargetBalcony();
 			if(abortFlag)
 				return null;
+			changeDTO.setBalconyIndex(bIndex);
 			return changeDTO;
 		case 6:
 			ShiftCouncilSpeedDTO shiftSpeed = new ShiftCouncilSpeedDTO();
@@ -149,9 +155,10 @@ public class SelectActionState implements Runnable{
 			int balcIndex = cli.getTargetBalcony();
 			if(abortFlag)
 				return null;
-			CouncilorColor targColor = availColors.get(cli.getColorIndex(availColors));
+			int aIndex = cli.getColorIndex(availColors);
 			if(abortFlag)
 				return null;
+			CouncilorColor targColor = availColors.get(aIndex);
 			for(CouncilorDTO c : this.game.getMap().getCouncilors())
 				if(c.getColor().equals(targColor))
 					shiftSpeed.setCouncilor(c);

@@ -90,7 +90,8 @@ public class ActionState implements State {
 		int count = 0;
 		for (City city : gamehandler.getGame().getMap().getCity())
 			for (Emporium e : city.getEmporium())
-				if (e != null && e.getPlayer().getID().equals(clienthandler.getUserName()))
+				if (e != null) 
+					if(e.getPlayer().getID().equals(clienthandler.getUserName()))
 					count++;
 		if (count >= 10) {
 			this.gamehandler.endGame(clienthandler);
