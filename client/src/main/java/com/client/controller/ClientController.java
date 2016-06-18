@@ -56,7 +56,8 @@ public class ClientController extends Observable implements Observer{
 	private Thread consoleThread;
 	private boolean inGame = false;
 	private Thread cliListThread;
-	public String userName, tmpUserName;
+	private String userName, tmpUserName;
+	private SelectActionState currentActState;
 
 	public ClientController(){
 		cli = new ClientCLI(this);
@@ -176,8 +177,10 @@ public class ClientController extends Observable implements Observer{
 			ActionDTO compiledAction;
 			switch (cmd) {
 			case "TIMEOUT":
-				if(this.userName.equals((String) obj))
+				if(this.userName.equals((String) obj)){
+					currentActState.setAbortFlag(true);
 					cli.printMsg("You ran out of time. Turn skipped");
+				}
 				else
 					cli.printMsg("Player " + (String) obj + " ran out of time. Turn skipped");
 				break;
@@ -336,9 +339,10 @@ public class ClientController extends Observable implements Observer{
 				/*selectedAction = cli.getAction(availableActions);
 				compiledAction = getActionInstance(selectedAction);
 				connection.sendToServer("INPUT_ACTION", compiledAction);*/
-				SelectActionState actState = new SelectActionState(this.game, availableActions, cli, connection, playerID);
+				SelectActionState actState = new SelectActionState(this.game, availableActions, new ClientCLI(this), connection, playerID);
+				currentActState = actState;
 				Thread actThread = new Thread(actState);
-				actThread.run();
+				actThread.start();
 				break;
 
 			case "ActionAccepted": 

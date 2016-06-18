@@ -5,8 +5,11 @@ import java.util.Observable;
 public class InputTimer extends Observable implements Runnable{
 	private static int timeoutDelay = 40000;
 	private String clientName;
-	public InputTimer(String c){
+	private int progressiveCounter;
+	
+	public InputTimer(String c, int pC){
 		this.clientName = c;
+		this.progressiveCounter = pC;
 	}
 
 	@Override
@@ -17,7 +20,7 @@ public class InputTimer extends Observable implements Runnable{
 			e.printStackTrace();
 		}
 		this.setChanged();
-		this.notifyObservers(this.clientName);
+		this.notifyObservers(new TimeoutInfo(this.clientName, this.progressiveCounter));
 	}
 	
 	

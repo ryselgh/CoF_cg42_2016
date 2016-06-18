@@ -52,7 +52,7 @@ public class SocketConnection extends Observable{
 		}
 	}
 
-	public void sendToServer(String s, Object o){
+	public synchronized void sendToServer(String s, Object o){
 		CommunicationObject toSend = new CommunicationObject(s,(Object) ((Object)o));
 		try {
 			outputStream.reset();

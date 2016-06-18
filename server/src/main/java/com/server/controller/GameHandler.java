@@ -36,6 +36,7 @@ public class GameHandler extends Observable implements Runnable, Observer{
 	private Lobby lobby;
 	private Room room;
 	private ClientHandler skippedTurn;
+	private int progressiveCounter=0;//permette al timer di identificare il turno (per non skippare lo stesso giocatore al turno successivo)
 	
 	public GameHandler(ArrayList<ClientHandler> pl, boolean defaultMap, String map, Lobby lobby, Room room){
 		players = pl;
@@ -72,6 +73,8 @@ public class GameHandler extends Observable implements Runnable, Observer{
 	}
 	
 	public void changeState(Context context){
+		updateClientGame();
+		progressiveCounter++;
 		ClientHandler client = context.getClienthandler();
 		if(!client.isEquals(players.get(players.size()-1))){//se non è l'ultimo del giro
 			context.getState().restoreState();//refresho lo stato
@@ -96,7 +99,6 @@ public class GameHandler extends Observable implements Runnable, Observer{
 			}
 			newState.doAction(context);//avvio lo stato
 		}
-		updateClientGame();
 	}
 	
 	public void updateClientGame(){
@@ -136,11 +138,15 @@ public class GameHandler extends Observable implements Runnable, Observer{
 
 	@Override
 	public synchronized void update(Observable o, Object arg) {//synchronyzed perchè il thread di InputTimer e ClientHandler si potrebbero pestare i piedi
-		if(o instanceof InputTimer)
-			if(this.context.getClienthandler().getUserName().equals((String) arg)){
-			skippedTurn = this.context.getClienthandler();
-			this.broadcastAnnounce("TIMEOUT", this.context.getClienthandler().getUserName());
-			this.changeState(this.context);
+		if(o instanceof InputTimer){
+			TimeoutInfo infos = (TimeoutInfo) arg;
+			String skipName = infos.getClientName();
+			int skipCount = infos.getProgressiveCounter();
+			if(this.context.getClienthandler().getUserName().equals(skipName) && this.progressiveCounter==skipCount){
+				skippedTurn = this.context.getClienthandler();
+				this.broadcastAnnounce("TIMEOUT", this.context.getClienthandler().getUserName());
+				this.changeState(this.context);
+			}
 			return;			
 		}
 		else{ 
@@ -203,7 +209,7 @@ public class GameHandler extends Observable implements Runnable, Observer{
 		this.waitingInput = true;
 		this.toResume = action;
 		this.toResumeStr = ID;
-		InputTimer timer = new InputTimer(this.context.getClienthandler().getUserName());
+		InputTimer timer = new InputTimer(this.context.getClienthandler().getUserName(), progressiveCounter);
 		timer.addObserver(this);
 		Thread timerThread = new Thread(timer);
 		timerThread.start();

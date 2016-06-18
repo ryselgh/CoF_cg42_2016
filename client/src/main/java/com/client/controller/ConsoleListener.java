@@ -19,17 +19,15 @@ public class ConsoleListener extends Observable implements Runnable{
 	public void run() {
 		String cmd = "";
 		do {
-			if (in.hasNextLine()) {
-				cmd = in.nextLine();
-				this.setChanged();
-				this.notifyObservers(cmd);
-			} else
-				try {
-					Thread.sleep(500);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+			cmd = in.nextLine();
+			this.setChanged();
+			this.notifyObservers(cmd);
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		} while (!clientController.isInGame());
 	}
 

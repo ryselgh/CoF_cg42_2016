@@ -26,6 +26,7 @@ public class SelectActionState implements Runnable{
 	private ClientCLI cli;
 	private SocketConnection connection;
 	private int playerID;
+	private boolean abortFlag = false;//per il timer timeout
 	
 	public SelectActionState(GameDTO game, boolean[] availableActions, 
 			ClientCLI cli, SocketConnection connection, int plID){
@@ -39,7 +40,11 @@ public class SelectActionState implements Runnable{
 	@Override
 	public void run() {
 		int selectedAction = cli.getAction(availableActions);
+		if(abortFlag)
+			return;
 		ActionDTO compiledAction = getActionInstance(selectedAction);
+		if(abortFlag)
+			return;
 		connection.sendToServer("INPUT_ACTION", compiledAction);
 	}
 	
@@ -50,6 +55,8 @@ public class SelectActionState implements Runnable{
 		case 3:
 			BuildDTO build = new BuildDTO();
 			PermitsCardDTO usedPermit = game.getActualPlayer().getPermits().get(cli.getBuildPermit(playerID));
+			if(abortFlag)
+				return null;
 			CityDTO[] avCity = new CityDTO[usedPermit.getCityLetter().length];
 			int count = 0;
 			for(int i=0;i<game.getMap().getCity().length;i++){
@@ -59,6 +66,8 @@ public class SelectActionState implements Runnable{
 						count++;
 					}
 			}
+			if(abortFlag)
+				return null;
 			cli.printMsg("Where do you want to build?");
 			int buildHere = cli.getInputCity(avCity);
 			build.setCity(avCity[buildHere]);
@@ -67,8 +76,14 @@ public class SelectActionState implements Runnable{
 		case 0:
 			ObtainPermitDTO obtPerm = new ObtainPermitDTO();
 			int reg = cli.getTargetRegion(2);
+			if(abortFlag)
+				return null;
 			int slot = cli.waitCorrectIntInput("Insert slot number: 0= left  1=right", 0, 1);
+			if(abortFlag)
+				return null;
 			polCards = cli.waitInputCards(this.game.getActualPlayer().getHand());
+			if(abortFlag)
+				return null;
 			cardsRet = new PoliticsCardDTO[polCards.size()];
 			cardsRet = polCards.toArray(cardsRet);
 			obtPerm.setPolitics(cardsRet);
@@ -78,6 +93,8 @@ public class SelectActionState implements Runnable{
 		case 1:
 			SatisfyKingDTO satKing = new SatisfyKingDTO();
 			polCards = cli.waitInputCards(this.game.getActualPlayer().getHand());
+			if(abortFlag)
+				return null;
 			cardsRet = new PoliticsCardDTO[polCards.size()];
 			cardsRet = polCards.toArray(cardsRet);
 			CityDTO[] cities = this.game.getMap().getCity();
@@ -91,6 +108,8 @@ public class SelectActionState implements Runnable{
 				}
 			}
 			CityDTO dest = validCities[cli.getInputCity(validCities)];
+			if(abortFlag)
+				return null;
 			satKing.setDestination(dest);
 			satKing.setPolitics(cardsRet);
 			return satKing;
@@ -101,7 +120,11 @@ public class SelectActionState implements Runnable{
 				if(!avColors.contains(c.getColor()))
 					avColors.add(c.getColor());
 			int balIndex = cli.getTargetBalcony();
+			if(abortFlag)
+				return null;
 			CouncilorColor targetColor = avColors.get(cli.getColorIndex(avColors));
+			if(abortFlag)
+				return null;
 			for(CouncilorDTO c : this.game.getMap().getCouncilors())
 				if(c.getColor().equals(targetColor))
 					shiftMain.setCouncilor(c);
@@ -114,6 +137,8 @@ public class SelectActionState implements Runnable{
 		case 5:
 			ChangeCardsDTO changeDTO = new ChangeCardsDTO();
 			changeDTO.setBalconyIndex(cli.getTargetBalcony());
+			if(abortFlag)
+				return null;
 			return changeDTO;
 		case 6:
 			ShiftCouncilSpeedDTO shiftSpeed = new ShiftCouncilSpeedDTO();
@@ -122,7 +147,11 @@ public class SelectActionState implements Runnable{
 				if(!availColors.contains(c.getColor()))
 					availColors.add(c.getColor());
 			int balcIndex = cli.getTargetBalcony();
+			if(abortFlag)
+				return null;
 			CouncilorColor targColor = availColors.get(cli.getColorIndex(availColors));
+			if(abortFlag)
+				return null;
 			for(CouncilorDTO c : this.game.getMap().getCouncilors())
 				if(c.getColor().equals(targColor))
 					shiftSpeed.setCouncilor(c);
@@ -140,4 +169,14 @@ public class SelectActionState implements Runnable{
 			return true;
 		return false;
 	}
+
+	public boolean isAbortFlag() {
+		return abortFlag;
+	}
+
+	public void setAbortFlag(boolean abortFlag) {
+		this.abortFlag = abortFlag;
+	}
+	
+	
 }
