@@ -1,25 +1,40 @@
 package com.server.controller;
 
+import java.rmi.AccessException;
+import java.rmi.AlreadyBoundException;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
-import org.w3c.dom.Document;
 
 import com.communication.CommunicationObject;
 import com.communication.LobbyStatus;
+import com.communication.RMIClientControllerRemote;
+import com.communication.RMILobbyRemote;
 import com.communication.RoomStatus;
 import com.communication.values.RoomState;
 //comandi: newRoom(roomName,maxplayers, minplayers),   joinRoom(roomName)   startgame(roomName)--->requires admin
 //         getRoomList()--->obj ad hoc     leaveRoom(roomName)    1-setMap_mapname-->2-send serialized xml---->requires admin 
 
-public class Lobby extends Observable implements Runnable, Observer  {
+public class Lobby extends Observable implements Runnable, Observer, RMILobbyRemote  {
 	private ArrayList<ClientHandler> clients;
 	private ArrayList<ClientHandler> inactiveClients;
 	private ArrayList<Room> rooms;
 	private String[] commandResponse;
 	private LobbyStatus lobbyStatus;
-	public Lobby(){ 
+	private boolean RMI;
+	private ArrayList<RMISubscribed> remoteControllers;
+	private final static String CLIENTRMI_HOST="127.0.0.1";
+	private final static int CLIENTRMI_PORT=1098;
+	
+	public Lobby(boolean RMI){ 
+		this.remoteControllers = new ArrayList<RMISubscribed>();
+		this.RMI = RMI;
 		inactiveClients = new ArrayList<ClientHandler>();
 		clients = new ArrayList<ClientHandler>();
 		rooms = new ArrayList<Room>();
@@ -30,10 +45,18 @@ public class Lobby extends Observable implements Runnable, Observer  {
 
 	@Override
 	public void run() { 
+		if(RMI)
+			try {
+				this.setUpRMI();
+			} catch (RemoteException | AlreadyBoundException e) {
+				e.printStackTrace();
+			}
+		else{
 		clients = new ArrayList<ClientHandler>();
 		SocketAcceptor acceptor = new SocketAcceptor(this);
 		Thread thread = new Thread(acceptor);
 		thread.start();
+		}
 	}
 	 /*
 	'\NEWROOM_roomname_maxPl_minPl'
@@ -281,7 +304,7 @@ public class Lobby extends Observable implements Runnable, Observer  {
 		case 2:
 			return 4;
 		case 0:
-			r.startRoom();
+			r.startRoom(RMI);
 			for(ClientHandler ch : r.getPlayers() ){
 				ch.deleteObserver(this);
 				this.deleteObserver(ch);
@@ -309,7 +332,139 @@ public class Lobby extends Observable implements Runnable, Observer  {
 	public ArrayList<Room> getRooms() {
 		return rooms;
 	}
+	//------------------RMI methods----------------------
+	
+	//metodo locale non remoto
+	public void setUpRMI() throws RemoteException, AlreadyBoundException{
+		Registry registry = LocateRegistry.createRegistry(1099);
+		RMILobbyRemote lobbyRemote = (RMILobbyRemote) UnicastRemoteObject.exportObject(this, 0);
+		registry.bind("lobby", lobbyRemote);
+		}
+	
+	//metodo locale non remoto
+	public ArrayList<RMISubscribed> getRemoteControllers() {
+		return remoteControllers;
+	}
+	
+	//metodo locale non remoto
+	private ClientHandler nameToHandler(String userName){
+		for(ClientHandler ch : this.clients)
+			if(ch.getUserName().equals(userName))
+				return ch;
+		return null;
+	}
+	
+	public int RMIlogIn(String userName){
+		if(userName.contains("[^abcdefghilmnopqrstuvzjkywxABCDEFGHILMNOPQRSTUVZJKYWX]"))//regex equivalente a tutti i caratteri a parte le lettere
+			return 1;
+		if(userName.length()<5 || userName.length()>13)
+			return 2;
+		if(this.isNicknameUsed(userName))
+			return 3;
+		ClientHandler client = new ClientHandler(null,null,null,userName,this);
+		ClientHandler toAdd = client;
+		for(ClientHandler ch : this.inactiveClients)
+			if(ch.isEquals(toAdd)){//l'equals confronta solo i nomi 
+				restorePlayer(toAdd,ch);
+					return 0;
+				}
+		clients.add(toAdd);
+		return 0;
+	}
+	
+	private void broadcastLobbyStatus(){
+		lobbyStatus = generateLobbyStatus();
+		for(RMISubscribed RMIs : this.remoteControllers)
+			try {
+				RMIs.getRemContr().RMIupdateLobby(lobbyStatus);
+			} catch (RemoteException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+	}
+	public void RMIsubscribe(String userName, int port) throws AccessException, RemoteException, NotBoundException{
+		Registry registry = LocateRegistry.getRegistry(CLIENTRMI_HOST,port);
+		RMIClientControllerRemote remContr = (RMIClientControllerRemote) registry.lookup(userName + "CONTROLLER");
+		RMISubscribed sub = new RMISubscribed(this.nameToHandler(userName), remContr);
+		this.remoteControllers.add(sub);
+		broadcastLobbyStatus();
+		
+	}
+	
+	public String RMIlobbyCommand(String userName, String command, String map){
+		ClientHandler sender = this.nameToHandler(userName);
+		String[] ret = command.split("_");
+		Room r = null;
+		switch(ret[0]){
+		case "\\SETMAP":
+			r = findRoomByClient(sender);
+			if(!sender.isEquals(r.getAdmin()))
+				return commandResponse[9];
+			r.setMap(map);
+			broadcastLobbyStatus();
+			return "Map successfully changed";
+		case "\\NEWROOM":
+			if(ret.length!=4){
+				return "lobby_msg-" + "Wrong input format";
+			}
+			else if(Integer.parseInt(ret[2])<Integer.parseInt(ret[3])){
+				return "lobby_msg-" + "MaxPlayers can't be lower than MinPlayers";
+			}
+			createRoom(ret[1], sender, Integer.parseInt(ret[2]),Integer.parseInt(ret[3]));
+			this.clients.remove(sender);
+			broadcastLobbyStatus();
+			return "lobby_msg-" + "Room " + ret[1] + " successfully created. You are the Admin";
+		case "\\JOINROOM":
+			Room rTmp = findRoomByClient(sender);
+			r = findRoom(ret[1]);
+			if(rTmp != null && rTmp != r)
+				return commandResponse[8];
+			if(r==null)
+				return commandResponse[6];
+			if(r.hasJoined(sender))
+				return commandResponse[7];
+			if(r.isFull())
+				return commandResponse[10];
+			if (!joinRoom(ret[1],sender))
+				return commandResponse[2];//game already started
+			broadcastLobbyStatus();
+			return "lobby_msg-" + "You joined room " + ret[1];
+		case "\\STARTGAME":
+			r = findRoomByClient(sender);
+			if(r==null){
+				return "lobby_msg-" + "You are in the lobby, you can't start the game";
+			}
+			int retg = startRoom(r,sender);
+			broadcastLobbyStatus();
+			return commandResponse[retg];
+		case "\\LEAVEROOM":
+			r = findRoomByClient(sender);
+			if(r.getPlayers().size()==1){
+				this.rooms.remove(r);
+				return "lobby_msg-" + "Room " + ret[1] + " deleted";
+			}
+			ClientHandler newAdmin = r.leaveRoom(sender);
+			if(newAdmin!=null)
+				RMISendToClient(newAdmin,"You are the new admin of the room");
+			broadcastLobbyStatus();
+			return "lobby_msg-" + "You left room " + ret[1];
+		default:
+			return commandResponse[1];//command not recognized
+		}
+	}
 	
 	
+	//oggeto locale non remoto
+	public void RMISendToClient(ClientHandler ch, String msg){//viola il presupposto dell'RMI ma nella lobby per forza devo mandare dei messaggi
+		for(RMISubscribed RMIs : this.remoteControllers)
+			if(RMIs.getCh().isEquals(ch))
+				try {
+					RMIs.getRemContr().RMIprintMsg(msg);
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	}
 	
 }

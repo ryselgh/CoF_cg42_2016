@@ -43,6 +43,12 @@ public class ClientHandler extends Observable implements Observer, Runnable{
 		this.userName = un;
 		this.lobby=l;
 	}
+
+	@Override
+	public void run() {
+		startListen();
+		
+	}
 	
 	public void startListen(){
 		listener = new ClientListener(inputStream);
@@ -111,11 +117,6 @@ public class ClientHandler extends Observable implements Observer, Runnable{
 		}
 	}
 
-	@Override
-	public void run() {
-		startListen();
-		
-	}
 	
 	public boolean isEquals(ClientHandler c){
 		if(c==null)

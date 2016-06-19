@@ -37,6 +37,11 @@ public class BuyItemState implements State{
 															// se ricevuto
 															// correttamente
 		if (!passed) {
+			if(game.getMarket().getObjectsOnSale().isEmpty()){
+				clienthandler.sendToClient("TOBUYEMPTY", null);
+				gamehandler.changeState(context);
+				return;
+			}
 			clienthandler.sendToClient("TOBUY", game.getMarket().toDTO());
 			gamehandler.waitForInput("TOBUY", this);
 			return;
@@ -56,7 +61,6 @@ public class BuyItemState implements State{
 				clienthandler.sendToClient("TOBUYACK", "BuyObjectReceived");
 			}
 		}
-		gamehandler.updateClientGame();
 		gamehandler.changeState(context);
 	}
 	

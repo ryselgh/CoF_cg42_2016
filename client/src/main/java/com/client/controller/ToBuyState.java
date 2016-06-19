@@ -12,18 +12,17 @@ public class ToBuyState implements Runnable{
 	private SocketConnection connection;
 	private int playerID;//non serve l'abort flag perchè c'è un solo input
 	
-	public ToBuyState(GameDTO game, ClientCLI cli, SocketConnection connection, int plID){
+	public ToBuyState(GameDTO game, ClientCLI cli, SocketConnection connection){
 		this.game = game;
 		this.cli = cli;
 		this.connection = connection;
-		this.playerID = plID;
 	}
 	
 	@Override
 	public void run() {
 		String onSaleUID;
 		ArrayList<OnSaleDTO> availableOnSale = new ArrayList<OnSaleDTO>(game.getMarket().getObjectsOnSale());
-		onSaleUID = cli.getObjectToBuyUID(availableOnSale.size(), playerID, availableOnSale);
+		onSaleUID = cli.getObjectToBuyUID(availableOnSale.size(), availableOnSale);
 		connection.sendToServer("INPUT_TOBUY", onSaleUID);
 	}
 

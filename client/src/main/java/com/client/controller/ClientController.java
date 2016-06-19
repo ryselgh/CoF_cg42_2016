@@ -5,6 +5,12 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.rmi.AlreadyBoundException;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
@@ -14,6 +20,8 @@ import java.util.concurrent.ArrayBlockingQueue;
 import com.client.view.ClientCLI;
 import com.communication.CommunicationObject;
 import com.communication.LobbyStatus;
+import com.communication.RMIClientControllerRemote;
+import com.communication.RMILobbyRemote;
 import com.communication.RoomStatus;
 import com.communication.actions.ActionDTO;
 import com.communication.actions.BuildDTO;
@@ -33,32 +41,37 @@ import com.communication.decks.PoliticsCardDTO;
 import com.communication.gamelogic.GameDTO;
 import com.communication.values.CouncilorColor;
 
-public class ClientController extends Observable implements Observer{
+public class ClientController extends Observable implements Observer, RMIClientControllerRemote{
 
 	private ClientCLI cli;
 	private GameDTO game; 
 	private SocketConnection connection;
 	private LobbyStatus lobbyStatus;
-	private int playerID;
 	private ConsoleListener consoleListener;
 	private Thread consoleThread;
 	private boolean inGame = false;
 	private Thread cliListThread;
 	private String userName, tmpUserName;
 	private SelectActionState currentActState;
+	private boolean[] availableActions;
 	private ArrayBlockingQueue<String> cliQueue;
-
-	public ClientController(){
+	private boolean RMI;
+	private final static String SERVERRMI_HOST="127.0.0.1";
+	private final static int SERVERRMI_PORT=1099;
+	private Registry registry;
+	private RMILobbyRemote lobbyRemote;
+	private int CLIENT_PORT;
+	
+	public ClientController(boolean RMI){
+		this.RMI = RMI;
 		this.cliQueue = new ArrayBlockingQueue<String>(50);
 		cli = new ClientCLI(this,this.cliQueue);
-		cli.addObserver(this);
-		cliListThread = new Thread(cli);
-		cliListThread.start();
 		this.newConsoleListenerThread();
 		
 	}
 
-	public void run() throws IOException{
+	public void run() throws IOException, NotBoundException, AlreadyBoundException{
+		if(!RMI){
 		connection = new SocketConnection();
 		try {
 			connection.run();
@@ -69,8 +82,53 @@ public class ClientController extends Observable implements Observer{
 		}
 		cli.printMsg("Connected to the server");
 		connection.startListen();
+		}
+		else{//se è RMI parte subito l'identificazione
+			registry = LocateRegistry.getRegistry(SERVERRMI_HOST,SERVERRMI_PORT);
+			lobbyRemote = (RMILobbyRemote) registry.lookup("lobby");
+			int resp =0;
+			String nick = "";
+			do{
+				nick = this.getUserName();
+				resp = lobbyRemote.RMIlogIn(nick);
+				switch(resp){
+				case 1:
+					cli.printMsg("Illegal characters");
+					break;
+				case 2:
+					cli.printMsg("Nickname size must be >5 and <13");
+					break;
+				case 3:
+					cli.printMsg("Nickname already used");
+					break;
+				}
+			}while(resp!=0);
+			cli.printMsg("Logged in successfully");
+			this.userName = nick;
+			int startPort = 1098;
+			registry = createRegistry(startPort);
+			RMIClientControllerRemote contrRemote = (RMIClientControllerRemote) UnicastRemoteObject.exportObject(this, 0);
+			registry.bind(nick + "CONTROLLER", contrRemote);;
+			lobbyRemote.RMIsubscribe(nick,CLIENT_PORT);
+			consoleListener.addObserver(this);
+		}
 	}
 
+	private Registry createRegistry(int startPort){
+		Registry registry = null;
+		int port = startPort;
+		do{
+			try {
+				registry = LocateRegistry.createRegistry(port);
+			} catch (RemoteException e) {
+				registry = null;
+				port--;
+			}
+		}while(registry == null);
+		this.CLIENT_PORT = port;
+		return registry;
+	}
+	
 	private void printLobbyCommand(){
 		cli.printMsg("Lobby commands: \n'\\NEWROOM_roomname_maxPl_minPl' \n'\\JOINROOM_roomname' \n'\\STARTGAME' requires admin of the room \n'\\LEAVEROOM' \n'\\SETMAP_filepath'");
 	}
@@ -135,6 +193,16 @@ public class ClientController extends Observable implements Observer{
 		consoleThread.start();
 	}
 	
+	private String getUserName(){
+		cli.printMsg("Insert your nickname:");
+		String nick = cli.getMsg();
+		while(nick == null || !isCorrect(nick).equals("")){
+			if(nick!= null)
+				cli.printMsg(isCorrect(nick));
+			nick = cli.getMsg();
+		}
+		return nick;
+	}
 	@Override
 	public void update(Observable o, Object change){
 		if(o instanceof ConsoleListener){
@@ -144,13 +212,24 @@ public class ClientController extends Observable implements Observer{
 				String newMap;
 				try {
 					newMap = readFile(split[1], StandardCharsets.UTF_8);
-					connection.sendToServer("\\SETMAP", newMap);
+					if(RMI)
+						lobbyRemote.RMIlobbyCommand(this.userName, "\\SETMAP", newMap);
+					else
+						connection.sendToServer("\\SETMAP", newMap);
 				} catch (Exception e) {
 					cli.printMsg("Error during map import");
 				}
 				return;
 			}
-			connection.sendToServer(inStr ,null);
+			if(RMI)
+				try {
+					lobbyRemote.RMIlobbyCommand(this.userName, inStr, null);
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			else
+				connection.sendToServer(inStr ,null);
 			return;
 		}
 		CommunicationObject in = (CommunicationObject) change;
@@ -166,6 +245,9 @@ public class ClientController extends Observable implements Observer{
 			int selectedAction;
 			ActionDTO compiledAction;
 			switch (cmd) {
+			case "TOBUYEMPTY":
+				cli.printMsg("Every item has been bought. Turn skipped");
+				break;
 			case "TIMEOUT":
 				if(this.userName.equals((String) obj)){
 					currentActState.setAbortFlag(true);
@@ -189,15 +271,8 @@ public class ClientController extends Observable implements Observer{
 				printLobbyStatus();
 				break;
 			case "INSERTNICKNAME":
-				cli.printMsg("Insert your nickname:");
-				String nick = cli.getMsg();
-				while(nick == null || !isCorrect(nick).equals("")){
-					if(nick!= null)
-						cli.printMsg(isCorrect(nick));
-					nick = cli.getMsg();
-				}
-				this.tmpUserName= nick;
-				connection.sendToServer("INSERTNICKNAME",nick);
+				this.tmpUserName= this.getUserName();
+				connection.sendToServer("INSERTNICKNAME",this.tmpUserName);
 				break;
 			case "INSERTNICKNAMEACK":
 				this.userName = this.tmpUserName;
@@ -263,7 +338,7 @@ public class ClientController extends Observable implements Observer{
 			case "BONUSCARD":
 				PermitsCardDTO pcOwnedDTO=null;
 				ArrayList<PermitsCardDTO> ownedPermits = new ArrayList<PermitsCardDTO>();
-				ownedPermits.addAll(game.getPlayers().get(playerID).getPermits());
+				ownedPermits.addAll(game.getActualPlayer().getPermits());
 				for(PermitsCardDTO pc: ownedPermits)
 					if(!pc.isFaceDown())
 						ownedPermits.remove(pc);
@@ -280,7 +355,7 @@ public class ClientController extends Observable implements Observer{
 				break;
 
 			case "TOSELL":
-				ToSellState sellState = new ToSellState(this.cli, this.connection, this.playerID);
+				ToSellState sellState = new ToSellState(this.cli, this.connection);
 				Thread sellThread = new Thread(sellState);
 				sellThread.start();
 				break;
@@ -294,7 +369,7 @@ public class ClientController extends Observable implements Observer{
 				break;
 
 			case "TOBUY":					
-				ToBuyState buyState = new ToBuyState(this.game, this.cli, connection, playerID);
+				ToBuyState buyState = new ToBuyState(this.game, this.cli, connection);
 				Thread buyThread = new Thread(buyState);
 				buyThread.start();
 				break;
@@ -321,10 +396,8 @@ public class ClientController extends Observable implements Observer{
 				//pass[8]
 				// SONO DA RIORDINARE SECONDO LA SCHEDA DEL GIOCO <-------------------------------------------IMPORTANTE!!
 				availableActions = (boolean[]) obj;
-				/*selectedAction = cli.getAction(availableActions);
-				compiledAction = getActionInstance(selectedAction);
-				connection.sendToServer("INPUT_ACTION", compiledAction);*/
-				SelectActionState actState = new SelectActionState(this.game, availableActions, new ClientCLI(this,this.cliQueue), connection, playerID);
+				this.availableActions= availableActions;
+				SelectActionState actState = new SelectActionState(this.game, availableActions, this.cli, connection);
 				currentActState = actState;
 				Thread actThread = new Thread(actState);
 				actThread.start();
@@ -336,9 +409,10 @@ public class ClientController extends Observable implements Observer{
 
 			case "ActionNotValid":
 				cli.printMsg(((String) obj)+ "\n");
-				selectedAction = cli.getAction(availableActions);
-				compiledAction = getActionInstance(selectedAction);
-				connection.sendToServer("INPUT_ACTION", compiledAction);
+				SelectActionState actStateRetry = new SelectActionState(this.game, availableActions, this.cli, connection);
+				currentActState = actStateRetry;
+				Thread actThreadRetry = new Thread(actStateRetry);
+				actThreadRetry.start();
 				break;
 			case "GAMEDTO":
 				consoleListener.deleteObserver(this);//per stare sicuri, da togliere se verificato che STARTGAME arriva a tutti
@@ -356,7 +430,6 @@ public class ClientController extends Observable implements Observer{
 			case "ENDGAME":
 				cli.printMsg("Player " + ((String) obj) + " won the game. You will return to lobby");
 				this.inGame=false;
-				newConsoleListenerThread();//da problemi se c'è ancora attivo l'altro thread (se il giocatore non fa neanche una mossa (caso di test, non si dovrebbe mai avverare))
 				break;
 			default:
 				throw new IllegalArgumentException("Command not recognized: " + cmd);
@@ -365,98 +438,6 @@ public class ClientController extends Observable implements Observer{
 
 	}
 
-	private ActionDTO getActionInstance(int selectedAction) {
-		ArrayList<PoliticsCardDTO> polCards = new ArrayList<PoliticsCardDTO>();
-		PoliticsCardDTO[] cardsRet;
-		switch(selectedAction){
-		case 3:
-			BuildDTO build = new BuildDTO();
-			PermitsCardDTO usedPermit = game.getActualPlayer().getPermits().get(cli.getBuildPermit(playerID));
-			CityDTO[] avCity = new CityDTO[usedPermit.getCityLetter().length];
-			int count = 0;
-			for(int i=0;i<game.getMap().getCity().length;i++){
-				for(String lett : usedPermit.getCityLetter())
-					if(game.getMap().getCity()[i].getName().substring(0, 1).toLowerCase().equals(lett)){
-						avCity[count] = game.getMap().getCity()[i];
-						count++;
-					}
-			}
-			cli.printMsg("Where do you want to build?");
-			int buildHere = cli.getInputCity(avCity);
-			build.setCity(avCity[buildHere]);
-			build.setPermit(usedPermit);
-			return build;
-		case 0:
-			ObtainPermitDTO obtPerm = new ObtainPermitDTO();
-			int reg = cli.getTargetRegion(2);
-			int slot = cli.waitCorrectIntInput("Insert slot number: 0= left  1=right", 0, 1);
-			polCards = cli.waitInputCards(this.game.getActualPlayer().getHand());
-			cardsRet = new PoliticsCardDTO[polCards.size()];
-			cardsRet = polCards.toArray(cardsRet);
-			obtPerm.setPolitics(cardsRet);
-			obtPerm.setRegionIndex(reg);
-			obtPerm.setSlot(slot);
-			return obtPerm;
-		case 1:
-			SatisfyKingDTO satKing = new SatisfyKingDTO();
-			polCards = cli.waitInputCards(this.game.getActualPlayer().getHand());
-			cardsRet = new PoliticsCardDTO[polCards.size()];
-			cardsRet = polCards.toArray(cardsRet);
-			CityDTO[] cities = this.game.getMap().getCity();
-			CityDTO[] validCities = new CityDTO[cities.length-1];
-			int i=0;
-			for(CityDTO c : cities){
-				CityDTO kingLoc = this.game.getMap().getKing().getLocation();
-				if(!cityDTOEquals(c,kingLoc)){
-					validCities[i]=c;
-					i++;
-				}
-			}
-			CityDTO dest = validCities[cli.getInputCity(validCities)];
-			satKing.setDestination(dest);
-			satKing.setPolitics(cardsRet);
-			return satKing;
-		case 2:
-			ShiftCouncilMainDTO shiftMain = new ShiftCouncilMainDTO();
-			ArrayList<CouncilorColor> avColors = new ArrayList<CouncilorColor>();
-			for(CouncilorDTO c : this.game.getMap().getCouncilors())
-				if(!avColors.contains(c.getColor()))
-					avColors.add(c.getColor());
-			int balIndex = cli.getTargetBalcony();
-			CouncilorColor targetColor = avColors.get(cli.getColorIndex(avColors));
-			for(CouncilorDTO c : this.game.getMap().getCouncilors())
-				if(c.getColor().equals(targetColor))
-					shiftMain.setCouncilor(c);
-			shiftMain.setBalconyIndex(balIndex);
-			return shiftMain;
-		case 4:
-			return new BuyAssistantDTO();
-		case 7:
-			return new BuyMainActionDTO();
-		case 5:
-			ChangeCardsDTO changeDTO = new ChangeCardsDTO();
-			changeDTO.setBalconyIndex(cli.getTargetBalcony());
-			return changeDTO;
-		case 6:
-			ShiftCouncilSpeedDTO shiftSpeed = new ShiftCouncilSpeedDTO();
-			ArrayList<CouncilorColor> availColors = new ArrayList<CouncilorColor>();
-			for(CouncilorDTO c : this.game.getMap().getCouncilors())
-				if(!availColors.contains(c.getColor()))
-					availColors.add(c.getColor());
-			int balcIndex = cli.getTargetBalcony();
-			CouncilorColor targColor = availColors.get(cli.getColorIndex(availColors));
-			for(CouncilorDTO c : this.game.getMap().getCouncilors())
-				if(c.getColor().equals(targColor))
-					shiftSpeed.setCouncilor(c);
-			shiftSpeed.setBalconyIndex(balcIndex);
-			return shiftSpeed;
-		case 8:
-			PassDTO pass = new PassDTO();
-			return pass;
-		}
-		return null;
-	}
-	
 	public boolean cityDTOEquals(CityDTO c1, CityDTO c2){
 		if(c1.getName().equals(c2.getName()))
 			return true;
@@ -466,4 +447,38 @@ public class ClientController extends Observable implements Observer{
 	public boolean isInGame(){
 		return this.inGame;
 	}
+	
+	//------RMI methods---------
+	
+	public void RMIupdateLobby(LobbyStatus status){
+		this.lobbyStatus = status;
+		printLobbyStatus();
+	}
+	
+	public void RMIupdateGame(GameDTO game){
+		this.inGame = true;//se il player si riconnette dopo una disconnessione 
+		this.cli.setGameAndBuildMap(game);
+		this.game = game;
+	}
+	
+	public void RMIprintMsg(String msg){
+		this.cli.printMsg(msg);
+	}
+	
+	public ActionDTO getAction(boolean[] availableActions){
+		int selectedAction = cli.getAction(availableActions);
+		SelectActionState actState = new SelectActionState(this.game, availableActions, this.cli, null);
+		ActionDTO compiledAction = actState.getActionInstance(selectedAction);
+		return compiledAction;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

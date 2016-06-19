@@ -60,7 +60,6 @@ public class SellItemState implements State{
 				clienthandler.sendToClient("TOSELLACK","ValidSellReceived");
 			}
 		}
-		gamehandler.updateClientGame();
 		gamehandler.changeState(context);
 	}
 	

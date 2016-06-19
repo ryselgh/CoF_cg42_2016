@@ -41,12 +41,12 @@ public class Room {
 		return 0;
 	}
 	
-	public void startRoom(){
+	public void startRoom(boolean RMI){
 		for(ClientHandler ch : players){
 			ch.inGame = true;
 		}
 		this.status = RoomState.IN_GAME;
-		gameHandler = new GameHandler(players,defaultMap,rawMap,lobby, this);
+		gameHandler = new GameHandler(players,defaultMap,rawMap,lobby, this, RMI, lobby.getRemoteControllers());
 		threadGameHandler = new Thread(gameHandler);
 		threadGameHandler.start();
 	}

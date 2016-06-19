@@ -1,5 +1,6 @@
 package com.server.controller;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
@@ -37,23 +38,36 @@ public class GameHandler extends Observable implements Runnable, Observer{
 	private Room room;
 	private ClientHandler skippedTurn;
 	private int progressiveCounter=0;//permette al timer di identificare il turno (per non skippare lo stesso giocatore al turno successivo)
-	
-	public GameHandler(ArrayList<ClientHandler> pl, boolean defaultMap, String map, Lobby lobby, Room room){
-		players = pl;
+	private boolean RMI;
+	private ArrayList<RMISubscribed> remoteControllers;
+	public GameHandler(ArrayList<ClientHandler> pl, boolean defaultMap, String map, Lobby lobby, Room room, boolean RMI, ArrayList<RMISubscribed> remoteControllers){
+		this.remoteControllers = remoteControllers;
+		this.RMI = RMI;
+		this.players = pl;
 		this.lobby = lobby;
 		this.room = room;
 		this.game = new Game(players.size(),defaultMap,map, clientNames(players));
 		GameDTO gameDTO = this.game.toDto();
-		for(ClientHandler ch : pl){
-			ch.addObserver(this);
-			ch.sendToClient("STARTGAME", gameDTO);
-		}
+		if(RMI)
+			for(RMISubscribed RMIs : this.remoteControllers )
+				try {
+					RMIs.getRemContr().RMIupdateGame(gameDTO);
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		else
+			for(ClientHandler ch : pl){
+				ch.addObserver(this);
+				ch.sendToClient("STARTGAME", gameDTO);
+			}
 	}
 
 	@Override
 	public void run() {
-		for(ClientHandler ch : players)
-			this.addObserver(ch);
+		if(!RMI)
+			for(ClientHandler ch : players)
+				this.addObserver(ch);
 		this.context = new Context();
 		context.setClienthandler(players.get(0));
 		context.setGamehandler(this);

@@ -79,4 +79,5 @@ public class IdentifyPlayer extends Observable implements Runnable  {
 			logger.log(Level.SEVERE, "I/O Error in socket connection: getName()",e);
 		}
 	}
+	
 }

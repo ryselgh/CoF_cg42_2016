@@ -25,16 +25,14 @@ public class SelectActionState implements Runnable{
 	private boolean[] availableActions;
 	private ClientCLI cli;
 	private SocketConnection connection;
-	private int playerID;
 	private boolean abortFlag = false;//per il timer timeout
 	
 	public SelectActionState(GameDTO game, boolean[] availableActions, 
-			ClientCLI cli, SocketConnection connection, int plID){
+			ClientCLI cli, SocketConnection connection){
 		this.game = game;
 		this.availableActions = availableActions;
 		this.cli = cli;
 		this.connection = connection;
-		this.playerID = plID;
 	}
 
 	@Override
@@ -48,13 +46,13 @@ public class SelectActionState implements Runnable{
 		connection.sendToServer("INPUT_ACTION", compiledAction);
 	}
 	
-	private ActionDTO getActionInstance(int selectedAction) {
+	ActionDTO getActionInstance(int selectedAction) {//visibilità a package perchè lo uso nella lobby con RMI
 		ArrayList<PoliticsCardDTO> polCards = new ArrayList<PoliticsCardDTO>();
 		PoliticsCardDTO[] cardsRet;
 		switch(selectedAction){
 		case 3:
 			BuildDTO build = new BuildDTO();
-			int bPermIndex = cli.getBuildPermit(playerID);
+			int bPermIndex = cli.getBuildPermit();
 			if(abortFlag)
 				return null;
 			PermitsCardDTO usedPermit = game.getActualPlayer().getPermits().get(bPermIndex);

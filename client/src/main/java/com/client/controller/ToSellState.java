@@ -9,16 +9,15 @@ public class ToSellState implements Runnable{
 	private SocketConnection connection;
 	private int playerID;//non serve l'abort flag perchè c'è un solo input
 	
-	public ToSellState(ClientCLI cli, SocketConnection connection, int plID){
+	public ToSellState(ClientCLI cli, SocketConnection connection){
 		this.cli = cli;
 		this.connection = connection;
-		this.playerID = plID;
 	}
 	
 	@Override
 	public void run() {
 		ItemOnSale its = null;
-		Object item = cli.getItemToSell(playerID);
+		Object item = cli.getItemToSell();
 		if(item instanceof String){
 			connection.sendToServer("INPUT_TOSELL", null);
 		}else{

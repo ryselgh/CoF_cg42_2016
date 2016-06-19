@@ -3,8 +3,6 @@ package com.client.view;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Observable;
-import java.util.Observer;
 import java.util.concurrent.ArrayBlockingQueue;
 
 import com.client.controller.ClientController;
@@ -24,7 +22,7 @@ import com.communication.market.PermitOnSaleDTO;
 import com.communication.market.PoliticsOnSaleDTO;
 import com.communication.values.*;
 
-public class ClientCLI extends Observable implements Observer, Runnable{
+public class ClientCLI {
 
 	private GameDTO game;
 	private PrintStream out;
@@ -42,12 +40,6 @@ public class ClientCLI extends Observable implements Observer, Runnable{
 		this.out = System.out;
 	}
 
-	@Override
-	public void run() {
-		// TODO Auto-generated method stub
-		
-	}
-	
 	public void setGameAndBuildMap(GameDTO game){
 		this.game = game;
 		constructMap();
@@ -435,29 +427,29 @@ public class ClientCLI extends Observable implements Observer, Runnable{
 		return choice;
 	}
 	
-	public Object getItemToSell(int playerID){
-		ArrayList<AssistantDTO> assistants = new ArrayList<AssistantDTO>(game.getPlayers().get(playerID).getAvailableAssistants());
-		ArrayList<PermitsCardDTO> permits = new ArrayList<PermitsCardDTO>(game.getPlayers().get(playerID).getPermits());
-		ArrayList<PoliticsCardDTO> cards = new ArrayList<PoliticsCardDTO>(game.getPlayers().get(playerID).getHand());
+	public Object getItemToSell(){
+		ArrayList<AssistantDTO> assistants = new ArrayList<AssistantDTO>(game.getActualPlayer().getAvailableAssistants());
+		ArrayList<PermitsCardDTO> permits = new ArrayList<PermitsCardDTO>(game.getActualPlayer().getPermits());
+		ArrayList<PoliticsCardDTO> cards = new ArrayList<PoliticsCardDTO>(game.getActualPlayer().getHand());
 		switch(getSellType()){
 			case 1:
 				if(assistants.isEmpty()){
 					out.println("No available assistants to sell, select something else.");
-					return getItemToSell(playerID);
+					return getItemToSell();
 				}else
 					return assistants.get(0);
 			case 2:
 				if(permits.isEmpty()){
 					out.println("No available permits to sell, select something else.");
-					return getItemToSell(playerID);
+					return getItemToSell();
 				}else
-					return permits.get(getPermitsCardIndex(permits.size(),playerID));
+					return permits.get(getPermitsCardIndex(permits.size()));
 			case 3:
 				if(cards.isEmpty()){
 					out.println("No available politics cards to sell, select something else.");
-					return getItemToSell(playerID);
+					return getItemToSell();
 				}else
-					return cards.get(getPoliticsCardIndex(cards.size(),playerID));
+					return cards.get(getPoliticsCardIndex(cards.size()));
 			case 4:
 				return "Pass";
 			default:
@@ -465,7 +457,7 @@ public class ClientCLI extends Observable implements Observer, Runnable{
 		}
 	}
 	
-	public int getBuildPermit(int playerID){
+	public int getBuildPermit(){
 		int i = 1;
 		for(PermitsCardDTO perm: game.getActualPlayer().getPermits()){
 			if(!perm.isFaceDown()){
@@ -487,15 +479,15 @@ public class ClientCLI extends Observable implements Observer, Runnable{
 		return waitCorrectIntInput("Insert the price of the item you are selling\n",1,100);
 	}
 	
-	public int getPoliticsCardIndex(int size, int playerIndex){
-		return waitCorrectIntInput("\nHi Player" + playerIndex + ", insert the index of the PoliticCard you want to sell. Insert 0 to go back.\n",0,size) - 1;
+	public int getPoliticsCardIndex(int size){
+		return waitCorrectIntInput("\nHi " + game.getActualPlayer().getPlayerID() + ", insert the index of the PoliticCard you want to sell. Insert 0 to go back.\n",0,size) - 1;
 	}
 	
-	public int getPermitsCardIndex(int size, int playerIndex){
-		return waitCorrectIntInput("\nHi Player" + playerIndex + ", insert the index of the PermitsCard you want to sell. Insert 0 to go back.\n",0,size) - 1;
+	public int getPermitsCardIndex(int size){
+		return waitCorrectIntInput("\nHi " + game.getActualPlayer().getPlayerID() + ", insert the index of the PermitsCard you want to sell. Insert 0 to go back.\n",0,size) - 1;
 	}
 	
-	public String getObjectToBuyUID(int size, int playerIndex, ArrayList<OnSaleDTO> availableOnSale){
+	public String getObjectToBuyUID(int size, ArrayList<OnSaleDTO> availableOnSale){
 		String UIDs[] = new String[availableOnSale.size()];
 		int count =0;
 		String whatIs = "";
@@ -531,7 +523,7 @@ public class ClientCLI extends Observable implements Observer, Runnable{
 			else return "";
 			out.print("Seller: Player" + osDTO.getSeller().getPlayerID() + ", item: " + whatIs + ", price: " + osDTO.getPrice() + "\n");
 		}
-		int input = waitCorrectIntInput("\nHi Player" + playerIndex + ", insert the index of the item you want to buy on the market. Insert 0 to pass.\n",0,size);
+		int input = waitCorrectIntInput("\nHi " + game.getActualPlayer().getPlayerID() + ", insert the index of the item you want to buy on the market. Insert 0 to pass.\n",0,size);
 		if(input==0)
 			return "";
 		return UIDs[input - 1];
@@ -724,20 +716,6 @@ public class ClientCLI extends Observable implements Observer, Runnable{
 	/*--------------------------------------END OF INPUTS--------------------------------------------*/
 	
 	
-
-	/*Observer*/
-
-	/**
-	 * print the new GameDTO after an update
-	 */
-	@Override
-	public void update(Observable o, Object change) {
-		if(change instanceof GameDTO){
-			this.game = (GameDTO) change;
-			this.printGameStatus();
-		}else
-			;//throw new IllegalArgumentException("Wrong instance. Failed to update the game.");
-	}
 
 	public boolean isAbortFlag() {
 		return abortFlag;

@@ -75,14 +75,15 @@ public class ActionState implements State {
 			for (Bonus b : ret.getBonus())
 				collectBonus(b);
 		decreaseCounter(action);
-		gamehandler.updateClientGame();
 		if(action instanceof Build)
 			if(checkWin())
 				return;
 		if(pass || !(mainCounter > 0 || speedCounter > 0))
 			gamehandler.changeState(context);
-		else
+		else{
+			gamehandler.updateClientGame();
 			this.execute(null);
+		}
 		
 	}
 	
