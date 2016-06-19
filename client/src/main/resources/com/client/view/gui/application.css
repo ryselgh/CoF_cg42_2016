@@ -1,5 +1,5 @@
 @font-face {
-    font-family: 'PerryGothic';
+    font-family: 'PerryGothic Regular';
     src: url('font/PERRYGOT.TTF');
 }
 
@@ -9,9 +9,13 @@
 
 #lblNickname {
     -fx-font-size: 20pt;
-    -fx-font-family: "PerryGothic";
+    -fx-font-family: "PerryGothic Regular";
     -fx-text-fill: #A11212;
    	-fx-effect: dropshadow(one-pass-box, rgba(209,181,82,1), 5, 2, 0, 0);
+}
+
+#txtPlayersInLobby{
+	-fx-background-color: transparent;
 }
 
 #btnNickname {
@@ -25,6 +29,81 @@
 }
 
 #btnNickname:pressed {
+	-fx-background-image: url('img/cof-btn-pressed.png');
+    -fx-background-color: transparent;
+}
+
+#btnNewRoom {
+    -fx-background-image: url('img/cof-btn-plain.png');
+    -fx-background-color: transparent;
+}
+
+#btnNewRoom:hover {
+  -fx-background-image: url('img/cof-btn-hover.png');
+    -fx-background-color: transparent;
+}
+
+#btnNewRoom:pressed {
+	-fx-background-image: url('img/cof-btn-pressed.png');
+    -fx-background-color: transparent;
+}
+
+#btnJoinRoom {
+    -fx-background-image: url('img/cof-btn-plain.png');
+    -fx-background-color: transparent;
+}
+
+#btnJoinRoom:hover {
+  -fx-background-image: url('img/cof-btn-hover.png');
+    -fx-background-color: transparent;
+}
+
+#btnJoinRoom:pressed {
+	-fx-background-image: url('img/cof-btn-pressed.png');
+    -fx-background-color: transparent;
+}
+
+#btnLeaveRoom {
+    -fx-background-image: url('img/cof-btn-plain.png');
+    -fx-background-color: transparent;
+}
+
+#btnLeaveRoom:hover {
+  -fx-background-image: url('img/cof-btn-hover.png');
+    -fx-background-color: transparent;
+}
+
+#btnLeaveRoom:pressed {
+	-fx-background-image: url('img/cof-btn-pressed.png');
+    -fx-background-color: transparent;
+}
+
+#btnSelectMap {
+    -fx-background-image: url('img/cof-btn-plain.png');
+    -fx-background-color: transparent;
+}
+
+#btnSelectMap:hover {
+  -fx-background-image: url('img/cof-btn-hover.png');
+    -fx-background-color: transparent;
+}
+
+#btnSelectMap:pressed {
+	-fx-background-image: url('img/cof-btn-pressed.png');
+    -fx-background-color: transparent;
+}
+
+#btnStartGame {
+    -fx-background-image: url('img/cof-btn-plain.png');
+    -fx-background-color: transparent;
+}
+
+#btnStartGame:hover {
+  -fx-background-image: url('img/cof-btn-hover.png');
+    -fx-background-color: transparent;
+}
+
+#btnStartGame:pressed {
 	-fx-background-image: url('img/cof-btn-pressed.png');
     -fx-background-color: transparent;
 }

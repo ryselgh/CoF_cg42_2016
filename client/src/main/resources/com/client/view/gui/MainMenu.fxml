@@ -15,12 +15,17 @@
             <Image backgroundLoading="true" url="@img/mainScreen.png" />
          </image>
       </ImageView>
+      <ImageView fx:id="lobbyMask" fitHeight="768.0" fitWidth="1024.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@img/lobbyMask.png" />
+         </image>
+      </ImageView>
       <ImageView fx:id="mainTitle" fitHeight="1.0" fitWidth="1.0" layoutX="512.0" layoutY="384.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image backgroundLoading="true" url="@img/mainTitle.png" />
          </image>
       </ImageView>
-      <TextField fx:id="txtNickname" alignment="CENTER" layoutX="397.0" layoutY="579.0" prefHeight="38.0" prefWidth="232.0">
+      <TextField fx:id="txtNickname" alignment="CENTER" layoutX="397.0" layoutY="579.0" onAction="#checkNickname" onInputMethodTextChanged="#checkNickname" onKeyPressed="#checkNickname" onKeyReleased="#checkNickname" onKeyTyped="#checkNickname" prefHeight="38.0" prefWidth="232.0">
          <font>
             <Font size="20.0" />
          </font></TextField>
@@ -29,6 +34,11 @@
             <Font name="HoboStd" size="35.0" />
          </font>
       </Label>
-      <Button fx:id="btnNickname" layoutX="418.0" layoutY="639.0" mnemonicParsing="false" onAction="#start" prefHeight="38.0" prefWidth="188.0" stylesheets="@application.css" />
+      <Button fx:id="btnNickname" layoutX="418.0" layoutY="639.0" mnemonicParsing="false" onAction="#submit" prefHeight="38.0" prefWidth="188.0" stylesheets="@application.css" />
+      <Button fx:id="btnNewRoom" layoutX="803.0" layoutY="364.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="188.0" stylesheets="@application.css" />
+      <Button fx:id="btnJoinRoom" layoutX="803.0" layoutY="440.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="188.0" stylesheets="@application.css" />
+      <Button fx:id="btnLeaveRoom" layoutX="803.0" layoutY="518.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="188.0" stylesheets="@application.css" />
+      <Button fx:id="btnStartGame" layoutX="803.0" layoutY="672.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="188.0" stylesheets="@application.css" />
+      <Button fx:id="btnSelectMap" layoutX="803.0" layoutY="595.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="188.0" stylesheets="@application.css" />
    </children>
 </AnchorPane>
