@@ -29,6 +29,7 @@ public class ChangeCards extends Action{
 	
 	/**
 	 * Change permits on the ground of the selected deck
+	 *  if there is an error gives a string error
 	 * @param balconyIndex the selected deck; 0: sea, 1: hill, 2: mountain.
 	 */
 	

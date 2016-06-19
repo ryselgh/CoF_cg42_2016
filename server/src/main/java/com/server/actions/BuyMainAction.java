@@ -6,15 +6,30 @@ import com.server.model.board.Bonus;
 import com.server.model.gamelogic.Game;
 import com.communication.values.BonusType;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class BuyMainAction.
+ */
 public class BuyMainAction extends Action{
+	
+	/** The errors. */
 	private ArrayList<String> errors;
+	
+	/** The disable. */
 	private boolean disable = false;
 	
+	/**
+	 * Instantiates a new buy main action.
+	 */
 	public BuyMainAction(){
 		errors = new ArrayList<String>();
 		
 	}
 		
+	/* 
+	 * return true if the player satisfies the condition
+	 * return false if the player doesn't satisfy the condition. add an error too
+	 */
 	public boolean isValid(){
 		if(game.getActualPlayer().getAvailableAssistants().size()>=3)
 			return true;
@@ -24,7 +39,10 @@ public class BuyMainAction extends Action{
 	}
 	
 	/**
-	 * Buy an additional main action
+	 * if all it's ok Buy an additional main action.
+	 *  if there is an error gives a string error
+	 *
+	 * @return the action return
 	 */
 	
 	public ActionReturn execute() {

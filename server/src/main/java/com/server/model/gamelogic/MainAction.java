@@ -190,11 +190,17 @@ public class MainAction {
 	
 	public boolean canBuild(City city, PermitsCard permit){
 		for(String l: permit.getCityLetter())
-			if(l.equals(Character.toString(city.getName().toLowerCase().charAt(0))) &&
-				game.getActualPlayer().getAvailableAssistants().size()>=city.getEmporium().length){
-				for(Emporium e: city.getEmporium())
-					game.getActualPlayer().getAvailableAssistants().remove(0);
-				return true;
+			if(l.equals(Character.toString(city.getName().toLowerCase().charAt(0)))){
+				int cont=0;
+				for(Emporium e: city.getEmporium()){
+					if(e!=null)
+						cont++;
+				}if(game.getActualPlayer().getAvailableAssistants().size() >= cont){
+					for(Emporium e: city.getEmporium())
+						if(e!=null)
+							game.getActualPlayer().getAvailableAssistants().remove(0);
+					return true;
+				}
 			}
 		return false;
 	}

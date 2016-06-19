@@ -15,18 +15,39 @@ import com.server.model.decks.PoliticsCard;
 import com.server.model.gamelogic.Game;
 import com.server.model.gamelogic.Player;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class SatisfyKing.
+ */
 public class SatisfyKing extends Action {
+	
 	/**
-	 * Verify if you can satisfy the king's balcony
-	 * @param politics the cards you want to use to satisfy the king's council
+	 * Verify if you can satisfy the king's balcony.
+	 *
 	 */
 	private PoliticsCard[] politics; 
+	
+	/** The destination. */
 	private City destination;
+	
+	/** The counter. */
 	private int counter = 0;
+    
+    /** The jollycnt. */
     private int jollycnt = 0;
+    
+    /** The errors. */
     private ArrayList<String> errors;
+    
+    /** The disable. */
     private boolean disable;
     
+  /**
+   * Instantiates a new satisfy king.
+   *
+   * @param politics the politics
+   * @param destination the destination
+   */
   //ActionReturn(boolean success, String error, boolean disable, boolean addMainBonus)
 	public SatisfyKing(PoliticsCard[] politics, City destination){
 		if(politics==null)
@@ -41,8 +62,10 @@ public class SatisfyKing extends Action {
 	
 	
 	/**
-	 * Moves the king
-	 * @param toCity the city where you want to place the king
+	 * Moves the king.
+	 *  if there is an error gives a string error
+	 *
+	 * @return the action return
 	 */
 	
 	public ActionReturn execute(){
@@ -58,6 +81,9 @@ public class SatisfyKing extends Action {
 		return new ActionReturn(true,"",bonusToCollect);
 	}
 	
+	/* 
+	 * check if the action is valid
+	 */
 	public boolean isValid(){
 		isInputDataValid();
 		isOperationValid();
@@ -66,6 +92,10 @@ public class SatisfyKing extends Action {
 		return true;
 	}
 	
+	/**
+	 * Checks if is input data valid.
+	 * if the input is not valid adds an error
+	 */
 	private void isInputDataValid(){
 		ArrayList<PoliticsCard> tempHand = game.getActualPlayer().getHand();
 		boolean found;
@@ -82,6 +112,10 @@ public class SatisfyKing extends Action {
 		}
 	}
 	
+	/**
+	 * Checks if is operation valid.
+	 * it counts how many cards match the balcony
+	 */
 	private void isOperationValid() {
 		int tempCoin = 0;
 		int needCoin = game.getGraphMap().shortestPathCost(destination);
@@ -123,7 +157,10 @@ public class SatisfyKing extends Action {
 	        
 	  }
 	  
-	  private void payCards() {
+	  /**
+  	 * Pay cards.
+  	 */
+  	private void payCards() {
 		  int pathCost = game.getGraphMap().shortestPathCost(destination);
 	    switch(counter){
 	      case 1:
@@ -141,7 +178,15 @@ public class SatisfyKing extends Action {
 	    }
 	  }
 	  
-	  private Bonus[] getCitiesBonus(City startcity){
+	  /**
+  	 * Gets the cities bonus. 
+	 * When you build in a city you get all the other bonus in the cities linked with the new one. 
+	 * You must have an emporium in each city if you want the bonus.
+  	 
+  	 * @param startcity the startcity
+  	 * @return the cities bonus
+  	 */
+  	private Bonus[] getCitiesBonus(City startcity){
 			ArrayList<City> checked = new ArrayList<City>();
 			ArrayList<City> tocheck = new ArrayList<City>();
 			ArrayList<Bonus> found = new ArrayList<Bonus>();
@@ -176,7 +221,14 @@ public class SatisfyKing extends Action {
 			return stockArr;
 		}
 	  
-	  public void setterFromDTO(SatisfyKingDTO skDTO, Player player, Game game){
+	  /**
+  	 * Setter from dto.
+  	 *
+  	 * @param skDTO the skdto
+  	 * @param player the player
+  	 * @param game the game
+  	 */
+  	public void setterFromDTO(SatisfyKingDTO skDTO, Player player, Game game){
 			this.game = game;
 			ArrayList<PoliticsCard> storage = new ArrayList<PoliticsCard>();
 			for(PoliticsCardDTO pcDTO : skDTO.getPolitics()){

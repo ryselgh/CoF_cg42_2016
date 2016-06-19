@@ -4,15 +4,30 @@ import java.util.ArrayList;
 
 import com.server.model.gamelogic.Game;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class BuyAssistant.
+ */
 public class BuyAssistant extends Action{
 
+	/** The errors. */
 	private ArrayList<String> errors;
+	
+	/** The disable. */
 	private boolean disable = false;
 	
+	/**
+	 * Instantiates a new buy assistant.
+	 */
 	public BuyAssistant(){
 		errors = new ArrayList<String>();
 	}
 	
+	/* 
+	 * checks if the action is valid.(true)
+	 * adds an error if the condition is not respected(false) 
+	 *
+	 */
 	public boolean isValid(){
 		if(game.getActualPlayer().getCoins()>=3)
 			return true;
@@ -22,7 +37,10 @@ public class BuyAssistant extends Action{
 	}
 	
 	/**
-	 * Buy ONE assistant
+	 * If all it's ok you Buy ONE assistant.
+	 *  if there is an error gives a string error
+	 *
+	 * @return the action return
 	 */
 	
 	public ActionReturn execute() {

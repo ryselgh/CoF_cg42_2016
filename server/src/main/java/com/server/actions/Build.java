@@ -11,24 +11,49 @@ import com.server.model.decks.PermitsCard;
 import com.server.model.gamelogic.Game;
 import com.server.model.gamelogic.Player;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Build.
+ */
 public class Build extends Action{
 
+	/** The city. */
 	private City city;
+	
+	/** The permit. */
 	private PermitsCard permit;
+	
+	/** The game. */
 	private Game game;
+	
+	/** The errors. */
 	private ArrayList<String> errors;
+	
+	/** The disable. */
 	private boolean disable = false;//anche se questa funzione non da luogo ad errori che la disabilitano
 	
+	/**
+	 * Instantiates a new builds the.
+	 *
+	 * @param city the city where you want to build
+	 * @param permit the permit you want to use
+	 */
 	public Build(City city, PermitsCard permit){
 		this.city = city;
 		this.permit = permit;
 		errors = new ArrayList<String>();
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.server.actions.Action#setGame(com.server.model.gamelogic.Game)
+	 */
 	public void setGame(Game game){
 		this.game = game;
 	}
 	
+	/* 
+	 * check if the action is valid, return true if it's valid
+	 */
 	public boolean isValid(){
 		hasPermit();
 		hasEmporium();
@@ -37,6 +62,10 @@ public class Build extends Action{
 			return false;
 		return true;
 	}
+	
+	/**
+	 * Checks for permit. it adds an error if the permit is illegal
+	 */
 	private void hasPermit(){
 		boolean found = false;
 		for(PermitsCard p : game.getActualPlayer().getPermits())
@@ -48,6 +77,9 @@ public class Build extends Action{
 			errors.add("Invalid permit card");//da levare se tutto funzionerà bene (è un errore di collaborazione client/server non di gioco)
 	}
 	
+	/**
+	 * Checks for emporium. if the player already has an emporium in the city it adds an error
+	 */
 	private void hasEmporium(){
 		for(City c : game.getMap().getCity())
 			if(c.getName().equals(city.getName())){ //trovo l'oggetto città sul server corrispondente a quello mandato da client
@@ -59,6 +91,10 @@ public class Build extends Action{
 			}
 	}
 	
+	/**
+	 * Can build. it checks if one of the letter on the permit matches the city and 
+	 * if the player has enough assistants to pay the emporium fee 
+	 */
 	private void canBuild(){
 		int count = 0;
 		
@@ -80,6 +116,14 @@ public class Build extends Action{
 		}
 	}
 	
+	/**
+	 * Gets the cities bonus. 
+	 * When you build in a city you get all the other bonus in the cities linked with the new one. 
+	 * You must have an emporium in each city if you want the bonus.
+	 *
+	 * @param startcity the startcity
+	 * @return the cities bonus
+	 */
 	private Bonus[] getCitiesBonus(City startcity){
 		ArrayList<City> checked = new ArrayList<City>();
 		ArrayList<City> tocheck = new ArrayList<City>();
@@ -116,10 +160,12 @@ public class Build extends Action{
 	}
 	
 	/**
-	 * Build an emporium in the specified city
-	 * @param city the city where you want to build
+	 * If all it's ok you Build an emporium in the specified city and get the bonus
+	 *  if there is an error gives a string error
+	 *
+	 * @return the action return
 	 */
-	//ActionReturn(boolean success, String error, boolean disable, boolean addMainBonus)
+	
 	public ActionReturn execute() {
 		if(errors.size()>0){
 			String errorsStr = "";
@@ -138,12 +184,24 @@ public class Build extends Action{
 		return new ActionReturn(true,"",bonusToCollect);
 	}
 	
+	/**
+	 * Setter from dto.
+	 *
+	 * @param buildDTO the build dto
+	 * @param player the player
+	 * @param game the game
+	 */
 	public void setterFromDTO(BuildDTO buildDTO, Player player, Game game){
 		this.permit = PermitsCard.fromDTO(buildDTO.getPermit(), player);
 		this.game = game;
 		this.city = game.getCityFromName(buildDTO.getCity().getName());
 	}
 
+	/**
+	 * Gets the city.
+	 *
+	 * @return the city
+	 */
 	public City getCity() {
 		return city;
 	}

@@ -14,16 +14,38 @@ import com.server.model.decks.PoliticsCard;
 import com.server.model.gamelogic.Game;
 import com.server.model.gamelogic.Player;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ObtainPermit.
+ */
 public class ObtainPermit extends Action {
 	
+	/** The politics. */
 	private PoliticsCard[] politics;
+	
+	/** The region index. */
 	private int regionIndex;
+    
+    /** The slot. */
     private int slot;
+	
+	/** The counter. */
 	int counter = 0;
+    
+    /** The jollycnt. */
     int jollycnt = 0;
+    
+    /** The errors. */
     private ArrayList<String> errors;
     
     
+	/**
+	 * Instantiates a new obtain permit.
+	 *
+	 * @param politics the politics
+	 * @param regionIndex the region index
+	 * @param slot the slot
+	 */
 	public ObtainPermit(PoliticsCard[] politics, int regionIndex, int slot){
 		this.politics = politics;
 		this.regionIndex = regionIndex;
@@ -31,6 +53,10 @@ public class ObtainPermit extends Action {
 		errors = new ArrayList<String>();
 	}
 	
+	/* 
+	 * checks if the action is valid
+	 * returns true if it's valid
+	 */
 	public boolean isValid(){
 		isInputDataValid();
 		isOperationValid();
@@ -39,6 +65,10 @@ public class ObtainPermit extends Action {
 		return true;
 	}
 	
+	/**
+	 * Checks if is input data valid.
+	 * if it's false adds an error
+	 */
 	private void isInputDataValid(){
 		ArrayList<PoliticsCard> tempHand = game.getActualPlayer().getHand();
 		boolean found;
@@ -55,6 +85,10 @@ public class ObtainPermit extends Action {
 		}
 	}
 	
+	/**
+	 * Checks if is operation valid.
+	 * it counts how many cards match the balcony
+	 */
 	private void isOperationValid() {
 	    Balcony chosenBalcony = game.getMap().getBalcony(regionIndex);
 	    ArrayList<Councilor> tmpBalcony = new ArrayList<Councilor>(Arrays.asList(chosenBalcony.getCouncilors()));
@@ -82,7 +116,13 @@ public class ObtainPermit extends Action {
 	    		errors.add("You have not enought money");
 	  }
 	  
-	  private void payCards(int cards, int jolly) {
+	  /**
+  	 * Pay cards.
+  	 *
+  	 * @param cards the number of cards
+  	 * @param jolly the number of jolly
+  	 */
+  	private void payCards(int cards, int jolly) {
 	    switch(cards){
 	      case 1:
 	        game.getActualPlayer().addCoins(-(10+jolly));
@@ -98,10 +138,12 @@ public class ObtainPermit extends Action {
 	        break;
 	    }
 	  }
+	
 	/**
-	 * Obtain a permit by satisfying a council
-	 * @param politics the cards you want to use to satisfy the council
-	 * @param the balcony you want to satisfy
+	 * Obtain a permit by satisfying a council.
+	 * if there is an error gives a string error
+	 *
+	 * @return the action return
 	 */
 	
 	public ActionReturn execute() {//il client una volta ricevuto l'ack deve eliminare le carte politica dalla mano
@@ -118,6 +160,13 @@ public class ObtainPermit extends Action {
 		return new ActionReturn(true,"",card.getBonus());
 	}
 	
+	/**
+	 * Setter from dto.
+	 *
+	 * @param opDTO the op dto
+	 * @param player the player
+	 * @param game the game
+	 */
 	public void setterFromDTO(ObtainPermitDTO opDTO, Player player, Game game){
 		this.game = game;
 		ArrayList<PoliticsCard> storage = new ArrayList<PoliticsCard>();

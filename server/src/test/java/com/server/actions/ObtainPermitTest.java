@@ -91,25 +91,23 @@ public class ObtainPermitTest {
 		assertEquals(game.getActualPlayer().getCoins(),16);
 		
 	}
+	
 
 	@Test
-	public void testExecute_3()
+	public void testExecute_4()
 		throws Exception {
 		PoliticsCard card1= new PoliticsCard(CouncilorColor.JOLLY);
 		PoliticsCard card2= new PoliticsCard(CouncilorColor.JOLLY);
-		PoliticsCard card3= new PoliticsCard(CouncilorColor.JOLLY);
-		PoliticsCard card4= new PoliticsCard(CouncilorColor.JOLLY);
+		
 		
 		game.getActualPlayer().getHand().add(0, card1);
 		game.getActualPlayer().getHand().add(0, card2);
-		game.getActualPlayer().getHand().add(0, card3);
-		game.getActualPlayer().getHand().add(0, card4);
 		
-		PoliticsCard[] tempHand= new PoliticsCard[4];
+		
+		PoliticsCard[] tempHand= new PoliticsCard[2];
 		tempHand[0] = game.getActualPlayer().getHand().get(0);
 		tempHand[1] = game.getActualPlayer().getHand().get(1);
-		tempHand[2] = game.getActualPlayer().getHand().get(2);
-		tempHand[3] = game.getActualPlayer().getHand().get(3);
+		
 		
 		ObtainPermit fixture = new ObtainPermit(tempHand, 1, 1);
 		fixture.setGame(game);
@@ -119,7 +117,36 @@ public class ObtainPermitTest {
 		fixture.isValid();
 		fixture.execute();
 		
-		assertEquals(game.getActualPlayer().getPermits().get(0),pc);
+		assertEquals(game.getActualPlayer().getCoins(),11);
+	}
+	@Test
+	public void testExecute_5()
+		throws Exception {
+		PoliticsCard card1= new PoliticsCard(CouncilorColor.JOLLY);
+		PoliticsCard card2= new PoliticsCard(CouncilorColor.JOLLY);
+		PoliticsCard card3= new PoliticsCard(CouncilorColor.JOLLY);
+		
+		
+		game.getActualPlayer().getHand().add(0, card1);
+		game.getActualPlayer().getHand().add(0, card2);
+		game.getActualPlayer().getHand().add(0, card3);
+		
+		
+		PoliticsCard[] tempHand= new PoliticsCard[3];
+		tempHand[0] = game.getActualPlayer().getHand().get(0);
+		tempHand[1] = game.getActualPlayer().getHand().get(1);
+		tempHand[2] = game.getActualPlayer().getHand().get(2);
+		
+		
+		ObtainPermit fixture = new ObtainPermit(tempHand, 1, 1);
+		fixture.setGame(game);
+		PermitsCard pc = game.getMap().getPermitsDeck(1).getSlot(1, false);
+		game.getActualPlayer().setCoins(20);
+		
+		fixture.isValid();
+		fixture.execute();
+		
+		assertEquals(game.getActualPlayer().getCoins(),13);
 	}
 
 	@Test
@@ -178,45 +205,69 @@ public class ObtainPermitTest {
 		//       at com.server.model.gamelogic.Game.<init>(Game.java:49)
 		assertTrue(result);
 	}
-
+	
 //	@Test
-//	public void testSetterFromDTO_1()
+//	public void testIsValid_3()
 //		throws Exception {
+//		PoliticsCard[] tempHand= new PoliticsCard[1];
+//		PoliticsCard e = new PoliticsCard(CouncilorColor.BLACK);
+//		game.getActualPlayer().getHand().clear();
+//		game.getActualPlayer().getHand().add(e);
+//		tempHand[0] = new PoliticsCard(CouncilorColor.WHITE);
 //		
-//		PoliticsCard card1= new PoliticsCard(CouncilorColor.JOLLY);
-//		PoliticsCard card2= new PoliticsCard(CouncilorColor.JOLLY);
-//		PoliticsCard card3= new PoliticsCard(CouncilorColor.JOLLY);
-//		PoliticsCard card4= new PoliticsCard(CouncilorColor.JOLLY);
-//		
-//		game.getActualPlayer().getHand().add(0, card1);
-//		game.getActualPlayer().getHand().add(0, card2);
-//		game.getActualPlayer().getHand().add(0, card3);
-//		game.getActualPlayer().getHand().add(0, card4);
-//		
-//		PoliticsCard[] tempHand= new PoliticsCard[4];
-//		tempHand[0] = game.getActualPlayer().getHand().get(0);
-//		tempHand[1] = game.getActualPlayer().getHand().get(1);
-//		tempHand[2] = game.getActualPlayer().getHand().get(2);
-//		tempHand[3] = game.getActualPlayer().getHand().get(3);
-//		
-//		PoliticsCardDTO[] tempHandDTO= new PoliticsCardDTO[4];
-//		tempHandDTO[0] = game.getActualPlayer().getHand().get(0).toDTO();
-//		tempHandDTO[1] = game.getActualPlayer().getHand().get(1).toDTO();
-//		tempHandDTO[2] = game.getActualPlayer().getHand().get(2).toDTO();
-//		tempHandDTO[3] = game.getActualPlayer().getHand().get(3).toDTO();
 //		
 //		ObtainPermit fixture = new ObtainPermit(tempHand, 1, 1);
+//		
 //		fixture.setGame(game);
+//		game.getActualPlayer().setCoins(15);
+//		
+//		fixture.isValid();
+//		ActionReturn result = fixture.execute();
+//		assertEquals(result.getError(),"\nInvalid input cards");
 //		
 //		
+//
 //		
-//		ObtainPermitDTO obtainPermitDTO = new ObtainPermitDTO();
-//		obtainPermitDTO.setPolitics(tempHandDTO);
-//		obtainPermitDTO.setRegionIndex(1);
-//		obtainPermitDTO.setSlot(1);
-//		fixture.setterFromDTO(obtainPermitDTO, game.getActualPlayer(), game);
-//		
-//		assertEquals(fixture.)
+//	}
+
+	@Test
+	public void testSetterFromDTO_1()
+		throws Exception {
+		ObtainPermit perm = new ObtainPermit(null, 0, 0);
+		perm.setGame(game);
+		game.getActualPlayer().setCoins(20);
+		
+		PoliticsCard card1= new PoliticsCard(CouncilorColor.JOLLY);
+		PoliticsCard card2= new PoliticsCard(CouncilorColor.JOLLY);
+		PoliticsCard card3= new PoliticsCard(CouncilorColor.JOLLY);
+		PoliticsCard card4= new PoliticsCard(CouncilorColor.JOLLY);
+		
+		game.getActualPlayer().getHand().add(0, card1);
+		game.getActualPlayer().getHand().add(0, card2);
+		game.getActualPlayer().getHand().add(0, card3);
+		game.getActualPlayer().getHand().add(0, card4);
+		
+		PoliticsCardDTO[] tempHandDTO= new PoliticsCardDTO[4];
+		tempHandDTO[0] = new PoliticsCardDTO();
+		tempHandDTO[0].setColor(CouncilorColor.JOLLY);
+		tempHandDTO[1] = new PoliticsCardDTO();
+		tempHandDTO[1].setColor(CouncilorColor.JOLLY);
+		tempHandDTO[2] = new PoliticsCardDTO();
+		tempHandDTO[2].setColor(CouncilorColor.JOLLY);
+		tempHandDTO[3] = new PoliticsCardDTO();
+		tempHandDTO[3].setColor(CouncilorColor.JOLLY);
+		
+		ObtainPermitDTO obtainPermitDTO = new ObtainPermitDTO();
+		obtainPermitDTO.setPolitics(tempHandDTO);
+		obtainPermitDTO.setRegionIndex(1);
+		obtainPermitDTO.setSlot(1);
+		
+		perm.setterFromDTO(obtainPermitDTO, game.getActualPlayer(), game);
+		perm.isValid();
+		perm.execute();
+//		assertEquals(game.getActualPlayer().getCoins(),20);
+		
+	}
 
 
 

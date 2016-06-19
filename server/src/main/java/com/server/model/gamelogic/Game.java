@@ -7,6 +7,7 @@ import org.w3c.dom.Document;
 import com.communication.gamelogic.GameDTO;
 import com.communication.gamelogic.PlayerDTO;
 import com.server.model.board.City;
+import com.server.model.board.Emporium;
 import com.server.model.board.Map;
 import com.server.model.market.Market;
 
@@ -202,5 +203,22 @@ public class Game {
 		gameDTO.setPlayersQty(playersQty);
 		return gameDTO;
 	}
+	
+//	public boolean checkWin() {
+//		int count = 0;
+//		for (City city : this.getMap().getCity())
+//			for (Emporium e : city.getEmporium()){
+//				if(e!=null){
+//				if (e.getPlayer().getID().equals("1"))
+//					count++;
+//				}
+//			}
+//		if (count >= 10) {
+//		//	this.gamehandler.endGame(clienthandler);
+//			return true;
+//		}
+//		return false;
+//
+//	}
 	
 }

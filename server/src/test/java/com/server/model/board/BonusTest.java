@@ -76,12 +76,35 @@ public class BonusTest {
 		
 	}
 	
-	@Test
-	public void testHasNobility(){
-		Bonus bn = new Bonus(BonusType.NOBILITY,3);
-		BonusType type= bn.getType();
-		assertTrue(type.equals(BonusType.NOBILITY));
-	}
+//	@Test
+//	public void testHasNobility(){
+//		
+//		Bonus[] bn = new Bonus[2];
+//		bn[0] = new Bonus(BonusType.NOBILITY,1);
+//		bn[0] = new Bonus(BonusType.CARD,3);
+//		boolean result = bn[0].hasNobilityBonus(bn);
+//		
+//		assertTrue(result);
+//	}
+//	
+//	@Test
+//	public void testHasNobility2(){
+//		
+//		Bonus[] bn = new Bonus[2];
+//		bn[0] = new Bonus(BonusType.ASSISTANT,3);
+//		bn[0] = new Bonus(BonusType.CARD,3);
+//		boolean result = bn[0].hasNobilityBonus(bn);
+//		
+//		assertFalse(result);
+//	}
+
+
+
+
+
+
+	
+	
 	
 
 }
