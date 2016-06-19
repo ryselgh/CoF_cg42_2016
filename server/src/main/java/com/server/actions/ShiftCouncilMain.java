@@ -60,7 +60,8 @@ public class ShiftCouncilMain extends Action{
 		this.balconyIndex = scmDTO.getBalconyIndex();
 		this.councilor = getCouncilorFromDTO(scmDTO.getCouncilor());
 	}
-	//public boolean equals(stica)
+
+
 	private Councilor getCouncilorFromDTO(CouncilorDTO cDTO){
 		for(Councilor c : game.getMap().getCouncilorsPool())
 			if(c.equalsDTO(cDTO))

@@ -3,6 +3,7 @@ package com.server.model.gamelogic;
 import java.util.ArrayList;
 import java.util.UUID;
 import com.communication.ItemOnSale;
+import com.communication.RMIClientControllerRemote;
 import com.communication.board.AssistantDTO;
 import com.communication.decks.PermitsCardDTO;
 import com.communication.decks.PoliticsCardDTO;
@@ -26,6 +27,9 @@ public class SellItemState implements State{
 	private ClientHandler clienthandler;
 	private GameHandler gamehandler;
 	private Context context;
+	private RMIClientControllerRemote remoteController;
+	private boolean RMI;
+	
 	public SellItemState(){}
 	
 	public String getStateID(){
@@ -36,14 +40,17 @@ public class SellItemState implements State{
 	public void doAction(Context context) {
 		this.context = context;
 		context.setState(this);
-		clienthandler = context.getClienthandler();
-		gamehandler = context.getGamehandler();
+		this.clienthandler = context.getClienthandler();
+		this.gamehandler = context.getGamehandler();
+		this.RMI = context.isRMI();
+		this.remoteController = context.getRemoteController();
 		this.game = gamehandler.getGame();
 		
 		execute(null,false);
 	}
 	
 	public void execute(ItemOnSale toSell, boolean passed){//uso passed perchè l'oggetto può essere null anche se ricevuto correttamente
+		
 		if(!passed){
 			clienthandler.sendToClient("TOSELL", null);
 			gamehandler.waitForInput("TOSELL", this);

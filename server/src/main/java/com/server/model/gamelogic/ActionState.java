@@ -1,9 +1,11 @@
 package com.server.model.gamelogic;
+import java.rmi.RemoteException;
 //gamehandler.waitfortwotokens(this (ActionState))
 //da spostare la sendtoclient sul gamehandler
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import com.communication.RMIClientControllerRemote;
 import com.communication.actions.ActionDTO;
 import com.communication.actions.BuildDTO;
 import com.communication.actions.BuyAssistantDTO;
@@ -29,6 +31,7 @@ import com.server.actions.ShiftCouncilMain;
 import com.server.actions.ShiftCouncilSpeed;
 import com.server.controller.ClientHandler;
 import com.server.controller.GameHandler;
+import com.server.controller.RMISubscribed;
 import com.server.model.board.Assistant;
 import com.server.model.board.Bonus;
 import com.server.model.board.BonusToken;
@@ -44,30 +47,48 @@ public class ActionState implements State {
 	private ClientHandler clienthandler;
 	private GameHandler gamehandler;
 	private Context context;
-
-	public ActionState(){}
+	private boolean RMI;
+	private RMIClientControllerRemote remoteController;
+	
+	public ActionState(){
+	}
 	
 	public String getStateID(){
 		return "ActionState";
 	}
 	
-	public void execute(ActionDTO actionDTO){
+	public void execute(ActionDTO actionDTO) throws RemoteException{
 		boolean pass = false;
 		Action action = null;
+		if(RMI){
+			actionDTO = remoteController.RMIgetAction(getAvailableActions());
+		}
+		else{
 		if(actionDTO==null){
 			clienthandler.sendToClient("AvailableActions", getAvailableActions());
 			gamehandler.waitForInput("ACTION", this);
 			return;
 		}
+		}
 		action = DTOtoObj(actionDTO);
 		action.setGame(game);
 		if (!action.isValid()) {
 			ActionReturn ret = action.execute();// gli errori li grabbo dall'actionreturn ritornato dall'execute
-			clienthandler.sendToClient("ActionNotValid", ret.getError());
-			gamehandler.waitForInput("ACTION", this);//non reinvio le azioni disponibili perchè non sono cambiate
-			return;
+			if(RMI){
+				remoteController.RMIprintMsg(ret.getError());
+				this.execute(null);
+				return;
+			}
+			else{
+				clienthandler.sendToClient("ActionNotValid", ret.getError());
+				gamehandler.waitForInput("ACTION", this);//non reinvio le azioni disponibili perchè non sono cambiate
+				return;
+			}
 		}
-		clienthandler.sendToClient("ActionAccepted", null);
+		if(RMI)
+			remoteController.RMIprintMsg("ActionAccepted");
+		else
+			clienthandler.sendToClient("ActionAccepted", null);
 		if(action instanceof Pass)//niente check perchè è abilitata solo quando mainaction già fatta
 			pass=true;
 		ActionReturn ret = action.execute();
@@ -104,16 +125,29 @@ public class ActionState implements State {
 	
 	public void doAction(Context context) {
 		this.context = context;
-		context.setState(this);
-		clienthandler = context.getClienthandler();
-		gamehandler = context.getGamehandler();
+		this.context.setState(this);
+		this.clienthandler = context.getClienthandler();
+		this.gamehandler = context.getGamehandler();
+		this.remoteController = context.getRemoteController();
 		this.game = gamehandler.getGame();
+		this.RMI = context.isRMI();
 		PoliticsCard draw = game.getMap().getPoliticsDeck().draw();//da aggiungere alla mano del giocatore
 		this.game.getActualPlayer().addPolitics(draw);
-		clienthandler.sendToClient("StartTurn", draw.toDTO());
-		gamehandler.updateClientGame();
-		
-		this.execute(null);
+		if(RMI)
+			try {
+				remoteController.RMIStartTurn(draw.toDTO());
+			} catch (RemoteException e) {
+				e.printStackTrace();
+			}
+		else
+			clienthandler.sendToClient("StartTurn", draw.toDTO());
+		try {
+			gamehandler.updateClientGame();
+			this.execute(null);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	private Action DTOtoObj(ActionDTO actDTO){
@@ -211,6 +245,7 @@ public class ActionState implements State {
 	// GIOCANDO IL TURNO
 	{
 		BonusToken[] btTmp;
+		try {
 		switch (b.getType()) {
 		case CARD:
 			for (int i = 0; i < b.getQnt(); i++)
@@ -251,37 +286,53 @@ public class ActionState implements State {
 			break;
 
 		}
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
-	public void collectONETOKEN(BonusTokenDTO[] chosen){
-		BonusToken[] btTmp = getAvailableTokens();
+	public void collectONETOKEN(BonusTokenDTO[] chosen) throws RemoteException{
+		BonusTokenDTO[] btTmp = getAvailableTokens();
+		BonusTokenDTO chos = null;
 		if (btTmp.length == 0)
 			clienthandler.sendToClient("You have no available city tokens. Bonus discarded", null);//non è nack perchè non ho chiesto input al client
 		else {
-			if(chosen==null){
-				clienthandler.sendToClient("ONETOKEN", btTmp);
-				gamehandler.waitForInput("ONETOKEN", this);
-				return;
+			if(RMI){
+				chos = this.remoteController.RMIOneToken(btTmp);
+			}
+			else{
+				if(chosen==null){
+					clienthandler.sendToClient("ONETOKEN", btTmp);
+					gamehandler.waitForInput("ONETOKEN", this);
+					return;
+				}
+				chos = chosen[0];
 			}
 			BonusToken conv = new BonusToken(null);
-			conv.setterFromDTO(chosen[0]);
+			conv.setterFromDTO(chos);
 			for (Bonus bo : conv.getBonus())
 				collectBonus(bo);
 			clienthandler.sendToClient("ONETOKENACK", null);
 		}
 	}
 	
-	public void collectTWOTOKENS(BonusTokenDTO[] chosen){
-		BonusToken[] btTmp = getAvailableTokens();
+	public void collectTWOTOKENS(BonusTokenDTO[] chosen) throws RemoteException{
+		BonusTokenDTO[] btTmp = getAvailableTokens();
 		BonusToken[] converted;
 		if (btTmp.length == 0)
 			clienthandler.sendToClient("You have no available city tokens. Bonus discarded", null);
 		else {
-			if(chosen==null){
-				clienthandler.sendToClient("TWOTOKENS", btTmp);
-				gamehandler.waitForInput("TWOTOKENS", this);
-				return;
+			if(RMI){
+				chosen = this.remoteController.RMITwoTokens(btTmp);
 			}
+			else
+				if(chosen==null){
+					clienthandler.sendToClient("TWOTOKENS", btTmp);
+					gamehandler.waitForInput("TWOTOKENS", this);
+					return;
+				}
+			
 			converted = new BonusToken[chosen.length];
 			for(int i=0;i<chosen.length;i++)
 				converted[i].setterFromDTO(chosen[i]);
@@ -292,13 +343,15 @@ public class ActionState implements State {
 		}
 	}
 	
-	public void collectFREECARD(PermitsCardDTO chosen){
+	public void collectFREECARD(PermitsCardDTO chosen) throws RemoteException{
 		boolean found = false;
-		if(chosen==null){
-			clienthandler.sendToClient("FREECARD", null);
-			gamehandler.waitForInput("FREECARD", this);
-			return;
-		}
+		if(RMI)
+			chosen = this.remoteController.RMIFreeCard();
+		else if(chosen==null){
+				clienthandler.sendToClient("FREECARD", null);
+				gamehandler.waitForInput("FREECARD", this);
+				return;
+			}
 			for (int i = 0; i < 3; i++)
 				for (int j = 0; j < 2; j++) {
 					PermitsCard temp = game.getMap().getPermitsDeck(i).getSlot(j, false);
@@ -308,18 +361,28 @@ public class ActionState implements State {
 					}
 				}
 			if(!found){
-				clienthandler.sendToClient("FREECARDNACK", "Invalid input permit. Try again");
-				clienthandler.sendToClient("FREECARD", null);
-				gamehandler.waitForInput("FREECARD", this);
+				if(RMI){
+					this.remoteController.RMIprintMsg("Invalid input permit. Try again");
+					this.collectFREECARD(null);
+					return;
+				}
+				else{
+					clienthandler.sendToClient("FREECARDNACK", "Invalid input permit. Try again");
+					clienthandler.sendToClient("FREECARD", null);
+					gamehandler.waitForInput("FREECARD", this);
+				}
 			}
 			else
-				clienthandler.sendToClient("FREECARDACK", null);
+				if(!RMI)//non (ancora?) implementato per rmi perchè credo sia inutile
+					clienthandler.sendToClient("FREECARDACK", null);
 		}
 	
 	
-	public void collectBONUSCARD(PermitsCardDTO chosen){
+	public void collectBONUSCARD(PermitsCardDTO chosen) throws RemoteException{
 		ArrayList<PermitsCard> pcOwned = game.getActualPlayer().getPermits();
-		if(chosen==null){
+		if(RMI)
+			chosen = this.remoteController.RMIBonusCard();
+		else if(chosen==null){
 			clienthandler.sendToClient("BONUSCARD", null);
 			gamehandler.waitForInput("BONUSCARD",this);
 			return;
@@ -329,14 +392,22 @@ public class ActionState implements State {
 			if(pc.equalsDTO(chosen))
 				temp = pc;
 		if(temp==null){
-			clienthandler.sendToClient("BONUSCARDNACK", "Invalid input. Try again");
-			clienthandler.sendToClient("BONUSCARD", null);
-			gamehandler.waitForInput("BONUSCARD", this);
+			if(RMI){
+				this.remoteController.RMIprintMsg("Invalid input. Try again");
+				this.collectBONUSCARD(null);
+			}
+			else{
+				clienthandler.sendToClient("BONUSCARDNACK", "Invalid input. Try again");
+				clienthandler.sendToClient("BONUSCARD", null);
+				gamehandler.waitForInput("BONUSCARD", this);
+			}
+			return;
 		}
 		else{
 		for (Bonus bo : temp.getBonus())
 			collectBonus(bo);
-		clienthandler.sendToClient("BONUSCARDACK", null);
+		if(!RMI)//anche questo non implementato per rmi perchè di dubbia utilità
+			clienthandler.sendToClient("BONUSCARDACK", null);
 		}
 	}
 	
@@ -344,12 +415,12 @@ public class ActionState implements State {
 		this.game.getActualPlayer().addPolitics(this.game.getMap().getPoliticsDeck().draw());
 	}
 	
-	private BonusToken[] getAvailableTokens() {
-		ArrayList<BonusToken> bts = new ArrayList<BonusToken>();
+	private BonusTokenDTO[] getAvailableTokens() {
+		ArrayList<BonusTokenDTO> bts = new ArrayList<BonusTokenDTO>();
 		for (City c : game.getMap().getCity())
 			if (c.hasEmporium(game.getActualPlayer()) && c.getBonusToken() != null
 			&& !Bonus.hasNobilityBonus(c.getBonusToken().getBonus()))
-				bts.add(c.getBonusToken());
-		return bts.toArray(new BonusToken[0]);
+				bts.add(c.getBonusToken().toDTO());
+		return bts.toArray(new BonusTokenDTO[0]);
 	}
 }

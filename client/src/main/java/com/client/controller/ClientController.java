@@ -19,27 +19,18 @@ import java.util.concurrent.ArrayBlockingQueue;
 
 import com.client.view.ClientCLI;
 import com.communication.CommunicationObject;
+import com.communication.ItemOnSale;
 import com.communication.LobbyStatus;
 import com.communication.RMIClientControllerRemote;
 import com.communication.RMILobbyRemote;
 import com.communication.RoomStatus;
 import com.communication.actions.ActionDTO;
-import com.communication.actions.BuildDTO;
-import com.communication.actions.BuyAssistantDTO;
-import com.communication.actions.BuyMainActionDTO;
-import com.communication.actions.ChangeCardsDTO;
-import com.communication.actions.ObtainPermitDTO;
-import com.communication.actions.PassDTO;
-import com.communication.actions.SatisfyKingDTO;
-import com.communication.actions.ShiftCouncilMainDTO;
-import com.communication.actions.ShiftCouncilSpeedDTO;
 import com.communication.board.BonusTokenDTO;
 import com.communication.board.CityDTO;
-import com.communication.board.CouncilorDTO;
 import com.communication.decks.PermitsCardDTO;
 import com.communication.decks.PoliticsCardDTO;
 import com.communication.gamelogic.GameDTO;
-import com.communication.values.CouncilorColor;
+import com.communication.market.OnSaleDTO;
 
 public class ClientController extends Observable implements Observer, RMIClientControllerRemote{
 
@@ -50,7 +41,6 @@ public class ClientController extends Observable implements Observer, RMIClientC
 	private ConsoleListener consoleListener;
 	private Thread consoleThread;
 	private boolean inGame = false;
-	private Thread cliListThread;
 	private String userName, tmpUserName;
 	private SelectActionState currentActState;
 	private boolean[] availableActions;
@@ -223,7 +213,7 @@ public class ClientController extends Observable implements Observer, RMIClientC
 			}
 			if(RMI)
 				try {
-					lobbyRemote.RMIlobbyCommand(this.userName, inStr, null);
+					cli.printMsg(lobbyRemote.RMIlobbyCommand(this.userName, inStr, null));
 				} catch (RemoteException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -241,9 +231,6 @@ public class ClientController extends Observable implements Observer, RMIClientC
 			cli.printMsg(cmd + "\n");
 		} 
 		else {// messaggio di gioco / input
-			boolean[] availableActions = null;
-			int selectedAction;
-			ActionDTO compiledAction;
 			switch (cmd) {
 			case "TOBUYEMPTY":
 				cli.printMsg("Every item has been bought. Turn skipped");
@@ -284,13 +271,8 @@ public class ClientController extends Observable implements Observer, RMIClientC
 				break;
 			case "ONETOKEN":
 				BonusTokenDTO[] btDTO = new BonusTokenDTO[1];
-				//get bonus token. obj = BonusToken[] tokenPool
-				ArrayList<BonusTokenDTO> bt = new ArrayList<BonusTokenDTO>();
-				for(CityDTO city: game.getMap().getCity())
-					bt.add(city.getToken());
-				BonusTokenDTO[] btArray = new BonusTokenDTO[bt.size()];
-				bt.toArray(btArray);
-				btDTO = cli.getTokenBonus(btArray, 1);
+				BonusTokenDTO[] availBts = (BonusTokenDTO[]) obj;
+				btDTO = cli.getTokenBonus(availBts, 1);
 				connection.sendToServer("INPUT_ONETOKEN",btDTO);
 				break;
 
@@ -301,13 +283,8 @@ public class ClientController extends Observable implements Observer, RMIClientC
 				break;
 			case "TWOTOKENS":
 				BonusTokenDTO[] btDTO2 = new BonusTokenDTO[1];
-				//get bonus token. obj = BonusToken[] tokenPool
-				ArrayList<BonusTokenDTO> bt2 = new ArrayList<BonusTokenDTO>();
-				for(CityDTO city: game.getMap().getCity())
-					bt2.add(city.getToken());
-				BonusTokenDTO[] btArray2 = new BonusTokenDTO[bt2.size()];
-				bt2.toArray(btArray2);
-				btDTO2 = cli.getTokenBonus(btArray2, 2);
+				BonusTokenDTO[] availBts2 = (BonusTokenDTO[]) obj;
+				btDTO2 = cli.getTokenBonus(availBts2, 2);
 				connection.sendToServer("INPUT_TWOTOKENS",btDTO2);
 				break;
 
@@ -396,7 +373,7 @@ public class ClientController extends Observable implements Observer, RMIClientC
 				//pass[8]
 				// SONO DA RIORDINARE SECONDO LA SCHEDA DEL GIOCO <-------------------------------------------IMPORTANTE!!
 				availableActions = (boolean[]) obj;
-				this.availableActions= availableActions;
+				this.availableActions= availableActions;//non date ascolto al warning, serve per il case "ActionNotValid"
 				SelectActionState actState = new SelectActionState(this.game, availableActions, this.cli, connection);
 				currentActState = actState;
 				Thread actThread = new Thread(actState);
@@ -409,7 +386,7 @@ public class ClientController extends Observable implements Observer, RMIClientC
 
 			case "ActionNotValid":
 				cli.printMsg(((String) obj)+ "\n");
-				SelectActionState actStateRetry = new SelectActionState(this.game, availableActions, this.cli, connection);
+				SelectActionState actStateRetry = new SelectActionState(this.game, this.availableActions, this.cli, connection);
 				currentActState = actStateRetry;
 				Thread actThreadRetry = new Thread(actStateRetry);
 				actThreadRetry.start();
@@ -465,19 +442,70 @@ public class ClientController extends Observable implements Observer, RMIClientC
 		this.cli.printMsg(msg);
 	}
 	
-	public ActionDTO getAction(boolean[] availableActions){
+	public ActionDTO RMIgetAction(boolean[] availableActions){
 		int selectedAction = cli.getAction(availableActions);
 		SelectActionState actState = new SelectActionState(this.game, availableActions, this.cli, null);
 		ActionDTO compiledAction = actState.getActionInstance(selectedAction);
 		return compiledAction;
 	}
 	
+	public void RMIStartTurn(PoliticsCardDTO polcDTO){
+		cli.printMsg("You drew this card: "+polcDTO.getColor().toString());
+	}
 	
+	public BonusTokenDTO RMIOneToken(BonusTokenDTO[] availBts){
+		BonusTokenDTO[] btDTO = new BonusTokenDTO[1];
+		btDTO = cli.getTokenBonus(availBts, 1);
+		return btDTO[0];
+	}
 	
+	public BonusTokenDTO[] RMITwoTokens(BonusTokenDTO[] availBts){
+		BonusTokenDTO[] btDTO = new BonusTokenDTO[1];
+		btDTO = cli.getTokenBonus(availBts, 2);
+		return btDTO;
+	}
 	
+	public PermitsCardDTO RMIFreeCard(){
+		PermitsCardDTO pcDTO=null;
+		int regIndex = cli.getTargetRegion(2);
+		ArrayList<PermitsCardDTO> availablePermits = new ArrayList<PermitsCardDTO>();
+		availablePermits.add(game.getMap().getPermitsDeck(regIndex).getSlot(0));
+		availablePermits.add(game.getMap().getPermitsDeck(regIndex).getSlot(1));
+		int pcIndex = cli.getPermitIndex(availablePermits);
+		pcDTO = availablePermits.get(pcIndex);
+		return pcDTO;
+	}
 	
+	public PermitsCardDTO RMIBonusCard(){
+		PermitsCardDTO pcOwnedDTO=null;
+		ArrayList<PermitsCardDTO> ownedPermits = new ArrayList<PermitsCardDTO>();
+		ownedPermits.addAll(game.getActualPlayer().getPermits());
+		for(PermitsCardDTO pc: ownedPermits)
+			if(!pc.isFaceDown())
+				ownedPermits.remove(pc);
+		int pcOwnedIndex = cli.getPermitIndex(ownedPermits);
+		pcOwnedDTO = ownedPermits.get(pcOwnedIndex);
+		return pcOwnedDTO;
+	}
 	
+	public ItemOnSale RMIToSell(){
+		ItemOnSale its = null;
+		Object item = cli.getItemToSell();
+		if(item instanceof String){
+			return null;
+		}else{
+			int price = cli.getSellPrice();
+			its = new ItemOnSale(price, (Object) item);
+			return its;
+		}
+	}
 	
+	public String RMIToBuy(){
+		String onSaleUID;
+		ArrayList<OnSaleDTO> availableOnSale = new ArrayList<OnSaleDTO>(game.getMarket().getObjectsOnSale());
+		onSaleUID = cli.getObjectToBuyUID(availableOnSale.size(), availableOnSale);
+		return onSaleUID;
+	}
 	
 	
 	

@@ -1,5 +1,7 @@
 package com.server.controller;
 
+import java.util.ArrayList;
+
 import com.communication.RMIClientControllerRemote;
 
 public class RMISubscribed {
@@ -20,5 +22,11 @@ public class RMISubscribed {
 		return remContr;
 	}
 	
+	public static RMIClientControllerRemote getRemoteController(ArrayList<RMISubscribed> subs, ClientHandler ch){
+		for(RMISubscribed s: subs)
+			if(s.getCh().isEquals(ch))
+				return s.getRemContr();
+		return null;
+	}
 	
 }

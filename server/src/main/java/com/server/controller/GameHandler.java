@@ -40,6 +40,8 @@ public class GameHandler extends Observable implements Runnable, Observer{
 	private int progressiveCounter=0;//permette al timer di identificare il turno (per non skippare lo stesso giocatore al turno successivo)
 	private boolean RMI;
 	private ArrayList<RMISubscribed> remoteControllers;
+	
+	
 	public GameHandler(ArrayList<ClientHandler> pl, boolean defaultMap, String map, Lobby lobby, Room room, boolean RMI, ArrayList<RMISubscribed> remoteControllers){
 		this.remoteControllers = remoteControllers;
 		this.RMI = RMI;
@@ -71,6 +73,8 @@ public class GameHandler extends Observable implements Runnable, Observer{
 		this.context = new Context();
 		context.setClienthandler(players.get(0));
 		context.setGamehandler(this);
+		context.setRMI(this.RMI);
+		context.setRemoteController(RMISubscribed.getRemoteController(remoteControllers, players.get(0)));
 		ActionState actState = new ActionState();
 		actState.doAction(context);//avvio il primo stato di azione per il primo giocatore
 	}
@@ -87,13 +91,18 @@ public class GameHandler extends Observable implements Runnable, Observer{
 	}
 	
 	public void changeState(Context context){
-		updateClientGame();
+		try {
+			updateClientGame();
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
 		progressiveCounter++;
 		ClientHandler client = context.getClienthandler();
 		if(!client.isEquals(players.get(players.size()-1))){//se non è l'ultimo del giro
 			context.getState().restoreState();//refresho lo stato
 			ClientHandler nextPl = nextPlayer(client);
 			context.setClienthandler(nextPl);//aggiorno il riferimento al client
+			context.setRemoteController(RMISubscribed.getRemoteController(remoteControllers, nextPl));
 			game.setActualPlayer(game.getActualPlayerIndex() +1);//aggiorno il giocatore in game
 			if(!nextPl.isActive()){//se il giocatore è disconnesso skippa il turno
 				changeState(context);
@@ -106,6 +115,7 @@ public class GameHandler extends Observable implements Runnable, Observer{
 			if(newState.getStateID().equals("BuyItemState") && this.game.getMarket().getObjectsOnSale().size()==0)
 				newState = nextState(newState);//se nessuno ha venduto niente si skippa il giro di buy
 			context.setClienthandler(players.get(0));//setto il turno al primo giocatore
+			context.setRemoteController(RMISubscribed.getRemoteController(remoteControllers, players.get(0)));
 			game.setActualPlayer(0);//aggiorno il giocatore in game
 			if(!players.get(0).isActive()){
 				changeState(context);
@@ -115,10 +125,13 @@ public class GameHandler extends Observable implements Runnable, Observer{
 		}
 	}
 	
-	public void updateClientGame(){
+	public void updateClientGame() throws RemoteException{
 		GameDTO gameDTO = this.game.toDto();
 		for(ClientHandler ch : this.players){
-			ch.sendToClient("GAMEDTO", (Object) gameDTO);
+			if(RMI)
+				RMISubscribed.getRemoteController(this.remoteControllers, ch).RMIupdateGame(gameDTO);
+			else
+				ch.sendToClient("GAMEDTO", (Object) gameDTO);
 		}
 	}
 	
@@ -174,6 +187,7 @@ public class GameHandler extends Observable implements Runnable, Observer{
 		if(msg[0].equals("INPUT")){
 			if(waitingInput && msg[1].equals(toResumeStr)){
 				this.waitingInput = false;
+				try {
 				switch(toResumeStr){
 				case "BONUSCARD":
 					((ActionState) toResume).collectBONUSCARD((PermitsCardDTO) obj);
@@ -199,7 +213,13 @@ public class GameHandler extends Observable implements Runnable, Observer{
 				
 				
 				}
-			}
+				}
+			 catch (RemoteException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			
+				}
+				}
 			else
 				logger.log(Level.SEVERE,"Input not expected");
 		}

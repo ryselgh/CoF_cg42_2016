@@ -116,15 +116,16 @@ public class Lobby extends Observable implements Runnable, Observer, RMILobbyRem
 			return retg;
 		case "\\LEAVEROOM":
 			r = findRoomByClient(sender);
+			this.clients.add(sender);
 			if(r.getPlayers().size()==1){
 				this.rooms.remove(r);
-				sendToClient(sender, "lobby_msg-" + "Room " + ret[1] + " deleted");
+				sendToClient(sender, "lobby_msg-" + "Room " + r.getName() + " deleted");
 				break;
 			}
 			ClientHandler newAdmin = r.leaveRoom(sender);
 			if(newAdmin!=null)
 				newAdmin.sendToClient("lobby_msg-You are the new admin of the room", null);
-			sendToClient(sender, "lobby_msg-" + "You left room " + ret[1]);
+			sendToClient(sender, "lobby_msg-" + "You left room " + r.getName());
 			break;
 		default:
 			return 1;//command not recognized
@@ -157,7 +158,12 @@ public class Lobby extends Observable implements Runnable, Observer, RMILobbyRem
 		newInstance.addObserver(roomGH);
 		inactiveClients.remove(newInstance);
 		room.getGameHandler().broadcastAnnounce("CLIENTCONNECTED", newInstance.getUserName());
-		roomGH.updateClientGame();
+		try {
+			roomGH.updateClientGame();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	@Override
@@ -351,6 +357,10 @@ public class Lobby extends Observable implements Runnable, Observer, RMILobbyRem
 		for(ClientHandler ch : this.clients)
 			if(ch.getUserName().equals(userName))
 				return ch;
+		for(Room r : this.rooms)
+			for(ClientHandler ch : r.getPlayers())
+				if(ch.getUserName().equals(userName))
+					return ch;
 		return null;
 	}
 	
@@ -406,15 +416,15 @@ public class Lobby extends Observable implements Runnable, Observer, RMILobbyRem
 			return "Map successfully changed";
 		case "\\NEWROOM":
 			if(ret.length!=4){
-				return "lobby_msg-" + "Wrong input format";
+				return "Wrong input format";
 			}
 			else if(Integer.parseInt(ret[2])<Integer.parseInt(ret[3])){
-				return "lobby_msg-" + "MaxPlayers can't be lower than MinPlayers";
+				return  "MaxPlayers can't be lower than MinPlayers";
 			}
 			createRoom(ret[1], sender, Integer.parseInt(ret[2]),Integer.parseInt(ret[3]));
 			this.clients.remove(sender);
 			broadcastLobbyStatus();
-			return "lobby_msg-" + "Room " + ret[1] + " successfully created. You are the Admin";
+			return  "Room " + ret[1] + " successfully created. You are the Admin";
 		case "\\JOINROOM":
 			Room rTmp = findRoomByClient(sender);
 			r = findRoom(ret[1]);
@@ -429,26 +439,28 @@ public class Lobby extends Observable implements Runnable, Observer, RMILobbyRem
 			if (!joinRoom(ret[1],sender))
 				return commandResponse[2];//game already started
 			broadcastLobbyStatus();
-			return "lobby_msg-" + "You joined room " + ret[1];
+			return  "You joined room " + ret[1];
 		case "\\STARTGAME":
 			r = findRoomByClient(sender);
 			if(r==null){
-				return "lobby_msg-" + "You are in the lobby, you can't start the game";
+				return "You are in the lobby, you can't start the game";
 			}
 			int retg = startRoom(r,sender);
 			broadcastLobbyStatus();
 			return commandResponse[retg];
 		case "\\LEAVEROOM":
 			r = findRoomByClient(sender);
+			this.clients.add(sender);
 			if(r.getPlayers().size()==1){
 				this.rooms.remove(r);
-				return "lobby_msg-" + "Room " + ret[1] + " deleted";
+				broadcastLobbyStatus();
+				return "Room " + r.getName() + " deleted";
 			}
 			ClientHandler newAdmin = r.leaveRoom(sender);
 			if(newAdmin!=null)
 				RMISendToClient(newAdmin,"You are the new admin of the room");
 			broadcastLobbyStatus();
-			return "lobby_msg-" + "You left room " + ret[1];
+			return "You left room " + r.getName();
 		default:
 			return commandResponse[1];//command not recognized
 		}
