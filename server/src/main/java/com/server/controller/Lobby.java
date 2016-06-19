@@ -157,7 +157,7 @@ public class Lobby extends Observable implements Runnable, Observer, RMILobbyRem
 		newInstance.deleteObserver(this);
 		newInstance.addObserver(roomGH);
 		inactiveClients.remove(newInstance);
-		room.getGameHandler().broadcastAnnounce("CLIENTCONNECTED", newInstance.getUserName());
+		room.getGameHandler().broadcastAnnounce("GAMEMESSAGE", "Player " + newInstance.getUserName() + " reconnected to the game");
 		try {
 			roomGH.updateClientGame();
 		} catch (RemoteException e) {
@@ -235,7 +235,7 @@ public class Lobby extends Observable implements Runnable, Observer, RMILobbyRem
 			} else {// se il giocatore sta giocando
 				clientHandler.setActive(false);
 				inactiveClients.add(clientHandler);
-				room.getGameHandler().broadcastAnnounce("CLIENTDISCONNECTED", clientHandler.getUserName());
+				room.getGameHandler().broadcastAnnounce("GAMEMESSAGE", "Player " + clientHandler.getUserName() + " disconnected from the game");
 			}
 		}
 	}
@@ -280,7 +280,7 @@ public class Lobby extends Observable implements Runnable, Observer, RMILobbyRem
 	}
 	
 	public void endGame(Room r, GameHandler gameHandler, ClientHandler winner){
-		gameHandler.broadcastAnnounce("ENDGAME", winner.getUserName());
+		gameHandler.broadcastAnnounce("ENDGAME", "Player " + winner.getUserName() + " won the game. You will return to lobby");
 		gameHandler.deleteObservers();
 		for(ClientHandler ch : gameHandler.getPlayers()){
 			ch.deleteObservers();

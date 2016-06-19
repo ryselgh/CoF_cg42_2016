@@ -1,5 +1,6 @@
 package com.server.model.gamelogic;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.UUID;
 import com.communication.ItemOnSale;
@@ -46,25 +47,42 @@ public class SellItemState implements State{
 		this.remoteController = context.getRemoteController();
 		this.game = gamehandler.getGame();
 		
-		execute(null,false);
+		try {
+			execute(null,false);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
-	public void execute(ItemOnSale toSell, boolean passed){//uso passed perchè l'oggetto può essere null anche se ricevuto correttamente
-		
-		if(!passed){
+	public void execute(ItemOnSale toSell, boolean passed) throws RemoteException{//uso passed perchè l'oggetto può essere null anche se ricevuto correttamente
+		if(RMI){
+			toSell = this.remoteController.RMIToSell();
+		}
+		else if(!passed){
 			clienthandler.sendToClient("TOSELL", null);
 			gamehandler.waitForInput("TOSELL", this);
 			return;
 		}
-		if(toSell == null)
-			clienthandler.sendToClient("TOSELLACK","NullSellReceived");
+		if(toSell == null){
+			if(RMI)
+				this.remoteController.RMIprintMsg("NullSellReceived");
+			else
+				clienthandler.sendToClient("TOSELLACK","NullSellReceived");
+		}
 		else {
 			OnSale soldObj = DTOtoObj(toSell);
 			if(soldObj==null)
-				clienthandler.sendToClient("TOSELLNACK","ObjectNotRecognized");
+				if(RMI)
+					this.remoteController.RMIprintMsg("ObjectNotRecognized");
+				else
+					clienthandler.sendToClient("TOSELLNACK","ObjectNotRecognized");
 			else{
 				game.getMarket().addObj(soldObj);
-				clienthandler.sendToClient("TOSELLACK","ValidSellReceived");
+				if(RMI)
+					this.remoteController.RMIprintMsg("ValidSellReceived");
+				else
+					clienthandler.sendToClient("TOSELLACK","ValidSellReceived");
 			}
 		}
 		gamehandler.changeState(context);

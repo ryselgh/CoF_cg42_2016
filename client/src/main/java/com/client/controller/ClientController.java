@@ -244,15 +244,6 @@ public class ClientController extends Observable implements Observer, RMIClientC
 				else
 					cli.printMsg("Player " + (String) obj + " ran out of time. Turn skipped");
 				break;
-			case "CLIENTCONNECTED":
-				if(this.userName.equals((String) obj))
-					cli.printMsg("Game session restored");
-				else
-					cli.printMsg("Player " + (String) obj + " reconnected to the game");
-				break;
-			case "CLIENTDISCONNECTED":
-				cli.printMsg("Player " + (String) obj + " disconnected from the game");
-				break;
 			case "LOBBYSTATUS":
 				this.lobbyStatus = (LobbyStatus) obj;
 				printLobbyStatus();
@@ -405,8 +396,11 @@ public class ClientController extends Observable implements Observer, RMIClientC
 				this.game = (GameDTO) obj;
 				break;
 			case "ENDGAME":
-				cli.printMsg("Player " + ((String) obj) + " won the game. You will return to lobby");
+				cli.printMsg((String) obj);
 				this.inGame=false;
+				break;
+			case "GAMEMESSAGE":
+				cli.printMsg((String) obj);
 				break;
 			default:
 				throw new IllegalArgumentException("Command not recognized: " + cmd);
@@ -433,6 +427,7 @@ public class ClientController extends Observable implements Observer, RMIClientC
 	}
 	
 	public void RMIupdateGame(GameDTO game){
+		this.consoleListener.deleteObserver(this);
 		this.inGame = true;//se il player si riconnette dopo una disconnessione 
 		this.cli.setGameAndBuildMap(game);
 		this.game = game;

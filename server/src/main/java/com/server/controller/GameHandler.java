@@ -135,9 +135,17 @@ public class GameHandler extends Observable implements Runnable, Observer{
 		}
 	}
 	
-	public void broadcastAnnounce(String msg, Object obj){
+	public void broadcastAnnounce(String msg, String obj){
 		for(ClientHandler ch : this.players){
-			ch.sendToClient(msg, obj);
+			if(RMI)
+				try {
+					RMISubscribed.getRemoteController(this.remoteControllers, ch).RMIprintMsg(obj);
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			else
+				ch.sendToClient(msg, obj);
 		}
 	}
 	public ClientHandler nextPlayer(ClientHandler pl){

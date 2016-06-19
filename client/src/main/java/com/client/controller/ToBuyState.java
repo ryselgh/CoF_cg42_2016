@@ -3,6 +3,7 @@ package com.client.controller;
 import java.util.ArrayList;
 
 import com.client.view.ClientCLI;
+import com.communication.RMIClientControllerRemote;
 import com.communication.gamelogic.GameDTO;
 import com.communication.market.OnSaleDTO;
 
