@@ -18,92 +18,17 @@
 	-fx-background-color: transparent;
 }
 
-#btnNickname {
+#btnNickname, #btnNewRoom, #btnJoinRoom, #btnLeaveRoom, #btnSelectMap, #btnStartGame, #btnCreateNewRoom, #btnCancelNewRoom {
     -fx-background-image: url('img/cof-btn-plain.png');
     -fx-background-color: transparent;
 }
 
-#btnNickname:hover {
-  -fx-background-image: url('img/cof-btn-hover.png');
+#btnNickname:hover, #btnNewRoom:hover, #btnJoinRoom:hover, #btnLeaveRoom:hover, #btnSelectMap:hover, #btnStartGame:hover, #btnCreateNewRoom:hover, #btnCancelNewRoom:hover {
+    -fx-background-image: url('img/cof-btn-hover.png');
     -fx-background-color: transparent;
 }
 
-#btnNickname:pressed {
-	-fx-background-image: url('img/cof-btn-pressed.png');
-    -fx-background-color: transparent;
-}
-
-#btnNewRoom {
-    -fx-background-image: url('img/cof-btn-plain.png');
-    -fx-background-color: transparent;
-}
-
-#btnNewRoom:hover {
-  -fx-background-image: url('img/cof-btn-hover.png');
-    -fx-background-color: transparent;
-}
-
-#btnNewRoom:pressed {
-	-fx-background-image: url('img/cof-btn-pressed.png');
-    -fx-background-color: transparent;
-}
-
-#btnJoinRoom {
-    -fx-background-image: url('img/cof-btn-plain.png');
-    -fx-background-color: transparent;
-}
-
-#btnJoinRoom:hover {
-  -fx-background-image: url('img/cof-btn-hover.png');
-    -fx-background-color: transparent;
-}
-
-#btnJoinRoom:pressed {
-	-fx-background-image: url('img/cof-btn-pressed.png');
-    -fx-background-color: transparent;
-}
-
-#btnLeaveRoom {
-    -fx-background-image: url('img/cof-btn-plain.png');
-    -fx-background-color: transparent;
-}
-
-#btnLeaveRoom:hover {
-  -fx-background-image: url('img/cof-btn-hover.png');
-    -fx-background-color: transparent;
-}
-
-#btnLeaveRoom:pressed {
-	-fx-background-image: url('img/cof-btn-pressed.png');
-    -fx-background-color: transparent;
-}
-
-#btnSelectMap {
-    -fx-background-image: url('img/cof-btn-plain.png');
-    -fx-background-color: transparent;
-}
-
-#btnSelectMap:hover {
-  -fx-background-image: url('img/cof-btn-hover.png');
-    -fx-background-color: transparent;
-}
-
-#btnSelectMap:pressed {
-	-fx-background-image: url('img/cof-btn-pressed.png');
-    -fx-background-color: transparent;
-}
-
-#btnStartGame {
-    -fx-background-image: url('img/cof-btn-plain.png');
-    -fx-background-color: transparent;
-}
-
-#btnStartGame:hover {
-  -fx-background-image: url('img/cof-btn-hover.png');
-    -fx-background-color: transparent;
-}
-
-#btnStartGame:pressed {
+#btnNickname:pressed, #btnNewRoom:pressed, #btnJoinRoom:pressed, #btnLeaveRoom:pressed, #btnSelectMap:pressed, #btnStartGame:pressed, #btnCreateNewRoom:pressed, #btnCancelNewRoom:pressed {
 	-fx-background-image: url('img/cof-btn-pressed.png');
     -fx-background-color: transparent;
 }
