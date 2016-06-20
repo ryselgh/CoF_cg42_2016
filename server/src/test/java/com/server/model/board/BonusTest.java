@@ -65,6 +65,16 @@ public class BonusTest {
 		
 		assertTrue(bn.equalsDTO(b));
 	}
+	@Test
+	public void testingEqualMethod2(){
+			
+		BonusDTO b = new BonusDTO();
+		b.setQuantity(3);
+		b.setType(BonusType.ASSISTANT);
+		Bonus bn = new Bonus(BonusType.ASSISTANT,2);
+		
+		assertFalse(bn.equalsDTO(b));
+	}
 	
 	@Test
 	public void testToDTO(){
@@ -76,27 +86,27 @@ public class BonusTest {
 		
 	}
 	
-//	@Test
-//	public void testHasNobility(){
-//		
-//		Bonus[] bn = new Bonus[2];
-//		bn[0] = new Bonus(BonusType.NOBILITY,1);
-//		bn[0] = new Bonus(BonusType.CARD,3);
-//		boolean result = bn[0].hasNobilityBonus(bn);
-//		
-//		assertTrue(result);
-//	}
-//	
-//	@Test
-//	public void testHasNobility2(){
-//		
-//		Bonus[] bn = new Bonus[2];
-//		bn[0] = new Bonus(BonusType.ASSISTANT,3);
-//		bn[0] = new Bonus(BonusType.CARD,3);
-//		boolean result = bn[0].hasNobilityBonus(bn);
-//		
-//		assertFalse(result);
-//	}
+	@Test
+	public void testHasNobility(){
+		
+		Bonus[] bn = new Bonus[2];
+		bn[0] = new Bonus(BonusType.NOBILITY,1);
+		bn[1] = new Bonus(BonusType.CARD,3);
+		boolean result = Bonus.hasNobilityBonus(bn);
+		
+		assertTrue(result);
+	}
+	
+	@Test
+	public void testHasNobility2(){
+		
+		Bonus[] bn = new Bonus[2];
+		bn[0] = new Bonus(BonusType.ASSISTANT,3);
+		bn[1] = new Bonus(BonusType.CARD,3);
+		boolean result = Bonus.hasNobilityBonus(bn);
+		
+		assertFalse(result);
+	}
 
 
 

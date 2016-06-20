@@ -55,9 +55,11 @@ public class Bonus
 	
 	public static boolean hasNobilityBonus(Bonus[] b)
 	{
-		for(Bonus bo: b)
-			if(bo.getType().equals(BonusType.NOBILITY))
+		for(Bonus bo: b){
+			if(bo != null)
+				if(bo.getType().equals(BonusType.NOBILITY))
 					return true;
+		}
 		return false;
 			
 	}

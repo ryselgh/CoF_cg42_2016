@@ -15,6 +15,8 @@ public class PoliticsDeck extends Deck{
 	private static final int CARDSQTY=13;
 	private static final int JOLLYQTY=12;
 
+	
+
 	/**
 	 * construcotr of the deck. it creates 13 cards for every color and 12 jolly cards. then shuffle the deck
 	 * 
@@ -39,6 +41,21 @@ public class PoliticsDeck extends Deck{
 
 
 	}
+	
+	
+	/**
+	 * @return the politicsDeck
+	 */
+	public ArrayList<PoliticsCard> getPoliticsDeck() {
+		return this.politicsDeck;
+	}
+
+	/**
+	 * @return the garbage
+	 */
+	public ArrayList<PoliticsCard> getGarbage() {
+		return this.garbage;
+	}
 
 	/**
 	 * if the deck is empty you shuffle the deck garbage. garbage become the new politics deck and the you can draw a card.
@@ -51,8 +68,10 @@ public class PoliticsDeck extends Deck{
 		if(politicsDeck.isEmpty()){
 			Collections.shuffle(garbage);
 			for(PoliticsCard p : garbage ){
+				if(p!=null){
 				politicsDeck.add(p);
 				garbage.remove(p);
+				}
 			}
 			drawnCard = politicsDeck.remove(0);
 
