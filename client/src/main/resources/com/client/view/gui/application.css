@@ -14,17 +14,21 @@
    	-fx-effect: dropshadow(one-pass-box, rgba(209,181,82,1), 5, 2, 0, 0);
 }
 
-#btnNickname {
+#txtPlayersInLobby{
+	-fx-background-color: transparent;
+}
+
+#btnNickname, #btnNewRoom, #btnJoinRoom, #btnLeaveRoom, #btnSelectMap, #btnStartGame, #btnCreateNewRoom, #btnCancelNewRoom {
     -fx-background-image: url('img/cof-btn-plain.png');
     -fx-background-color: transparent;
 }
 
-#btnNickname:hover {
-  -fx-background-image: url('img/cof-btn-hover.png');
+#btnNickname:hover, #btnNewRoom:hover, #btnJoinRoom:hover, #btnLeaveRoom:hover, #btnSelectMap:hover, #btnStartGame:hover, #btnCreateNewRoom:hover, #btnCancelNewRoom:hover {
+    -fx-background-image: url('img/cof-btn-hover.png');
     -fx-background-color: transparent;
 }
 
-#btnNickname:pressed {
+#btnNickname:pressed, #btnNewRoom:pressed, #btnJoinRoom:pressed, #btnLeaveRoom:pressed, #btnSelectMap:pressed, #btnStartGame:pressed, #btnCreateNewRoom:pressed, #btnCancelNewRoom:pressed {
 	-fx-background-image: url('img/cof-btn-pressed.png');
     -fx-background-color: transparent;
 }

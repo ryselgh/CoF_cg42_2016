@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.client.view.gui.MainMenu">
+	<children>
+		<ImageView fx:id="mainScreen" fitHeight="768.0" fitWidth="1024.0" pickOnBounds="true" preserveRatio="true">
+			<image>
+				<Image backgroundLoading="true" url="@img/mainScreen.png" />
+			</image>
+		</ImageView>
+		<ImageView fitHeight="768.0" fitWidth="1024.0" pickOnBounds="true" preserveRatio="true">
+			<image>
+				<Image url="@img/lobbyMask.png" />
+			</image>
+		</ImageView>
+		<Button fx:id="btnNewRoom" layoutY="337.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="188.0" stylesheets="@application.css" />
+		<Button fx:id="btnJoinRoom" layoutX="803.0" layoutY="463.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="188.0" stylesheets="@application.css" />
+		<Button fx:id="btnLeaveRoom" layoutX="803.0" layoutY="566.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="188.0" stylesheets="@application.css" />
+		<Button fx:id="btnStartGame" layoutX="803.0" layoutY="666.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="188.0" stylesheets="@application.css" />
+		<TextField fx:id="txtPlayersInLobby" layoutX="794.0" layoutY="78.0" prefHeight="206.0" prefWidth="203.0" stylesheets="@application.css" />
+	</children>
+</AnchorPane>

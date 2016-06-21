@@ -15,12 +15,17 @@
             <Image backgroundLoading="true" url="@img/mainScreen.png" />
          </image>
       </ImageView>
+      <ImageView fx:id="lobbyMask" fitHeight="768.0" fitWidth="1024.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@img/lobbyMask.png" />
+         </image>
+      </ImageView>
       <ImageView fx:id="mainTitle" fitHeight="1.0" fitWidth="1.0" layoutX="512.0" layoutY="384.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image backgroundLoading="true" url="@img/mainTitle.png" />
          </image>
       </ImageView>
-      <TextField fx:id="txtNickname" alignment="CENTER" layoutX="397.0" layoutY="579.0" prefHeight="38.0" prefWidth="232.0">
+      <TextField fx:id="txtNickname" alignment="CENTER" layoutX="397.0" layoutY="579.0" onAction="#checkNickname" onInputMethodTextChanged="#checkNickname" onKeyPressed="#checkNickname" onKeyReleased="#checkNickname" onKeyTyped="#checkNickname" prefHeight="38.0" prefWidth="232.0">
          <font>
             <Font size="20.0" />
          </font></TextField>
@@ -29,6 +34,22 @@
             <Font name="HoboStd" size="35.0" />
          </font>
       </Label>
-      <Button fx:id="btnNickname" layoutX="418.0" layoutY="639.0" mnemonicParsing="false" onAction="#start" prefHeight="38.0" prefWidth="188.0" stylesheets="@application.css" />
+      <Button fx:id="btnNickname" layoutX="418.0" layoutY="639.0" mnemonicParsing="false" onAction="#submit" prefHeight="38.0" prefWidth="188.0" stylesheets="@application.css" />
+      <Button fx:id="btnNewRoom" layoutX="803.0" layoutY="364.0" mnemonicParsing="false" onAction="#newRoomForm" prefHeight="38.0" prefWidth="188.0" stylesheets="@application.css" />
+      <Button fx:id="btnJoinRoom" layoutX="803.0" layoutY="440.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="188.0" stylesheets="@application.css" />
+      <Button fx:id="btnLeaveRoom" layoutX="803.0" layoutY="518.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="188.0" stylesheets="@application.css" />
+      <Button fx:id="btnStartGame" layoutX="803.0" layoutY="672.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="188.0" stylesheets="@application.css" />
+      <Button fx:id="btnSelectMap" layoutX="803.0" layoutY="595.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="188.0" stylesheets="@application.css" />
+      <ImageView fx:id="formNewRoom" fitHeight="303.0" fitWidth="454.0" layoutX="196.0" layoutY="258.0" onMouseMoved="#checkCreateRoom" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@img/NewRoomForm.png" />
+         </image>
+      </ImageView>
+      <TextField fx:id="txtRoomName" layoutX="388.0" layoutY="343.0" onAction="#checkCreateRoom" onInputMethodTextChanged="#checkCreateRoom" onKeyPressed="#checkCreateRoom" onKeyReleased="#checkCreateRoom" onKeyTyped="#checkCreateRoom" opacity="0.0" prefHeight="25.0" prefWidth="188.0" />
+      <ChoiceBox fx:id="choiceMinPl" layoutX="388.0" layoutY="378.0" onMouseMoved="#checkCreateRoom" opacity="0.0" prefHeight="25.0" prefWidth="56.0" />
+      <ChoiceBox fx:id="choiceMaxPl" layoutX="388.0" layoutY="412.0" onMouseMoved="#checkCreateRoom" opacity="0.0" prefHeight="25.0" prefWidth="56.0" />
+      <ChoiceBox fx:id="choiceMap" layoutX="388.0" layoutY="446.0" onMouseClicked="#checkCreateRoom" onMouseMoved="#checkCreateRoom" opacity="0.0" prefHeight="25.0" prefWidth="118.0" />
+      <Button fx:id="btnCreateNewRoom" layoutX="223.0" layoutY="502.0" mnemonicParsing="false" onAction="#createNewRoom" opacity="0.0" prefHeight="38.0" prefWidth="188.0" stylesheets="@application.css" />
+      <Button fx:id="btnCancelNewRoom" layoutX="441.0" layoutY="502.0" mnemonicParsing="false" onAction="#cancelNewRoom" opacity="0.0" prefHeight="38.0" prefWidth="188.0" stylesheets="@application.css" />
    </children>
 </AnchorPane>
