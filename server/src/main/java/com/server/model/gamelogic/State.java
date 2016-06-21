@@ -1,7 +1,7 @@
 package com.server.model.gamelogic;
 
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Interface State.
  */

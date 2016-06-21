@@ -1,6 +1,6 @@
 package com.server.actions;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class Pass.
  */

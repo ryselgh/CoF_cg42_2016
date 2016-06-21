@@ -25,7 +25,7 @@ import com.server.model.board.BonusToken;
 import com.server.model.decks.PermitsCard;
 import com.server.model.market.OnSaleInterface;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class ClientHandler.
  */

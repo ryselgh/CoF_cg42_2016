@@ -2,7 +2,7 @@ package com.server.controller;
 
 import java.util.Observable;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class InputTimer.
  */

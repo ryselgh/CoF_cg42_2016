@@ -9,13 +9,25 @@ import com.server.model.gamelogic.Player;
 
 
 
+
+/**
+ * The Class NobilityTrack.
+ */
 public class NobilityTrack {
 	
 
+	/** The pawns. */
 	private Pawn[] pawns;
+	
+	/** The Bonus vector. */
 	private Bonus[][] BonusVector;
 
 	
+	/**
+	 * To dto.
+	 *
+	 * @return the nobility track dto
+	 */
 	public NobilityTrackDTO toDTO(){
 		NobilityTrackDTO ntDTO = new NobilityTrackDTO();
 		BonusDTO[][] bvDTO = new BonusDTO[BonusVector.length][];
@@ -32,8 +44,10 @@ public class NobilityTrack {
 		ntDTO.setPawns(pDTO);
 		return ntDTO;
 	}
+	
 	/**
-	 * constructor of the nobility track
+	 * constructor of the nobility track.
+	 *
 	 * @param pawn pawn element
 	 * @param BonusVector one array for the position, another for the bonus in each position
 	 */
@@ -44,8 +58,9 @@ public class NobilityTrack {
 	}
 
 	/**
-	 * go on for a number av of steps and get the bonus you pass on
-	 * @param p p is the pawn
+	 * go on for a number "av" of steps and get the bonus you pass on.
+	 *
+	 * @param pawnIndex the pawn index
 	 * @param av av tells you how many step you have to do
 	 * @return all the bonus you get during your progress
 	 */
@@ -78,8 +93,10 @@ public class NobilityTrack {
 	}
 
 	/**
-	 * @return the bonus in the position
+	 * Gets the bonus.
+	 *
 	 * @param p p is the pawn in that position
+	 * @return the bonus in the position
 	 */
 
 	public Bonus[] getBonus(Pawn p) {		
@@ -87,12 +104,19 @@ public class NobilityTrack {
 	}
 
 	/**
+	 * Gets the bonus vector.
+	 *
 	 * @return the bonusVector
 	 */
 	public Bonus[][] getBonusVector() {
 		return BonusVector;
 	}				
 	
+	/**
+	 * Gets the pawn.
+	 *
+	 * @return the pawn
+	 */
 	public Pawn[] getPawn()
 	{
 		return this.pawns;

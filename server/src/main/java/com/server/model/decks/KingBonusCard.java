@@ -5,16 +5,24 @@ import com.communication.values.BonusType;
 import com.server.model.board.Bonus;
 
 
+
+/**
+ * The Class KingBonusCard.
+ */
 public class KingBonusCard
 {
 	
 	
+	/** The bonus. */
 	private Bonus bonus;
+	
+	/** The n. */
 	private int n;
 	
 
 	/**
-	 * constructor of the card
+	 * constructor of the card.
+	 *
 	 * @param n n is the number of the card from 1 to 5
 	 * @param b b is the bonus you receive when you get the card
 	 */
@@ -33,7 +41,8 @@ public class KingBonusCard
 	}
 	
 	/**
-	 *  is the getter of the bonus
+	 *Gets the bonus.
+	 *
 	 * @return the bonus
 	 */
 	
@@ -41,6 +50,11 @@ public class KingBonusCard
 		return bonus;	
 	}
 	
+	/**
+	 * To dto.
+	 *
+	 * @return the king bonus card dto
+	 */
 	public KingBonusCardDTO toDTO(){
 		KingBonusCardDTO kbDTO = new KingBonusCardDTO();
 		kbDTO.setBonus(bonus.toDTO());

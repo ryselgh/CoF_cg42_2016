@@ -6,16 +6,23 @@ import com.communication.decks.KingBonusCardDTO;
 import com.communication.decks.KingBonusDeckDTO;
 import com.server.model.board.Bonus;
 
+
+/**
+ * The Class KingBonusDeck.
+ */
 public class KingBonusDeck extends Deck{
 
 
+	/** The king bonus deck. */
 	private ArrayList<KingBonusCard> kingBonusDeck;
+	
+	/** The Constant KINGQTY. */
 	private final static int KINGQTY=5;
 
 	/**
 	 * constructor of the kbd. create the 5 king bonus cards
+	 *
 	 * @param bonuses bonuses is one of the bonus token from the bonus array
-	 * @throws Exception 
 	 */
 
 
@@ -32,7 +39,8 @@ public class KingBonusDeck extends Deck{
 	}
 	
 	/**
-	 * when you achieve a particular goal you draw a card from the kbd
+	 * when you achieve a particular goal you draw a card from the kbd.
+	 *
 	 * @return null if the deck is empty else return the kbc you have to take
 	 */
 
@@ -49,12 +57,19 @@ public class KingBonusDeck extends Deck{
 	}
 
 	/**
+	 * Gets the kingqty.
+	 *
 	 * @return the size of the king bonus deck
 	 */
 	public static int getKingqty() {
 		return KINGQTY;
 	}
 	
+	/**
+	 * To dto.
+	 *
+	 * @return the king bonus deck dto
+	 */
 	public KingBonusDeckDTO toDTO(){
 		KingBonusDeckDTO kbdDTO = new KingBonusDeckDTO();
 		ArrayList<KingBonusCardDTO> kbArrayDTO = new ArrayList<KingBonusCardDTO>();

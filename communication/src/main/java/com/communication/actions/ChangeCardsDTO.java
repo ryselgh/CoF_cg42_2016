@@ -5,22 +5,35 @@ import java.util.ArrayList;
 
 import com.communication.gamelogic.GameDTO;
 
+
+/**
+ * The Class ChangeCardsDTO.
+ */
 public class ChangeCardsDTO extends ActionDTO implements Serializable{
 
-	/**
-	 * 
-	 */
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = -1141199441417494594L;
+	
+	/** The balcony index. */
 	private int balconyIndex;
 	
-	public ChangeCardsDTO(){}
 	/**
+	 * Instantiates a new change cards dto.
+	 */
+	public ChangeCardsDTO(){}
+	
+	/**
+	 * Gets the balcony index.
+	 *
 	 * @return the balconyIndex
 	 */
 	public int getBalconyIndex() {
 		return balconyIndex;
 	}
+	
 	/**
+	 * Sets the balcony index.
+	 *
 	 * @param balconyIndex the balconyIndex to set
 	 */
 	public void setBalconyIndex(int balconyIndex) {

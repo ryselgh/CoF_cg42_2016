@@ -10,12 +10,21 @@ import com.communication.values.RegionName;
 
 
 
+
+/**
+ * The Class PermitsDeck.
+ */
 public class PermitsDeck extends Deck{
 
 
 
+	/** The permits deck. */
 	private ArrayList<PermitsCard> permitsDeck;
+	
+	/** The slot. */
 	private PermitsCard[] slot = new PermitsCard[2];
+	
+	/** The region code. */
 	private int regionCode;//più facile per i confronti
 
 	/**
@@ -35,9 +44,11 @@ public class PermitsDeck extends Deck{
 	}
 
 	/**
-	 * @return the slot. can be 0,1 
+	 * Gets the slot.
+	 *
 	 * @param index index is the number of the slot
-	 * @param draw is a boolen if true the slot is full else is empty
+	 * @param draw, if it's true you get the card
+	 * @return the slot. can be 0,1
 	 */
 	public PermitsCard getSlot(int index, boolean draw) {
 		if(!draw)
@@ -54,6 +65,8 @@ public class PermitsDeck extends Deck{
 
 
 	/**
+	 * Sets the slot1.
+	 *
 	 * @param card the slot to set
 	 */
 	public void setSlot1(PermitsCard card) {
@@ -61,6 +74,8 @@ public class PermitsDeck extends Deck{
 	}
 
 	/**
+	 * Sets the slot2.
+	 *
 	 * @param card the slot to set
 	 */
 	public void setSlot2(PermitsCard card) {
@@ -69,7 +84,7 @@ public class PermitsDeck extends Deck{
 
 
 	/**
-	 * you draw a card from permitsDeck 
+	 * you draw a card from permitsDeck.
 	 */
 
 	public void draw() {
@@ -88,7 +103,7 @@ public class PermitsDeck extends Deck{
 	}
 
 	/**
-	 * the function you have to use to change cards when you call the speedaction
+	 * the function you have to use to change cards when you call the speedaction.
 	 */
 
 	public void changeCards(){
@@ -100,6 +115,11 @@ public class PermitsDeck extends Deck{
 
 	}
 	
+	/**
+	 * To dto.
+	 *
+	 * @return the permits deck dto
+	 */
 	public PermitsDeckDTO toDTO(){
 		PermitsDeckDTO pdDTO = new PermitsDeckDTO();
 		ArrayList<PermitsCardDTO> deckDTO = new ArrayList<PermitsCardDTO>();

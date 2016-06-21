@@ -4,7 +4,7 @@ import com.client.view.ClientCLI;
 import com.communication.ItemOnSale;
 import com.communication.gamelogic.GameDTO;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class ToSellState.
  */

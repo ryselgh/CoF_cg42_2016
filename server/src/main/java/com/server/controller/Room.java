@@ -6,7 +6,7 @@ import org.w3c.dom.Document;
 
 import com.communication.values.RoomState;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class Room.
  */

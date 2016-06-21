@@ -11,18 +11,39 @@ import com.communication.values.CityName;
 
 
 
+
+/**
+ * The Class City.
+ */
 public class City
 {
 	
 	
+	/** The slot. */
 	private Emporium[] slot;
+	
+	/** The color. */
 	private CityColor color;
+	
+	/** The name. */
 	private String name;
+	
+	/** The close cities. */
 	private String[] closeCities;
+	
+	/** The token. */
 	private BonusToken token;
+	
+	/** The player num. */
 	private int playerNum;
 	
 
+	/**
+	 * To dto.
+	 *
+	 * @param plsDTO an arrayList of PlayerDTO
+	 * @return the city dto
+	 */
 	public CityDTO toDTO(ArrayList<PlayerDTO> plsDTO){
 		CityDTO cDTO = new CityDTO();
 		EmporiumDTO[] slotDTO = new EmporiumDTO[this.slot.length];
@@ -40,8 +61,10 @@ public class City
 		cDTO.setPlayerNum(this.playerNum);
 		return cDTO;
 	}
+	
 	/**
-	 * constructor of the city
+	 * constructor of the city.
+	 *
 	 * @param n n is the name of the city
 	 * @param c c is the color of the city
 	 * @param close close is the array of the cities near the city
@@ -60,8 +83,10 @@ public class City
 	
 	
 	/**
-	 * create the space for the emporiums
+	 * create the space for the emporiums.
+	 *
 	 * @param e e is an emporium
+	 * @return the int
 	 */
 	
 	public int setEmporium(Emporium e) {
@@ -78,6 +103,8 @@ public class City
 	}
 	
 	/**
+	 * Gets the emporium array.
+	 *
 	 * @return the slot of the emporium
 	 */
 	
@@ -86,7 +113,9 @@ public class City
 	}
 	
 	/**
-	 * @return the color of the city 
+	 * Gets the color.
+	 *
+	 * @return the color of the city
 	 */
 	
 	public CityColor getColor() {
@@ -94,6 +123,8 @@ public class City
 	}
 	
 	/**
+	 * Gets the close cities.
+	 *
 	 * @return the cities next to the called one
 	 */
 	
@@ -102,9 +133,10 @@ public class City
 	}
 	
 	/**
-	 * check if two cities are nearby, (for all the cities)
+	 * check if two cities are nearby.
+	 *
 	 * @param city we want to know the cities close CITY
-	 * @return true is two cities are near
+	 * @return true is two cities are linked
 	 */
 	public boolean isCloseCityOf(City city){
 		for(String c: getCloseCity()){
@@ -115,6 +147,8 @@ public class City
 	}
 	
 	/**
+	 * Gets the name.
+	 *
 	 * @return the name of the city
 	 */
 	
@@ -123,20 +157,30 @@ public class City
 	}
 	
 	/**
+	 * Gets the bonus token.
+	 *
 	 * @return the bonus on the token
 	 */
 	
 	public BonusToken getBonusToken() {
 			return this.token;
 	}
+	
 	/**
-	 * set the bonus on the bonus token
+	 * set the bonus on the bonus token.
+	 *
 	 * @param t is the bonus to set
 	 */
 	public void setToken(BonusToken t){
 		this.token = t;
 	}
 	
+	/**
+	 * Checks if the player already has an emporium in the city.
+	 *
+	 * @param p the player
+	 * @return true, if successful
+	 */
 	public boolean hasEmporium(Player p)
 	{
 		for(Emporium e : slot)

@@ -25,7 +25,7 @@ import com.server.model.gamelogic.Game;
 import com.server.model.gamelogic.SellItemState;
 import com.server.model.gamelogic.State;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class GameHandler.
  */

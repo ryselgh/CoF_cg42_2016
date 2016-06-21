@@ -11,7 +11,7 @@ import com.server.model.board.Emporium;
 import com.server.model.board.Map;
 import com.server.model.market.Market;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * This is the main controller of the game.
  */

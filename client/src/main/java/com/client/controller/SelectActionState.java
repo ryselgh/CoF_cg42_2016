@@ -20,7 +20,7 @@ import com.communication.decks.PoliticsCardDTO;
 import com.communication.gamelogic.GameDTO;
 import com.communication.values.CouncilorColor;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class SelectActionState.
  */

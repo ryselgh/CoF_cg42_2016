@@ -6,7 +6,7 @@ import com.server.model.board.Bonus;
 import com.server.model.gamelogic.Game;
 import com.communication.values.BonusType;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class BuyMainAction.
  */

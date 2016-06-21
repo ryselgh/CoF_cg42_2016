@@ -22,17 +22,32 @@ import com.communication.market.PermitOnSaleDTO;
 import com.communication.market.PoliticsOnSaleDTO;
 import com.communication.values.*;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ClientCLI.
+ */
 public class ClientCLI {
 
+	/** The game(DTO). */
 	private GameDTO game;
+	
+	/** The out. */
 	private PrintStream out;
+	
+	/** The map. */
 	private String[][] map = new String[15][5];
+	
+	/** The cli queue. */
 	private ArrayBlockingQueue<String> cliQueue;
+	
+	/** The abort flag. */
 	private boolean abortFlag = false;
 
 	/**
-	 * constructor of the class
-	 * @param controller is the client controller
+	 * constructor of the class.
+	 *
+	 * @param clientController the client controller
+	 * @param q the q
 	 */
 	
 	public ClientCLI(ClientController clientController, ArrayBlockingQueue<String> q){
@@ -40,11 +55,20 @@ public class ClientCLI {
 		this.out = System.out;
 	}
 
+	/**
+	 * Sets the game(DTO) and build map.
+	 *
+	 * @param game the new game(DTO) 
+	 */
 	public void setGameAndBuildMap(GameDTO game){
 		this.game = game;
 		constructMap();
 		printGameStatus();
 	}
+	
+	/**
+	 * Construct map.
+	 */
 	private void constructMap() {
 
 		//City + Region separators
@@ -134,7 +158,7 @@ public class ClientCLI {
 	/*------------------------------------------OUTPUTS---------------------------------------------*/
 
 	/**
-	 * print the map
+	 * print the map.
 	 */
 	public void printMap(){
 		for(int i=0;i<5;i++){
@@ -146,8 +170,7 @@ public class ClientCLI {
 	}
 
 	/**
-	 *print the city bonus, for each  city 
-	 * @param game is the game status
+	 * print the city bonus, for each  city .
 	 */
 
 	public void printCityBonus(){
@@ -161,6 +184,9 @@ public class ClientCLI {
 		}
 	}
 	
+	/**
+	 * Prints the councilor pool.
+	 */
 	public void printCouncilorPool(){
 		out.print("\nCouncilors pool: [");
 		for(CouncilorDTO c: game.getMap().getCouncilors())
@@ -168,15 +194,24 @@ public class ClientCLI {
 		out.print("]\n");
 	}
 	
+	/**
+	 * Prints the assistant pool.
+	 */
 	public void printAssistantPool(){
 		int assistQty = game.getMap().getAssistants().size();
 		out.println("\nAssistants pool: " + Integer.toString(assistQty));
 	}
 	
+	/**
+	 * Prints the king location.
+	 */
 	public void printKingLocation(){
 		out.println("\n\nKing's location: " + game.getMap().getKing().getLocation().getName());
 	}
 	
+	/**
+	 * Prints the permits decks.
+	 */
 	public void printPermitsDecks(){
 		out.print("\nPermits:\n  ");
 		int i;
@@ -195,6 +230,9 @@ public class ClientCLI {
 		}
 	}
 	
+	/**
+	 * Prints the councils.
+	 */
 	public void printCouncils(){
 		out.print("Balconies:\n");
 		for(int i=0; i<3; i++){
@@ -213,6 +251,9 @@ public class ClientCLI {
 		out.print("]<-\n\n");
 	}
 	
+	/**
+	 * Prints the nobility track.
+	 */
 	public void printNobilityTrack(){
 		//Provisoional solution
 		out.println("\nNobility Track:\n 1	2	    3		4	5	6	 7	    8		9	    10	     11	       12		13	    14		15	16	 17	   18	   19	   	20	  21");
@@ -232,6 +273,9 @@ public class ClientCLI {
 		}
 	}
 	
+	/**
+	 * Prints the region bonuses.
+	 */
 	public void printRegionBonuses(){
 		out.print("\nRegion Bonus:\n    ");
 		for(int i=0;i<3;i++){
@@ -243,6 +287,9 @@ public class ClientCLI {
 		}
 	}
 	
+	/**
+	 * Prints the color bonuses.
+	 */
 	public void printColorBonuses(){
 		out.print("\nColor Bonus:\n    ");
 		for(int i=0;i<CityColor.values().length-1;i++){
@@ -254,6 +301,9 @@ public class ClientCLI {
 		}
 	}
 	
+	/**
+	 * Prints the king bonuses.
+	 */
 	public void printKingBonuses(){
 		out.print("\nKing Bonus:");
 		int i = 0;
@@ -263,6 +313,9 @@ public class ClientCLI {
 		}
 	}
 	
+	/**
+	 * Prints the placed emporiums.
+	 */
 	public void printPlacedEmporiums(){
 		out.print("\nPlaced emporiums:\n");
 		for(int i=0;i<game.getMap().getCity().length;i++){
@@ -276,6 +329,9 @@ public class ClientCLI {
 		}
 	}
 	
+	/**
+	 * Prints the players status.
+	 */
 	public void printPlayersStatus(){
 		TableBuilder tb = new TableBuilder();
 		tb.addRow("Player", "Emporiums", "Assistants", "Coins", "Points", "Cards", "Active permits", "Used permits", "King Bonus", "Nobility");
@@ -301,6 +357,11 @@ public class ClientCLI {
 		out.print("\n\nPlayers status:\n"+tb.toString()+"\n\n");
 	}
 	
+	/**
+	 * Prints the player hand.
+	 *
+	 * @param player the player
+	 */
 	public void printPlayerHand(PlayerDTO player){
 		out.print("Your politics cards: ");
 		for(PoliticsCardDTO pc: player.getHand())
@@ -308,18 +369,28 @@ public class ClientCLI {
 		out.print("\n\n");
 	}
 	
+	/**
+	 * Prints the msg.
+	 *
+	 * @param msg the msg
+	 */
 	public void printMsg(String msg){
 		out.println(msg);
 	}
 	
+	/**
+	 * Prints the bonus collection msg.
+	 *
+	 * @param type the type
+	 * @param amm the amm
+	 */
 	public void printBonusCollectionMsg(String type, int amm)
 	{
 		out.print("Collecting bonus: type= " + type.toString() + ", amm= "+ amm + "\n");
 	}
 
 	/**
-	 * print all the gamestatus
-	 * @param game is the game status
+	 * print all the gamestatus.
 	 */
 
 	public void printGameStatus(){
@@ -344,6 +415,11 @@ public class ClientCLI {
 	/*-----------------------------------------INPUTS-----------------------------------------------*/
 	
 	
+	/**
+	 * Gets the message.
+	 *
+	 * @return the message
+	 */
 	public String getMsg(){
 		/*String inStr = null;
 		try {
@@ -366,6 +442,12 @@ public class ClientCLI {
 		return inStr;
 	}
 
+	/**
+	 * Gets the action.
+	 *
+	 * @param available the available action
+	 * @return the action
+	 */
 	public int getAction(boolean[] available){
 		out.println("Choose an action:");
 		if(available[0] || available[1] || available[2] || available[3]){ // MAIN
@@ -427,6 +509,11 @@ public class ClientCLI {
 		return choice;
 	}
 	
+	/**
+	 * Gets the item to sell.
+	 *
+	 * @return the item to sell
+	 */
 	public Object getItemToSell(){
 		ArrayList<AssistantDTO> assistants = new ArrayList<AssistantDTO>(game.getActualPlayer().getAvailableAssistants());
 		ArrayList<PermitsCardDTO> permits = new ArrayList<PermitsCardDTO>(game.getActualPlayer().getPermits());
@@ -457,6 +544,11 @@ public class ClientCLI {
 		}
 	}
 	
+	/**
+	 * Gets the the permit to build.
+	 *
+	 * @return the builds the permit
+	 */
 	public int getBuildPermit(){
 		int i = 1;
 		for(PermitsCardDTO perm: game.getActualPlayer().getPermits()){
@@ -471,22 +563,51 @@ public class ClientCLI {
 		return waitCorrectIntInput("Select the permit you want to use to build.",1,i) -1;
 	}
 	
+	/**
+	 * Gets the sell type.
+	 *
+	 * @return the sell type
+	 */
 	public int getSellType(){
 		return waitCorrectIntInput("Insert the index of the category of the item you want to sell: \n1-Assistants\n2-PermitCard\n3-PoliticCard\n4-Pass\n",1,4);
 	}
 	
+	/**
+	 * Gets the sell price.
+	 *
+	 * @return the sell price
+	 */
 	public int getSellPrice(){
 		return waitCorrectIntInput("Insert the price of the item you are selling\n",1,100);
 	}
 	
+	/**
+	 * Gets the politics card index.
+	 *
+	 * @param size the size
+	 * @return the politics card index
+	 */
 	public int getPoliticsCardIndex(int size){
 		return waitCorrectIntInput("\nHi " + game.getActualPlayer().getPlayerID() + ", insert the index of the PoliticCard you want to sell. Insert 0 to go back.\n",0,size) - 1;
 	}
 	
+	/**
+	 * Gets the permits card index.
+	 *
+	 * @param size the size
+	 * @return the permits card index
+	 */
 	public int getPermitsCardIndex(int size){
 		return waitCorrectIntInput("\nHi " + game.getActualPlayer().getPlayerID() + ", insert the index of the PermitsCard you want to sell. Insert 0 to go back.\n",0,size) - 1;
 	}
 	
+	/**
+	 * Gets the object to buy uid.
+	 *
+	 * @param size the size
+	 * @param availableOnSale the available on sale
+	 * @return the object to buy uid
+	 */
 	public String getObjectToBuyUID(int size, ArrayList<OnSaleDTO> availableOnSale){
 		String UIDs[] = new String[availableOnSale.size()];
 		int count =0;
@@ -530,6 +651,12 @@ public class ClientCLI {
 	}
 	
 	
+	/**
+	 * Gets the permit index.
+	 *
+	 * @param cards the cards
+	 * @return the permit index
+	 */
 	public int getPermitIndex(ArrayList<PermitsCardDTO> cards){
 		for(int i=0; i<cards.size();i++)
 		{
@@ -543,6 +670,12 @@ public class ClientCLI {
 		return waitCorrectIntInput("\nInsert the index of the card you want to choose.\n",1,cards.size()) - 1;
 	}
 	
+	/**
+	 * Gets the input city.
+	 *
+	 * @param cities the cities
+	 * @return the input city
+	 */
 	public int getInputCity(CityDTO[] cities){
 		out.print("\nInsert the index of the city:\n");
 		for(int i=0; i< cities.length;i++)
@@ -551,6 +684,12 @@ public class ClientCLI {
 	}
 	
 	
+	/**
+	 * Gets the target region.
+	 *
+	 * @param msg the msg
+	 * @return the target region
+	 */
 	public int getTargetRegion(int msg){
 		String messages[] = {"\nInsert the index of the region related to the permits card you want to change:\n"
 				+ "1-Sea\n"
@@ -571,6 +710,11 @@ public class ClientCLI {
 		return waitCorrectIntInput(messages[msg],1,3) - 1;
 	}
 	
+	/**
+	 * Gets the target balcony.
+	 *
+	 * @return the target balcony
+	 */
 	public int getTargetBalcony(){
 		return waitCorrectIntInput("Select the balcony:\n"
 				+ "1-Sea\n"
@@ -579,9 +723,20 @@ public class ClientCLI {
 				+ "4-King\n",1,4)-1;
 	}
 		
+	/**
+	 * Unavailable options.
+	 */
 	public void unavailableOptions(){
 		out.print("\nUnavailable option. Chose another action.\n");
 	}
+	
+	/**
+	 * Gets the token bonus.
+	 *
+	 * @param bts the bts
+	 * @param amm the amm
+	 * @return the token bonus
+	 */
 	public BonusTokenDTO[] getTokenBonus(BonusTokenDTO[] bts, int amm){
 		if(amm==1)
 			out.print("\nInsert the index of the BonusToken you want:\n");
@@ -624,6 +779,12 @@ public class ClientCLI {
 		return null;//non dovrebbe mai essere eseguito
 	}
 	
+	/**
+	 * Gets the color index.
+	 *
+	 * @param availableCouncColor the available counc color
+	 * @return the color index
+	 */
 	public int getColorIndex(ArrayList<CouncilorColor> availableCouncColor){
 		for(int i=0;i<availableCouncColor.size();i++){
 			out.print(i+1 + "-" + availableCouncColor.get(i).toString() + "\n");
@@ -632,6 +793,14 @@ public class ClientCLI {
 		return waitCorrectIntInput("",1,availableCouncColor.size()) -1;
 	}
 	
+	/**
+	 * Wait correct int input.
+	 *
+	 * @param msg the msg
+	 * @param min the min
+	 * @param max the max
+	 * @return the int
+	 */
 	public int waitCorrectIntInput(String msg, int min, int max){
 		int respInt = -1;
 		do {
@@ -645,6 +814,13 @@ public class ClientCLI {
 
 	
 	
+	/**
+	 * Check input cards.
+	 *
+	 * @param choice the choice
+	 * @param hand the hand
+	 * @return true, if successful
+	 */
 	public boolean checkInputCards(ArrayList<String> choice, ArrayList<PoliticsCardDTO> hand){
 		int compare = 0;
 		for(String c: choice){
@@ -658,6 +834,12 @@ public class ClientCLI {
 		return true;
 	}
 	
+	/**
+	 * Wait input cards.
+	 *
+	 * @param hand the hand
+	 * @return the array list
+	 */
 	public ArrayList<PoliticsCardDTO> waitInputCards(ArrayList<PoliticsCardDTO> hand) {
 		out.print("Select the cards you want to use to satisfy the council (Enter '*' for instructions)\n");
 		String resp = "";
@@ -692,11 +874,25 @@ public class ClientCLI {
 		}
 	}
 
+	/**
+	 * Gets the input.
+	 *
+	 * @param message the message
+	 * @return the input
+	 */
 	private String getInput(String message){
 		out.print(message);
 		return this.getMsg();
 	}
 
+	/**
+	 * Parses the num.
+	 *
+	 * @param message the message
+	 * @param min the min number of players
+	 * @param max the max number of players
+	 * @return the int
+	 */
 	private int parseNum(String msg, int min, int max){
 		int read=0;
 		try{
@@ -717,10 +913,20 @@ public class ClientCLI {
 	
 	
 
+	/**
+	 * Checks if is abort flag.
+	 *
+	 * @return true, if is abort flag
+	 */
 	public boolean isAbortFlag() {
 		return abortFlag;
 	}
 
+	/**
+	 * Sets the abort flag.
+	 *
+	 * @param abortFlag the new abort flag
+	 */
 	public void setAbortFlag(boolean abortFlag) {
 		this.abortFlag = abortFlag;
 	}

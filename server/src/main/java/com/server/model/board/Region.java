@@ -9,14 +9,29 @@ import com.communication.values.RegionName;
 
 
 
+
+/**
+ * The Class Region.
+ */
 public class Region
 {
 	
 	
+	/** The bc. */
 	private BonusCard bc;
+	
+	/** The cities. */
 	private ArrayList <City> cities;
+	
+	/** The name. */
 	private RegionName name;
 	
+	/**
+	 * To dto.
+	 *
+	 * @param plsDTO the list of playersDTO
+	 * @return the region dto
+	 */
 	public RegionDTO toDTO(ArrayList<PlayerDTO> plsDTO){
 		RegionDTO rDTO = new RegionDTO();
 		ArrayList<CityDTO> cDTO = new ArrayList<CityDTO>(this.cities.size());
@@ -29,7 +44,8 @@ public class Region
 	}
 
 	/**
-	 * constructor of the region
+	 * constructor of the region.
+	 *
 	 * @param n n is the name of the region
 	 */
 	
@@ -39,14 +55,18 @@ public class Region
 	}
 	
 	/**
+	 * Gets the lis of the cities.
+	 *
 	 * @return the cities in a region
 	 */
 	
 	public ArrayList <City> getCities() {
 		return cities;	
 	}
+	
 	/**
-	 * add a city in a region
+	 * add a city in a region.
+	 *
 	 * @param c c is the city to add
 	 */
 	
@@ -56,7 +76,8 @@ public class Region
 	}
 	
 	/**
-	 * set the bonus for each region
+	 * set the bonus for each region.
+	 *
 	 * @param b b is the bonus for each region
 	 */
 	public void setBonus(BonusCard b)
@@ -65,6 +86,8 @@ public class Region
 	}
 	
 	/**
+	 * Gets the name.
+	 *
 	 * @return the name of the region
 	 */
 	public RegionName getName()
@@ -73,6 +96,8 @@ public class Region
 	}
 	
 	/**
+	 * Gets the bonus.
+	 *
 	 * @return the bonus in each region
 	 */
 	

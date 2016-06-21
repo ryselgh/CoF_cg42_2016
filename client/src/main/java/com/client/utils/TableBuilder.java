@@ -4,15 +4,31 @@ import java.util.LinkedList;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
  
+
+/**
+ * The Class TableBuilder.
+ */
 public class TableBuilder
 {
+    
+    /** The rows. */
     List<String[]> rows = new LinkedList<String[]>();
  
+    /**
+     * Adds the row.
+     *
+     * @param cols the cols
+     */
     public void addRow(String... cols)
     {
         rows.add(cols);
     }
  
+    /**
+     * Col widths.
+     *
+     * @return the int[]
+     */
     private int[] colWidths()
     {
         int cols = -1;
@@ -34,6 +50,9 @@ public class TableBuilder
         return widths;
     }
  
+    /* 
+     * ovveride of the method toString
+     */
     @Override
     public String toString()
     {

@@ -4,18 +4,34 @@ import java.util.ArrayList;
 
 import com.server.model.gamelogic.Game;
 
+
+/**
+ * The Class ChangeCards.
+ */
 public class ChangeCards extends Action{
 
+	/** The balcony index. */
 	private int balconyIndex;
+	
+	/** The errors. */
 	private ArrayList<String> errors;
+	
+	/** The disable. */
 	private boolean disable = false;
 	
+	/**
+	 * Instantiates a new change cards.
+	 *
+	 * @param balconyIndex the balcony index
+	 */
 	public ChangeCards(int balconyIndex){
 		this.balconyIndex = balconyIndex;
 		errors = new ArrayList<String>();
 	}
+	
 	/**
-	 * Verify if you can change the permits (you must have at least one assistant)
+	 * Verify if you can change the permits (you must have at least one assistant).
+	 *
 	 * @return true if you can change the permits, false if not
 	 */
 	
@@ -29,8 +45,9 @@ public class ChangeCards extends Action{
 	
 	/**
 	 * Change permits on the ground of the selected deck
-	 *  if there is an error gives a string error
-	 * @param balconyIndex the selected deck; 0: sea, 1: hill, 2: mountain.
+	 *  if there is an error gives a string error.
+	 *
+	 * @return the action return
 	 */
 	
 	public ActionReturn execute() {

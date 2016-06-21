@@ -4,7 +4,7 @@ import com.communication.actions.ActionDTO;
 import com.server.model.gamelogic.Game;
 import com.server.model.gamelogic.Player;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class Action.
  */

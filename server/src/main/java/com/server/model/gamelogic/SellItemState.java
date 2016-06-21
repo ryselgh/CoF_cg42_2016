@@ -23,7 +23,7 @@ import com.server.model.market.OnSaleInterface;
 import com.server.model.market.PermitOnSale;
 import com.server.model.market.PoliticsOnSale;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class SellItemState.
  */

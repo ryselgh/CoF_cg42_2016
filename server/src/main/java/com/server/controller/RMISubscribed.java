@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import com.communication.RMIClientControllerRemote;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class RMISubscribed. this object is used in the RMI protocol to bind a client handler to its remote controller after the subscription.
  */

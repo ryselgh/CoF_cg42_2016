@@ -9,14 +9,29 @@ import com.communication.values.CityColor;
 
 
 
+
+/**
+ * The Class ColorGroup.
+ */
 public class ColorGroup
 {
 	
 	
+	/** The cities. */
 	private ArrayList <City> cities;
+    
+    /** The color. */
     private CityColor color;
+    
+    /** The bc. */
     private BonusCard bc;
 	
+    /**
+     * To dto.
+     *
+     * @param plsDTO an arrayList of PlayerDTO 
+     * @return the color group dto
+     */
     public ColorGroupDTO toDTO(ArrayList<PlayerDTO> plsDTO){
     	ColorGroupDTO cgDTO = new ColorGroupDTO();
     	ArrayList<CityDTO> cDTO = new ArrayList<CityDTO>(this.cities.size());
@@ -29,9 +44,9 @@ public class ColorGroup
     }
 
 	/**
-	 * constructor of the citycolor group
-	 *@param col col is the color of the city
-	 
+	 * constructor of the citycolor group.
+	 *
+	 * @param col col is the color of the city
 	 */
 	
 	public ColorGroup(CityColor col) {
@@ -44,6 +59,8 @@ public class ColorGroup
 	}
 	
 	/**
+	 * Gets the city.
+	 *
 	 * @return the list of the cities which have the same color
 	 */
 	
@@ -52,7 +69,8 @@ public class ColorGroup
 	}
 	
 	/**
-	 * add a city in the list 
+	 * add a city in the list .
+	 *
 	 * @param c c is the city to add
 	 */
 	
@@ -64,8 +82,9 @@ public class ColorGroup
 	}
 	
 	/**
-	 * 
-	 * @param b b is the bonus for every colorgropu satisfied
+	 * Sets the bonus.
+	 *
+	 * @param b b is the bonus for every colorgroup satisfied
 	 */
 	public void setBonus(BonusCard b)
 	{
@@ -76,7 +95,8 @@ public class ColorGroup
 	}
 	
 	/**
-	 * 
+	 * Gets the bonus.
+	 *
 	 * @return the bonus based on the color group
 	 */
 	
@@ -85,6 +105,11 @@ public class ColorGroup
 		return this.bc;
 	}
 	
+	/**
+	 * Gets the color.
+	 *
+	 * @return the color
+	 */
 	public CityColor getColor()
 	{
 		return this.color;

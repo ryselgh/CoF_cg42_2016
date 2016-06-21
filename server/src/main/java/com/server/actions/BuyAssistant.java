@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import com.server.model.gamelogic.Game;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class BuyAssistant.
  */

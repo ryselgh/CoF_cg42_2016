@@ -7,22 +7,32 @@ import com.server.model.gamelogic.Player;
 
 
 
+
+/**
+ * The Class Pawn.
+ */
 public class Pawn
 {
 	
 	
+	/** The p. */
 	private Player p;
+	
+	/** The pos. */
 	private int pos;
+	
+	/** The hex color. */
 	private String hexColor;
 	
 	
 	
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
+	 * the construcor of the pawn
+	 * @param p the p
+	 * @param hexColor the hex color
+	 * @generated 
+	 * @ordered 
 	 */
 	
 	public Pawn(Player p, String hexColor) {
@@ -32,10 +42,10 @@ public class Pawn
 	}
 	
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
+	 *
+	 * @return the player
+	 * @generated 
+	 * @ordered 
 	 */
 	
 	public Player getPlayer() {
@@ -43,19 +53,39 @@ public class Pawn
 	}
 	
 	
+	/**
+	 * Gets the position
+	 *
+	 * @return the pos
+	 */
 	public int getPos()
 	{
 		return this.pos;
 	}
 
+	/**
+	 * Gets the color.
+	 *
+	 * @return the color
+	 */
 	public String getColor() {
 		return this.hexColor;
 	}
 	
+	/**
+	 * Sets the position
+	 *
+	 * @param pos the new position
+	 */
 	public void setPos(int pos){
 		this.pos = pos;
 	}
 	
+	/**
+	 * To dto.
+	 *
+	 * @return the pawn dto
+	 */
 	public PawnDTO toDTO(){
 		PawnDTO pDTO = new PawnDTO();
 		pDTO.setHexColor(this.getColor());

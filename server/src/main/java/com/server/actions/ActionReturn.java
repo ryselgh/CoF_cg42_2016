@@ -3,7 +3,7 @@ package com.server.actions;
 import com.server.model.board.Bonus;
 import com.server.model.board.BonusToken;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class ActionReturn.
  */

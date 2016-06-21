@@ -5,29 +5,35 @@ import com.communication.board.BonusTokenDTO;
 import com.communication.values.BonusType;
 import com.server.model.gamelogic.Game;
 
+
+/**
+ * The Class BonusToken.
+ */
 public class BonusToken
 {
 	
 	
+	/** The b. */
 	private Bonus[] b;
 	
 
 	/**
-	 * constructor  of the token
-	 * @param b b is the bonus on the token
+	 * constructor  of the token.
+	 *
+	 * @param b b is the bonus array on the token
 	 */
 	
 	public BonusToken(Bonus[] b) {
-//		for(Bonus bn : b){
-//			if (bn.equals(null))
+
 		if(b==null)
-				throw new NullPointerException("bonus token must have a bonus at least!");
-	//	}
-		
-			this.b = b;	
+			throw new NullPointerException("bonus token must have a bonus at least!");
+
+		this.b = b;	
 	}
 	
 	/**
+	 * Gets the bonus array.
+	 *
 	 * @return the bonus on token
 	 */
 	
@@ -35,6 +41,11 @@ public class BonusToken
 		return this.b;	
 	}
 	
+	/**
+	 * Sets the bonus token from the DTO
+	 *
+	 * @param btDTO the dto to set in the normal bt
+	 */
 	public void setterFromDTO(BonusTokenDTO btDTO){//non si collega all'istanza corrispondente in game, perchè serve solo a riscuotere i bonus
 		Bonus[] bonus = new Bonus[btDTO.getBonus().length];
 		for(int i = 0;i<bonus.length;i++){
@@ -44,6 +55,11 @@ public class BonusToken
 		this.b = bonus;
 	}
 	
+	/**
+	 * To dto.
+	 *
+	 * @return the bonus token dto
+	 */
 	public BonusTokenDTO toDTO(){
 		BonusTokenDTO ret = new BonusTokenDTO();
 		BonusDTO[] bDTO = new BonusDTO[this.getBonus().length];

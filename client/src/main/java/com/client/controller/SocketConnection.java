@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 import com.client.ClientObservable;
 import com.communication.CommunicationObject;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class SocketConnection.
  */

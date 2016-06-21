@@ -6,24 +6,32 @@ import com.communication.gamelogic.PlayerDTO;
 
 
 
+
+/**
+ * The Class EmporiumDTO.
+ */
 public class EmporiumDTO implements Serializable{
 	
 	
-	/**
-	 * 
-	 */
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = -7415930713250635058L;
+	
+	/** The player(DTO). */
 	private PlayerDTO player;
 
 	/**
-	 * @return the player
+	 * Gets the player(DTO).
+	 *
+	 * @return the player(DTO)
 	 */
 	public PlayerDTO getPlayer() {
 		return player;
 	}
 
 	/**
-	 * @param player the player to set
+	 * Sets the player(DTO).
+	 *
+	 * @param player the player(DTO) to set
 	 */
 	public void setPlayer(PlayerDTO player) {
 		this.player = player;

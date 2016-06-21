@@ -7,12 +7,23 @@ import com.communication.decks.PoliticsCardDTO;
 import com.communication.decks.PoliticsDeckDTO;
 import com.communication.values.CouncilorColor;
 
+
+/**
+ * The Class PoliticsDeck.
+ */
 public class PoliticsDeck extends Deck{
 
 
+	/** The politics deck. */
 	private ArrayList<PoliticsCard> politicsDeck;
+	
+	/** The garbage. */
 	private ArrayList<PoliticsCard> garbage;
+	
+	/** The Constant CARDSQTY. */
 	private static final int CARDSQTY=13;
+	
+	/** The Constant JOLLYQTY. */
 	private static final int JOLLYQTY=12;
 
 	
@@ -44,6 +55,8 @@ public class PoliticsDeck extends Deck{
 	
 	
 	/**
+	 * Gets the politics deck.
+	 *
 	 * @return the politicsDeck
 	 */
 	public ArrayList<PoliticsCard> getPoliticsDeck() {
@@ -51,6 +64,8 @@ public class PoliticsDeck extends Deck{
 	}
 
 	/**
+	 * Gets the garbage.
+	 *
 	 * @return the garbage
 	 */
 	public ArrayList<PoliticsCard> getGarbage() {
@@ -82,7 +97,8 @@ public class PoliticsDeck extends Deck{
 	}
 
 	/**
-	 * when you discard a card you add it in the garbage deck
+	 * when you discard a card you add it in the garbage deck.
+	 *
 	 * @param c c is the card discarded
 	 */
 
@@ -92,6 +108,11 @@ public class PoliticsDeck extends Deck{
 		garbage.add(c);
 	}
 	
+	/**
+	 * To dto.
+	 *
+	 * @return the politics deck dto
+	 */
 	public PoliticsDeckDTO toDTO(){
 		PoliticsDeckDTO pdDTO = new PoliticsDeckDTO();
 		ArrayList<PoliticsCardDTO> deckDTO = new ArrayList<PoliticsCardDTO>();

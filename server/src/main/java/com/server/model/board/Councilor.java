@@ -4,15 +4,21 @@ import com.communication.board.CouncilorDTO;
 import com.communication.values.CouncilorColor;
 
 
+
+/**
+ * The Class Councilor.
+ */
 public class Councilor
 {
 	
 	
+	/** The color. */
 	private CouncilorColor color;
 	
 
 	/**
-	 * the constructor of the councilor
+	 * the constructor of the councilor.
+	 *
 	 * @param cc cc is the color of the councilor
 	 */
 	
@@ -24,6 +30,8 @@ public class Councilor
 	}
 	
 	/**
+	 * Gets the councilor color.
+	 *
 	 * @return the color of the councilor
 	 */
 	
@@ -31,6 +39,12 @@ public class Councilor
 		return this.color;	
 	}
 	
+	/**
+	 * Equals dto.
+	 *
+	 * @param cDTO the CouncilorDTO
+	 * @return true, if successful
+	 */
 	public boolean equalsDTO(CouncilorDTO cDTO){
 		if (!(cDTO == null)) {
 			if (this.color.equals(cDTO.getColor()))
@@ -40,6 +54,11 @@ public class Councilor
 			throw new NullPointerException("cDTO cannot be null");
 	}
 	
+	/**
+	 * To dto.
+	 *
+	 * @return the councilor dto
+	 */
 	public CouncilorDTO toDTO(){
 		CouncilorDTO cDTO = new CouncilorDTO();
 		cDTO.setColor(this.getCouncilorColor());

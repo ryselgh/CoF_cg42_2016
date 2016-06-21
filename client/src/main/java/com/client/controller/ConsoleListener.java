@@ -9,7 +9,7 @@ import java.util.concurrent.ExecutionException;
 import com.client.ClientObservable;
 import com.client.view.ClientCLI;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The listener interface for receiving console events.
  * The class that is interested in processing a console

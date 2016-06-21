@@ -1,6 +1,6 @@
 package com.server.controller;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class TimeoutInfo.
  */

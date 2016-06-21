@@ -3,14 +3,20 @@ package com.server.model.board;
 import com.communication.board.BalconyDTO;
 import com.communication.board.CouncilorDTO;
 
+
+/**
+ * The Class Balcony.
+ */
 public class Balcony
 {
 
+	/** The councilor. */
 	private Councilor[] councilor;
 	//private Region region;
 
 	/**
-	 * constructor of the balcony
+	 * constructor of the balcony.
+	 *
 	 * @param c c is the array of the councilors
 	 */
 
@@ -23,6 +29,8 @@ public class Balcony
 	}
 
 	/**
+	 * Gets the councilors(array).
+	 *
 	 * @return the councilors in that balcony
 	 */
 
@@ -31,13 +39,20 @@ public class Balcony
 	}
 
 	/**
-	 * @param councilor the councilor to set
+	 * Sets the councilor.
+	 *
+	 * @param councilor the councilors(array) to set
 	 */
 	public void setCouncilor(Councilor[] councilor) {
 		this.councilor = councilor;
 	}
 
 
+	/**
+	 * To dto.
+	 *
+	 * @return the balcony dto
+	 */
 	public BalconyDTO toDTO(){
 		BalconyDTO bDTO = new BalconyDTO();
 		CouncilorDTO[] councDTO = new CouncilorDTO[this.getCouncilors().length];

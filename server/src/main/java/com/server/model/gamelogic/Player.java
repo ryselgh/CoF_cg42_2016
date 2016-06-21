@@ -19,7 +19,7 @@ import com.server.model.decks.PermitsCard;
 import com.server.model.decks.PoliticsCard;
 
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class Player.
  */

@@ -3,15 +3,21 @@ package com.server.model.board ;
 import com.communication.board.BonusCardDTO;
 import com.communication.board.BonusDTO;
 
+
+/**
+ * The Class BonusCard.
+ */
 public class BonusCard
 {
 	
 	
+	/** The b. */
 	private Bonus b;
 	
 
 	/**
-	 * constructor of the bonus card 
+	 * constructor of the bonus card .
+	 *
 	 * @param b b is the bonus on the bonus card
 	 */
 	
@@ -23,13 +29,20 @@ public class BonusCard
 	}
 	
 	/**
-	 * @return the nìbonus on the bonus card
+	 * Gets the bonus.
+	 *
+	 * @return the bonus on the bonus card
 	 */
 	
 	public Bonus getBonus() {
 		return this.b;	
 	}
 	
+	/**
+	 * To dto.
+	 *
+	 * @return the bonus card dto
+	 */
 	public BonusCardDTO toDTO(){
 		BonusCardDTO ret = new BonusCardDTO();
 		BonusDTO bDTO = new BonusDTO();

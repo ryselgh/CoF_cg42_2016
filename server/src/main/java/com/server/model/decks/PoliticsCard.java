@@ -6,15 +6,21 @@ import com.server.model.gamelogic.Player;
 
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class PoliticsCard.
+ */
 public class PoliticsCard
 {
 	
 	
+	/** The color. */
 	private CouncilorColor color;
 	
 	
 /**
- * constructor of the politicscard
+ * constructor of the politicscard.
+ *
  * @param c is the color of card
  */
 	
@@ -29,7 +35,8 @@ public class PoliticsCard
 	}
 	
 	/**
-	 * 
+	 * Gets the color.
+	 *
 	 * @return the color of the card
 	 */
 	
@@ -38,6 +45,13 @@ public class PoliticsCard
 		return color;	
 	}
 	
+	/**
+	 * From dto.
+	 *
+	 * @param pcDTO the politicsCardDTO
+	 * @param player the player
+	 * @return the politics card
+	 */
 	public static PoliticsCard fromDTO(PoliticsCardDTO pcDTO, Player player){
 		if (!(pcDTO == null)) {
 			for (PoliticsCard pc : player.getHand())
@@ -48,6 +62,12 @@ public class PoliticsCard
 			throw new NullPointerException("pcDTO cannot be null");
 	}
 	
+	/**
+	 * Equals dto.
+	 *
+	 * @param pcDTO the pc dto
+	 * @return true, if successful
+	 */
 	public boolean equalsDTO(PoliticsCardDTO pcDTO){
 		if (!(pcDTO == null)) {
 			if (this.color.equals(pcDTO.getColor()))
@@ -57,6 +77,11 @@ public class PoliticsCard
 			throw new NullPointerException("pcDTO cannot be null");
 	}
 	
+	/**
+	 * To dto.
+	 *
+	 * @return the politics card dto
+	 */
 	public PoliticsCardDTO toDTO(){
 		PoliticsCardDTO pcDTO = new PoliticsCardDTO();
 		pcDTO.setColor(color);

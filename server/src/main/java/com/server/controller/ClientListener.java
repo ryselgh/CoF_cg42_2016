@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 
 import com.communication.CommunicationObject;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The listener interface for receiving client events.
  * The class that is interested in processing a client
