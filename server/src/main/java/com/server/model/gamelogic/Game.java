@@ -10,35 +10,60 @@ import com.server.model.board.City;
 import com.server.model.board.Map;
 import com.server.model.market.Market;
 
+// TODO: Auto-generated Javadoc
 /**
- * This is the main controller of the game 
+ * This is the main controller of the game.
  */
 
 public class Game {
 
-	private static final int MAXPLAYERS = 8;
+	
+	/** The Constant COINOFFSET. */
 	private static final int COINOFFSET = 10;
+	
+	/** The Constant ASSISTOFFSET. */
 	private static final int ASSISTOFFSET = 1;
+	
+	/** The Constant INITIALCARDS. */
 	private static final int INITIALCARDS = 6;
+	
+	/** The players. */
 	private ArrayList<Player> players;
+	
+	/** The players qty. */
 	private int playersQty;
+	
+	/** The map. */
 	private Map map;
+	
+	/** The market. */
 	private Market market;
+	
+	/** The actual player. */
 	private Player actualPlayer;
+	
+	/** The final turn. */
 	private boolean finalTurn;
+	
+	/** The default map. */
 	private boolean defaultMap;
+	
+	/** The raw map. */
 	private String rawMap;
-	private MainAction mainAction;
-	private SpeedAction speedAction;
+	
+	/** The graph map. */
 	private GraphMap graphMap;
+	
+	/** The client names. */
 	private String[] clientNames;
 	
 	/**
-	 * Constructs a new object of type Game
+	 * Constructs a new object of type Game.
+	 *
 	 * @param playersQty how many players are playing
-	 * @param map the map of the game
 	 * @param defaultMap set to true if you want to load the default map
-	 * @throws Exception if the number of players is less than 2 or greater than {@value #MAXPLAYERS}
+	 * @param rawMap the raw map
+	 * @param clientNames the client names
 	 */
 	
 	public Game(int playersQty, boolean defaultMap, String rawMap, String[] clientNames) {
@@ -46,17 +71,12 @@ public class Game {
 		this.playersQty = playersQty;
 		this.defaultMap = defaultMap;
 		this.rawMap = rawMap;
-		mainAction = new MainAction(this);
-		speedAction = new SpeedAction(this);
 		this.initializeObjects();
 		
-		//tolto perchè è il num di giocatori è gestito da lobby e gamehandler
-		//if(playersQty < 2 || playersQty > MAXPLAYERS)
-			//throw new IllegalArgumentException("The quantity of players indicated is not in the permitted range");
 	}
 	
 	/**
-	 * Initializes all the objects needed for the game
+	 * Initializes all the objects needed for the game.
 	 */
 	
 	private void initializeObjects() {
@@ -91,6 +111,8 @@ public class Game {
 	
 	
 	/**
+	 * Gets the players.
+	 *
 	 * @return an array of Player(s)
 	 */
 	
@@ -99,7 +121,8 @@ public class Game {
 	}
 	
 	/**
-	 * Select a specific player by its number
+	 * Select a specific player by its number.
+	 *
 	 * @param id the integer that identifies the wanted player
 	 * @return a specific Player
 	 */
@@ -109,7 +132,9 @@ public class Game {
 	}
 	
 	/**
-	 * The market
+	 * The market.
+	 *
+	 * @return the market
 	 */
 	
 	public Market getMarket() {
@@ -117,6 +142,8 @@ public class Game {
 	}
 	
 	/**
+	 * Gets the actual player.
+	 *
 	 * @return the player that is playing right now
 	 */
 	
@@ -125,6 +152,8 @@ public class Game {
 	}
 	
 	/**
+	 * Sets the final turn.
+	 *
 	 * @param finalTurn set to true when a player places its last emporium
 	 */
 	
@@ -133,7 +162,9 @@ public class Game {
 	}
 	
 	/**
-	 * @param finalTurn true if the actualPlayer have placed his last emporium
+	 * Checks if is final turn.
+	 *
+	 * @return true, if is final turn
 	 */
 	
 	public boolean isFinalTurn() {
@@ -141,17 +172,29 @@ public class Game {
 	}
 
 	/**
+	 * Gets the map.
+	 *
 	 * @return the map
 	 */
 	public Map getMap() {
 		return map;
 	}
 	
+	/**
+	 * Sets the actual player.
+	 *
+	 * @param index the new actual player
+	 */
 	public void setActualPlayer(int index)
 	{
 		this.actualPlayer = this.players.get(index);
 	}
 	
+	/**
+	 * Gets the actual player index.
+	 *
+	 * @return the actual player index
+	 */
 	public int getActualPlayerIndex(){
 		for(int i=0;i<players.size();i++)
 			if(players.get(i).equals(actualPlayer))
@@ -161,26 +204,20 @@ public class Game {
 	}
 	
 	/**
-	 * @return the mainAction
-	 */
-	public MainAction getMainAction() {
-		return mainAction;
-	}
-
-	/**
-	 * @return the speedAction
-	 */
-	public SpeedAction getSpeedAction() {
-		return speedAction;
-	}
-
-	/**
+	 * Gets the graph map.
+	 *
 	 * @return the graphMap
 	 */
 	public GraphMap getGraphMap() {
 		return graphMap;
 	}
 	
+	/**
+	 * Gets the city from name.
+	 *
+	 * @param name the name
+	 * @return the city from name
+	 */
 	public City getCityFromName(String name){
 		for(City c : this.getMap().getCity())
 			if(c.getName().equals(name))
@@ -188,6 +225,11 @@ public class Game {
 		return null;
 	}
 	
+	/**
+	 * To dto.
+	 *
+	 * @return the game DTO
+	 */
 	public GameDTO toDto(){
 		GameDTO gameDTO = new GameDTO();
 		ArrayList<PlayerDTO> plsDTO = new ArrayList<PlayerDTO>();

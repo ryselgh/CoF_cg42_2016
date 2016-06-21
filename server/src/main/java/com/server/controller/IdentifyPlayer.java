@@ -12,17 +12,40 @@ import java.util.logging.Logger;
 
 import com.communication.CommunicationObject;
 
+/**
+ * The Class IdentifyPlayer.
+ */
 public class IdentifyPlayer extends Observable implements Runnable  {
+	
+	/** The socket. */
 	private Socket socket;
+	
+	/** The user name. */
 	private String userName;
+	
+	/** The lobby. */
 	private Lobby lobby;
+	
+	/** The logger. */
 	private Logger logger;
 	
+	/**
+	 * Instantiates a new identify player.
+	 *
+	 * @param s the s
+	 * @param l the l
+	 */
 	public IdentifyPlayer(Socket s, Lobby l){
 		this.socket = s;
 		this.lobby = l;
 	}
 	
+	/**
+	 * Gets the name.
+	 *
+	 * @return the name
+	 * @throws IOException Asks the player for a nickname until it's ok, then creates the ClientHandler and gives it's istance to the lobby
+	 */
 	private void getName() throws IOException{
 		ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
 		ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
@@ -61,6 +84,12 @@ public class IdentifyPlayer extends Observable implements Runnable  {
 		notifyObservers(client);
 	}
 	
+	/**
+	 * Checks if is correct.
+	 *
+	 * @param name the name
+	 * @return whats wrong in the chosen nickname. "" if it's ok
+	 */
 	private String isCorrect(String name){
 		if(name.contains("[^abcdefghilmnopqrstuvzjkywxABCDEFGHILMNOPQRSTUVZJKYWX]"))//regex equivalente a tutti i caratteri a parte le lettere
 			return "Illegal characters";
@@ -70,6 +99,8 @@ public class IdentifyPlayer extends Observable implements Runnable  {
 			return "Nickname already used";
 		return "";
 	}
+
+
 	@Override
 	public void run() {
 		try {

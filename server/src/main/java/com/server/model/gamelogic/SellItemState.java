@@ -23,20 +23,46 @@ import com.server.model.market.OnSaleInterface;
 import com.server.model.market.PermitOnSale;
 import com.server.model.market.PoliticsOnSale;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class SellItemState.
+ */
 public class SellItemState implements State{
+	
+	/** The game. */
 	private Game game;
+	
+	/** The clienthandler. */
 	private ClientHandler clienthandler;
+	
+	/** The gamehandler. */
 	private GameHandler gamehandler;
+	
+	/** The context. */
 	private Context context;
+	
+	/** The remote controller. */
 	private RMIClientControllerRemote remoteController;
+	
+	/** The rmi. */
 	private boolean RMI;
 	
+	/**
+	 * Instantiates a new sell item state.
+	 */
 	public SellItemState(){}
 	
+	/* (non-Javadoc)
+	 * @see com.server.model.gamelogic.State#getStateID()
+	 */
 	public String getStateID(){
 		return "SellItemState";
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.server.model.gamelogic.State#doAction(com.server.model.gamelogic.Context)
+	 * set's up local variables and executes the action
+	 */
 	@Override
 	public void doAction(Context context) {
 		this.context = context;
@@ -55,6 +81,13 @@ public class SellItemState implements State{
 		}
 	}
 	
+	/**
+	 * Execute.
+	 *
+	 * @param toSell the item to sell
+	 * @param passed true if protocol used is socket and the client input has already been received
+	 * @throws RemoteException the remote exception
+	 */
 	public void execute(ItemOnSale toSell, boolean passed) throws RemoteException{//uso passed perchè l'oggetto può essere null anche se ricevuto correttamente
 		if(RMI){
 			toSell = this.remoteController.RMIToSell();
@@ -88,6 +121,12 @@ public class SellItemState implements State{
 		gamehandler.changeState(context);
 	}
 	
+	/**
+	 * convert an ItemOnSale(DTO) to OnSale
+	 *
+	 * @param itemOnSale the item on sale
+	 * @return the on sale
+	 */
 	private OnSale DTOtoObj(ItemOnSale itemOnSale){
 		Object DTO = itemOnSale.getObj();
 		int price = itemOnSale.getPrice();
@@ -117,12 +156,22 @@ public class SellItemState implements State{
 	
 	
 	
+	/**
+	 * converts a PoliticsOnSaleDTO to a PoliticsCard.
+	 *
+	 * @param pDTO the dto
+	 * @return the politics card
+	 */
 	private PoliticsCard DTOtoPolitic(PoliticsOnSaleDTO pDTO){
 		for(PoliticsCard pc : game.getActualPlayer().getHand())
 			if(pc.equalsDTO(pDTO.getPoliticsCard()))
 				return pc;
 		return null;
 	}
+	
+	/* (non-Javadoc)
+	 * @see com.server.model.gamelogic.State#restoreState()
+	 */
 	/*
 	private void addToMarket(ItemOnSale item){
 		Object item_obj = item.getObj();

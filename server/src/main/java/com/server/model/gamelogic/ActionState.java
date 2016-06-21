@@ -40,23 +40,55 @@ import com.server.model.board.Emporium;
 import com.server.model.decks.PermitsCard;
 import com.server.model.decks.PoliticsCard;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ActionState.
+ */
 public class ActionState implements State {
+	
+	/** The game. */
 	private Game game;
+	
+	/** The main counter. */
 	private int mainCounter = 1;
+	
+	/** The speed counter. */
 	private int speedCounter = 1;
+	
+	/** The clienthandler. */
 	private ClientHandler clienthandler;
+	
+	/** The gamehandler. */
 	private GameHandler gamehandler;
+	
+	/** The context. */
 	private Context context;
+	
+	/** The rmi. */
 	private boolean RMI;
+	
+	/** The remote controller. */
 	private RMIClientControllerRemote remoteController;
 	
+	/**
+	 * Instantiates a new action state.
+	 */
 	public ActionState(){
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.server.model.gamelogic.State#getStateID()
+	 */
 	public String getStateID(){
 		return "ActionState";
 	}
 	
+	/**
+	 * Execute.
+	 *
+	 * @param actionDTO the action DTO
+	 * @throws RemoteException the remote exception
+	 */
 	public void execute(ActionDTO actionDTO) throws RemoteException{
 		boolean pass = false;
 		Action action = null;
@@ -108,6 +140,11 @@ public class ActionState implements State {
 		
 	}
 	
+	/**
+	 * Check win.
+	 *
+	 * @return true, if successful
+	 */
 	private boolean checkWin() {
 		int count = 0;
 		for (City city : gamehandler.getGame().getMap().getCity())
@@ -123,6 +160,9 @@ public class ActionState implements State {
 
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.server.model.gamelogic.State#doAction(com.server.model.gamelogic.Context)
+	 */
 	public void doAction(Context context) {
 		this.context = context;
 		this.context.setState(this);
@@ -150,6 +190,12 @@ public class ActionState implements State {
 		}
 	}
 	
+	/**
+	 * DT oto obj.
+	 *
+	 * @param actDTO the act DTO
+	 * @return the action
+	 */
 	private Action DTOtoObj(ActionDTO actDTO){
 		Action act;
 		if(actDTO instanceof BuildDTO){
@@ -192,11 +238,20 @@ public class ActionState implements State {
 	}
 	
 	
+	/* (non-Javadoc)
+	 * @see com.server.model.gamelogic.State#restoreState()
+	 */
 	public void restoreState(){//riverginizza lo stato per essere usato da un altro giocatore senza creare una nuova istanza
 		this.mainCounter = 1;
 		this.speedCounter = 1;
 		//il resto sta in context che viene cambiato dal gamehandler
 	}
+	
+	/**
+	 * Gets the available actions.
+	 *
+	 * @return the available actions
+	 */
 	private boolean[] getAvailableActions(){
 		//order
 		//main: obtainpermit[0], satisfyking[1], shiftcouncilmain[2], build[3]
@@ -233,6 +288,12 @@ public class ActionState implements State {
 			toRet[5]=false;
 		return toRet;
 	}
+	
+	/**
+	 * Decrease counter.
+	 *
+	 * @param action the action
+	 */
 	private void decreaseCounter(Action action){
 		if((action instanceof Build) || (action instanceof ObtainPermit) || (action instanceof SatisfyKing) || (action instanceof ShiftCouncilMain))
 			mainCounter--;
@@ -241,6 +302,11 @@ public class ActionState implements State {
 			
 	}
 	
+	/**
+	 * Collect bonus.
+	 *
+	 * @param b the b
+	 */
 	private void collectBonus(Bonus b)// NOTA: AGISCE SUL GIOCATORE CHE STA
 	// GIOCANDO IL TURNO
 	{
@@ -292,6 +358,12 @@ public class ActionState implements State {
 		}
 	}
 	
+	/**
+	 * Collect ONETOKEN.
+	 *
+	 * @param chosen the chosen
+	 * @throws RemoteException the remote exception
+	 */
 	public void collectONETOKEN(BonusTokenDTO[] chosen) throws RemoteException{
 		BonusTokenDTO[] btTmp = getAvailableTokens();
 		BonusTokenDTO chos = null;
@@ -317,6 +389,12 @@ public class ActionState implements State {
 		}
 	}
 	
+	/**
+	 * Collect TWOTOKENS.
+	 *
+	 * @param chosen the chosen
+	 * @throws RemoteException the remote exception
+	 */
 	public void collectTWOTOKENS(BonusTokenDTO[] chosen) throws RemoteException{
 		BonusTokenDTO[] btTmp = getAvailableTokens();
 		BonusToken[] converted;
@@ -343,6 +421,12 @@ public class ActionState implements State {
 		}
 	}
 	
+	/**
+	 * Collect FREECARD.
+	 *
+	 * @param chosen the chosen
+	 * @throws RemoteException the remote exception
+	 */
 	public void collectFREECARD(PermitsCardDTO chosen) throws RemoteException{
 		boolean found = false;
 		if(RMI)
@@ -378,6 +462,12 @@ public class ActionState implements State {
 		}
 	
 	
+	/**
+	 * Collect BONUSCARD.
+	 *
+	 * @param chosen the chosen
+	 * @throws RemoteException the remote exception
+	 */
 	public void collectBONUSCARD(PermitsCardDTO chosen) throws RemoteException{
 		ArrayList<PermitsCard> pcOwned = game.getActualPlayer().getPermits();
 		if(RMI)
@@ -411,10 +501,18 @@ public class ActionState implements State {
 		}
 	}
 	
+	/**
+	 * Player draws politics card.
+	 */
 	private void playerDrawsPoliticsCard() {
 		this.game.getActualPlayer().addPolitics(this.game.getMap().getPoliticsDeck().draw());
 	}
 	
+	/**
+	 * Gets the available tokens.
+	 *
+	 * @return the available tokens
+	 */
 	private BonusTokenDTO[] getAvailableTokens() {
 		ArrayList<BonusTokenDTO> bts = new ArrayList<BonusTokenDTO>();
 		for (City c : game.getMap().getCity())

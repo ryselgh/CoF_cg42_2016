@@ -25,17 +25,48 @@ import com.server.model.board.BonusToken;
 import com.server.model.decks.PermitsCard;
 import com.server.model.market.OnSaleInterface;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ClientHandler.
+ */
 public class ClientHandler extends Observable implements Observer, Runnable{
+	
+	/** The socket. */
 	private Socket socket;
+	
+	/** The input stream. */
 	private ObjectInputStream inputStream;
+	
+	/** The output stream. */
 	private ObjectOutputStream outputStream;	
+	
+	/** The user name. */
 	private String userName;
+	
+	/** The logger. */
 	private Logger logger;
+	
+	/** The in game. */
 	public boolean inGame = false;
+	
+	/** The active. */
 	private boolean active = true;
+	
+	/** The listener. */
 	private ClientListener listener;
+	
+	/** The lobby. */
 	private Lobby lobby;
 	
+	/**
+	 * Instantiates a new client handler.
+	 *
+	 * @param s the socket from IdentifyPlayer
+	 * @param si the in stream
+	 * @param so the out stream
+	 * @param un the username
+	 * @param l the lobby instance
+	 */
 	public ClientHandler(Socket s, ObjectInputStream si, ObjectOutputStream so, String un, Lobby l){
 		this.socket = s;
 		this.inputStream = si;
@@ -44,12 +75,18 @@ public class ClientHandler extends Observable implements Observer, Runnable{
 		this.lobby=l;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Runnable#run()
+	 */
 	@Override
 	public void run() {
 		startListen();
 		
 	}
 	
+	/**
+	 * Creates a new listener to handle the client communication
+	 */
 	public void startListen(){
 		listener = new ClientListener(inputStream);
 		Thread clListThread = new Thread(listener);
@@ -57,10 +94,21 @@ public class ClientHandler extends Observable implements Observer, Runnable{
 		clListThread.run();
 	}
 	
+	/**
+	 * Gets the user name.
+	 *
+	 * @return the user name
+	 */
 	public String getUserName() {
 		return userName;
 	}
 	
+	/**
+	 * Send to client.
+	 *
+	 * @param msg the message to be sent
+	 * @param o the object to be sent
+	 */
 	public void sendToClient(String msg, Object o){
 		if(this.active){
 		CommunicationObject toSend = new CommunicationObject(msg,(Object) o);
@@ -75,6 +123,11 @@ public class ClientHandler extends Observable implements Observer, Runnable{
 		else{String br = "breakpointami e correggi";}
 	}
 	
+	/**
+	 * Gets the client input.
+	 *
+	 * @return the client input
+	 */
 	private CommunicationObject getClientInput(){
 		CommunicationObject in = null;
 		try {
@@ -84,6 +137,12 @@ public class ClientHandler extends Observable implements Observer, Runnable{
 		}
 		return in;
 	}
+	
+	/**
+	 * Gets the action.
+	 *
+	 * @return the action passed by the client
+	 */
 	public ActionDTO getAction(){//le azioni disponibili sono già state comunicate al client nella comunicazione precedente
 		sendToClient("GetAction",null);//il client alla ricezione di questo msg deve disabilitare qualsiasi invio eccetto le azioni
 		CommunicationObject received = getClientInput();
@@ -91,6 +150,9 @@ public class ClientHandler extends Observable implements Observer, Runnable{
 		return action;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.util.Observer#update(java.util.Observable, java.lang.Object)
+	 */
 	@Override
 	public void update(Observable o, Object arg) {//arg è nella forma TargetUserName_messaggio
 		if(o instanceof Lobby){
@@ -109,6 +171,9 @@ public class ClientHandler extends Observable implements Observer, Runnable{
 		}
 	}
 	
+	/**
+	 * Close socket.
+	 */
 	public void closeSocket(){
 		try {
 			this.socket.close();
@@ -118,6 +183,12 @@ public class ClientHandler extends Observable implements Observer, Runnable{
 	}
 
 	
+	/**
+	 * Checks if is equals.
+	 *
+	 * @param c the c
+	 * @return true, if is equals
+	 */
 	public boolean isEquals(ClientHandler c){
 		if(c==null)
 			return false;
@@ -126,14 +197,29 @@ public class ClientHandler extends Observable implements Observer, Runnable{
 		return false;
 	}
 
+	/**
+	 * Checks if is active.
+	 *
+	 * @return true, if is active
+	 */
 	public boolean isActive() {
 		return active;
 	}
 
+	/**
+	 * Sets the active.
+	 *
+	 * @param active the new active
+	 */
 	public void setActive(boolean active) {
 		this.active = active;
 	}
 
+	/**
+	 * Sets the socket.
+	 *
+	 * @param socket the new socket
+	 */
 	public void setSocket(Socket socket) {
 		this.socket = socket;
 		try {

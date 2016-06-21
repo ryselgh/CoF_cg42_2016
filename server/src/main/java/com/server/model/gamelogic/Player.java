@@ -19,27 +19,43 @@ import com.server.model.decks.PermitsCard;
 import com.server.model.decks.PoliticsCard;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Player.
+ */
 public class Player {
 
+	/** The available emporiums. */
 	private ArrayList<Emporium> availableEmporiums;
+	
+	/** The available assistants. */
 	private ArrayList<Assistant> availableAssistants;
+	
+	/** The permits. */
 	private ArrayList<PermitsCard> permits;
+	
+	/** The hand. */
 	private ArrayList<PoliticsCard> hand;
+	
+	/** The bonus cards. */
 	private ArrayList<BonusCard> bonusCards;
+	
+	/** The pawn. */
 	private Pawn pawn;
+	
+	/** The coins. */
 	private int coins;
+	
+	/** The score. */
 	private int score;
+	
+	/** The player ID. */
 	private String playerID;
 
 	/**
-	 * Constructs an object of type Player
-	 * 
-	 * @param emporiums
-	 *            Quantity of emporiums to give to the player
-	 * @param assistants
-	 *            Quantity of assistants to give to the player
-	 * @param color
-	 *            The chosen color of the player
+	 * Constructs an object of type Player.
+	 *
+	 * @param ID the id
 	 */
 
 	public Player(String ID) {
@@ -52,20 +68,29 @@ public class Player {
 	}
 
 	/**
-	 * Gives a specific amount of assistants to this player
-	 * 
-	 * @param qty
-	 *            The quantity of assistants you want to add to this player
+	 * Gives a specific amount of assistants to this player.
+	 *
+	 * @param assistants the assistants
 	 */
 
 	public void addAssistant(ArrayList<Assistant> assistants) {
 			availableAssistants.addAll(assistants);
 	}
 	
+	/**
+	 * Adds the assistant.
+	 *
+	 * @param ass the ass
+	 */
 	public void addAssistant(Assistant ass) {
 		availableAssistants.add(ass);
 	}
 	
+	/**
+	 * Removes the assistant.
+	 *
+	 * @param ass the ass
+	 */
 	public void removeAssistant(Assistant ass){
 		for(int i=0;i<availableAssistants.size();i++)
 			if(availableAssistants.get(i).equals(ass))
@@ -73,6 +98,8 @@ public class Player {
 	}
 
 	/**
+	 * Gets the available emporiums.
+	 *
 	 * @return the available emporiums
 	 */
 	public ArrayList<Emporium> getAvailableEmporiums() {
@@ -80,14 +107,17 @@ public class Player {
 	}
 
 	/**
-	 * @param availableEmporiums
-	 *            the available emporiums to set
+	 * Sets the available emporiums.
+	 *
+	 * @param availableEmporiums            the available emporiums to set
 	 */
 	public void setAvailableEmporiums(ArrayList<Emporium> availableEmporiums) {
 		this.availableEmporiums = availableEmporiums;
 	}
 
 	/**
+	 * Gets the available assistants.
+	 *
 	 * @return the availableAssistants
 	 */
 	public ArrayList<Assistant> getAvailableAssistants() {
@@ -95,6 +125,8 @@ public class Player {
 	}
 
 	/**
+	 * Sets the available assistants.
+	 *
 	 * @param availableAssistants the availableAssistants to set
 	 */
 	public void setAvailableAssistants(ArrayList<Assistant> availableAssistants) {
@@ -102,6 +134,8 @@ public class Player {
 	}
 
 	/**
+	 * Gets the color.
+	 *
 	 * @return player's color
 	 */
 
@@ -110,6 +144,8 @@ public class Player {
 	}
 
 	/**
+	 * Gets the pawn.
+	 *
 	 * @return player's pawn
 	 */
 
@@ -118,7 +154,9 @@ public class Player {
 	}
 
 	/**
-	 * Shows cards in the player's hand
+	 * Shows cards in the player's hand.
+	 *
+	 * @return the hand
 	 */
 
 	public ArrayList<PoliticsCard> getHand() {
@@ -126,6 +164,8 @@ public class Player {
 	}
 
 	/**
+	 * Gets the coins.
+	 *
 	 * @return the coins
 	 */
 	public int getCoins() {
@@ -133,6 +173,8 @@ public class Player {
 	}
 
 	/**
+	 * Sets the coins.
+	 *
 	 * @param coins the coins to set
 	 */
 	public void setCoins(int coins) {
@@ -140,6 +182,8 @@ public class Player {
 	}
 	
 	/**
+	 * Adds the coins.
+	 *
 	 * @param coins the coins to add
 	 */
 	public void addCoins(int coins) {
@@ -147,6 +191,8 @@ public class Player {
 	}
 
 	/**
+	 * Gets the score.
+	 *
 	 * @return the score
 	 */
 	public int getScore() {
@@ -154,14 +200,17 @@ public class Player {
 	}
 
 	/**
-	 * @param score
-	 *            the score to set
+	 * Sets the score.
+	 *
+	 * @param score            the score to set
 	 */
 	public void setScore(int score) {
 		this.score = score;
 	}
 
 	/**
+	 * Gets the id.
+	 *
 	 * @return the playerID
 	 */
 	public String getID() {
@@ -169,10 +218,9 @@ public class Player {
 	}
 
 	/**
-	 * Adds a politics card to the hand
-	 * 
-	 * @param poc
-	 *            a politics card, typically obtained by draw or buy actions
+	 * Adds a politics card to the hand.
+	 *
+	 * @param poc            a politics card, typically obtained by draw or buy actions
 	 */
 
 	public void addPolitics(PoliticsCard poc) {
@@ -180,22 +228,31 @@ public class Player {
 	}
 
 	/**
-	 * Removes a politics card from the hand
-	 * 
-	 * @param index
-	 *            the index of the card in the ArrayList
+	 * Removes a politics card from the hand.
+	 *
+	 * @param index            the index of the card in the ArrayList
 	 */
 
 	public void removePolitics(int index) {
 		hand.remove(index);
 	}
 	
+	/**
+	 * Removes the politics.
+	 *
+	 * @param pc the pc
+	 */
 	public void removePolitics(PoliticsCard pc) {
 		for(int i=0;i<hand.size();i++)
 			if(hand.get(i)!= null && hand.get(i).equals(pc))
 				hand.remove(i);
 	}
 	
+	/**
+	 * Removes the permit.
+	 *
+	 * @param pc the pc
+	 */
 	public void removePermit(PermitsCard pc)
 	{
 		for(PermitsCard p : permits)
@@ -203,6 +260,11 @@ public class Player {
 				permits.remove(p);
 	}
 
+	/**
+	 * Checks for uncovered permits.
+	 *
+	 * @return true, if successful
+	 */
 	public boolean hasUncoveredPermits()
 	{
 		for(PermitsCard pc : this.permits)
@@ -210,11 +272,11 @@ public class Player {
 				return true;
 		return false;
 	}
+	
 	/**
-	 * Assigns a permit card to the player
-	 * 
-	 * @param pec
-	 *            a permit, typically obtained by satisfying a council or buy
+	 * Assigns a permit card to the player.
+	 *
+	 * @param pec            a permit, typically obtained by satisfying a council or buy
 	 *            action
 	 */
 
@@ -222,6 +284,11 @@ public class Player {
 		permits.add(pec);
 	}
 	
+	/**
+	 * Gets the permits.
+	 *
+	 * @return the permits
+	 */
 	public ArrayList<PermitsCard> getPermits() {
 		return permits;
 	}
@@ -230,10 +297,9 @@ public class Player {
 	// <--------- MARKET BEGIN ---------->
 	
 	/**
-	 * Sell an assistant
-	 * 
-	 * @param a
-	 *            the assistant that is being sold
+	 * Sell an assistant.
+	 *
+	 * @param a            the assistant that is being sold
 	 */
 
 	public void sellAssistant(Assistant a) {
@@ -241,10 +307,9 @@ public class Player {
 	}
 
 	/**
-	 * Sell a politics card
-	 * 
-	 * @param polc
-	 *            the politics card that is being sold
+	 * Sell a politics card.
+	 *
+	 * @param polc            the politics card that is being sold
 	 */
 
 	public void sellPoliticsCard(PoliticsCard polc) {
@@ -252,10 +317,9 @@ public class Player {
 	}
 
 	/**
-	 * Sell a permit
-	 * 
-	 * @param perc
-	 *            the permit that is being sold
+	 * Sell a permit.
+	 *
+	 * @param perc            the permit that is being sold
 	 */
 
 	public void sellPermitsCard(PermitsCard perc) {
@@ -263,6 +327,8 @@ public class Player {
 	}
 
 	/**
+	 * Gets the bonus cards.
+	 *
 	 * @return the bonusCards
 	 */
 	public ArrayList<BonusCard> getBonusCards() {
@@ -270,12 +336,19 @@ public class Player {
 	}
 
 	/**
+	 * Adds the bonus cards.
+	 *
 	 * @param bonusCards the bonusCards to add
 	 */
 	public void addBonusCards(ArrayList<BonusCard> bonusCards) {
 		this.bonusCards.addAll(bonusCards);
 	}
 
+	/**
+	 * To DTO.
+	 *
+	 * @return the player DTO
+	 */
 	public PlayerDTO toDTO() {
 		PlayerDTO playerDTO = new PlayerDTO();
 		ArrayList<AssistantDTO> assDTO = new ArrayList<AssistantDTO>();
@@ -305,6 +378,12 @@ public class Player {
 		return playerDTO;
 	}
 	
+	/**
+	 * Compare to DT os.
+	 *
+	 * @param plsDTO the pls DTO
+	 * @return the player DTO
+	 */
 	public PlayerDTO compareToDTOs(ArrayList<PlayerDTO> plsDTO){
 		for(PlayerDTO pDTO: plsDTO)
 			if(pDTO.getPlayerID().equals(this.getID()))

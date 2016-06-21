@@ -9,13 +9,42 @@ import java.util.concurrent.ExecutionException;
 import com.client.ClientObservable;
 import com.client.view.ClientCLI;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The listener interface for receiving console events.
+ * The class that is interested in processing a console
+ * event implements this interface, and the object created
+ * with that class is registered with a component using the
+ * component's <code>addConsoleListener<code> method. When
+ * the console event occurs, that object's appropriate
+ * method is invoked.
+ *
+ * @see ConsoleEvent
+ */
 public class ConsoleListener extends Observable implements Runnable{
+	
+	/** The client controller. */
 	private ClientController clientController;
+	
+	/** The active. */
 	private boolean active = true;
+	
+	/** The in. */
 	private Scanner in;
+	
+	/** The cli. */
 	private ClientCLI cli;
+	
+	/** The cli queue. */
 	private ArrayBlockingQueue<String> cliQueue;
 	
+	/**
+	 * Instantiates a new console listener.
+	 *
+	 * @param c the client controller
+	 * @param cli the cli
+	 * @param q the blockingqueue
+	 */
 	public ConsoleListener(ClientController c, ClientCLI cli, ArrayBlockingQueue<String> q){
 		this.clientController = c;
 		this.cli = cli;
@@ -23,17 +52,12 @@ public class ConsoleListener extends Observable implements Runnable{
 		this.cliQueue = q;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Runnable#run()
+	 * input getter loop
+	 */
 	@Override
 	public void run() {
-		/*String cmd = "";
-		do {
-			cmd = cli.getMsg();
-			if(cmd!=null){
-				this.setChanged();
-				this.notifyObservers(cmd);
-			}
-			System.out.print("-");
-		} while (!clientController.isInGame());*/
 		while(true){
 			cliQueue.add(in.nextLine());
 			this.setChanged();
@@ -41,10 +65,20 @@ public class ConsoleListener extends Observable implements Runnable{
 		}
 	}
 
+	/**
+	 * Checks if is active.
+	 *
+	 * @return true, if is active
+	 */
 	public boolean isActive() {
 		return active;
 	}
 
+	/**
+	 * Sets the active.
+	 *
+	 * @param active the new active
+	 */
 	public void setActive(boolean active) {
 		this.active = active;
 	}

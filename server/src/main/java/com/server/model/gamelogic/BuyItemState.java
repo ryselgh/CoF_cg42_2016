@@ -12,21 +12,47 @@ import com.server.model.market.OnSaleInterface;
 import com.server.model.market.PermitOnSale;
 import com.server.model.market.PoliticsOnSale;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class BuyItemState.
+ */
 public class BuyItemState implements State{
+	
+	/** The game. */
 	private Game game;
+	
+	/** The clienthandler. */
 	private ClientHandler clienthandler;
+	
+	/** The gamehandler. */
 	private GameHandler gamehandler;
+	
+	/** The context. */
 	private Context context;
+	
+	/** The remote controller. */
 	private RMIClientControllerRemote remoteController;
+	
+	/** The rmi. */
 	private boolean RMI;
 	
 	
+	/**
+	 * Instantiates a new buy item state.
+	 */
 	public BuyItemState(){}
 	
+	/* (non-Javadoc)
+	 * @see com.server.model.gamelogic.State#getStateID()
+	 */
 	public String getStateID(){
 		return "BuyItemState";
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.server.model.gamelogic.State#doAction(com.server.model.gamelogic.Context)
+	 * set's up local variables and executes the action
+	 */
 	@Override
 	public void doAction(Context context) {
 		this.context = context;
@@ -45,6 +71,13 @@ public class BuyItemState implements State{
 		}
 	}
 	
+	/**
+	 * Execute.
+	 *
+	 * @param toBuyUID the item to buy UID
+	 * @param passed true if protocol used is socket and the client input has already been received
+	 * @throws RemoteException the remote exception
+	 */
 	public void execute(String toBuyUID, boolean passed) throws RemoteException {// uso passed perchè l'oggetto può essere null anche se ricevuto correttamente
 		if (!passed || RMI) {
 			if(game.getMarket().getObjectsOnSale().isEmpty()){
@@ -93,6 +126,12 @@ public class BuyItemState implements State{
 		gamehandler.changeState(context);
 	}
 	
+	/**
+	 * Converts the UID back into OnSale object.
+	 *
+	 * @param UID the uid
+	 * @return the on sale
+	 */
 	private OnSale DTOtoObj(String UID){
 		for(OnSale os : game.getMarket().getObjectsOnSale()){
 			String tmpUID = os.getUID();//porcoddio va bene questa, poi pulisco
@@ -115,6 +154,9 @@ public class BuyItemState implements State{
 		return null;
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.server.model.gamelogic.State#restoreState()
+	 */
 	@Override
 	public void restoreState() {
 		// TODO Auto-generated method stub

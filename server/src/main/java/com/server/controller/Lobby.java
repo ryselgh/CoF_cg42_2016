@@ -18,20 +18,47 @@ import com.communication.RMIClientControllerRemote;
 import com.communication.RMILobbyRemote;
 import com.communication.RoomStatus;
 import com.communication.values.RoomState;
+// TODO: Auto-generated Javadoc
 //comandi: newRoom(roomName,maxplayers, minplayers),   joinRoom(roomName)   startgame(roomName)--->requires admin
 //         getRoomList()--->obj ad hoc     leaveRoom(roomName)    1-setMap_mapname-->2-send serialized xml---->requires admin 
 
+/**
+ * The Class Lobby.
+ */
 public class Lobby extends Observable implements Runnable, Observer, RMILobbyRemote  {
+	
+	/** The clients. */
 	private ArrayList<ClientHandler> clients;
+	
+	/** The inactive clients. */
 	private ArrayList<ClientHandler> inactiveClients;
+	
+	/** The rooms. */
 	private ArrayList<Room> rooms;
+	
+	/** The responses to commands from the client. */
 	private String[] commandResponse;
+	
+	/** The lobby status. */
 	private LobbyStatus lobbyStatus;
+	
+	/** The boolean rmi. */
 	private boolean RMI;
+	
+	/** The remote controllers. */
 	private ArrayList<RMISubscribed> remoteControllers;
+	
+	/** The Constant CLIENTRMI_HOST. */
 	private final static String CLIENTRMI_HOST="127.0.0.1";
+	
+	/** The Constant CLIENTRMI_PORT. */
 	private final static int CLIENTRMI_PORT=1098;
 	
+	/**
+	 * Instantiates a new lobby.
+	 *
+	 * @param RMI the rmi
+	 */
 	public Lobby(boolean RMI){ 
 		this.remoteControllers = new ArrayList<RMISubscribed>();
 		this.RMI = RMI;
@@ -43,6 +70,9 @@ public class Lobby extends Observable implements Runnable, Observer, RMILobbyRem
 				"You must left your current room first", "You must be the admin of the room to change the map","The room is full"};
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Runnable#run()
+	 */
 	@Override
 	public void run() { 
 		if(RMI)
@@ -58,7 +88,16 @@ public class Lobby extends Observable implements Runnable, Observer, RMILobbyRem
 		thread.start();
 		}
 	}
-	 /*
+	 
+ 	/**
+ 	 * Command parser.
+ 	 *
+ 	 * @param command the command from the client
+ 	 * @param sender the sender
+ 	 * @param obj the object sent with the comand
+ 	 * @return the index of commandresponse
+ 	 */
+ 	/*
 	'\NEWROOM_roomname_maxPl_minPl'
 	'\JOINROOM_roomname'
 	'\STARTGAME_roomname' requires admin of the room
@@ -133,6 +172,12 @@ public class Lobby extends Observable implements Runnable, Observer, RMILobbyRem
 		return 0;//success
 	}
 	
+	/**
+	 * Find room by client.
+	 *
+	 * @param client the client
+	 * @return the room of the client. null if he's in the lobby
+	 */
 	private Room findRoomByClient(ClientHandler client){
 		for(Room r : this.rooms)
 			for(ClientHandler c : r.getPlayers())
@@ -141,6 +186,12 @@ public class Lobby extends Observable implements Runnable, Observer, RMILobbyRem
 		return null;
 	}
 	
+	/**
+	 * Restore player when he reconnects.
+	 *
+	 * @param newInstance the new instance
+	 * @param oldInstance the old instance
+	 */
 	private void restorePlayer(ClientHandler newInstance, ClientHandler oldInstance){
 		Room room = findPlayerRoom(oldInstance);
 		GameHandler roomGH = room.getGameHandler();
@@ -166,6 +217,9 @@ public class Lobby extends Observable implements Runnable, Observer, RMILobbyRem
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.util.Observer#update(java.util.Observable, java.lang.Object)
+	 */
 	@Override
 	public void update(Observable arg0, Object arg1) {
 		if (arg0 instanceof IdentifyPlayer) {// ricevo un nuovo client
@@ -201,6 +255,11 @@ public class Lobby extends Observable implements Runnable, Observer, RMILobbyRem
 		}
 	}
 	
+	/**
+	 * Handles player's disconnection.
+	 *
+	 * @param sender the sender
+	 */
 	public void disconnectFromGame(ClientHandler sender){
 		sender.closeSocket();
 		Room room = findPlayerRoom(sender);
@@ -208,12 +267,21 @@ public class Lobby extends Observable implements Runnable, Observer, RMILobbyRem
 		removePlayer(sender);
 	}
 	
+	/**
+	 * Send lobby status to clients.
+	 */
 	private void sendLobbyStatus(){
 		lobbyStatus = generateLobbyStatus();
 		setChanged();
 		notifyObservers(lobbyStatus);
 	}
 	
+	/**
+	 * Find player room.
+	 *
+	 * @param clientHandler the client handler
+	 * @return the room of the client
+	 */
 	private Room findPlayerRoom(ClientHandler clientHandler){
 		for (Room r : this.rooms)
 			for (int i = 0; i < r.getPlayers().size(); i++)
@@ -222,6 +290,11 @@ public class Lobby extends Observable implements Runnable, Observer, RMILobbyRem
 		return null;
 	}
 
+	/**
+	 * Removes the player from lobby -forever- or game -forever if game not started, until he reconnects otherwise-. 
+	 *
+	 * @param clientHandler the client handler
+	 */
 	private void removePlayer(ClientHandler clientHandler) {
 		Room room = findPlayerRoom(clientHandler); // trovo la room di appartenenza, se c'è
 		if (room == null) {
@@ -240,6 +313,11 @@ public class Lobby extends Observable implements Runnable, Observer, RMILobbyRem
 		}
 	}
 	
+	/**
+	 * Generate lobby status to be sent to the clients.
+	 *
+	 * @return the lobby status
+	 */
 	private LobbyStatus generateLobbyStatus(){
 		ArrayList<String> freeClients = new ArrayList<String>(); 
 		ArrayList<RoomStatus> rooms = new ArrayList<RoomStatus>();
@@ -255,10 +333,24 @@ public class Lobby extends Observable implements Runnable, Observer, RMILobbyRem
 		return new LobbyStatus(freeClients,rooms);
 	}
 	
+	/**
+	 * Send to client.
+	 *
+	 * @param client the target client
+	 * @param msg the message
+	 */
 	private void sendToClient(ClientHandler client, String msg){
 		setChanged();
 	    notifyObservers(client.getUserName() + "_" + msg);
 	}
+	
+	/**
+	 * Join room.
+	 *
+	 * @param roomName the room name
+	 * @param player the player
+	 * @return true, if successful. false if the room is in game. other errors are handled in command parser
+	 */
 	private boolean joinRoom(String roomName, ClientHandler player){
 		Room r = findRoom(roomName);
 		if(r.getState().equals(RoomState.IN_GAME))
@@ -269,16 +361,38 @@ public class Lobby extends Observable implements Runnable, Observer, RMILobbyRem
 		
 	}
 	
+	/**
+	 * Retrieves room instance from it's name.
+	 *
+	 * @param name the name of the room
+	 * @return the room instance
+	 */
 	private Room findRoom(String name){
 		for(Room r: rooms)
 			if(r.getName().equals(name))
 				return r;
 		return null;
 	}
+	
+	/**
+	 * Creates the room.
+	 *
+	 * @param name the name of the room
+	 * @param admin the admin of the room
+	 * @param maxPl the players's no upper bount
+	 * @param minPl the players's no lower bound
+	 */
 	private void createRoom(String name, ClientHandler admin, int maxPl, int minPl){
 		rooms.add(new Room(name,admin,maxPl,minPl,this));
 	}
 	
+	/**
+	 * End game.
+	 *
+	 * @param r the room of the game
+	 * @param gameHandler the game handler
+	 * @param winner the winner
+	 */
 	public void endGame(Room r, GameHandler gameHandler, ClientHandler winner){
 		gameHandler.broadcastAnnounce("ENDGAME", "Player " + winner.getUserName() + " won the game. You will return to lobby");
 		gameHandler.deleteObservers();
@@ -303,6 +417,13 @@ public class Lobby extends Observable implements Runnable, Observer, RMILobbyRem
 			
 	}
 	
+	/**
+	 * Start room.
+	 *
+	 * @param r the room
+	 * @param player the player who is tryng to start the game
+	 * @return the index of the command response
+	 */
 	private int startRoom(Room r, ClientHandler player){
 		switch (r.canStart(player)){
 		case 1:
@@ -320,6 +441,12 @@ public class Lobby extends Observable implements Runnable, Observer, RMILobbyRem
 		return 0;
 	}
 
+	/**
+	 * Checks if is nickname used.
+	 *
+	 * @param nick the nick
+	 * @return true, if is nickname used
+	 */
 	public boolean isNicknameUsed(String nick){
 		for(ClientHandler ch : this.clients)
 			if(ch.getUserName().equals(nick))
@@ -331,15 +458,31 @@ public class Lobby extends Observable implements Runnable, Observer, RMILobbyRem
 		return false;
 	}
 	
+	/**
+	 * Gets the clients.
+	 *
+	 * @return the clients
+	 */
 	public ArrayList<ClientHandler> getClients() {
 		return clients;
 	}
 
+	/**
+	 * Gets the rooms.
+	 *
+	 * @return the rooms
+	 */
 	public ArrayList<Room> getRooms() {
 		return rooms;
 	}
 	//------------------RMI methods----------------------
 	
+	/**
+	 * Sets the up RMI.
+	 *
+	 * @throws RemoteException the remote exception
+	 * @throws AlreadyBoundException the already bound exception
+	 */
 	//metodo locale non remoto
 	public void setUpRMI() throws RemoteException, AlreadyBoundException{
 		Registry registry = LocateRegistry.createRegistry(1099);
@@ -347,11 +490,22 @@ public class Lobby extends Observable implements Runnable, Observer, RMILobbyRem
 		registry.bind("lobby", lobbyRemote);
 		}
 	
+	/**
+	 * Gets the remote controllers.
+	 *
+	 * @return the remote controllers
+	 */
 	//metodo locale non remoto
 	public ArrayList<RMISubscribed> getRemoteControllers() {
 		return remoteControllers;
 	}
 	
+	/**
+	 * Gets the clienthandler instance from it's name.
+	 *
+	 * @param userName the user name
+	 * @return the client handler
+	 */
 	//metodo locale non remoto
 	private ClientHandler nameToHandler(String userName){
 		for(ClientHandler ch : this.clients)
@@ -364,8 +518,12 @@ public class Lobby extends Observable implements Runnable, Observer, RMILobbyRem
 		return null;
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.communication.RMILobbyRemote#RMIlogIn(java.lang.String)
+	 * the login for RMI protocol
+	 */
 	public int RMIlogIn(String userName){
-		if(userName.contains("[^abcdefghilmnopqrstuvzjkywxABCDEFGHILMNOPQRSTUVZJKYWX]"))//regex equivalente a tutti i caratteri a parte le lettere
+		if(userName.contains("[^abcdefghilmnopqrstuvzjkywxABCDEFGHILMNOPQRSTUVZJKYWX1234567890]"))//regex equivalente a tutti i caratteri a parte le lettere
 			return 1;
 		if(userName.length()<5 || userName.length()>13)
 			return 2;
@@ -382,6 +540,9 @@ public class Lobby extends Observable implements Runnable, Observer, RMILobbyRem
 		return 0;
 	}
 	
+	/**
+	 * Broadcast lobby status.
+	 */
 	private void broadcastLobbyStatus(){
 		lobbyStatus = generateLobbyStatus();
 		for(RMISubscribed RMIs : this.remoteControllers)
@@ -393,6 +554,11 @@ public class Lobby extends Observable implements Runnable, Observer, RMILobbyRem
 			}
 			
 	}
+	
+	/* (non-Javadoc)
+	 * @see com.communication.RMILobbyRemote#RMIsubscribe(java.lang.String, int)
+	 * binds a client to the lobby
+	 */
 	public void RMIsubscribe(String userName, int port) throws AccessException, RemoteException, NotBoundException{
 		Registry registry = LocateRegistry.getRegistry(CLIENTRMI_HOST,port);
 		RMIClientControllerRemote remContr = (RMIClientControllerRemote) registry.lookup(userName + "CONTROLLER");
@@ -402,6 +568,10 @@ public class Lobby extends Observable implements Runnable, Observer, RMILobbyRem
 		
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.communication.RMILobbyRemote#RMIlobbyCommand(java.lang.String, java.lang.String, java.lang.String)
+	 * command parser for RMI protocol
+	 */
 	public String RMIlobbyCommand(String userName, String command, String map){
 		ClientHandler sender = this.nameToHandler(userName);
 		String[] ret = command.split("_");
@@ -467,6 +637,12 @@ public class Lobby extends Observable implements Runnable, Observer, RMILobbyRem
 	}
 	
 	
+	/**
+	 * RMI send to client.
+	 *
+	 * @param ch the target clienthandler
+	 * @param msg the message
+	 */
 	//oggeto locale non remoto
 	public void RMISendToClient(ClientHandler ch, String msg){//viola il presupposto dell'RMI ma nella lobby per forza devo mandare dei messaggi
 		for(RMISubscribed RMIs : this.remoteControllers)
