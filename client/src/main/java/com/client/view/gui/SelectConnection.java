@@ -43,7 +43,7 @@ public class SelectConnection implements javafx.fxml.Initializable {
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("Council of Four");
 	    primaryStage.setResizable(false);
-	    primaryStage.setMaxHeight(768);
+	    primaryStage.setMaxHeight(795);
 	    primaryStage.setMaxWidth(1024);
 		primaryStage.show();
 		launcher.close();
