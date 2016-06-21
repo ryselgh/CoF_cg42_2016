@@ -23,7 +23,8 @@ import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 
 public class MainMenu implements javafx.fxml.Initializable {
-
+	
+	private MediaPlayer mediaPlayer = null;
 	@FXML
 	private ImageView mainTitle;
 	@FXML
@@ -186,12 +187,12 @@ public class MainMenu implements javafx.fxml.Initializable {
 
 	public void playMainSoundtrack(){
 		Media sound = new Media(getClass().getResource("mp3/MainTheme.mp3").toString());
-		MediaPlayer mediaPlayer = new MediaPlayer(sound);
+		mediaPlayer = new MediaPlayer(sound);
 		mediaPlayer.play();
 		mediaPlayer.setOnEndOfMedia(new Runnable() {
             @Override public void run() {
             	Media sound = new Media(getClass().getResource("mp3/MainContinues.mp3").toString());
-        		MediaPlayer mediaPlayer = new MediaPlayer(sound);
+        		mediaPlayer = new MediaPlayer(sound);
         		mediaPlayer.play();
             }
         });
