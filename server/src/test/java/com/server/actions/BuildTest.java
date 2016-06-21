@@ -17,6 +17,7 @@ import com.communication.values.CityColor;
 import com.server.model.board.Bonus;
 import com.server.model.board.BonusToken;
 import com.server.model.board.City;
+import com.server.model.board.Emporium;
 import com.server.model.decks.PermitsCard;
 import com.server.model.gamelogic.Game;
 import com.server.model.gamelogic.Player;
@@ -52,6 +53,8 @@ public class BuildTest {
 		players[0] = "1";
 		players[1] = "2";
 		players[2] = "3";
+//		PermitsCard e = new PermitsCard(b,l2);
+//		PermitsCard e1 = new PermitsCard(b,l3);
 		game = new Game(3, true, null, players);
 	}
 
@@ -79,6 +82,29 @@ public class BuildTest {
 		assertNotNull(result);
 		
 	}
+	
+	@Test
+	public void testAReturn2()
+		throws Exception {
+		PermitsCard e = new PermitsCard(b,l2);
+		game.getActualPlayer().getPermits().add(e);
+		Build fixture2 = new Build(game.getMap().getCity()[4], e);
+		game.getActualPlayer().getAvailableAssistants().clear();
+		game.getMap().getCity()[4].setEmporium(new Emporium(game.getActualPlayer()));
+		fixture2.setGame(game);
+		fixture2.isValid();
+		ActionReturn result = fixture2.execute();
+
+		// An unexpected exception was thrown in user code while executing this test:
+		//    java.lang.NullPointerException
+		//       at com.server.model.board.Map.<init>(Map.java:147)
+		//       at com.server.model.gamelogic.Game.initializeObjects(Game.java:71)
+		//       at com.server.model.gamelogic.Game.<init>(Game.java:49)
+		assertEquals(result.getError(),"\nYou already have an emporium in the selected city\nYou have not enought assistants");
+		
+	}
+	
+	
 
 	@Test
 	public void testTheKingCity()

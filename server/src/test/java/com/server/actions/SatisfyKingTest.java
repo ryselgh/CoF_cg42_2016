@@ -109,41 +109,7 @@ public class SatisfyKingTest {
 		
 	}
 
-	@Test
-	public void testIsValid_1()
-		throws Exception {
-		PoliticsCard card1= new PoliticsCard(CouncilorColor.JOLLY);
-		PoliticsCard card2= new PoliticsCard(CouncilorColor.JOLLY);
-		PoliticsCard card3= new PoliticsCard(CouncilorColor.JOLLY);
-		PoliticsCard card4= new PoliticsCard(CouncilorColor.JOLLY);
-		
-		game.getActualPlayer().getHand().add(0, card1);
-		game.getActualPlayer().getHand().add(0, card2);
-		game.getActualPlayer().getHand().add(0, card3);
-		game.getActualPlayer().getHand().add(0, card4);
-		
-		PoliticsCard[] tempHand= new PoliticsCard[4];
-		tempHand[0] = game.getActualPlayer().getHand().get(0);
-		tempHand[1] = game.getActualPlayer().getHand().get(1);
-		tempHand[2] = game.getActualPlayer().getHand().get(2);
-		tempHand[3] = game.getActualPlayer().getHand().get(3);
-		
-		SatisfyKing fixture = new SatisfyKing(tempHand,destination);
-		fixture.setGame(game);
-		game.getActualPlayer().setCoins(30);
-		
-		
-		
-
-		boolean result = fixture.isValid();
-
-		// An unexpected exception was thrown in user code while executing this test:
-		//    java.lang.NullPointerException
-		//       at com.server.model.board.Map.<init>(Map.java:147)
-		//       at com.server.model.gamelogic.Game.initializeObjects(Game.java:71)
-		//       at com.server.model.gamelogic.Game.<init>(Game.java:49)
-		assertTrue(result);
-	}
+	
 
 	
 	@Test
@@ -396,6 +362,74 @@ public class SatisfyKingTest {
 		assertEquals(game.getActualPlayer().getCoins(),17);
 	}
 	
+	@Test
+	public void testExecute11()
+		throws Exception {
+		PoliticsCard[] card = new PoliticsCard[4];
+		card[0] = new PoliticsCard(CouncilorColor.BLACK);
+		card[1] = new PoliticsCard(CouncilorColor.WHITE);
+		card[2] = new PoliticsCard(CouncilorColor.BLUESKY);
+		card[3] = new PoliticsCard(CouncilorColor.PURPLE);
+		
+		game.getActualPlayer().getHand().add(card[0]);
+		game.getActualPlayer().getHand().add(card[1]);
+		game.getActualPlayer().getHand().add(card[2]);
+		game.getActualPlayer().getHand().add(card[3]);
+		tempHand = new PoliticsCard[4];
+		tempHand[0] = game.getActualPlayer().getHand().get(0);
+		tempHand[1] = game.getActualPlayer().getHand().get(1);
+		tempHand[2] = game.getActualPlayer().getHand().get(2);
+		tempHand[3] = game.getActualPlayer().getHand().get(3);
+		SatisfyKing fixture = new SatisfyKing(tempHand,destination);
+		fixture.setGame(game);
+		game.getActualPlayer().setCoins(0);
+
+		fixture.isValid();
+		ActionReturn result = fixture.execute(); 
+		// An unexpected exception was thrown in user code while executing this test:
+		//    java.lang.NullPointerException
+		//       at com.server.model.board.Map.<init>(Map.java:147)
+		//       at com.server.model.gamelogic.Game.initializeObjects(Game.java:71)
+		//       at com.server.model.gamelogic.Game.<init>(Game.java:49)
+		assertEquals(result.getError(),"\nYou have not enought money for the move [Juvelar --> Castrums, you need 6\nInvalid input cards");
+	}
+	
+	@Test
+	public void testIsValid_1()
+		throws Exception {
+		PoliticsCard card1= new PoliticsCard(CouncilorColor.JOLLY);
+		PoliticsCard card2= new PoliticsCard(CouncilorColor.JOLLY);
+		PoliticsCard card3= new PoliticsCard(CouncilorColor.JOLLY);
+		PoliticsCard card4= new PoliticsCard(CouncilorColor.JOLLY);
+		
+		game.getActualPlayer().getHand().add(0, card1);
+		game.getActualPlayer().getHand().add(0, card2);
+		game.getActualPlayer().getHand().add(0, card3);
+		game.getActualPlayer().getHand().add(0, card4);
+		
+		PoliticsCard[] tempHand= new PoliticsCard[4];
+		tempHand[0] = game.getActualPlayer().getHand().get(0);
+		tempHand[1] = game.getActualPlayer().getHand().get(1);
+		tempHand[2] = game.getActualPlayer().getHand().get(2);
+		tempHand[3] = game.getActualPlayer().getHand().get(3);
+		
+		SatisfyKing fixture = new SatisfyKing(tempHand,destination);
+		fixture.setGame(game);
+		game.getActualPlayer().setCoins(30);
+		
+		
+		
+
+		boolean result = fixture.isValid();
+
+		// An unexpected exception was thrown in user code while executing this test:
+		//    java.lang.NullPointerException
+		//       at com.server.model.board.Map.<init>(Map.java:147)
+		//       at com.server.model.gamelogic.Game.initializeObjects(Game.java:71)
+		//       at com.server.model.gamelogic.Game.<init>(Game.java:49)
+		assertTrue(result);
+	}
+	
 	
 	@Test
 	public void testIsValid_2()
@@ -429,22 +463,6 @@ public class SatisfyKingTest {
 		assertFalse(result);
 	}
 
-//	@Test
-//	public void testSetGame_1()
-//		throws Exception {
-//		SatisfyKing fixture = new SatisfyKing(new PoliticsCard[] {}, new City("", CityColor.BLUE, new String[] {}, 1, new BonusToken(new Bonus[] {})));
-//		fixture.setGame(new Game(1, true, (Document) null));
-//		Game game = new Game(1, true, (Document) null);
-//
-//		fixture.setGame(game);
-//
-//		// An unexpected exception was thrown in user code while executing this test:
-//		//    java.lang.NullPointerException
-//		//       at com.server.model.board.Map.<init>(Map.java:147)
-//		//       at com.server.model.gamelogic.Game.initializeObjects(Game.java:71)
-//		//       at com.server.model.gamelogic.Game.<init>(Game.java:49)
-//	}
-//
 //	@Test
 //	public void testSetterFromDTO_1()
 //		throws Exception {
@@ -484,13 +502,7 @@ public class SatisfyKingTest {
 //		//       at com.server.model.gamelogic.Game.initializeObjects(Game.java:71)
 //		//       at com.server.model.gamelogic.Game.<init>(Game.java:49)
 //	}
-//
-//	
-//
-//	@After
-//	public void tearDown()
-//		throws Exception {
-//	}
+
 
 	public static void main(String[] args) {
 		new org.junit.runner.JUnitCore().run(SatisfyKingTest.class);

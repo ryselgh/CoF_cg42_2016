@@ -56,10 +56,12 @@ public class PoliticsDeckTest {
 //	public void testDraw3(){
 //		
 //		PoliticsDeck pd= new PoliticsDeck();
-//		pd.getPoliticsDeck().
-//		
-//			
-//		assertEquals(pd.getPoliticsDeck().size(),88);
+//		for(int i =0;i<(pd.getPoliticsDeck().size()+pd.getGarbage().size());i++){
+//			PoliticsCard card= pd.draw();
+//			pd.discard(card);
+//		}
+//		pd.draw();	
+//		assertEquals(pd.getPoliticsDeck().size(),89);
 //		assertTrue(pd.getGarbage().isEmpty());
 //	}
 	

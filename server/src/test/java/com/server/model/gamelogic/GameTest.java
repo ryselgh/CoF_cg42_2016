@@ -12,6 +12,7 @@ public class GameTest {
 	
 	Game game;
 	String[] players;
+	
 	@Before
 	public void setUp()
 		throws Exception {
@@ -93,12 +94,34 @@ public class GameTest {
 		//       at com.server.model.gamelogic.Game.<init>(Game.java:51)
 		assertNotNull(result);
 	}
+	
+	@Test
+	public void testGame_()
+		throws Exception {
+		String[] players2 = new String[5];
+		players2[0] = "1";
+		players2[1] = "2";
+		players2[2] = "3";
+		players2[3] = "4";
+		players2[4] = "5";
+		Game result = new Game(5, true, null, players2);
+		
+
+		
+
+		// An unexpected exception was thrown in user code while executing this test:
+		//    java.lang.ArrayIndexOutOfBoundsException: 0
+		//       at com.server.model.gamelogic.Game.initializeObjects(Game.java:68)
+		//       at com.server.model.gamelogic.Game.<init>(Game.java:51)
+		assertNotNull(result);
+	}
 
 	@Test
 	public void testGetActualPlayer_1()
 		throws Exception {
 		Game fixture = game;
 		fixture.setFinalTurn(false);
+		game.setActualPlayer(2);
 
 		Player result = fixture.getActualPlayer();
 
