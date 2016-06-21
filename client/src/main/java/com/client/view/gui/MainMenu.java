@@ -46,8 +46,6 @@ public class MainMenu implements javafx.fxml.Initializable {
 	@FXML
 	private Button btnStartGame;
 	@FXML
-	private Button btnSelectMap;
-	@FXML
 	private ImageView lobbyMask;
 	@FXML
 	private ImageView formNewRoom;
@@ -66,7 +64,20 @@ public class MainMenu implements javafx.fxml.Initializable {
 	private Button btnCreateNewRoom;
 	@FXML
 	private Button btnCancelNewRoom;
-	
+	@FXML
+	private Label lblRoomName;
+	@FXML
+	private Label lblClients;
+	@FXML
+	private Label lblAdmin;
+	@FXML
+	private Label lblMinPl;
+	@FXML
+	private Label lblMaxPl;
+	@FXML
+	private Label lblMap;
+	@FXML
+	private ImageView roomMask;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -85,10 +96,6 @@ public class MainMenu implements javafx.fxml.Initializable {
 			Label txtLeaveRoom = new Label("Leave Room");
 			txtLeaveRoom.setStyle("-fx-font-size: 10pt; -fx-font-family: \"PerryGothic\"; -fx-text-fill: #A11212; -fx-effect: dropshadow(three-pass-box, rgba(209,181,82,0.9), 2, 0.8, 0, 0);");
 			btnLeaveRoom.setGraphic(txtLeaveRoom);
-			
-			Label txtSelectMap = new Label("Select Map");
-			txtSelectMap.setStyle("-fx-font-size: 10pt; -fx-font-family: \"PerryGothic\"; -fx-text-fill: #A11212; -fx-effect: dropshadow(three-pass-box, rgba(209,181,82,0.9), 2, 0.8, 0, 0);");
-			btnSelectMap.setGraphic(txtSelectMap);
 			
 			Label txtStartGame = new Label("Start Game");
 			txtStartGame.setStyle("-fx-font-size: 10pt; -fx-font-family: \"PerryGothic\"; -fx-text-fill: #A11212; -fx-effect: dropshadow(three-pass-box, rgba(209,181,82,0.9), 2, 0.8, 0, 0);");
@@ -110,12 +117,10 @@ public class MainMenu implements javafx.fxml.Initializable {
 			
 			//Lobby
 			btnLeaveRoom.setDisable(true);
-			btnSelectMap.setDisable(true);
 			btnStartGame.setDisable(true);
 			btnNewRoom.setLayoutX(1025);
 			btnJoinRoom.setLayoutX(1025);
 			btnLeaveRoom.setLayoutX(1025);
-			btnSelectMap.setLayoutX(1025);
 			btnStartGame.setLayoutX(1025);
 			
 			//New Room form
@@ -170,7 +175,22 @@ public class MainMenu implements javafx.fxml.Initializable {
 	}
 	
 	public void createNewRoom() {
-		
+		animateRoom();
+		invertAnimateNewRoomForm();
+		btnNewRoom.setDisable(true);
+		btnJoinRoom.setDisable(true);
+		btnLeaveRoom.setDisable(false);
+		btnStartGame.setDisable(false);
+	}
+	
+	public void joinRoom(){
+		animateRoom();
+		if(formNewRoom.getOpacity() == 1.0)
+			invertAnimateNewRoomForm();
+		btnNewRoom.setDisable(true);
+		btnJoinRoom.setDisable(true);
+		btnLeaveRoom.setDisable(false);
+		btnStartGame.setDisable(false);
 	}
 	
 	public void cancelNewRoom() {
@@ -183,6 +203,18 @@ public class MainMenu implements javafx.fxml.Initializable {
 			choiceMaxPl.setDisable(true);
 			choiceMap.setDisable(true);
 		}
+	}
+	
+	public void leaveRoom(){
+		invertAnimateRoom();
+		btnNewRoom.setDisable(false);
+		btnJoinRoom.setDisable(false);
+		btnLeaveRoom.setDisable(true);
+		btnStartGame.setDisable(true);
+	}
+	
+	public void startGame(){
+		
 	}
 
 	public void playMainSoundtrack(){
@@ -233,13 +265,9 @@ public class MainMenu implements javafx.fxml.Initializable {
 		tt3.setByX(-222);
 		tt3.setDelay(Duration.millis(200));
 		
-		TranslateTransition tt4 = new TranslateTransition(Duration.millis(500), btnSelectMap);
+		TranslateTransition tt4 = new TranslateTransition(Duration.millis(500), btnStartGame);
 		tt4.setByX(-222);
 		tt4.setDelay(Duration.millis(300));
-		
-		TranslateTransition tt5 = new TranslateTransition(Duration.millis(500), btnStartGame);
-		tt5.setByX(-222);
-		tt5.setDelay(Duration.millis(400));
 		
 		awayBtnNickname.setOnFinished(new EventHandler<ActionEvent>() {
 
@@ -250,7 +278,6 @@ public class MainMenu implements javafx.fxml.Initializable {
 				tt2.play();
 				tt3.play();
 				tt4.play();
-				tt5.play();
 			}
 		});
 	}
@@ -277,15 +304,15 @@ public class MainMenu implements javafx.fxml.Initializable {
 		st2.setByX(-200);
 		st2.setByY(-200);
 
-		TranslateTransition tt2 = new TranslateTransition(Duration.millis(800), lblNickname); //-->
+		TranslateTransition tt2 = new TranslateTransition(Duration.millis(800), lblNickname);
 		tt2.setToX(742);
 		tt2.setAutoReverse(true);
 
-		TranslateTransition tt3 = new TranslateTransition(Duration.millis(800), txtNickname); // <--
+		TranslateTransition tt3 = new TranslateTransition(Duration.millis(800), txtNickname);
 		tt3.setToX(-627);
 		tt3.setAutoReverse(true);
 
-		TranslateTransition tt4 = new TranslateTransition(Duration.millis(800), btnNickname); // ^
+		TranslateTransition tt4 = new TranslateTransition(Duration.millis(800), btnNickname);
 		tt4.setByY(-130);
 		tt4.setAutoReverse(true);
 
@@ -346,7 +373,7 @@ public class MainMenu implements javafx.fxml.Initializable {
 		
 	}
 	
-private void invertAnimateNewRoomForm() {
+	private void invertAnimateNewRoomForm() {
 		
 		FadeTransition ft = new FadeTransition(Duration.millis(1000), formNewRoom);
 		ft.setFromValue(1.0);
@@ -384,4 +411,92 @@ private void invertAnimateNewRoomForm() {
 		ft7.play();
 		
 	}
+	
+	public void animateRoom(){
+		
+		FadeTransition awayLobby = new FadeTransition(Duration.millis(1000), lobbyMask);
+		awayLobby.setFromValue(1.0);
+		awayLobby.setToValue(0.0);
+		awayLobby.play();
+		
+		FadeTransition ft = new FadeTransition(Duration.millis(1000), roomMask);
+		ft.setFromValue(0.0);
+		ft.setToValue(1.0);
+		ft.play();
+		
+		FadeTransition ft2 = new FadeTransition(Duration.millis(1000), lblRoomName);
+		ft2.setFromValue(0.0);
+		ft2.setToValue(1.0);
+		ft2.play();
+		
+		FadeTransition ft3 = new FadeTransition(Duration.millis(1000), lblClients);
+		ft3.setFromValue(0.0);
+		ft3.setToValue(1.0);
+		ft3.play();
+		
+		FadeTransition ft4 = new FadeTransition(Duration.millis(1000), lblAdmin);
+		ft4.setFromValue(0.0);
+		ft4.setToValue(1.0);
+		ft4.play();
+		
+		FadeTransition ft5 = new FadeTransition(Duration.millis(1000), lblMinPl);
+		ft5.setFromValue(0.0);
+		ft5.setToValue(1.0);
+		ft5.play();
+		
+		FadeTransition ft6 = new FadeTransition(Duration.millis(1000), lblMaxPl);
+		ft6.setFromValue(0.0);
+		ft6.setToValue(1.0);
+		ft6.play();
+		
+		FadeTransition ft7 = new FadeTransition(Duration.millis(1000), lblMap);
+		ft7.setFromValue(0.0);
+		ft7.setToValue(1.0);
+		ft7.play();
+	}
+	
+	
+public void invertAnimateRoom(){
+		
+		FadeTransition returnLobby = new FadeTransition(Duration.millis(1000), lobbyMask);
+		returnLobby.setFromValue(0.0);
+		returnLobby.setToValue(1.0);
+		returnLobby.play();
+		
+		FadeTransition awayRoom = new FadeTransition(Duration.millis(1000), roomMask);
+		awayRoom.setFromValue(1.0);
+		awayRoom.setToValue(0.0);
+		awayRoom.play();
+		
+		FadeTransition ft2 = new FadeTransition(Duration.millis(1000), lblRoomName);
+		ft2.setFromValue(1.0);
+		ft2.setToValue(0.0);
+		ft2.play();
+		
+		FadeTransition ft3 = new FadeTransition(Duration.millis(1000), lblClients);
+		ft3.setFromValue(1.0);
+		ft3.setToValue(0.0);
+		ft3.play();
+		
+		FadeTransition ft4 = new FadeTransition(Duration.millis(1000), lblAdmin);
+		ft4.setFromValue(1.0);
+		ft4.setToValue(0.0);
+		ft4.play();
+		
+		FadeTransition ft5 = new FadeTransition(Duration.millis(1000), lblMinPl);
+		ft5.setFromValue(1.0);
+		ft5.setToValue(0.0);
+		ft5.play();
+		
+		FadeTransition ft6 = new FadeTransition(Duration.millis(1000), lblMaxPl);
+		ft6.setFromValue(1.0);
+		ft6.setToValue(0.0);
+		ft6.play();
+		
+		FadeTransition ft7 = new FadeTransition(Duration.millis(1000), lblMap);
+		ft7.setFromValue(1.0);
+		ft7.setToValue(0.0);
+		ft7.play();
+	}
+
 }

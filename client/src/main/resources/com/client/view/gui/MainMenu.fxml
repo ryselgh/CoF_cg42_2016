@@ -15,14 +15,19 @@
             <Image backgroundLoading="true" url="@img/mainScreen.png" />
          </image>
       </ImageView>
+      <ImageView fx:id="mainTitle" fitHeight="1.0" fitWidth="1.0" layoutX="512.0" layoutY="384.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image backgroundLoading="true" url="@img/mainTitle.png" />
+         </image>
+      </ImageView>
       <ImageView fx:id="lobbyMask" fitHeight="768.0" fitWidth="1024.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@img/lobbyMask.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="mainTitle" fitHeight="1.0" fitWidth="1.0" layoutX="512.0" layoutY="384.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="roomMask" fitHeight="779.0" fitWidth="1024.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image backgroundLoading="true" url="@img/mainTitle.png" />
+            <Image url="@img/roomMask.png" />
          </image>
       </ImageView>
       <TextField fx:id="txtNickname" alignment="CENTER" layoutX="397.0" layoutY="579.0" onAction="#checkNickname" onInputMethodTextChanged="#checkNickname" onKeyPressed="#checkNickname" onKeyReleased="#checkNickname" onKeyTyped="#checkNickname" prefHeight="38.0" prefWidth="232.0">
@@ -35,11 +40,40 @@
          </font>
       </Label>
       <Button fx:id="btnNickname" layoutX="418.0" layoutY="639.0" mnemonicParsing="false" onAction="#submit" prefHeight="38.0" prefWidth="188.0" stylesheets="@application.css" />
-      <Button fx:id="btnNewRoom" layoutX="803.0" layoutY="364.0" mnemonicParsing="false" onAction="#newRoomForm" prefHeight="38.0" prefWidth="188.0" stylesheets="@application.css" />
-      <Button fx:id="btnJoinRoom" layoutX="803.0" layoutY="440.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="188.0" stylesheets="@application.css" />
-      <Button fx:id="btnLeaveRoom" layoutX="803.0" layoutY="518.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="188.0" stylesheets="@application.css" />
-      <Button fx:id="btnStartGame" layoutX="803.0" layoutY="672.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="188.0" stylesheets="@application.css" />
-      <Button fx:id="btnSelectMap" layoutX="803.0" layoutY="595.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="188.0" stylesheets="@application.css" />
+      <Button fx:id="btnNewRoom" layoutX="803.0" layoutY="367.0" mnemonicParsing="false" onAction="#newRoomForm" prefHeight="38.0" prefWidth="188.0" stylesheets="@application.css" />
+      <Button fx:id="btnJoinRoom" layoutX="803.0" layoutY="470.0" mnemonicParsing="false" onAction="#joinRoom" prefHeight="38.0" prefWidth="188.0" stylesheets="@application.css" />
+      <Button fx:id="btnLeaveRoom" layoutX="803.0" layoutY="570.0" mnemonicParsing="false" onAction="#leaveRoom" prefHeight="38.0" prefWidth="188.0" stylesheets="@application.css" />
+      <Button fx:id="btnStartGame" layoutX="803.0" layoutY="670.0" mnemonicParsing="false" onAction="#startGame" prefHeight="38.0" prefWidth="188.0" stylesheets="@application.css" />
+      <Label fx:id="lblRoomName" layoutX="280.0" layoutY="151.0" opacity="0.0" text="lblRoomName" textFill="#d8e1e1">
+         <font>
+            <Font name="Segoe UI" size="24.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblClients" layoutX="280.0" layoutY="238.0" opacity="0.0" text="lblClients" textFill="#d8e1e1">
+         <font>
+            <Font name="Segoe UI" size="24.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblAdmin" layoutX="280.0" layoutY="324.0" opacity="0.0" text="lblAdmin" textFill="#d8e1e1">
+         <font>
+            <Font name="Segoe UI" size="24.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblMaxPl" layoutX="281.0" layoutY="498.0" opacity="0.0" text="lblMaxPl" textFill="#d8e1e1">
+         <font>
+            <Font name="Segoe UI" size="24.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblMinPl" layoutX="281.0" layoutY="411.0" opacity="0.0" text="lblMinPl" textFill="#d8e1e1">
+         <font>
+            <Font name="Segoe UI" size="24.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblMap" layoutX="281.0" layoutY="584.0" opacity="0.0" text="lblMap" textFill="#d8e1e1">
+         <font>
+            <Font name="Segoe UI" size="24.0" />
+         </font>
+      </Label>
       <ImageView fx:id="formNewRoom" fitHeight="303.0" fitWidth="454.0" layoutX="196.0" layoutY="258.0" onMouseMoved="#checkCreateRoom" opacity="0.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@img/NewRoomForm.png" />
