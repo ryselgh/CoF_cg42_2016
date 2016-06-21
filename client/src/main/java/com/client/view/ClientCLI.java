@@ -3,9 +3,7 @@ package com.client.view;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Observable;
-import java.util.Observer;
-import java.util.Scanner;
+import java.util.concurrent.ArrayBlockingQueue;
 
 import com.client.controller.ClientController;
 import com.client.utils.TableBuilder;
@@ -24,30 +22,24 @@ import com.communication.market.PermitOnSaleDTO;
 import com.communication.market.PoliticsOnSaleDTO;
 import com.communication.values.*;
 
-public class ClientCLI extends Observable implements Observer, Runnable{
+public class ClientCLI {
 
 	private GameDTO game;
 	private PrintStream out;
-	private Scanner in;
 	private String[][] map = new String[15][5];
+	private ArrayBlockingQueue<String> cliQueue;
+	private boolean abortFlag = false;
 
 	/**
 	 * constructor of the class
 	 * @param controller is the client controller
 	 */
-
-	public ClientCLI(ClientController clientController){
-		clientController.addObserver(this);
-		this.out = System.out;
-		this.in = new Scanner(System.in);
-	}
-
-	@Override
-	public void run() {
-		// TODO Auto-generated method stub
-		
-	}
 	
+	public ClientCLI(ClientController clientController, ArrayBlockingQueue<String> q){
+		this.cliQueue = q;
+		this.out = System.out;
+	}
+
 	public void setGameAndBuildMap(GameDTO game){
 		this.game = game;
 		constructMap();
@@ -353,7 +345,25 @@ public class ClientCLI extends Observable implements Observer, Runnable{
 	
 	
 	public String getMsg(){
-		return in.nextLine();
+		/*String inStr = null;
+		try {
+			inStr = in.nextLine(5000);
+		} catch (InterruptedException | ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return inStr;*/
+		String inStr = null;
+		this.setAbortFlag(false);
+		this.cliQueue.clear();
+		do{
+			inStr = this.cliQueue.poll();
+			if(inStr != null && inStr.equals("ABORT")){
+				this.setAbortFlag(true);
+				return null;
+			}
+		}while(inStr==null);
+		return inStr;
 	}
 
 	public int getAction(boolean[] available){
@@ -408,6 +418,8 @@ public class ClientCLI extends Observable implements Observer, Runnable{
 		int choice = 0;
 		do{
 			choice = waitCorrectIntInput("",0,8);
+			if(this.isAbortFlag())
+				return -1;
 			if(!available[choice])
 				out.println("Selected action is disabled, you must chose from the list.");
 		}while(!available[choice]);
@@ -415,29 +427,29 @@ public class ClientCLI extends Observable implements Observer, Runnable{
 		return choice;
 	}
 	
-	public Object getItemToSell(int playerID){
-		ArrayList<AssistantDTO> assistants = new ArrayList<AssistantDTO>(game.getPlayers().get(playerID).getAvailableAssistants());
-		ArrayList<PermitsCardDTO> permits = new ArrayList<PermitsCardDTO>(game.getPlayers().get(playerID).getPermits());
-		ArrayList<PoliticsCardDTO> cards = new ArrayList<PoliticsCardDTO>(game.getPlayers().get(playerID).getHand());
+	public Object getItemToSell(){
+		ArrayList<AssistantDTO> assistants = new ArrayList<AssistantDTO>(game.getActualPlayer().getAvailableAssistants());
+		ArrayList<PermitsCardDTO> permits = new ArrayList<PermitsCardDTO>(game.getActualPlayer().getPermits());
+		ArrayList<PoliticsCardDTO> cards = new ArrayList<PoliticsCardDTO>(game.getActualPlayer().getHand());
 		switch(getSellType()){
 			case 1:
 				if(assistants.isEmpty()){
 					out.println("No available assistants to sell, select something else.");
-					return getItemToSell(playerID);
+					return getItemToSell();
 				}else
 					return assistants.get(0);
 			case 2:
 				if(permits.isEmpty()){
 					out.println("No available permits to sell, select something else.");
-					return getItemToSell(playerID);
+					return getItemToSell();
 				}else
-					return permits.get(getPermitsCardIndex(permits.size(),playerID));
+					return permits.get(getPermitsCardIndex(permits.size()));
 			case 3:
 				if(cards.isEmpty()){
 					out.println("No available politics cards to sell, select something else.");
-					return getItemToSell(playerID);
+					return getItemToSell();
 				}else
-					return cards.get(getPoliticsCardIndex(cards.size(),playerID));
+					return cards.get(getPoliticsCardIndex(cards.size()));
 			case 4:
 				return "Pass";
 			default:
@@ -445,7 +457,7 @@ public class ClientCLI extends Observable implements Observer, Runnable{
 		}
 	}
 	
-	public int getBuildPermit(int playerID){
+	public int getBuildPermit(){
 		int i = 1;
 		for(PermitsCardDTO perm: game.getActualPlayer().getPermits()){
 			if(!perm.isFaceDown()){
@@ -467,15 +479,15 @@ public class ClientCLI extends Observable implements Observer, Runnable{
 		return waitCorrectIntInput("Insert the price of the item you are selling\n",1,100);
 	}
 	
-	public int getPoliticsCardIndex(int size, int playerIndex){
-		return waitCorrectIntInput("\nHi Player" + playerIndex + ", insert the index of the PoliticCard you want to sell. Insert 0 to go back.\n",0,size) - 1;
+	public int getPoliticsCardIndex(int size){
+		return waitCorrectIntInput("\nHi " + game.getActualPlayer().getPlayerID() + ", insert the index of the PoliticCard you want to sell. Insert 0 to go back.\n",0,size) - 1;
 	}
 	
-	public int getPermitsCardIndex(int size, int playerIndex){
-		return waitCorrectIntInput("\nHi Player" + playerIndex + ", insert the index of the PermitsCard you want to sell. Insert 0 to go back.\n",0,size) - 1;
+	public int getPermitsCardIndex(int size){
+		return waitCorrectIntInput("\nHi " + game.getActualPlayer().getPlayerID() + ", insert the index of the PermitsCard you want to sell. Insert 0 to go back.\n",0,size) - 1;
 	}
 	
-	public String getObjectToBuyUID(int size, int playerIndex, ArrayList<OnSaleDTO> availableOnSale){
+	public String getObjectToBuyUID(int size, ArrayList<OnSaleDTO> availableOnSale){
 		String UIDs[] = new String[availableOnSale.size()];
 		int count =0;
 		String whatIs = "";
@@ -511,7 +523,7 @@ public class ClientCLI extends Observable implements Observer, Runnable{
 			else return "";
 			out.print("Seller: Player" + osDTO.getSeller().getPlayerID() + ", item: " + whatIs + ", price: " + osDTO.getPrice() + "\n");
 		}
-		int input = waitCorrectIntInput("\nHi Player" + playerIndex + ", insert the index of the item you want to buy on the market. Insert 0 to pass.\n",0,size);
+		int input = waitCorrectIntInput("\nHi " + game.getActualPlayer().getPlayerID() + ", insert the index of the item you want to buy on the market. Insert 0 to pass.\n",0,size);
 		if(input==0)
 			return "";
 		return UIDs[input - 1];
@@ -589,7 +601,9 @@ public class ClientCLI extends Observable implements Observer, Runnable{
 				try {
 					convError = false;
 					ArrayList<BonusTokenDTO> toRet = new ArrayList<BonusTokenDTO>();
-					String resp = in.nextLine();
+					String resp = this.getMsg();
+					if(this.isAbortFlag())
+						return null;
 					String[] tks = resp.split(",");
 					for (String tk : tks)
 						{
@@ -622,24 +636,14 @@ public class ClientCLI extends Observable implements Observer, Runnable{
 		int respInt = -1;
 		do {
 			String resp = getInput(msg);
+			if(this.isAbortFlag())
+				return 0;
 			respInt = parseNum(resp, min,max);
 		} while (respInt == -1);
 		return respInt;
 	}
 
-	private String waitCorrectStringInput(String msg, String[] possibilities){
-		int respString = -1;
-		out.print(msg);
-		do{
-			String resp = in.nextLine();
-			for(String p: possibilities)
-				if(p.toLowerCase().equals(resp.toLowerCase())){
-					return resp.toLowerCase();
-				}
-			out.print("Wrong input. Try Again.\n");
-		}while(respString != -1);//while(1) va bene, tanto esci col return
-		return "-1";
-	}
+	
 	
 	public boolean checkInputCards(ArrayList<String> choice, ArrayList<PoliticsCardDTO> hand){
 		int compare = 0;
@@ -654,26 +658,35 @@ public class ClientCLI extends Observable implements Observer, Runnable{
 		return true;
 	}
 	
-	public ArrayList<PoliticsCardDTO> waitInputCards(ArrayList<PoliticsCardDTO> hand){
+	public ArrayList<PoliticsCardDTO> waitInputCards(ArrayList<PoliticsCardDTO> hand) {
 		out.print("Select the cards you want to use to satisfy the council (Enter '*' for instructions)\n");
-		String resp = in.nextLine();
-		if(resp.equals("*")){ //Instructions
+		String resp = "";
+		resp = this.getMsg();
+		if(this.isAbortFlag())
+			return null;
+		if (resp.equals("*")) { // Instructions
 			out.print("Count the cards in your hand from left to right and select the numbers you want to use.\n\n"
-						+ "Some examples:\n1,4,7\n1-4-7\n1, 4 and 7\nI'd like to use the 1st, 4th and the 7th card\n\n"
-						+ "The output will always be [1,4,7]\n\n");
+					+ "Some examples:\n1,4,7\n1-4-7\n1, 4 and 7\nI'd like to use the 1st, 4th and the 7th card\n\n"
+					+ "The output will always be [1,4,7]\n\n");
 			out.print("Select the cards you want to use to satisfy the council\n");
-			resp = in.nextLine();
+			resp = this.getMsg();
+			if(this.isAbortFlag())
+				return null;
 		}
-		resp = resp.replaceAll("[^0-9]+", " "); 
+
+		if (resp.equals(""))
+			return null;
+
+		resp = resp.replaceAll("[^0-9]+", " ");
 		ArrayList<String> choice = new ArrayList<String>(Arrays.asList(resp.trim().split("[^0-9]+")));
-		if(checkInputCards(choice, hand)){
+		if (checkInputCards(choice, hand)) {
 			ArrayList<PoliticsCardDTO> chosenCards = new ArrayList<PoliticsCardDTO>(choice.size());
-			for(String c: choice){
-				chosenCards.add(hand.get(Integer.parseInt(c)-1));
+			for (String c : choice) {
+				chosenCards.add(hand.get(Integer.parseInt(c) - 1));
 			}
 			hand.removeAll(chosenCards);
 			return chosenCards;
-		}else{
+		} else {
 			out.print("Wrong input or some of the selected cards are not in your hand. Try again\n");
 			return waitInputCards(hand);
 		}
@@ -681,8 +694,7 @@ public class ClientCLI extends Observable implements Observer, Runnable{
 
 	private String getInput(String message){
 		out.print(message);
-		return in.nextLine();
-
+		return this.getMsg();
 	}
 
 	private int parseNum(String msg, int min, int max){
@@ -705,18 +717,12 @@ public class ClientCLI extends Observable implements Observer, Runnable{
 	
 	
 
-	/*Observer*/
+	public boolean isAbortFlag() {
+		return abortFlag;
+	}
 
-	/**
-	 * print the new GameDTO after an update
-	 */
-	@Override
-	public void update(Observable o, Object change) {
-		if(change instanceof GameDTO){
-			this.game = (GameDTO) change;
-			this.printGameStatus();
-		}else
-			;//throw new IllegalArgumentException("Wrong instance. Failed to update the game.");
+	public void setAbortFlag(boolean abortFlag) {
+		this.abortFlag = abortFlag;
 	}
 
 

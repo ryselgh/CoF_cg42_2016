@@ -30,8 +30,6 @@ public class MarketTest {
 		Market result = new Market();
 
 		assertNotNull(result);
-		assertEquals(false, result.hasNext());
-		assertEquals(null, result.next());
 		assertEquals(0, result.getObjNumber());
 	}
 
@@ -87,28 +85,6 @@ public class MarketTest {
 
 		assertNotNull(result);
 		assertEquals(3, result.size());
-	}
-
-	@Test
-	public void testHasNext_1()
-		throws Exception {
-		Market fixture = new Market();
-		fixture.addObj(o);
-
-		boolean result = fixture.hasNext();
-
-		assertEquals(false, result);
-	}
-
-	@Test
-	public void testNext_1()
-		throws Exception {
-		Market fixture = new Market();
-		fixture.addObj(new OnSale(p,new Assistant(), 3,UID));
-
-		Object result = fixture.next();
-
-		assertEquals(null, result);
 	}
 
 	@Test

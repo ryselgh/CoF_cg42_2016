@@ -9,15 +9,38 @@ import java.util.logging.Logger;
 
 import com.communication.CommunicationObject;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The listener interface for receiving client events.
+ * The class that is interested in processing a client
+ * event implements this interface, and the object created
+ * with that class is registered with a component using the
+ * component's <code>addClientListener<code> method. When
+ * the client event occurs, that object's appropriate
+ * method is invoked.
+ *
+ * @see ClientEvent
+ */
 public class ClientListener extends Observable implements Runnable{
 
+	/** The input stream. */
 	private ObjectInputStream inputStream;
+	
+	/** The logger. */
 	private Logger logger;
 	
+	/**
+	 * Instantiates a new client listener.
+	 *
+	 * @param is the is
+	 */
 	public ClientListener(ObjectInputStream is){
 		this.inputStream = is;
 	}
 	
+	/**
+	 * Starts listening for client's messages (objects actually)
+	 */
 	public void startListen(){
 		while(true){
 			CommunicationObject in = null;
@@ -41,6 +64,9 @@ public class ClientListener extends Observable implements Runnable{
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Runnable#run()
+	 */
 	@Override
 	public void run() {
 		startListen();

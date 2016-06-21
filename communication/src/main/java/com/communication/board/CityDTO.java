@@ -92,11 +92,6 @@ public class CityDTO implements Serializable{
 		this.playerNum = playerNum;
 	}
 	
-	public boolean equalsDTO(CityDTO c){
-		if(this.name.equals(c.getName()))
-			return true;
-		return false;
-	}
 	
 	
 }

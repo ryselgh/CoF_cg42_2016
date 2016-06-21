@@ -113,21 +113,7 @@ public class CityDTOTest {
 		assertEquals(b, result.getBonus());
 	}
 	
-	@Test
-	public void testCityEqualsDTO(){
-		boolean result = fixture.equalsDTO(fixture);
-		assertTrue(result);
-		
-	}
 	
-	@Test
-	public void testCityEqualsDTO2(){
-		CityDTO city = new  CityDTO();
-		city.setName("Osium");
-		boolean result = fixture.equalsDTO(city);
-		assertFalse(result);
-		
-	}
 //	@Test
 //	public void testSetCloseCities_1()
 //		throws Exception {

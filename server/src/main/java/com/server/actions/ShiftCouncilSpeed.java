@@ -102,7 +102,7 @@ public class ShiftCouncilSpeed extends Action{
 	 */
 	private Councilor getCouncilorFromDTO(CouncilorDTO cDTO){
 		for(Councilor c : game.getMap().getCouncilorsPool())
-			if(c.equals(cDTO))
+			if(c.equalsDTO(cDTO))
 				return c;
 		return null;
 	}

@@ -1,13 +1,12 @@
 package com.server.model.market ;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import com.communication.market.MarketDTO;
 import com.communication.market.OnSaleDTO;
 
 
-public class Market implements Iterator{
+public class Market{
 
 	
 	private ArrayList<OnSale> objectsOnSale;
@@ -53,19 +52,7 @@ public class Market implements Iterator{
 	{
 		return objectsOnSale.size();
 	}
-	
-	@Override
-	public boolean hasNext() {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
-	@Override
-	public Object next() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
 	public MarketDTO toDTO(){
 		MarketDTO marketDTO = new MarketDTO();
 		ArrayList<OnSaleDTO> osDTO = new ArrayList<OnSaleDTO>();

@@ -1,5 +1,6 @@
 package com.server.controller;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
@@ -24,41 +25,113 @@ import com.server.model.gamelogic.Game;
 import com.server.model.gamelogic.SellItemState;
 import com.server.model.gamelogic.State;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class GameHandler.
+ */
 public class GameHandler extends Observable implements Runnable, Observer{
+	
+	/** The players. */
 	private ArrayList<ClientHandler> players;
+	
+	/** The game. */
 	private Game game;
+	
+	/** The raw map. */
 	private String rawMap;
+	
+	/** The context. */
 	private Context context;
+	
+	/** The to resume. */
 	private Object toResume;
+	
+	/** The to resume str. */
 	private String toResumeStr;
+	
+	/** The waiting input. */
 	private boolean waitingInput = false;
+	
+	/** The logger. */
 	private Logger logger;
+	
+	/** The lobby. */
 	private Lobby lobby;
+	
+	/** The room. */
 	private Room room;
 	
-	public GameHandler(ArrayList<ClientHandler> pl, boolean defaultMap, String map, Lobby lobby, Room room){
-		players = pl;
+	/** The skipped turn. */
+	private ClientHandler skippedTurn;
+	
+	/** The progressive counter. */
+	private int progressiveCounter=0;//permette al timer di identificare il turno (per non skippare lo stesso giocatore al turno successivo)
+	
+	/** The rmi. */
+	private boolean RMI;
+	
+	/** The remote controllers. */
+	private ArrayList<RMISubscribed> remoteControllers;
+	
+	
+	/**
+	 * Instantiates a new game handler.
+	 *
+	 * @param pl the players of the game
+	 * @param defaultMap the default map
+	 * @param map the map xml
+	 * @param lobby the lobby instance
+	 * @param room the room of the game
+	 * @param RMI the bool rmi
+	 * @param remoteControllers the remote controllers
+	 */
+	public GameHandler(ArrayList<ClientHandler> pl, boolean defaultMap, String map, Lobby lobby, Room room, boolean RMI, ArrayList<RMISubscribed> remoteControllers){
+		this.remoteControllers = remoteControllers;
+		this.RMI = RMI;
+		this.players = pl;
 		this.lobby = lobby;
 		this.room = room;
 		this.game = new Game(players.size(),defaultMap,map, clientNames(players));
 		GameDTO gameDTO = this.game.toDto();
-		for(ClientHandler ch : pl){
-			ch.addObserver(this);
-			ch.sendToClient("STARTGAME", gameDTO);
-		}
+		if(RMI)
+			for(RMISubscribed RMIs : this.remoteControllers )
+				try {
+					RMIs.getRemContr().RMIupdateGame(gameDTO);
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		else
+			for(ClientHandler ch : pl){
+				ch.addObserver(this);
+				ch.sendToClient("STARTGAME", gameDTO);
+			}
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Runnable#run()
+	 * sets up the context and starts the first state
+	 */
 	@Override
 	public void run() {
-		for(ClientHandler ch : players)
-			this.addObserver(ch);
+		if(!RMI)
+			for(ClientHandler ch : players)
+				this.addObserver(ch);
 		this.context = new Context();
 		context.setClienthandler(players.get(0));
 		context.setGamehandler(this);
+		context.setRMI(this.RMI);
+		context.setRemoteController(RMISubscribed.getRemoteController(remoteControllers, players.get(0)));
 		ActionState actState = new ActionState();
 		actState.doAction(context);//avvio il primo stato di azione per il primo giocatore
 	}
 	
+	/**
+	 * Client names.
+	 *
+	 * @param players the players
+	 * @return the names of the players
+	 */
 	private String[] clientNames(ArrayList<ClientHandler> players){
 		String[] ret = new String[players.size()];
 		for(int i=0;i<players.size();i++)
@@ -66,16 +139,33 @@ public class GameHandler extends Observable implements Runnable, Observer{
 		return ret;
 	}
 	
+	/**
+	 * End game.
+	 *
+	 * @param winner the winner of the game
+	 */
 	public void endGame(ClientHandler winner){
 		lobby.endGame(room, this, winner);
 	}
 	
+	/**
+	 * Changes the state or the current player.
+	 *
+	 * @param context the context
+	 */
 	public void changeState(Context context){
+		try {
+			updateClientGame();
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+		progressiveCounter++;
 		ClientHandler client = context.getClienthandler();
-		if(!client.equals(players.get(players.size()-1))){//se non è l'ultimo del giro
+		if(!client.isEquals(players.get(players.size()-1))){//se non è l'ultimo del giro
 			context.getState().restoreState();//refresho lo stato
 			ClientHandler nextPl = nextPlayer(client);
 			context.setClienthandler(nextPl);//aggiorno il riferimento al client
+			context.setRemoteController(RMISubscribed.getRemoteController(remoteControllers, nextPl));
 			game.setActualPlayer(game.getActualPlayerIndex() +1);//aggiorno il giocatore in game
 			if(!nextPl.isActive()){//se il giocatore è disconnesso skippa il turno
 				changeState(context);
@@ -88,6 +178,7 @@ public class GameHandler extends Observable implements Runnable, Observer{
 			if(newState.getStateID().equals("BuyItemState") && this.game.getMarket().getObjectsOnSale().size()==0)
 				newState = nextState(newState);//se nessuno ha venduto niente si skippa il giro di buy
 			context.setClienthandler(players.get(0));//setto il turno al primo giocatore
+			context.setRemoteController(RMISubscribed.getRemoteController(remoteControllers, players.get(0)));
 			game.setActualPlayer(0);//aggiorno il giocatore in game
 			if(!players.get(0).isActive()){
 				changeState(context);
@@ -95,27 +186,62 @@ public class GameHandler extends Observable implements Runnable, Observer{
 			}
 			newState.doAction(context);//avvio lo stato
 		}
-		updateClientGame();
 	}
 	
-	public void updateClientGame(){
+	/**
+	 * Update client game.
+	 *
+	 * @throws RemoteException the remote exception
+	 */
+	public void updateClientGame() throws RemoteException{
 		GameDTO gameDTO = this.game.toDto();
 		for(ClientHandler ch : this.players){
-			ch.sendToClient("GAMEDTO", (Object) gameDTO);
+			if(RMI)
+				RMISubscribed.getRemoteController(this.remoteControllers, ch).RMIupdateGame(gameDTO);
+			else
+				ch.sendToClient("GAMEDTO", (Object) gameDTO);
 		}
 	}
 	
-	public void broadcastAnnounce(String msg, Object obj){
+	/**
+	 * Broadcast announce.
+	 *
+	 * @param msg the msg of the announce
+	 * @param obj the obj of the announce
+	 */
+	public void broadcastAnnounce(String msg, String obj){
 		for(ClientHandler ch : this.players){
-			ch.sendToClient(msg, obj);
+			if(RMI)
+				try {
+					RMISubscribed.getRemoteController(this.remoteControllers, ch).RMIprintMsg(obj);
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			else
+				ch.sendToClient(msg, obj);
 		}
 	}
+	
+	/**
+	 * Next player. It doesn't handle the 'last player event' because its handled in void changeState
+	 *
+	 * @param pl the current player
+	 * @return the next player
+	 */
 	public ClientHandler nextPlayer(ClientHandler pl){
 		for(int i=0;i<players.size();i++)
-			if(players.get(i).equals(pl))
+			if(players.get(i).isEquals(pl))
 				return players.get(i+1);//viene chiamata dopo il check su pl che non deve essere l'ultimo, quindi questa funz non dovrebbe mai ritornare null
 		return null;
 	}
+	
+	/**
+	 * Next state.
+	 *
+	 * @param state the current state
+	 * @return the next state
+	 */
 	public State nextState(State state)
 	{
 		if(state instanceof ActionState)
@@ -125,21 +251,53 @@ public class GameHandler extends Observable implements Runnable, Observer{
 		else
 			return new ActionState();
 	}
+	
+	/**
+	 * Draw card.
+	 *
+	 * @return the politics card just drawn
+	 */
 	public PoliticsCard drawCard(){
 		return game.getMap().getPoliticsDeck().draw();
 	}
 	
+	/**
+	 * Gets the game.
+	 *
+	 * @return the game
+	 */
 	public Game getGame(){
 		return this.game;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.util.Observer#update(java.util.Observable, java.lang.Object)
+	 */
 	@Override
-	public void update(Observable o, Object arg) {//intestazioni: SETTINGS_ , INPUT_
+	public synchronized void update(Observable o, Object arg) {//synchronyzed perchè il thread di InputTimer e ClientHandler si potrebbero pestare i piedi
+		if(o instanceof InputTimer){
+			TimeoutInfo infos = (TimeoutInfo) arg;
+			String skipName = infos.getClientName();
+			int skipCount = infos.getProgressiveCounter();
+			if(this.context.getClienthandler().getUserName().equals(skipName) && this.progressiveCounter==skipCount){
+				skippedTurn = this.context.getClienthandler();
+				this.broadcastAnnounce("TIMEOUT", this.context.getClienthandler().getUserName());
+				this.changeState(this.context);
+			}
+			return;			
+		}
+		else{ 
+			if(skippedTurn != null && skippedTurn.isEquals(((ClientHandler) o )))
+				return;//mossa del giocatore che ha saltato il turno
+			else
+				skippedTurn = null;
+		}
 		String[] msg = ((CommunicationObject) arg).getMsg().split("_");
 		Object obj = ((CommunicationObject) arg).getObj();
 		if(msg[0].equals("INPUT")){
 			if(waitingInput && msg[1].equals(toResumeStr)){
 				this.waitingInput = false;
+				try {
 				switch(toResumeStr){
 				case "BONUSCARD":
 					((ActionState) toResume).collectBONUSCARD((PermitsCardDTO) obj);
@@ -165,7 +323,13 @@ public class GameHandler extends Observable implements Runnable, Observer{
 				
 				
 				}
-			}
+				}
+			 catch (RemoteException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			
+				}
+				}
 			else
 				logger.log(Level.SEVERE,"Input not expected");
 		}
@@ -177,17 +341,37 @@ public class GameHandler extends Observable implements Runnable, Observer{
 	
 	
 	
+	/**
+	 * Sets the players.
+	 *
+	 * @param players the new players
+	 */
 	public void setPlayers(ArrayList<ClientHandler> players) {
 		this.players = players;
 	}
 
+	/**
+	 * Gets the players.
+	 *
+	 * @return the players
+	 */
 	public ArrayList<ClientHandler> getPlayers() {
 		return players;
 	}
 
+	/**
+	 * Wait for input.
+	 *
+	 * @param ID the id of the state to resume
+	 * @param action the action to resume
+	 */
 	public void waitForInput(String ID, Object action){//da spostare qui le richieste al client dal clienthandler che riceverà soltante
 		this.waitingInput = true;
 		this.toResume = action;
 		this.toResumeStr = ID;
+		InputTimer timer = new InputTimer(this.context.getClienthandler().getUserName(), progressiveCounter);
+		timer.addObserver(this);
+		Thread timerThread = new Thread(timer);
+		timerThread.start();
 	}
 }

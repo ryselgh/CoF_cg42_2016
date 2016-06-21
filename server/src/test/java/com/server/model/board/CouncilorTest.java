@@ -53,7 +53,7 @@ public class CouncilorTest {
 		CouncilorDTO cDTO = new CouncilorDTO();
 		cDTO.setColor(CouncilorColor.BLACK);
 
-		boolean result = fixture.equals(cDTO);
+		boolean result = fixture.equalsDTO(cDTO);
 
 		assertEquals(true, result);
 	}
@@ -64,7 +64,7 @@ public class CouncilorTest {
 		Councilor fixture = new Councilor(CouncilorColor.BLACK);
 		CouncilorDTO cDTO = null;
 
-		boolean result = fixture.equals(cDTO);
+		boolean result = fixture.equalsDTO(cDTO);
 
 		assertTrue(result);
 	}

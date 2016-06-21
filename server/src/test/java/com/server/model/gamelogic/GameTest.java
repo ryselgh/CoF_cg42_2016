@@ -185,21 +185,6 @@ public class GameTest {
 	}
 
 	@Test
-	public void testGetMainAction_1()
-		throws Exception {
-		Game fixture = game;
-		fixture.setFinalTurn(false);
-
-		MainAction result = fixture.getMainAction();
-
-		// An unexpected exception was thrown in user code while executing this test:
-		//    java.lang.ArrayIndexOutOfBoundsException: 0
-		//       at com.server.model.gamelogic.Game.initializeObjects(Game.java:68)
-		//       at com.server.model.gamelogic.Game.<init>(Game.java:51)
-		assertNotNull(result);
-	}
-
-	@Test
 	public void testGetMap_1()
 		throws Exception {
 		Game fixture = game;
@@ -243,22 +228,7 @@ public class GameTest {
 		//       at com.server.model.gamelogic.Game.<init>(Game.java:51)
 		assertNotNull(result);
 	}
-
-	@Test
-	public void testGetSpeedAction_1()
-		throws Exception {
-		Game fixture = game;
-		fixture.setFinalTurn(false);
-
-		SpeedAction result = fixture.getSpeedAction();
-
-		// An unexpected exception was thrown in user code while executing this test:
-		//    java.lang.ArrayIndexOutOfBoundsException: 0
-		//       at com.server.model.gamelogic.Game.initializeObjects(Game.java:68)
-		//       at com.server.model.gamelogic.Game.<init>(Game.java:51)
-		assertNotNull(result);
-	}
-
+	
 	@Test
 	public void testGetThatPlayer_1()
 		throws Exception {

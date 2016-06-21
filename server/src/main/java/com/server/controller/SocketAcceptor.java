@@ -8,17 +8,37 @@ import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class SocketAcceptor.
+ */
 public class SocketAcceptor implements Runnable {
+	
+	/** The socket PORT. */
 	private final static int PORT = 29999;
+	
+	/** The lobby. */
 	private Lobby lobby;
+	
+	/** The logger. */
 	private Logger logger;
 	
 	
+	/**
+	 * Instantiates a new socket acceptor.
+	 *
+	 * @param l the lobby
+	 */
 	public SocketAcceptor(Lobby l){
 		this.lobby = l;
 		logger = Logger.getLogger("myLogger");
 	}
 	
+	/**
+	 * Accept loop.
+	 *
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	private void acceptLoop() throws IOException{
 		ServerSocket serverSocket = new ServerSocket(PORT);
 		while(true){
@@ -30,6 +50,9 @@ public class SocketAcceptor implements Runnable {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Runnable#run()
+	 */
 	@Override
 	public void run() {
 		try {
