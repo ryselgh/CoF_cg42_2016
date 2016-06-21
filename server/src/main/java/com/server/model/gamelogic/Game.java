@@ -16,7 +16,7 @@ import com.server.model.market.Market;
  */
 
 public class Game {
-
+	
 	
 	/** The Constant COINOFFSET. */
 	private static final int COINOFFSET = 10;

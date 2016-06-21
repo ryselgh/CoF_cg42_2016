@@ -10,19 +10,40 @@ import com.server.model.board.Councilor;
 import com.server.model.gamelogic.Game;
 import com.server.model.gamelogic.Player;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ShiftCouncilMain.
+ */
 public class ShiftCouncilMain extends Action{
 	
+	/** The balcony index. */
 	private int balconyIndex;
+	
+	/** The councilor. */
 	private Councilor councilor;
+	
+	/** The errors. */
 	private ArrayList<String> errors;
+	
+	/** The disable. */
 	private boolean disable = false;
 	
+	/**
+	 * Instantiates a new shift council main.
+	 *
+	 * @param balconyIndex the balcony index
+	 * @param councilor the councilor
+	 */
 	public ShiftCouncilMain(int balconyIndex, Councilor councilor){
 		this.balconyIndex = balconyIndex;
 		this.councilor = councilor;
 		errors = new ArrayList<String>();
 	}
 	
+	/* 
+	 * check if the action is valid
+	 * if it's not adds an error
+	 */
 	public boolean isValid(){
 		for(Councilor c : game.getMap().getCouncilorsPool()){
 			if(c.equals(councilor)){
@@ -34,6 +55,11 @@ public class ShiftCouncilMain extends Action{
 		errors.add("Invalid input councilor");
 		return false;
 	}
+	
+	/* 
+	 * shifts the councilor. you gain 4 coins
+	 * if there is an error gives a string error
+	 */
 	public ActionReturn execute() {
 		if(errors.size()>0){
 			String errorsStr = "";
@@ -53,6 +79,13 @@ public class ShiftCouncilMain extends Action{
 		return new ActionReturn(true,"",null);
 	}
 	
+	/*
+	 * Setter from dto.
+	 * 
+	 * @param DTO the DTOactionShitCouncilDTO
+	 * @param player the player
+	 * @param game the game
+	 */
 	@Override
 	public void setterFromDTO(ActionDTO DTO,Player player,Game game){
 		this.game = game;
@@ -60,8 +93,13 @@ public class ShiftCouncilMain extends Action{
 		this.balconyIndex = scmDTO.getBalconyIndex();
 		this.councilor = getCouncilorFromDTO(scmDTO.getCouncilor());
 	}
-
-
+	
+	/**
+	 * Gets the councilor from dto.
+	 *
+	 * @param cDTO the c dto
+	 * @return the councilor from dto
+	 */
 	private Councilor getCouncilorFromDTO(CouncilorDTO cDTO){
 		for(Councilor c : game.getMap().getCouncilorsPool())
 			if(c.equalsDTO(cDTO))
