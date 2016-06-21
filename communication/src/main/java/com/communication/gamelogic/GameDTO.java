@@ -21,7 +21,7 @@ public class GameDTO implements Serializable{
 	private MarketDTO market;
 	private PlayerDTO actualPlayer;
 	private boolean finalTurn;
-	private boolean defaultMap;
+	private String mapName;
 	private MainActionDTO mainAction;
 	private SpeedActionDTO speedAction;
 	
@@ -100,14 +100,14 @@ public class GameDTO implements Serializable{
 	/**
 	 * @return the defaultMap
 	 */
-	public boolean isDefaultMap() {
-		return defaultMap;
+	public String getMapName() {
+		return mapName;
 	}
 	/**
 	 * @param defaultMap the defaultMap to set
 	 */
-	public void setDefaultMap(boolean defaultMap) {
-		this.defaultMap = defaultMap;
+	public void setMapName(String mapName) {
+		this.mapName = mapName;
 	}
 	/**
 	 * @return the mainAction

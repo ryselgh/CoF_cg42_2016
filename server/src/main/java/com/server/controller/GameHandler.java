@@ -2,6 +2,7 @@ package com.server.controller;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.logging.Level;
@@ -73,6 +74,15 @@ public class GameHandler extends Observable implements Runnable, Observer{
 	/** The remote controllers. */
 	private ArrayList<RMISubscribed> remoteControllers;
 	
+	/** used to take trace of the index of the list containing the shuffled order of turns for the market buy cycle*/
+	private int orderCounter=0;
+	
+	private ArrayList<Integer> order;
+	
+	/** millisecond before the turn skip 0=disabled*/
+	private int timerDelay;
+	
+	
 	
 	/**
 	 * Instantiates a new game handler.
@@ -85,13 +95,15 @@ public class GameHandler extends Observable implements Runnable, Observer{
 	 * @param RMI the bool rmi
 	 * @param remoteControllers the remote controllers
 	 */
-	public GameHandler(ArrayList<ClientHandler> pl, boolean defaultMap, String map, Lobby lobby, Room room, boolean RMI, ArrayList<RMISubscribed> remoteControllers){
+	public GameHandler(ArrayList<ClientHandler> pl, String mapName, String map, Lobby lobby, Room room, boolean RMI, ArrayList<RMISubscribed> remoteControllers, int timerDelay){
+		this.timerDelay = timerDelay;
 		this.remoteControllers = remoteControllers;
 		this.RMI = RMI;
 		this.players = pl;
 		this.lobby = lobby;
 		this.room = room;
-		this.game = new Game(players.size(),defaultMap,map, clientNames(players));
+		this.game = new Game(players.size(),mapName,map, clientNames(players));
+		this.order = new ArrayList<Integer>();
 		GameDTO gameDTO = this.game.toDto();
 		if(RMI)
 			for(RMISubscribed RMIs : this.remoteControllers )
@@ -161,30 +173,56 @@ public class GameHandler extends Observable implements Runnable, Observer{
 		}
 		progressiveCounter++;
 		ClientHandler client = context.getClienthandler();
-		if(!client.isEquals(players.get(players.size()-1))){//se non è l'ultimo del giro
+		
+		boolean lastPl = client.isEquals(players.get(players.size()-1));
+		boolean buyState = context.getState().getStateID().equals("BuyItemState");
+		boolean lastBuyState = this.orderCounter == this.players.size()-1;
+		
+		if((lastPl&&!buyState) || (lastBuyState&&buyState)){ //se è l'ultimo del giro
+			State newState = nextState(context.getState());//ricavo lo stato successivo
+			int nextIndex=0;//nella parte qua sotto potrebbe essere modificato
+			if(newState.getStateID().equals("BuyItemState")){
+				if(this.game.getMarket().getObjectsOnSale().size()==0)
+					newState = nextState(newState);//se nessuno ha venduto niente si skippa il giro di buy
+				else{
+					order = new ArrayList<Integer>();//pulisco
+					for(int i=0;i<this.players.size();i++)
+						order.add(i);
+						Collections.shuffle(order);
+					this.orderCounter=0;
+					nextIndex = order.get(orderCounter);
+					orderCounter++;
+				}
+			}
+				
+			context.setClienthandler(players.get(nextIndex));//setto il turno al primo giocatore
+			if(RMI)
+				context.setRemoteController(RMISubscribed.getRemoteController(remoteControllers, players.get(0)));
+			game.setActualPlayer(nextIndex);//aggiorno il giocatore in game
+			if(!players.get(nextIndex).isActive()){
+				changeState(context);
+				return;
+			}
+			newState.doAction(context);//avvio lo stato
+		}
+		else{//non è l'ultimo del giro
 			context.getState().restoreState();//refresho lo stato
-			ClientHandler nextPl = nextPlayer(client);
+			ClientHandler nextPl;
+			if(context.getState().getStateID().equals("BuyItemState")){
+				nextPl = players.get(this.order.get(this.orderCounter));
+				orderCounter++;
+			}
+			else
+				nextPl = nextPlayer(client);
 			context.setClienthandler(nextPl);//aggiorno il riferimento al client
-			context.setRemoteController(RMISubscribed.getRemoteController(remoteControllers, nextPl));
+			if(RMI)
+				context.setRemoteController(RMISubscribed.getRemoteController(remoteControllers, nextPl));
 			game.setActualPlayer(game.getActualPlayerIndex() +1);//aggiorno il giocatore in game
 			if(!nextPl.isActive()){//se il giocatore è disconnesso skippa il turno
 				changeState(context);
 				return;
 			}
 			context.getState().doAction(context);//avvio lo stato
-		}
-		else{//è l'ultimo del giro
-			State newState = nextState(context.getState());//ricavo lo stato successivo
-			if(newState.getStateID().equals("BuyItemState") && this.game.getMarket().getObjectsOnSale().size()==0)
-				newState = nextState(newState);//se nessuno ha venduto niente si skippa il giro di buy
-			context.setClienthandler(players.get(0));//setto il turno al primo giocatore
-			context.setRemoteController(RMISubscribed.getRemoteController(remoteControllers, players.get(0)));
-			game.setActualPlayer(0);//aggiorno il giocatore in game
-			if(!players.get(0).isActive()){
-				changeState(context);
-				return;
-			}
-			newState.doAction(context);//avvio lo stato
 		}
 	}
 	
@@ -362,16 +400,23 @@ public class GameHandler extends Observable implements Runnable, Observer{
 	/**
 	 * Wait for input.
 	 *
-	 * @param ID the id of the state to resume
-	 * @param action the action to resume
+	 * @param ID
+	 *            the id of the state to resume
+	 * @param action
+	 *            the action to resume
 	 */
-	public void waitForInput(String ID, Object action){//da spostare qui le richieste al client dal clienthandler che riceverà soltante
+	public void waitForInput(String ID, Object action) {// da spostare qui le
+														// richieste al client
+														// dal clienthandler che
+														// riceverà soltante
 		this.waitingInput = true;
 		this.toResume = action;
 		this.toResumeStr = ID;
-		InputTimer timer = new InputTimer(this.context.getClienthandler().getUserName(), progressiveCounter);
-		timer.addObserver(this);
-		Thread timerThread = new Thread(timer);
-		timerThread.start();
+		if (this.timerDelay > 0) {
+			InputTimer timer = new InputTimer(this.context.getClienthandler().getUserName(), progressiveCounter,timerDelay);
+			timer.addObserver(this);
+			Thread timerThread = new Thread(timer);
+			timerThread.start();
+		}
 	}
 }

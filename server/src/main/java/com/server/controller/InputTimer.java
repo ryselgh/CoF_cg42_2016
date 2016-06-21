@@ -9,7 +9,7 @@ import java.util.Observable;
 public class InputTimer extends Observable implements Runnable{
 	
 	/** The timeout delay. */
-	private static int timeoutDelay = 100000;
+	private  int timeoutDelay;
 	
 	/** The client name. */
 	private String clientName;
@@ -23,7 +23,8 @@ public class InputTimer extends Observable implements Runnable{
 	 * @param c the clientName
 	 * @param pC the progressive counter
 	 */
-	public InputTimer(String c, int pC){
+	public InputTimer(String c, int pC, int timeoutDelay){
+		this.timeoutDelay = timeoutDelay;
 		this.clientName = c;
 		this.progressiveCounter = pC;
 	}

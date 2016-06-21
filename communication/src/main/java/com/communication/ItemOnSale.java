@@ -2,7 +2,7 @@ package com.communication;
 
 import java.io.Serializable;
 
-public class ItemOnSale implements Serializable{//used for client-server communication
+public class ItemOnSale implements SellableSer{//used for client-server communication
 	private int price;
 	private Object obj;
 	

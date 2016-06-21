@@ -127,18 +127,18 @@ public class Map {
 	 */
 	
 	
-	public Map(Player[] p, boolean _default, String rawMap) {
+	public Map(Player[] p, String mapName, String rawMap) {
 		this.players = p;
 		initializeMapObjects();
 		try {
-			importMap(rawMap,_default);
+			importMap(rawMap,mapName);
 		} catch (Exception e) {
 			logger.log(Level.SEVERE, "Something went wrong while importing the map", e);
 		}
 	}
 
-	public int importMap(String file, boolean _default) throws ParserConfigurationException, SAXException, IOException{
-		Importer reader = new Importer(file,_default, this, players);
+	public int importMap(String file, String mapName) throws ParserConfigurationException, SAXException, IOException{
+		Importer reader = new Importer(file,mapName, this, players);
 		reader.startImport();
 		
 		Bonus[] bonusRegioni = reader.getRegionBonus();

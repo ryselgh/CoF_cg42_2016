@@ -26,7 +26,6 @@ public class GameDTOTest {
 		fixture.setPlayers(new ArrayList());
 		fixture.setMap(new MapDTO());
 		fixture.setSpeedAction(new SpeedActionDTO());
-		fixture.setDefaultMap(true);
 
 		PlayerDTO result = fixture.getActualPlayer();
 
@@ -81,7 +80,6 @@ public class GameDTOTest {
 		fixture.setPlayers(new ArrayList());
 		fixture.setMap(new MapDTO());
 		fixture.setSpeedAction(new SpeedActionDTO());
-		fixture.setDefaultMap(true);
 
 		MainActionDTO result = fixture.getMainAction();
 
@@ -102,7 +100,6 @@ public class GameDTOTest {
 		fixture.setPlayers(new ArrayList());
 		fixture.setMap(new MapDTO());
 		fixture.setSpeedAction(new SpeedActionDTO());
-		fixture.setDefaultMap(true);
 
 		MapDTO result = fixture.getMap();
 
@@ -129,7 +126,6 @@ public class GameDTOTest {
 		fixture.setPlayers(new ArrayList());
 		fixture.setMap(new MapDTO());
 		fixture.setSpeedAction(new SpeedActionDTO());
-		fixture.setDefaultMap(true);
 
 		MarketDTO result = fixture.getMarket();
 
@@ -158,7 +154,6 @@ public class GameDTOTest {
 		fixture.setPlayers(new ArrayList());
 		fixture.setMap(new MapDTO());
 		fixture.setSpeedAction(new SpeedActionDTO());
-		fixture.setDefaultMap(true);
 
 		ArrayList<PlayerDTO> result = fixture.getPlayers();
 
@@ -178,7 +173,6 @@ public class GameDTOTest {
 		fixture.setPlayers(new ArrayList());
 		fixture.setMap(new MapDTO());
 		fixture.setSpeedAction(new SpeedActionDTO());
-		fixture.setDefaultMap(true);
 
 		int result = fixture.getPlayersQty();
 
@@ -197,7 +191,6 @@ public class GameDTOTest {
 		fixture.setPlayers(new ArrayList());
 		fixture.setMap(new MapDTO());
 		fixture.setSpeedAction(new SpeedActionDTO());
-		fixture.setDefaultMap(true);
 
 		SpeedActionDTO result = fixture.getSpeedAction();
 
@@ -206,43 +199,7 @@ public class GameDTOTest {
 		assertEquals(null, result.getGame());
 	}
 
-	@Test
-	public void testIsDefaultMap_1()
-		throws Exception {
-		GameDTO fixture = new GameDTO();
-		fixture.setActualPlayer(new PlayerDTO());
-		fixture.setMainAction(new MainActionDTO());
-		fixture.setMarket(new MarketDTO());
-		fixture.setPlayersQty(1);
-		fixture.setFinalTurn(true);
-		fixture.setPlayers(new ArrayList());
-		fixture.setMap(new MapDTO());
-		fixture.setSpeedAction(new SpeedActionDTO());
-		fixture.setDefaultMap(true);
 
-		boolean result = fixture.isDefaultMap();
-
-		assertEquals(true, result);
-	}
-
-	@Test
-	public void testIsDefaultMap_2()
-		throws Exception {
-		GameDTO fixture = new GameDTO();
-		fixture.setActualPlayer(new PlayerDTO());
-		fixture.setMainAction(new MainActionDTO());
-		fixture.setMarket(new MarketDTO());
-		fixture.setPlayersQty(1);
-		fixture.setFinalTurn(true);
-		fixture.setPlayers(new ArrayList());
-		fixture.setMap(new MapDTO());
-		fixture.setSpeedAction(new SpeedActionDTO());
-		fixture.setDefaultMap(false);
-
-		boolean result = fixture.isDefaultMap();
-
-		assertEquals(false, result);
-	}
 
 	@Test
 	public void testIsFinalTurn_1()
@@ -256,7 +213,6 @@ public class GameDTOTest {
 		fixture.setPlayers(new ArrayList());
 		fixture.setMap(new MapDTO());
 		fixture.setSpeedAction(new SpeedActionDTO());
-		fixture.setDefaultMap(true);
 
 		boolean result = fixture.isFinalTurn();
 
@@ -275,7 +231,6 @@ public class GameDTOTest {
 		fixture.setPlayers(new ArrayList());
 		fixture.setMap(new MapDTO());
 		fixture.setSpeedAction(new SpeedActionDTO());
-		fixture.setDefaultMap(true);
 
 		boolean result = fixture.isFinalTurn();
 

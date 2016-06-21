@@ -110,6 +110,30 @@ public class Lobby extends Observable implements Runnable, Observer, RMILobbyRem
 		String[] ret = command.split("_");
 		Room r = null;
 		switch(ret[0]){
+		case "\\SETTIMEOUT":
+			r = findRoomByClient(sender);
+			if(r==null){
+				sendToClient(sender, "lobby_msg-" + "You are in lobby");
+				return 0;
+			}
+			if(!sender.isEquals(r.getAdmin())){
+				sendToClient(sender, "lobby_msg-" + "You are not the room admin");
+				return 0;
+			}
+			else if(this.RMI){
+				sendToClient(sender, "lobby_msg-" + "Timer not aailable in RMI mode");
+				return 0;
+			}
+			int sec;
+			try{
+				sec = Integer.parseInt(ret[1]);
+			}
+			catch(Exception e){
+				sendToClient(sender, "lobby_msg-" + "Wrong input format");
+				return 0;
+			}
+			r.setTimerDelay(sec * 1000);
+			break;
 		case "\\SETMAP":
 			r = findRoomByClient(sender);
 			if(!sender.isEquals(r.getAdmin()))
@@ -329,7 +353,7 @@ public class Lobby extends Observable implements Runnable, Observer, RMILobbyRem
 			for(ClientHandler ch : r.getPlayers())
 				roomPlayers.add(ch.getUserName());
 			rooms.add(new RoomStatus(r.getName(),r.getAdmin().getUserName(),
-										r.getMinPlayers(),r.getMaxPlayers(), roomPlayers, r.isDefaultMap()));}
+										r.getMinPlayers(),r.getMaxPlayers(), roomPlayers, r.getMapName(), r.getTimerDelay()));}
 		return new LobbyStatus(freeClients,rooms);
 	}
 	
@@ -383,7 +407,7 @@ public class Lobby extends Observable implements Runnable, Observer, RMILobbyRem
 	 * @param minPl the players's no lower bound
 	 */
 	private void createRoom(String name, ClientHandler admin, int maxPl, int minPl){
-		rooms.add(new Room(name,admin,maxPl,minPl,this));
+		rooms.add(new Room(name,admin,maxPl,minPl,this,0));
 	}
 	
 	/**
@@ -577,10 +601,31 @@ public class Lobby extends Observable implements Runnable, Observer, RMILobbyRem
 		String[] ret = command.split("_");
 		Room r = null;
 		switch(ret[0]){
+		case "\\SETTIMEOUT":
+			r = findRoomByClient(sender);
+			if(r==null)
+				return "You are in lobby";
+			if(!sender.isEquals(r.getAdmin())){
+				return "You are not the room admin";
+				
+			}
+			else if(this.RMI)
+				return "Timer not aailable in RMI mode";
+			int sec;
+			try{
+				sec = Integer.parseInt(ret[1]);
+			}
+			catch(Exception e){
+				return "Wrong input format";
+				
+			}
+			r.setTimerDelay(sec * 1000);
+			return "Timer updated";
 		case "\\SETMAP":
 			r = findRoomByClient(sender);
 			if(!sender.isEquals(r.getAdmin()))
 				return commandResponse[9];
+			
 			r.setMap(map);
 			broadcastLobbyStatus();
 			return "Map successfully changed";

@@ -11,15 +11,17 @@ public class RoomStatus implements Serializable{
 	private int minPlayers,maxPlayers;
 	private String roomName, adminName;
 	private ArrayList<String> players;
-	private boolean defaultMap;
+	private String mapName;
+	private int timerDelay;
 	
-	public RoomStatus(String rn,String an, int minpl, int maxpl, ArrayList<String> players, boolean defMap){
+	public RoomStatus(String rn,String an, int minpl, int maxpl, ArrayList<String> players, String mapName,int timerDelay){
 		this.players = players;
 		this.roomName = rn;
 		this.adminName = an;
 		this.minPlayers = minpl;
 		this.maxPlayers = maxpl;
-		this.defaultMap = defMap;
+		this.mapName = mapName;
+		this.timerDelay = timerDelay;
 	}
 
 	public int getMinPlayers() {
@@ -42,8 +44,12 @@ public class RoomStatus implements Serializable{
 		return players;
 	}
 
-	public boolean isDefaultMap() {
-		return defaultMap;
+	public String getMapName() {
+		return mapName;
+	}
+
+	public int getTimerDelay() {
+		return timerDelay;
 	}
 	
 	

@@ -2,9 +2,10 @@ package com.communication.market ;
 
 import java.io.Serializable;
 
+import com.communication.SellableSer;
 import com.communication.gamelogic.PlayerDTO;
 
-public class OnSaleDTO implements Serializable{
+public class OnSaleDTO implements SellableSer{
 	/**
 	 * 
 	 */

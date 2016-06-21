@@ -46,8 +46,8 @@ public class Game {
 	/** The final turn. */
 	private boolean finalTurn;
 	
-	/** The default map. */
-	private boolean defaultMap;
+	/** The map name. */
+	private String mapName;
 	
 	/** The raw map. */
 	private String rawMap;
@@ -67,10 +67,10 @@ public class Game {
 	 * @param clientNames the client names
 	 */
 	
-	public Game(int playersQty, boolean defaultMap, String rawMap, String[] clientNames) {
+	public Game(int playersQty, String mapName, String rawMap, String[] clientNames) {
 		this.clientNames = clientNames;
 		this.playersQty = playersQty;
-		this.defaultMap = defaultMap;
+		this.mapName = mapName;
 		this.rawMap = rawMap;
 		this.initializeObjects();
 		
@@ -91,7 +91,7 @@ public class Game {
 		actualPlayer = players.get(0);
 		
 		//Map
-		map = new Map(players.toArray(new Player[players.size()]),defaultMap,rawMap);
+		map = new Map(players.toArray(new Player[players.size()]),mapName,rawMap);
 		graphMap = new GraphMap(map);
 		
 		
@@ -238,7 +238,7 @@ public class Game {
 			plsDTO.add(p.toDTO());
 		gameDTO.setPlayers(plsDTO);
 		gameDTO.setActualPlayer(actualPlayer.toDTO());
-		gameDTO.setDefaultMap(defaultMap);
+		gameDTO.setMapName(mapName);
 		gameDTO.setFinalTurn(finalTurn);
 		gameDTO.setMap(map.toDTO(plsDTO));
 		gameDTO.setMarket(market.toDTO());

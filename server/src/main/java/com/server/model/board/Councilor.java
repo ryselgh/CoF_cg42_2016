@@ -31,6 +31,10 @@ public class Councilor
 		return this.color;	
 	}
 	
+	public boolean isEquals(Councilor c){
+		return this.color.equals(c.color);
+	}
+	
 	public boolean equalsDTO(CouncilorDTO cDTO){
 		if (!(cDTO == null)) {
 			if (this.color.equals(cDTO.getColor()))

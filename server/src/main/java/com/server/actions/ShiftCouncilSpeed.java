@@ -46,7 +46,7 @@ public class ShiftCouncilSpeed extends Action{
 	 */
 	public boolean isValid(){
 		for(Councilor c : game.getMap().getCouncilorsPool()){
-			if(c.equals(councilor)){
+			if(c.isEquals(councilor)){
 				councilor = c;//aggiorno l'istanza per l'execute
 				game.getMap().getCouncilorsPool().remove(c);
 				return true;

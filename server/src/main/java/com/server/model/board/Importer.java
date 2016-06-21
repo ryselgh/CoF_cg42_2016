@@ -52,11 +52,12 @@ public class Importer {
 	 * @throws SAXException 
 	 */
 	
-	public Importer(String rawMap, boolean def, Map m, Player[] p) throws ParserConfigurationException, SAXException, IOException{
+	public Importer(String rawMap, String mapName, Map m, Player[] p) throws ParserConfigurationException, SAXException, IOException{
 		this.players = p;
 		this.mapInst = m;
-		if (def) {//importo da file
-			this.location = "Default map.xml";
+		if(!mapName.equals("custom")){
+			String mapNo = mapName.substring("default".length(), mapName.length());
+			this.location = "Default map1.xml";
 			File inputFile = new File(location);
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder dBuilder;
