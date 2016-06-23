@@ -391,7 +391,8 @@ public class SatisfyKingTest {
 		//       at com.server.model.board.Map.<init>(Map.java:147)
 		//       at com.server.model.gamelogic.Game.initializeObjects(Game.java:71)
 		//       at com.server.model.gamelogic.Game.<init>(Game.java:49)
-		assertEquals(result.getError(),"\nYou have not enought money for the move [Juvelar --> Castrums, you need 6\nInvalid input cards");
+		String debug = result.getError();
+		assertEquals(debug,"\nYou have not enought money for the move [Juvelar --> Castrums, you need 6\nInvalid input cards");
 	}
 	
 	@Test
