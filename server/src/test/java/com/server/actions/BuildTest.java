@@ -55,7 +55,7 @@ public class BuildTest {
 		players[2] = "3";
 //		PermitsCard e = new PermitsCard(b,l2);
 //		PermitsCard e1 = new PermitsCard(b,l3);
-		game = new Game(3, true, null, players);
+		game = new Game(3, "default1", "default1", players);
 	}
 
 	@Test

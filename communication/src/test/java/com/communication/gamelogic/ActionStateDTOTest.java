@@ -32,7 +32,6 @@ public class ActionStateDTOTest {
 		
 		gameDTO = new GameDTO();
 //		gameDTO.setActualPlayer(actualPlayer);
-		gameDTO.setDefaultMap(true);
 //		gameDTO.setFinalTurn(false);
 //		gameDTO.setMainAction(null);
 //		gameDTO.setMarket(null);
@@ -63,7 +62,6 @@ public class ActionStateDTOTest {
 		assertEquals(null, result.getMap());
 		assertEquals(null, result.getMarket());
 		assertEquals(false, result.isFinalTurn());
-		assertEquals(true, result.isDefaultMap());
 		assertEquals(null, result.getMainAction());
 		assertEquals(null, result.getPlayers());
 		assertEquals(3, result.getPlayersQty());

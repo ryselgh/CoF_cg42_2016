@@ -7,7 +7,7 @@ import java.rmi.NotBoundException;
 public class MainClient {
 
 	public static void main(String[] args) throws IOException, NotBoundException, AlreadyBoundException {
-		ClientController controller = new ClientController(true);
+		ClientController controller = new ClientController(false);
 		controller.run();
 	}
 
