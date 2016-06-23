@@ -26,7 +26,7 @@ public class AssistantOnSaleTest {
 	
 	
 	@Test
-	public void testAssistantOnSale_1()
+	public void testAssistantOnSale()
 		throws Exception {
 		
 		int pr = 1;
@@ -45,7 +45,7 @@ public class AssistantOnSaleTest {
 	}
 
 	@Test
-	public void testGetPrice_1()
+	public void testGetPrice()
 		throws Exception {
 		AssistantOnSale fixture = new AssistantOnSale(player, as, 1,UID);
 
@@ -55,7 +55,7 @@ public class AssistantOnSaleTest {
 	}
 
 	@Test
-	public void testObtain_1()
+	public void testObtain_checkIfThePlayerLosesMoney()
 		throws Exception {
 		AssistantOnSale fixture = new AssistantOnSale(player, as, 1,UID);
 		
@@ -68,16 +68,11 @@ public class AssistantOnSaleTest {
 		
 		assertEquals(buyer.getCoins(),0);
 
-		// An unexpected exception was thrown in user code while executing this test:
-		//    java.util.ConcurrentModificationException
-		//       at java.util.ArrayList$Itr.checkForComodification(ArrayList.java:901)
-		//       at java.util.ArrayList$Itr.next(ArrayList.java:851)
-		//       at com.server.model.gamelogic.Player.removeAssistant(Player.java:70)
-		//       at com.server.model.market.AssistantOnSale.obtain(AssistantOnSale.java:26)
+		
 	}
 
 	@Test
-	public void testPrintDetails_1()
+	public void testPrintDetails()
 		throws Exception {
 		AssistantOnSale fixture = new AssistantOnSale(player, as, 1,UID);
 
@@ -87,7 +82,7 @@ public class AssistantOnSaleTest {
 	}
 
 	@Test
-	public void testToDTO_1()
+	public void testToDTO()
 		throws Exception {
 		AssistantOnSale fixture = new AssistantOnSale(player, as, 1,UID);
 
@@ -100,12 +95,6 @@ public class AssistantOnSaleTest {
 	}
 
 	
-
-//	@After
-//	public void tearDown()
-//		throws Exception {
-//	}
-
 	public static void main(String[] args) {
 		new org.junit.runner.JUnitCore().run(AssistantOnSaleTest.class);
 	}

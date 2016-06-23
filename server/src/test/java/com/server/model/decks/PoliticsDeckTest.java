@@ -9,7 +9,9 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 
+
 public class PoliticsDeckTest {
+	
 	
 	@Test
 	public void testTheConstructor(){
@@ -19,16 +21,18 @@ public class PoliticsDeckTest {
 	}
 	
 
+	
 	@Test(expected=NullPointerException.class)
-	public void testDiscard_1()
+	public void testIfDiscardThrowsException()
 		throws Exception {
 		PoliticsDeck fixture = new PoliticsDeck();
 		fixture.discard(null);
 
 		}
 	
+	
 	@Test
-	public void testDiscard_2()
+	public void testIfTheDisscardDeckSizeGrowsUp()
 		throws Exception {
 		PoliticsDeck fixture = new PoliticsDeck();
 		fixture.discard(new PoliticsCard(CouncilorColor.PINK));
@@ -36,34 +40,40 @@ public class PoliticsDeckTest {
 
 		}
 	
+	
 	@Test
-	public void testDraw(){
+	public void testIfTheDrawnCardIsNotNull(){
 		
 		PoliticsDeck pd= new PoliticsDeck();
 		PoliticsCard pc= pd.draw();
 		assertNotNull(pc);
 	}
 	
+	
 	@Test
-	public void testDraw2(){
+	public void testTheUpdateOfTheCardsNumber(){
 		
 		PoliticsDeck pd= new PoliticsDeck();
 		PoliticsCard pc= pd.draw();
 		assertEquals(pd.getPoliticsDeck().size(),89);
 	}
 	
-//	@Test
-//	public void testDraw3(){
-//		
-//		PoliticsDeck pd= new PoliticsDeck();
-//		for(int i =0;i<(pd.getPoliticsDeck().size()+pd.getGarbage().size());i++){
-//			PoliticsCard card= pd.draw();
-//			pd.discard(card);
-//		}
-//		pd.draw();	
-//		assertEquals(pd.getPoliticsDeck().size(),89);
-//		assertTrue(pd.getGarbage().isEmpty());
-//	}
+	
+	@Test
+	public void testTheReShuffleOfTheDeck(){
+		
+		PoliticsDeck pd= new PoliticsDeck();
+		
+		int j = pd.getPoliticsDeck().size();
+		for(int i =0;i<j;i++){
+			PoliticsCard card= pd.draw();
+			pd.discard(card);
+		}
+		pd.draw();	
+		assertEquals(pd.getPoliticsDeck().size(),89);
+		assertTrue(pd.getGarbage().isEmpty());
+	}
+	
 	
 	@Test
 	public void toDTO(){
@@ -74,6 +84,7 @@ public class PoliticsDeckTest {
 		assertTrue(pcDTO instanceof PoliticsDeckDTO);
 		
 	}
+	
 	
 	@Test
 	public void getPoliticsDeck(){
@@ -96,6 +107,7 @@ public class PoliticsDeckTest {
 
 	
 
+	
 	public static void main(String[] args) {
 		new org.junit.runner.JUnitCore().run(PoliticsDeckTest.class);
 	}

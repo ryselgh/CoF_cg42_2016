@@ -16,6 +16,7 @@ public class KingBonusDeckTest {
 	
 	@Before
 	public void setUp(){
+		//create a fake kbDeck
 		kbDeck = new Bonus[5];
 		kbDeck[0]= new Bonus(BonusType.POINT, 15);
 		kbDeck[1]= new Bonus(BonusType.POINT, 10);
@@ -41,7 +42,7 @@ public class KingBonusDeckTest {
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void testKingBonusDeckConstructor(){
-		
+		//it must have 5 cards
 		kbDeck = new Bonus[4];
 		kbDeck[0]= new Bonus(BonusType.POINT, 15);
 		kbDeck[1]= new Bonus(BonusType.POINT, 10);
@@ -57,7 +58,7 @@ public class KingBonusDeckTest {
 	
 
 	@Test
-	public void testDraw_1()
+	public void testDraw()
 		{
 		kbDeck = new Bonus[5];
 		kbDeck[0]= new Bonus(BonusType.POINT, 15);
@@ -69,14 +70,12 @@ public class KingBonusDeckTest {
 
 		KingBonusCard drawnCard = kingbDeck.draw();
 
-		// An unexpected exception was thrown in user code while executing this test:
-		//    java.lang.NullPointerException
-		//       at com.server.model.decks.KingBonusDeck.draw(KingBonusDeck.java:39)
+		
 		assertNotNull(drawnCard);
 	}
 
 	@Test
-	public void testDraw(){
+	public void testthatTheSixthDrawnCardIsNull(){
 		KingBonusDeck kingbDeck = new KingBonusDeck(kbDeck);
 		KingBonusCard drawnCard1 = kingbDeck.draw();
 		KingBonusCard drawnCard2 = kingbDeck.draw();
@@ -89,7 +88,7 @@ public class KingBonusDeckTest {
 	}
 
 	@Test
-	public void testGetKingqty_1()
+	public void testGetKingqty()
 		throws Exception {
 
 		int result = KingBonusDeck.getKingqty();

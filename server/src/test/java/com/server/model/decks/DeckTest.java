@@ -6,7 +6,7 @@ import static org.junit.Assert.*;
 
 public class DeckTest {
 	@Test
-	public void testHasNext_1()
+	public void testHasNext()
 		throws Exception {
 		Deck fixture = new PoliticsDeck();
 
@@ -16,7 +16,7 @@ public class DeckTest {
 	}
 
 	@Test
-	public void testNext_1()
+	public void testNext()
 		throws Exception {
 		Deck fixture = new PoliticsDeck();
 
@@ -26,7 +26,7 @@ public class DeckTest {
 	}
 
 	@Test
-	public void testShuffle_1()
+	public void testShuffle()
 		throws Exception {
 		ArrayList<Object> deck = new ArrayList();
 

@@ -81,17 +81,12 @@ public class PoliticsDeck extends Deck{
 	public PoliticsCard draw() {
 		PoliticsCard drawnCard;
 		if(politicsDeck.isEmpty()){
-			Collections.shuffle(garbage);
-			for(PoliticsCard p : garbage ){
-				if(p!=null){
-				politicsDeck.add(p);
-				garbage.remove(p);
-				}
-			}
-			drawnCard = politicsDeck.remove(0);
+			politicsDeck.addAll(garbage);
+			Collections.shuffle(politicsDeck);
+			garbage.clear();
+		}
 
-		} else
-			drawnCard = politicsDeck.remove(0);
+		drawnCard = politicsDeck.remove(0);
 
 		return drawnCard;	
 	}
