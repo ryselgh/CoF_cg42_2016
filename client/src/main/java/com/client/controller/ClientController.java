@@ -32,7 +32,7 @@ import com.communication.decks.PoliticsCardDTO;
 import com.communication.gamelogic.GameDTO;
 import com.communication.market.OnSaleDTO;
 
-
+// TODO: Auto-generated Javadoc
 /**
  * The Class ClientController.
  */
@@ -119,7 +119,7 @@ public class ClientController extends Observable implements Observer, RMIClientC
 				connection.run();
 				connection.addObserver(this);
 			} catch (IOException e) {
-				System.out.println("Failed to connect to server");
+				cli.printMsg("Failed to connect to server");
 				return;
 			}
 			cli.printMsg("Connected to the server");
@@ -154,6 +154,7 @@ public class ClientController extends Observable implements Observer, RMIClientC
 			;
 			lobbyRemote.RMIsubscribe(nick, CLIENT_PORT);
 			consoleListener.addObserver(this);
+			this.printLobbyCommand();
 		}
 	}
 
@@ -182,7 +183,7 @@ public class ClientController extends Observable implements Observer, RMIClientC
 	 * Prints the lobby command.
 	 */
 	private void printLobbyCommand(){
-		cli.printMsg("Lobby commands: \n'\\NEWROOM_roomname_maxPl_minPl' \n'\\JOINROOM_roomname' \n'\\STARTGAME' requires admin of the room \n'\\LEAVEROOM' \n'\\SETMAP_filepath'");
+		cli.printMsg("Lobby commands: \n'\\NEWROOM_roomname_maxPl_minPl' \n'\\JOINROOM_roomname' \n'\\STARTGAME' requires admin of the room \n'\\LEAVEROOM' \n'\\SETMAP_filepath   or \\SETMAP_defaultX   1<=X<=8 to use a default map\n'\\SETTIMEOUT_X  to set X seconds as time limit for a turn. 0=disabled(default)'");
 	}
 
 	/**
@@ -217,10 +218,13 @@ public class ClientController extends Observable implements Observer, RMIClientC
 			cli.printMsg("Admin: " + rs.getAdminName());
 			cli.printMsg("Minimum players: " + rs.getMinPlayers());
 			cli.printMsg("Maximum players: " + rs.getMaxPlayers());
-			if(rs.isDefaultMap())
-				cli.printMsg("Map: default");
+			cli.printMsg("Map: " + rs.getMapName());
+			String sec = "";
+			if(rs.getTimerDelay()==0)
+				sec = "disabled";
 			else
-				cli.printMsg("Map: custom");
+				sec = Integer.toString(rs.getTimerDelay()/1000) + "sec";
+			cli.printMsg("Timeout: " + sec);
 		}
 		}
 	}
@@ -249,7 +253,7 @@ public class ClientController extends Observable implements Observer, RMIClientC
 	 * @return the string
 	 */
 	private String isCorrect(String name){
-		if(name.contains("[^abcdefghilmnopqrstuvzjkywxABCDEFGHILMNOPQRSTUVZJKYWX]"))//regex equivalente a tutti i caratteri a parte le lettere
+		if(name.contains("[^abcdefghilmnopqrstuvzjkywxABCDEFGHILMNOPQRSTUVZJKYWX0123456789]"))//regex equivalente a tutti i caratteri a parte le lettere
 			return "Illegal characters";
 		if(name.length()<5 || name.length()>13)
 			return "Nickname size must be >5 and <13";
@@ -291,18 +295,34 @@ public class ClientController extends Observable implements Observer, RMIClientC
 			String inStr = this.cliQueue.poll();
 			String[] split = inStr.split("_");
 			if(split[0].equals("\\SETMAP")){
-				String newMap;
-				try {
-					newMap = readFile(split[1], StandardCharsets.UTF_8);
-					if(RMI)
-						lobbyRemote.RMIlobbyCommand(this.userName, "\\SETMAP", newMap);
-					else
-						connection.sendToServer("\\SETMAP", newMap);
-				} catch (Exception e) {
-					cli.printMsg("Error during map import");
+				String newMap = "";
+				if(split[1].substring(0, "default".length()).equals("default")){
+					String mapNo = split[1].substring("default".length(), split[1].length());
+					if(mapNo.contains("[^0123456789]") || Integer.parseInt(mapNo)>8 || Integer.parseInt(mapNo) == 0){
+							cli.printMsg("Wrong input format");
+							return;
+					}
+					newMap = "default" + mapNo;
 				}
+				else{
+					try {
+						newMap = readFile(split[1], StandardCharsets.UTF_8);
+					} catch (Exception e) {
+						cli.printMsg("Error during map import");
+					}
+				}
+				if(RMI)
+					try {
+						lobbyRemote.RMIlobbyCommand(this.userName, "\\SETMAP", newMap);
+					} catch (RemoteException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				else
+					connection.sendToServer("\\SETMAP", newMap);
 				return;
 			}
+		else{
 			if(RMI)
 				try {
 					cli.printMsg(lobbyRemote.RMIlobbyCommand(this.userName, inStr, null));
@@ -313,6 +333,7 @@ public class ClientController extends Observable implements Observer, RMIClientC
 			else
 				connection.sendToServer(inStr ,null);
 			return;
+		}
 		}
 		CommunicationObject in = (CommunicationObject) change;
 		String cmd = in.getMsg();

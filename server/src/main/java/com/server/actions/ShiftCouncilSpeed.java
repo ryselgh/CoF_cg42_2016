@@ -10,7 +10,7 @@ import com.server.model.board.Councilor;
 import com.server.model.gamelogic.Game;
 import com.server.model.gamelogic.Player;
 
-
+// TODO: Auto-generated Javadoc
 /**
  * The Class ShiftCouncilSpeed.
  */
@@ -46,7 +46,7 @@ public class ShiftCouncilSpeed extends Action{
 	 */
 	public boolean isValid(){
 		for(Councilor c : game.getMap().getCouncilorsPool()){
-			if(c.equals(councilor)){
+			if(c.isEquals(councilor)){
 				councilor = c;//aggiorno l'istanza per l'execute
 				game.getMap().getCouncilorsPool().remove(c);
 				return true;

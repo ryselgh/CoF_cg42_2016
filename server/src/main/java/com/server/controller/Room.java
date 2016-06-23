@@ -6,7 +6,7 @@ import org.w3c.dom.Document;
 
 import com.communication.values.RoomState;
 
-
+// TODO: Auto-generated Javadoc
 /**
  * The Class Room.
  */
@@ -28,7 +28,7 @@ public class Room {
 	private String name;
 	
 	/** The default map. */
-	private boolean defaultMap = true;
+	private String mapName = "default1";
 	
 	/** The status. */
 	private RoomState status;
@@ -42,6 +42,8 @@ public class Room {
 	/** The thread instance of the game handler. */
 	private Thread threadGameHandler;
 	
+	private int timerDelay;
+	
 	/**
 	 * Instantiates a new room.
 	 *
@@ -51,7 +53,8 @@ public class Room {
 	 * @param minPlayers the min players
 	 * @param lobby the lobby instance
 	 */
-	public Room(String name, ClientHandler adm, int maxPlayers, int minPlayers, Lobby lobby){
+	public Room(String name, ClientHandler adm, int maxPlayers, int minPlayers, Lobby lobby, int timerDelay){
+		this.timerDelay = timerDelay;
 		this.lobby=lobby;
 		this.name = name;
 		this.admin = adm;
@@ -95,7 +98,7 @@ public class Room {
 			ch.inGame = true;
 		}
 		this.status = RoomState.IN_GAME;
-		gameHandler = new GameHandler(players,defaultMap,rawMap,lobby, this, RMI, lobby.getRemoteControllers());
+		gameHandler = new GameHandler(players,mapName,rawMap,lobby, this, RMI, lobby.getRemoteControllers(), this.timerDelay);
 		threadGameHandler = new Thread(gameHandler);
 		threadGameHandler.start();
 	}
@@ -173,9 +176,21 @@ public class Room {
 	 */
 	public void setMap(String map){//non lo metto nel costruttore perchè va passata serializzata, credo
 		this.rawMap = map;
-		this.defaultMap = false;
+		if(map.substring(0, "default".length()).equals("default"))
+			this.mapName = map;
+		else
+			this.mapName = "custom";
 	}
 	
+	
+
+	public String getMapName() {
+		return mapName;
+	}
+
+	public void setMapName(String mapName) {
+		this.mapName = mapName;
+	}
 
 	/**
 	 * Gets the players.
@@ -227,10 +242,6 @@ public class Room {
 	 *
 	 * @return true, if is default map
 	 */
-	public boolean isDefaultMap() {
-		return defaultMap;
-	}
-
 	/**
 	 * Gets the game handler.
 	 *
@@ -238,6 +249,14 @@ public class Room {
 	 */
 	public GameHandler getGameHandler() {
 		return gameHandler;
+	}
+
+	public int getTimerDelay() {
+		return timerDelay;
+	}
+
+	public void setTimerDelay(int timerDelay) {
+		this.timerDelay = timerDelay;
 	}
 
 	

@@ -23,77 +23,41 @@ import com.server.model.gamelogic.Player;
 import com.communication.values.BonusType;
 import com.communication.values.CityColor;
 
-
-/**
- * The Class Importer.
- */
 public class Importer {
-	
-	/** The location. */
 	String location;
-	
-	/** The doc. */
 	Document doc;
-	
-	/** The players. */
 	private Player[] players;
-	
-	/** The pawn. */
 	private Pawn[] pawn;
-	
-	/** The nobility track. */
 	private NobilityTrack nobilityTrack;
-	
-	/** The nobility track bonus. */
 	private Bonus[][] nobilityTrackBonus;
-	
-	/** The token pool. */
 	private ArrayList<BonusToken> tokenPool;
-	
-	/** The permits card pool. */
 	private PermitsCard[][] permitsCardPool;
-	
-	/** The region bonus. */
 	private Bonus[] regionBonus;
-	
-	/** The color bonus. */
 	private Bonus[] colorBonus;
-	
-	/** The pawn colors. */
 	private String[] pawnColors;
-	
-	/** The city. */
 	private City[] city;
-	
-	/** The king bonus. */
 	private ArrayList<Bonus> kingBonus;
-	
-	/** The permits deck. */
 	private PermitsDeck permitsDeck;
-	
-	/** The map inst. */
 	private Map mapInst;
-	
-	/** The k. */
 	private King k;
 	
 	/**
-	 * Instantiates a new importer.
-	 *
-	 * @param rawMap the raw map
-	 * @param def the def
-	 * @param m the m
-	 * @param p the p
-	 * @throws ParserConfigurationException the parser configuration exception
-	 * @throws SAXException the SAX exception
-	 * @throws IOException Signals that an I/O exception has occurred.
+	 * 
+	 * @param loc
+	 * @param def
+	 * @param m
+	 * @param p
+	 * @throws ParserConfigurationException 
+	 * @throws IOException 
+	 * @throws SAXException 
 	 */
 	
-	public Importer(String rawMap, boolean def, Map m, Player[] p) throws ParserConfigurationException, SAXException, IOException{
+	public Importer(String rawMap, String mapName, Map m, Player[] p) throws ParserConfigurationException, SAXException, IOException{
 		this.players = p;
 		this.mapInst = m;
-		if (def) {//import from file
-			this.location = "Default map.xml";
+		if(!mapName.equals("custom")){
+			String mapNo = mapName.substring("default".length(), mapName.length());
+			this.location = "Default map1.xml";
 			File inputFile = new File(location);
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder dBuilder;
@@ -101,7 +65,7 @@ public class Importer {
 			doc = (Document) dBuilder.parse(inputFile);
 		}
 		else{
-			DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();//importo from strings
+			DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();//importo da stringa
 			InputSource is = new InputSource();
 			is.setCharacterStream(new StringReader(rawMap));
 			doc = db.parse(is);
@@ -111,14 +75,13 @@ public class Importer {
 	}
 	
 	/**
-	 * Start import.
-	 *
-	 * @return the int
+	 * 
+	 * @return
 	 */
 
 	public int startImport() {
-		/// import region bonus 
-		regionBonus = new Bonus[3];// [0]=sea [1]=hill [2]=mountain
+		/// importo bonus regione
+		regionBonus = new Bonus[3];// [0]=mare [1]=colline [2]=montagne
 		String[] nomiRegioni = { "SEA", "HILL", "MOUNTAIN" };
 		NodeList tmp = doc.getElementsByTagName("REGION_BONUS");
 		Node regionNode = (doc).getElementsByTagName("REGION_BONUS").item(0);
@@ -131,7 +94,7 @@ public class Importer {
 			regionBonus[i] = new Bonus(parseBonus(rBonusTypeStr), Integer.parseInt(rBonusAmmStr));
 		}
 
-		/// import colour bonus 
+		/// importo bonus colore
 		colorBonus = new Bonus[5];// ordine come nomiColori qua sotto
 		String[] nomiColori = { "BLUE", "RED", "GREY", "YELLOW", "PURPLE" };
 		Node colorNode = (doc).getElementsByTagName("COLOR_BONUS").item(0);
@@ -151,7 +114,7 @@ public class Importer {
 			}
 		}
 
-		// import bonus token -> used in city import
+		// importo bonus token -> usati in importa città
 		Node poolNode = (doc).getElementsByTagName("TOKEN_POOL").item(0);
 		NodeList tokensList = ((Element) poolNode).getElementsByTagName("TOKEN");
 		tokenPool = new ArrayList<BonusToken>(tokensList.getLength());
@@ -172,11 +135,11 @@ public class Importer {
 			}
 			tokenPool.add(new BonusToken(tokenBonus));
 		}
-		//import king
+		//importo king
 		Element kingElem = (Element) (doc).getElementsByTagName("KING").item(0);
 		String kingLocationStr = kingElem.getElementsByTagName("LOCATION").item(0).getTextContent().toLowerCase();
 		
-		//import city
+		//importa città
 		NodeList nList = (doc).getElementsByTagName("CITY");
 		city = new City[nList.getLength()];
 		for (int i = 0; i < nList.getLength(); i++) {
@@ -205,9 +168,9 @@ public class Importer {
 			mapInst.insertCity(city[i], elem_region, elem_color);
 		}
 		if (!validateCities(city))
-			return -1;// throw error
+			return -1;// lancia errore
 
-		// import king bonus
+		// importo bonus del re
 		
 		City temp = city[0];
 		for(City c: city)
@@ -228,11 +191,11 @@ public class Importer {
 		}
 
 		
-		// import pawn coulors and create pawns
+		// importo colori pedine e creo pedine
 				Element pedElem = (Element) (doc).getElementsByTagName("COLORI_PEDINE").item(0);
 				NodeList colorList = pedElem.getElementsByTagName("COLORE");
 				if (colorList.getLength() < 8)
-					return -3;// throw error
+					return -3;// lancia errore
 				pawnColors = new String[colorList.getLength()];
 				for (int i = 0; i < colorList.getLength(); i++) {
 					Element colorElem = (Element) colorList.item(i);
@@ -249,8 +212,8 @@ public class Importer {
 				}
 				
 				
-		// import nobility track
-		this.nobilityTrackBonus = new Bonus[21][3];// max 3 bonuses for each slot;
+		// importo nobility track
+		this.nobilityTrackBonus = new Bonus[21][3];// max 3 bonus per casella;
 		Node nobilityNode = (doc).getElementsByTagName("NOBILITY_BONUS").item(0);
 		NodeList posList = ((Element) nobilityNode).getElementsByTagName("POSIZIONE");
 		int index = 0;
@@ -272,7 +235,7 @@ public class Importer {
 		
 		
 		
-		//import permits cards
+		//importo carte permesso
 		Element permElem = (Element) (doc).getElementsByTagName("POOL_CARTE_PERMESSO").item(0);
 		NodeList cardList = permElem.getElementsByTagName("CARTA");
 		permitsCardPool = new PermitsCard[3][cardList.getLength()/3];
@@ -297,7 +260,7 @@ public class Importer {
 				letterBuff[j] = letterList.item(j).getTextContent();
 				int regionCodeTmp = letterToRegion(letterBuff[j]);
 				if(regionCode != -1 && regionCodeTmp!=regionCode)
-					return -3; //error: letters which rifer to different regions 
+					return -3; //errore: lettere che si riferiscono a regioni diverse
 				else //non necessario se resta il return sopra
 					regionCode = regionCodeTmp;
 			}
@@ -307,10 +270,9 @@ public class Importer {
 	}
 	
 	/**
-	 * Random num.
-	 *
-	 * @param Min the min
-	 * @param Max the max
+	 * 
+	 * @param Min
+	 * @param Max
 	 * @return a random number between min max
 	 */
 
@@ -320,10 +282,9 @@ public class Importer {
 	}
 
 	/**
-	 * convert a string to a member of the enum.
-	 *
-	 * @param color the color
-	 * @return the city color
+	 * convert a string to a member of the enum
+	 * @param color
+	 * 
 	 */
 	private CityColor parseColor(String color) {
 		CityColor[] colors = CityColor.values();
@@ -333,12 +294,10 @@ public class Importer {
 		}
 		return null;
 	}
-	
 	/**
-	 * convert a string to a member of the enum.
-	 *
-	 * @param b the bonus
-	 * @return the bonus type
+	 * convert a stirng to a member of the enum
+	 * @param b
+	 * 
 	 */
 	private BonusType parseBonus(String b) {
 		BonusType[] types = BonusType.values();
@@ -350,15 +309,14 @@ public class Importer {
 	}
 	
 /**
- * check if the city has been created right.
- *
- * @param c the c
- * @return true, if successful
+ * check if the city has been created right
+ * @param c
+ * @return
  */
 	boolean validateCities(City[] c) {
 		if (c.length != 15)
 			return false; // controllo numero
-		boolean[] iniziali = new boolean[c.length];// check different initials
+		boolean[] iniziali = new boolean[c.length];// controllo iniziali diverse
 		for (City cc : c) {
 			char in = cc.getName().toLowerCase().charAt(0);
 			int ascii = (int) in;
@@ -368,7 +326,7 @@ public class Importer {
 			else
 				iniziali[ascii - a_ascii] = true;
 		}
-		// check initials
+		// controllo iniziali
 		ArrayList<Character> inits = new ArrayList<Character>(Arrays.asList('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o'));// controllo iniziali
 		for (int i = 0; i < c.length; i++) {
 			Character cha = new Character(c[i].getName().toLowerCase().charAt(0));
@@ -382,8 +340,7 @@ public class Importer {
 	}
 	
 	/**
-	 * associate the letters at the region.
-	 *
+	 * associate the letter at the region
 	 * @param letter is the letter in input
 	 * @return the number of the city based on the letter
 	 */
@@ -399,77 +356,62 @@ public class Importer {
 	}
 	
 	/**
-	 * Gets the pawn.
-	 *
+	 * 
 	 * @return the pawn array
 	 */
 	public Pawn[] getPawn() {
 		return pawn;
 	}
-	
 	/**
-	 * Gets the permits card pool.
-	 *
+	 * 
 	 * @return the region and the deck
 	 */
 
 	public PermitsCard[][] getPermitsCardPool() {
 		return permitsCardPool;
 	}
-	
 	/**
-	 * Gets the nobility track.
-	 *
+	 * 
 	 * @return the nobility track
 	 */
 
 	public NobilityTrack getNobilityTrack() {
 		return nobilityTrack;
 	}
-	
 	/**
-	 * Gets the city.
-	 *
+	 * 
 	 * @return the city array
 	 */
 
 	public City[] getCity() {
 		return city;
 	}
-	
 	/**
-	 * Gets the color bonus.
-	 *
+	 * 
 	 * @return  the bonus array
 	 */
 	
 	public Bonus[] getColorBonus() {
 		return colorBonus;
 	}
-	
 	/**
-	 * Gets the king bonus.
-	 *
+	 * 
 	 * @return the arraylist of king bonus cards
 	 */
 
 	public ArrayList<Bonus> getKingBonus() {
 		return kingBonus;
 	}
-	
 	/**
-	 * Gets the king bonus deck.
-	 *
+	 * 
 	 * @return the king bonus deck
 	 */
 	
 	public ArrayList<Bonus> getKingBonusDeck() {
 		return kingBonus;
 	}
-	
 	/**
-	 * Gets the permits deck.
-	 *
+	 * 
 	 * @return the permits deck
 	 */
 
@@ -477,20 +419,16 @@ public class Importer {
 	public PermitsDeck getPermitsDeck() {
 		return permitsDeck;
 	}
-	
 	/**
-	 * Gets the region bonus.
-	 *
+	 * 
 	 * @return the regionbonus
 	 */
 	
 	public Bonus[] getRegionBonus() {
 		return regionBonus;
 	}
-	
 	/**
-	 * Gets the king.
-	 *
+	 * 
 	 * @return the king
 	 */
 	
