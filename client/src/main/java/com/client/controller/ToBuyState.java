@@ -3,6 +3,7 @@ package com.client.controller;
 import java.util.ArrayList;
 
 import com.client.view.ClientCLI;
+import com.client.view.InterfaceMiddleware;
 import com.communication.RMIClientControllerRemote;
 import com.communication.gamelogic.GameDTO;
 import com.communication.market.OnSaleDTO;
@@ -16,8 +17,8 @@ public class ToBuyState implements Runnable{
 	/** The game. */
 	private GameDTO game;
 	
-	/** The cli. */
-	private ClientCLI cli;
+	/** The middleware. */
+	private InterfaceMiddleware view;
 	
 	/** The connection. */
 	private SocketConnection connection;
@@ -32,9 +33,9 @@ public class ToBuyState implements Runnable{
 	 * @param cli the cli
 	 * @param connection the connection
 	 */
-	public ToBuyState(GameDTO game, ClientCLI cli, SocketConnection connection){
+	public ToBuyState(GameDTO game, InterfaceMiddleware view, SocketConnection connection){
 		this.game = game;
-		this.cli = cli;
+		this.view = view;
 		this.connection = connection;
 	}
 	
@@ -46,7 +47,7 @@ public class ToBuyState implements Runnable{
 	public void run() {
 		String onSaleUID;
 		ArrayList<OnSaleDTO> availableOnSale = new ArrayList<OnSaleDTO>(game.getMarket().getObjectsOnSale());
-		onSaleUID = cli.getObjectToBuyUID(availableOnSale.size(), availableOnSale);
+		onSaleUID = view.toBuy(game);
 		connection.sendToServer("INPUT_TOBUY", onSaleUID);
 	}
 

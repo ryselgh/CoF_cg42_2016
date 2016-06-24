@@ -1,6 +1,7 @@
 package com.client.controller;
 
 import com.client.view.ClientCLI;
+import com.client.view.InterfaceMiddleware;
 import com.communication.ItemOnSale;
 import com.communication.gamelogic.GameDTO;
 
@@ -11,7 +12,7 @@ import com.communication.gamelogic.GameDTO;
 public class ToSellState implements Runnable{
 	
 	/** The cli. */
-	private ClientCLI cli;
+	private InterfaceMiddleware view;
 	
 	/** The connection. */
 	private SocketConnection connection;
@@ -25,8 +26,8 @@ public class ToSellState implements Runnable{
 	 * @param cli the cli
 	 * @param connection the SocketConnection
 	 */
-	public ToSellState(ClientCLI cli, SocketConnection connection){
-		this.cli = cli;
+	public ToSellState(InterfaceMiddleware view, SocketConnection connection){
+		this.view = view;
 		this.connection = connection;
 	}
 	
@@ -36,15 +37,8 @@ public class ToSellState implements Runnable{
 	 */
 	@Override
 	public void run() {
-		ItemOnSale its = null;
-		Object item = cli.getItemToSell();
-		if(item instanceof String){
-			connection.sendToServer("INPUT_TOSELL", null);
-		}else{
-			int price = cli.getSellPrice();
-			its = new ItemOnSale(price, (Object) item);
-			connection.sendToServer("INPUT_TOSELL",its);
-		}
+		ItemOnSale its = view.toSell();;
+		connection.sendToServer("INPUT_TOSELL",its);
 	}
 
 }

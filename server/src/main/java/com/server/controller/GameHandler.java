@@ -347,7 +347,7 @@ public class GameHandler extends Observable implements Runnable, Observer{
 					((ActionState) toResume).collectTWOTOKENS((BonusTokenDTO[]) obj);
 					break;
 				case "ONETOKEN":
-					((ActionState) toResume).collectONETOKEN((BonusTokenDTO[]) obj);
+					((ActionState) toResume).collectONETOKEN((BonusTokenDTO) obj);
 					break;
 				case "TOBUY":
 					((BuyItemState) toResume).execute((String) obj, true);

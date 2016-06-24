@@ -18,6 +18,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 
 
 import com.client.view.ClientCLI;
+import com.client.view.InterfaceMiddleware;
 import com.communication.CommunicationObject;
 import com.communication.ItemOnSale;
 import com.communication.LobbyStatus;
@@ -38,8 +39,7 @@ import com.communication.market.OnSaleDTO;
  */
 public class ClientController extends Observable implements Observer, RMIClientControllerRemote{
 
-	/** The cli. */
-	private ClientCLI cli;
+	private InterfaceMiddleware view;
 	
 	/** The game. */
 	private GameDTO game; 
@@ -67,7 +67,7 @@ public class ClientController extends Observable implements Observer, RMIClientC
 	
 	/** The available actions. */
 	private boolean[] availableActions;
-	
+
 	/** The input queue. */
 	private ArrayBlockingQueue<String> cliQueue;
 	
@@ -94,13 +94,18 @@ public class ClientController extends Observable implements Observer, RMIClientC
 	 *
 	 * @param RMI the rmi
 	 */
-	public ClientController(boolean RMI){
-		this.RMI = RMI;
+	public ClientController(boolean RMI, boolean isGUI){
 		this.cliQueue = new ArrayBlockingQueue<String>(50);
-		cli = new ClientCLI(this,this.cliQueue);
-		this.newConsoleListenerThread();
+		this.view = new InterfaceMiddleware(this, isGUI,this.cliQueue);
+		this.RMI = RMI;
 		
 	}
+
+	
+	public void setConsoleListener(ConsoleListener consoleListener) {
+		this.consoleListener = consoleListener;
+	}
+
 
 	/**
 	 * Run. If the protocol used is Socket, then it starts the connection listening. If otherwise RMI is used, the identification starts immediately
@@ -119,10 +124,10 @@ public class ClientController extends Observable implements Observer, RMIClientC
 				connection.run();
 				connection.addObserver(this);
 			} catch (IOException e) {
-				cli.printMsg("Failed to connect to server");
+				view.printMsg("Failed to connect to server");
 				return;
 			}
-			cli.printMsg("Connected to the server");
+			view.printMsg("Connected to the server");
 			connection.startListen();
 		} else {// se è RMI parte subito l'identificazione
 			registry = LocateRegistry.getRegistry(SERVERRMI_HOST, SERVERRMI_PORT);
@@ -130,21 +135,21 @@ public class ClientController extends Observable implements Observer, RMIClientC
 			int resp = 0;
 			String nick = "";
 			do {
-				nick = this.getUserName();
+				nick = view.getUsername();
 				resp = lobbyRemote.RMIlogIn(nick);
 				switch (resp) {
 				case 1:
-					cli.printMsg("Illegal characters");
+					view.printMsg("Illegal characters");
 					break;
 				case 2:
-					cli.printMsg("Nickname size must be >5 and <13");
+					view.printMsg("Nickname size must be >5 and <13");
 					break;
 				case 3:
-					cli.printMsg("Nickname already used");
+					view.printMsg("Nickname already used");
 					break;
 				}
 			} while (resp != 0);
-			cli.printMsg("Logged in successfully");
+			view.printMsg("Logged in successfully");
 			this.userName = nick;
 			int startPort = 1098;
 			registry = createRegistry(startPort);
@@ -154,7 +159,6 @@ public class ClientController extends Observable implements Observer, RMIClientC
 			;
 			lobbyRemote.RMIsubscribe(nick, CLIENT_PORT);
 			consoleListener.addObserver(this);
-			this.printLobbyCommand();
 		}
 	}
 
@@ -179,57 +183,6 @@ public class ClientController extends Observable implements Observer, RMIClientC
 		return registry;
 	}
 	
-	/**
-	 * Prints the lobby command.
-	 */
-	private void printLobbyCommand(){
-		cli.printMsg("Lobby commands: \n'\\NEWROOM_roomname_maxPl_minPl' \n'\\JOINROOM_roomname' \n'\\STARTGAME' requires admin of the room \n'\\LEAVEROOM' \n'\\SETMAP_filepath   or \\SETMAP_defaultX   1<=X<=8 to use a default map\n'\\SETTIMEOUT_X  to set X seconds as time limit for a turn. 0=disabled(default)'");
-	}
-
-	/**
-	 * Prints the lobby status.
-	 */
-	private void printLobbyStatus(){
-		cli.printMsg("\n\n");
-		String clientsInLobby = "";
-		if(lobbyStatus.getFreeClients().size()==0)
-			clientsInLobby = "none";
-		else{
-		for(int i=0;i<lobbyStatus.getFreeClients().size();i++){
-			clientsInLobby += lobbyStatus.getFreeClients().get(i);
-			if(i!=lobbyStatus.getFreeClients().size()-1)
-				clientsInLobby += ", ";
-		}
-		}
-		cli.printMsg("Clients in lobby: " + clientsInLobby);
-		if(lobbyStatus.getRooms().size()==0)
-			cli.printMsg("Rooms: none");
-		else{
-		cli.printMsg("\nRooms:");
-		for(RoomStatus rs : lobbyStatus.getRooms()){
-			cli.printMsg("\n[" + rs.getRoomName() + "]");
-			String clientsInRoom = "";
-			for(int i=0;i<rs.getPlayers().size();i++){
-				clientsInRoom += rs.getPlayers().get(i);
-				if(i!=rs.getPlayers().size()-1)
-					clientsInRoom += ", ";
-			}
-			cli.printMsg("Clients: " + clientsInRoom);
-			cli.printMsg("Admin: " + rs.getAdminName());
-			cli.printMsg("Minimum players: " + rs.getMinPlayers());
-			cli.printMsg("Maximum players: " + rs.getMaxPlayers());
-			cli.printMsg("Map: " + rs.getMapName());
-			String sec = "";
-			if(rs.getTimerDelay()==0)
-				sec = "disabled";
-			else
-				sec = Integer.toString(rs.getTimerDelay()/1000) + "sec";
-			cli.printMsg("Timeout: " + sec);
-		}
-		}
-	}
-
-
 
 	/**
 	 * Read file. Used for the custom map
@@ -252,38 +205,16 @@ public class ClientController extends Observable implements Observer, RMIClientC
 	 * @param name the name
 	 * @return the string
 	 */
-	private String isCorrect(String name){
-		if(name.contains("[^abcdefghilmnopqrstuvzjkywxABCDEFGHILMNOPQRSTUVZJKYWX0123456789]"))//regex equivalente a tutti i caratteri a parte le lettere
-			return "Illegal characters";
-		if(name.length()<5 || name.length()>13)
-			return "Nickname size must be >5 and <13";
-		return "";
-	}
 	
-	/**
-	 * Starts a new console listener thread.
-	 */
-	private void newConsoleListenerThread(){//quando il player entra in gioco il thread si fotte, quindi ogni volta che torna nella lobby ne creo uno
-		consoleListener = new ConsoleListener(this, this.cli, this.cliQueue);
-		consoleThread = new Thread(consoleListener);
-		consoleThread.start();
-	}
+	
+	
 	
 	/**
 	 * Gets the user name.
 	 *
 	 * @return the user name
 	 */
-	private String getUserName(){
-		cli.printMsg("Insert your nickname:");
-		String nick = cli.getMsg();
-		while(nick == null || !isCorrect(nick).equals("")){
-			if(nick!= null)
-				cli.printMsg(isCorrect(nick));
-			nick = cli.getMsg();
-		}
-		return nick;
-	}
+	
 	
 	/* (non-Javadoc)
 	 * @see java.util.Observer#update(java.util.Observable, java.lang.Object)
@@ -293,13 +224,15 @@ public class ClientController extends Observable implements Observer, RMIClientC
 	public void update(Observable o, Object change){
 		if(o instanceof ConsoleListener){
 			String inStr = this.cliQueue.poll();
+			if(inStr==null)
+				return;
 			String[] split = inStr.split("_");
 			if(split[0].equals("\\SETMAP")){
 				String newMap = "";
 				if(split[1].substring(0, "default".length()).equals("default")){
 					String mapNo = split[1].substring("default".length(), split[1].length());
 					if(mapNo.contains("[^0123456789]") || Integer.parseInt(mapNo)>8 || Integer.parseInt(mapNo) == 0){
-							cli.printMsg("Wrong input format");
+							view.printMsg("Wrong input format");
 							return;
 					}
 					newMap = "default" + mapNo;
@@ -308,7 +241,7 @@ public class ClientController extends Observable implements Observer, RMIClientC
 					try {
 						newMap = readFile(split[1], StandardCharsets.UTF_8);
 					} catch (Exception e) {
-						cli.printMsg("Error during map import");
+						view.printMsg("Error during map import");
 					}
 				}
 				if(RMI)
@@ -325,7 +258,7 @@ public class ClientController extends Observable implements Observer, RMIClientC
 		else{
 			if(RMI)
 				try {
-					cli.printMsg(lobbyRemote.RMIlobbyCommand(this.userName, inStr, null));
+					view.printMsg(lobbyRemote.RMIlobbyCommand(this.userName, inStr, null));
 				} catch (RemoteException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -341,42 +274,40 @@ public class ClientController extends Observable implements Observer, RMIClientC
 
 		if (cmd.contains("lobby_msg-")) {// messaggio della lobby
 			cmd = cmd.substring("lobby_msg-".length());
-			cli.printMsg(cmd + "\n");
+			view.printMsg(cmd + "\n");
 		} 
 		else {// messaggio di gioco / input
 			switch (cmd) {
 			case "TOBUYEMPTY":
-				cli.printMsg("Every item has been bought. Turn skipped");
+				view.printMsg("Every item has been bought. Turn skipped");
 				break;
 			case "TIMEOUT":
 				if(this.userName.equals((String) obj)){
 					currentActState.setAbortFlag(true);
 					this.cliQueue.add("ABORT");
-					cli.printMsg("You ran out of time. Turn skipped");
+					view.printMsg("You ran out of time. Turn skipped");
 				}
 				else
-					cli.printMsg("Player " + (String) obj + " ran out of time. Turn skipped");
+					view.printMsg("Player " + (String) obj + " ran out of time. Turn skipped");
 				break;
 			case "LOBBYSTATUS":
 				this.lobbyStatus = (LobbyStatus) obj;
-				printLobbyStatus();
+				view.updateLobby(lobbyStatus);
 				break;
 			case "INSERTNICKNAME":
-				this.tmpUserName= this.getUserName();
+				this.tmpUserName= view.getUsername();
 				connection.sendToServer("INSERTNICKNAME",this.tmpUserName);
 				break;
 			case "INSERTNICKNAMEACK":
 				this.userName = this.tmpUserName;
-				printLobbyCommand();
 				consoleListener.addObserver(this);
 				break;
 			case "INSERTNICKNAMENACK":
-				cli.printMsg(((String) obj)+ "\n");
+				view.printMsg(((String) obj)+ "\n");
 				break;
 			case "ONETOKEN":
-				BonusTokenDTO[] btDTO = new BonusTokenDTO[1];
 				BonusTokenDTO[] availBts = (BonusTokenDTO[]) obj;
-				btDTO = cli.getTokenBonus(availBts, 1);
+				BonusTokenDTO btDTO = view.oneToken(availBts);
 				connection.sendToServer("INPUT_ONETOKEN",btDTO);
 				break;
 
@@ -386,9 +317,8 @@ public class ClientController extends Observable implements Observer, RMIClientC
 			case "ONETOKEN_NACK":
 				break;
 			case "TWOTOKENS":
-				BonusTokenDTO[] btDTO2 = new BonusTokenDTO[1];
 				BonusTokenDTO[] availBts2 = (BonusTokenDTO[]) obj;
-				btDTO2 = cli.getTokenBonus(availBts2, 2);
+				BonusTokenDTO[] btDTO2 = view.twoTokens(availBts2);
 				connection.sendToServer("INPUT_TWOTOKENS",btDTO2);
 				break;
 
@@ -398,14 +328,7 @@ public class ClientController extends Observable implements Observer, RMIClientC
 			case "TWOTOKENS_NACK":
 				break;
 			case "FREECARD":
-				PermitsCardDTO pcDTO=null;
-				//get ret: una carta permesso di quelle a faccia in su nelle regioni
-				int regIndex = cli.getTargetRegion(2);
-				ArrayList<PermitsCardDTO> availablePermits = new ArrayList<PermitsCardDTO>();
-				availablePermits.add(game.getMap().getPermitsDeck(regIndex).getSlot(0));
-				availablePermits.add(game.getMap().getPermitsDeck(regIndex).getSlot(1));
-				int pcIndex = cli.getPermitIndex(availablePermits);
-				pcDTO = availablePermits.get(pcIndex);
+				PermitsCardDTO pcDTO = view.freeCard(game);
 				connection.sendToServer("INPUT_FREECARD",pcDTO);
 				break;
 
@@ -413,18 +336,11 @@ public class ClientController extends Observable implements Observer, RMIClientC
 				break;
 
 			case "FREECARDNACK":
-				cli.printMsg(((String) obj)+ "\n");
+				view.printMsg(((String) obj)+ "\n");
 				break;
 
 			case "BONUSCARD":
-				PermitsCardDTO pcOwnedDTO=null;
-				ArrayList<PermitsCardDTO> ownedPermits = new ArrayList<PermitsCardDTO>();
-				ownedPermits.addAll(game.getActualPlayer().getPermits());
-				for(PermitsCardDTO pc: ownedPermits)
-					if(!pc.isFaceDown())
-						ownedPermits.remove(pc);
-				int pcOwnedIndex = cli.getPermitIndex(ownedPermits);
-				pcOwnedDTO = ownedPermits.get(pcOwnedIndex);
+				PermitsCardDTO pcOwnedDTO= view.bonusCard(game);
 				connection.sendToServer("INPUT_BONUSCARD",pcOwnedDTO);
 				break;
 
@@ -432,65 +348,56 @@ public class ClientController extends Observable implements Observer, RMIClientC
 				break;
 
 			case "BONUSCARDNACK":
-				cli.printMsg(((String) obj)+ "\n");
+				view.printMsg(((String) obj)+ "\n");
 				break;
 
 			case "TOSELL":
-				ToSellState sellState = new ToSellState(this.cli, this.connection);
+				ToSellState sellState = new ToSellState(this.view, this.connection);
 				Thread sellThread = new Thread(sellState);
 				sellThread.start();
 				break;
 
 			case "TOSELLACK":
-				cli.printMsg(((String) obj)+ "\n");
+				view.printMsg(((String) obj)+ "\n");
 				break;
 
 			case "TOSELLNACK":
-				cli.printMsg(((String) obj)+ "\n");
+				view.printMsg(((String) obj)+ "\n");
 				break;
 
 			case "TOBUY":					
-				ToBuyState buyState = new ToBuyState(this.game, this.cli, connection);
+				ToBuyState buyState = new ToBuyState(this.game, this.view, connection);
 				Thread buyThread = new Thread(buyState);
 				buyThread.start();
 				break;
 
 			case "TOBUYACK":
-				cli.printMsg(((String) obj)+ "\n");
+				view.printMsg(((String) obj)+ "\n");
 				break;
 
 			case "TOBUYNACK":
-				cli.printMsg(((String) obj)+ "\n");
+				view.printMsg(((String) obj)+ "\n");
 				break;
-			case "StartTurn":  // AO' la coerenza, o tutto upper o tutto lower <----------------------README---------------------
-				// aggiorna interfaccia con la carta pescata(obj =
-				// PoliticsCardDTO)
+			case "StartTurn":  
 				PoliticsCardDTO polcDTO = (PoliticsCardDTO) obj;
-				cli.printMsg("You drew this card: "+polcDTO.getColor().toString());
+				view.startTurn(polcDTO);
 				break;
 
 			case "AvailableActions":
-
-				//la ricezione di questo comando implica che il client deve mandare un'azione al server
-				//main: obtainpermit[0], satisfyking[1], shiftcouncilmain[2], build[3]
-				//speed: buyassistant[4], changecards[5], shiftcouncilspeed[6], buymainaction[7]
-				//pass[8]
-				// SONO DA RIORDINARE SECONDO LA SCHEDA DEL GIOCO <-------------------------------------------IMPORTANTE!!
 				availableActions = (boolean[]) obj;
 				this.availableActions= availableActions;//non date ascolto al warning, serve per il case "ActionNotValid"
-				SelectActionState actState = new SelectActionState(this.game, availableActions, this.cli, connection);
+				SelectActionState actState = new SelectActionState(this.game, availableActions, this.view, connection);
 				currentActState = actState;
 				Thread actThread = new Thread(actState);
 				actThread.start();
 				break;
 
 			case "ActionAccepted": 
-				// ack dell'invio azione.
 				break;
 
 			case "ActionNotValid":
-				cli.printMsg(((String) obj)+ "\n");
-				SelectActionState actStateRetry = new SelectActionState(this.game, this.availableActions, this.cli, connection);
+				view.printMsg(((String) obj)+ "\n");
+				SelectActionState actStateRetry = new SelectActionState(this.game, this.availableActions, this.view, connection);
 				currentActState = actStateRetry;
 				Thread actThreadRetry = new Thread(actStateRetry);
 				actThreadRetry.start();
@@ -498,22 +405,22 @@ public class ClientController extends Observable implements Observer, RMIClientC
 			case "GAMEDTO":
 				consoleListener.deleteObserver(this);//per stare sicuri, da togliere se verificato che STARTGAME arriva a tutti
 				this.inGame = true;//se il player si riconnette dopo una disconnessione 
-				this.cli.setGameAndBuildMap((GameDTO) obj);
+				view.updateGame((GameDTO) obj);
 				this.game = (GameDTO) obj;
 				break;
 			case "STARTGAME":
 				consoleListener.deleteObserver(this);
 				this.inGame = true;
 				//consoleListener.deleteObserver(this);//in gioco gli input sono ad invocazione  
-				this.cli.setGameAndBuildMap((GameDTO) obj);
+				view.updateGame((GameDTO) obj);
 				this.game = (GameDTO) obj;
 				break;
 			case "ENDGAME":
-				cli.printMsg((String) obj);
+				view.printMsg((String) obj);
 				this.inGame=false;
 				break;
 			case "GAMEMESSAGE":
-				cli.printMsg((String) obj);
+				view.printMsg((String) obj);
 				break;
 			default:
 				throw new IllegalArgumentException("Command not recognized: " + cmd);
@@ -552,7 +459,7 @@ public class ClientController extends Observable implements Observer, RMIClientC
 	 */
 	public void RMIupdateLobby(LobbyStatus status){
 		this.lobbyStatus = status;
-		printLobbyStatus();
+		view.updateLobby(status);
 	}
 	
 	/* (non-Javadoc)
@@ -562,7 +469,7 @@ public class ClientController extends Observable implements Observer, RMIClientC
 	public void RMIupdateGame(GameDTO game){
 		this.consoleListener.deleteObserver(this);
 		this.inGame = true;//se il player si riconnette dopo una disconnessione 
-		this.cli.setGameAndBuildMap(game);
+		view.updateGame(game);
 		this.game = game;
 	}
 	
@@ -571,7 +478,7 @@ public class ClientController extends Observable implements Observer, RMIClientC
 	 * prints a received message
 	 */
 	public void RMIprintMsg(String msg){
-		this.cli.printMsg(msg);
+		view.printMsg(msg);
 	}
 	
 	/* (non-Javadoc)
@@ -579,8 +486,8 @@ public class ClientController extends Observable implements Observer, RMIClientC
 	 * gets the action. just for RMI protocol
 	 */
 	public ActionDTO RMIgetAction(boolean[] availableActions){
-		int selectedAction = cli.getAction(availableActions);
-		SelectActionState actState = new SelectActionState(this.game, availableActions, this.cli, null);
+		int selectedAction = view.getActionIndex(availableActions);
+		SelectActionState actState = new SelectActionState(this.game, availableActions, this.view, null);
 		ActionDTO compiledAction = actState.getActionInstance(selectedAction);
 		return compiledAction;
 	}
@@ -590,7 +497,7 @@ public class ClientController extends Observable implements Observer, RMIClientC
 	 * receive the politics card drawn at the beginning of the turn
 	 */
 	public void RMIStartTurn(PoliticsCardDTO polcDTO){
-		cli.printMsg("You drew this card: "+polcDTO.getColor().toString());
+		view.startTurn(polcDTO);
 	}
 	
 	/* (non-Javadoc)
@@ -598,9 +505,8 @@ public class ClientController extends Observable implements Observer, RMIClientC
 	 * gets one bonus token to give to the server
 	 */
 	public BonusTokenDTO RMIOneToken(BonusTokenDTO[] availBts){
-		BonusTokenDTO[] btDTO = new BonusTokenDTO[1];
-		btDTO = cli.getTokenBonus(availBts, 1);
-		return btDTO[0];
+		BonusTokenDTO btDTO = view.oneToken(availBts);
+		return btDTO;
 	}
 	
 	/* (non-Javadoc)
@@ -608,8 +514,7 @@ public class ClientController extends Observable implements Observer, RMIClientC
 	 * gets two bonus token to give to the server
 	 */
 	public BonusTokenDTO[] RMITwoTokens(BonusTokenDTO[] availBts){
-		BonusTokenDTO[] btDTO = new BonusTokenDTO[1];
-		btDTO = cli.getTokenBonus(availBts, 2);
+		BonusTokenDTO[] btDTO = view.twoTokens(availBts);
 		return btDTO;
 	}
 	
@@ -618,13 +523,7 @@ public class ClientController extends Observable implements Observer, RMIClientC
 	 * gets a permit card to give to the server
 	 */
 	public PermitsCardDTO RMIFreeCard(){
-		PermitsCardDTO pcDTO=null;
-		int regIndex = cli.getTargetRegion(2);
-		ArrayList<PermitsCardDTO> availablePermits = new ArrayList<PermitsCardDTO>();
-		availablePermits.add(game.getMap().getPermitsDeck(regIndex).getSlot(0));
-		availablePermits.add(game.getMap().getPermitsDeck(regIndex).getSlot(1));
-		int pcIndex = cli.getPermitIndex(availablePermits);
-		pcDTO = availablePermits.get(pcIndex);
+		PermitsCardDTO pcDTO=view.freeCard(game);
 		return pcDTO;
 	}
 	
@@ -633,14 +532,7 @@ public class ClientController extends Observable implements Observer, RMIClientC
 	 * gets a bonus card to give to the server
 	 */
 	public PermitsCardDTO RMIBonusCard(){
-		PermitsCardDTO pcOwnedDTO=null;
-		ArrayList<PermitsCardDTO> ownedPermits = new ArrayList<PermitsCardDTO>();
-		ownedPermits.addAll(game.getActualPlayer().getPermits());
-		for(PermitsCardDTO pc: ownedPermits)
-			if(!pc.isFaceDown())
-				ownedPermits.remove(pc);
-		int pcOwnedIndex = cli.getPermitIndex(ownedPermits);
-		pcOwnedDTO = ownedPermits.get(pcOwnedIndex);
+		PermitsCardDTO pcOwnedDTO=view.bonusCard(game);
 		return pcOwnedDTO;
 	}
 	
@@ -649,15 +541,8 @@ public class ClientController extends Observable implements Observer, RMIClientC
 	 * gets an ItemOnSale(item and price) to give to the server
 	 */
 	public ItemOnSale RMIToSell(){
-		ItemOnSale its = null;
-		Object item = cli.getItemToSell();
-		if(item instanceof String){
-			return null;
-		}else{
-			int price = cli.getSellPrice();
-			its = new ItemOnSale(price, (Object) item);
-			return its;
-		}
+		ItemOnSale item = view.toSell();
+		return item;
 	}
 	
 	/* (non-Javadoc)
@@ -665,9 +550,7 @@ public class ClientController extends Observable implements Observer, RMIClientC
 	 * gets the UID to give to the server of the item to buy 
 	 */
 	public String RMIToBuy(){
-		String onSaleUID;
-		ArrayList<OnSaleDTO> availableOnSale = new ArrayList<OnSaleDTO>(game.getMarket().getObjectsOnSale());
-		onSaleUID = cli.getObjectToBuyUID(availableOnSale.size(), availableOnSale);
+		String onSaleUID = view.toBuy(game);
 		return onSaleUID;
 	}
 	

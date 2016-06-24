@@ -364,14 +364,13 @@ public class ActionState implements State {
 	 * @param chosen the chosen
 	 * @throws RemoteException the remote exception
 	 */
-	public void collectONETOKEN(BonusTokenDTO[] chosen) throws RemoteException{
+	public void collectONETOKEN(BonusTokenDTO chosen) throws RemoteException{
 		BonusTokenDTO[] btTmp = getAvailableTokens();
-		BonusTokenDTO chos = null;
 		if (btTmp.length == 0)
 			clienthandler.sendToClient("You have no available city tokens. Bonus discarded", null);//non è nack perchè non ho chiesto input al client
 		else {
 			if(RMI){
-				chos = this.remoteController.RMIOneToken(btTmp);
+				chosen = this.remoteController.RMIOneToken(btTmp);
 			}
 			else{
 				if(chosen==null){
@@ -379,10 +378,9 @@ public class ActionState implements State {
 					gamehandler.waitForInput("ONETOKEN", this);
 					return;
 				}
-				chos = chosen[0];
 			}
 			BonusToken conv = new BonusToken(null);
-			conv.setterFromDTO(chos);
+			conv.setterFromDTO(chosen);
 			for (Bonus bo : conv.getBonus())
 				collectBonus(bo);
 			clienthandler.sendToClient("ONETOKENACK", null);

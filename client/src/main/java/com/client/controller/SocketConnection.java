@@ -8,7 +8,7 @@ import java.util.Observable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.client.ClientObservable;
+
 import com.communication.CommunicationObject;
 
 
