@@ -24,7 +24,7 @@ public class MarketTest {
 	
 	
 	@Test
-	public void testMarket_1()
+	public void testMarket()
 		throws Exception {
 
 		Market result = new Market();
@@ -33,19 +33,9 @@ public class MarketTest {
 		assertEquals(0, result.getObjNumber());
 	}
 
+	
 	@Test
-	public void testAddObj_1()
-		throws Exception {
-		Market fixture = new Market();
-		fixture.addObj(new OnSale(p,new Assistant(), 3,UID));
-		OnSale o = new OnSale(p,new Assistant(), 3,UID);
-
-		fixture.addObj(o);
-
-	}
-
-	@Test
-	public void testGetObjNumber_1()
+	public void testGetObjNumber()
 		throws Exception {
 		Market fixture = new Market();
 		fixture.addObj(o);
@@ -56,7 +46,7 @@ public class MarketTest {
 	}
 
 	@Test
-	public void testGetObjOnSale_1()
+	public void testGetObjOnSale()
 		throws Exception {
 		Market fixture = new Market();
 		fixture.addObj(o);
@@ -65,11 +55,7 @@ public class MarketTest {
 
 		OnSale result = fixture.getObjOnSale(arrayPointer);
 
-		// An unexpected exception was thrown in user code while executing this test:
-		//    java.lang.IndexOutOfBoundsException: Index: 1, Size: 1
-		//       at java.util.ArrayList.rangeCheck(ArrayList.java:653)
-		//       at java.util.ArrayList.get(ArrayList.java:429)
-		//       at com.server.model.market.Market.getObjOnSale(Market.java:28)
+		
 		assertNotNull(result);
 	}
 
@@ -98,53 +84,24 @@ public class MarketTest {
 		fixture.removeObj(n);
 		ArrayList<OnSale> result = fixture.getObjectsOnSale();
 
-		// An unexpected exception was thrown in user code while executing this test:
-		//    java.lang.IndexOutOfBoundsException: Index: 1, Size: 1
-		//       at java.util.ArrayList.rangeCheck(ArrayList.java:653)
-		//       at java.util.ArrayList.remove(ArrayList.java:492)
-		//       at com.server.model.market.Market.removeObj(Market.java:42)
+		
 		
 		assertEquals(result.size(),1);
 	}
 
 	@Test
-	public void testToDTO_1()
+	public void testToDTO()
 		throws Exception {
 		Market fixture = new Market();
 		fixture.addObj(o);
 		fixture.addObj(o2);
-		
-
 		MarketDTO result = fixture.toDTO();
 
-		// An unexpected exception was thrown in user code while executing this test:
-		//    java.lang.NullPointerException
-		//       at com.server.model.market.OnSale.toDTO(OnSale.java:65)
-		//       at com.server.model.market.Market.toDTO(Market.java:66)
 		assertNotNull(result);
 		assertTrue(result instanceof MarketDTO);
 	}
 
-//	@Test
-//	public void testToDTO_2()
-//		throws Exception {
-//		Market fixture = new Market();
-//		fixture.addObj(new OnSale());
-//
-//		MarketDTO result = fixture.toDTO();
-//
-//		// An unexpected exception was thrown in user code while executing this test:
-//		//    java.lang.NullPointerException
-//		//       at com.server.model.market.OnSale.toDTO(OnSale.java:65)
-//		//       at com.server.model.market.Market.toDTO(Market.java:66)
-//		assertNotNull(result);
-//	}
 
-	
-//	@After
-//	public void tearDown()
-//		throws Exception {
-//	}
 
 	public static void main(String[] args) {
 		new org.junit.runner.JUnitCore().run(MarketTest.class);

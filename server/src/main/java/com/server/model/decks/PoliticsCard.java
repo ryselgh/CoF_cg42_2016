@@ -53,13 +53,14 @@ public class PoliticsCard
 	 * @return the politics card
 	 */
 	public static PoliticsCard fromDTO(PoliticsCardDTO pcDTO, Player player){
-		if (!(pcDTO == null)) {
+		if (pcDTO == null) 
+			throw new NullPointerException("pcDTO cannot be null");
+		else{
 			for (PoliticsCard pc : player.getHand())
 				if (pc.equalsDTO(pcDTO))
 					return pc;
 			return null;
-		} else
-			throw new NullPointerException("pcDTO cannot be null");
+		}
 	}
 	
 	/**

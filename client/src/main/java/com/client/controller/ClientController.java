@@ -32,7 +32,7 @@ import com.communication.decks.PoliticsCardDTO;
 import com.communication.gamelogic.GameDTO;
 import com.communication.market.OnSaleDTO;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class ClientController.
  */

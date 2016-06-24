@@ -19,6 +19,7 @@ public class PermitsCardTest {
 	
 	@Before
 	public void setUp(){
+		//declaring this array of pemitscards as an option to the creation of a game
 		b=new Bonus[2];
 		b[0]= new Bonus (BonusType.ASSISTANT,2);
 		b[1]= new Bonus (BonusType.CARD,3);
@@ -51,14 +52,14 @@ public class PermitsCardTest {
 	
 	
 	@Test(expected=NullPointerException.class)
-	public void testNull(){
+	public void testIfItsNullThrowsException(){
 		new PermitsCard(null,null);
 	}
 	
 	
 
 	@Test
-	public void testGetBonus_1(){
+	public void testGetBonus(){
 		PermitsCard fixture = new PermitsCard(b,l);
 		Bonus[] result = fixture.getBonus();
 		assertNotNull(result);
@@ -66,15 +67,15 @@ public class PermitsCardTest {
 	}
 
 	@Test
-	public void testGetCityLetter_1(){
+	public void testGetCityLetter(){
 		PermitsCard fixture = new PermitsCard(b,l);
 		String[] result = fixture.getCityLetter();
 		assertNotNull(result);
-		assertEquals(l,result);
+		Assert.assertEquals(l,result);
 	}
 
 	@Test
-	public void testIsFaceDown_1(){
+	public void testIsFaceDownSetsTrue(){
 		PermitsCard fixture = new PermitsCard(b,l);
 		fixture.setFaceDown(true);
 		boolean result = fixture.isFaceDown();
@@ -84,7 +85,7 @@ public class PermitsCardTest {
 	
 
 	@Test
-	public void testIsFaceDown_2(){
+	public void testIsFaceDownSetsFalse(){
 		PermitsCard fixture = new PermitsCard(b,l);
 		fixture.setFaceDown(false);
 		boolean result = fixture.isFaceDown();
@@ -102,7 +103,7 @@ public class PermitsCardTest {
 	}
 	
 	@Test
-	public void testEqualsDTO(){
+	public void testEqualsDTOReturnsTrue(){
 		PermitsCard fixture = new PermitsCard(b,l);
 		PermitsCardDTO pcDTO= new PermitsCardDTO();
 		pcDTO.setBonuses(bDTO);
@@ -112,7 +113,7 @@ public class PermitsCardTest {
 	}
 	
 	@Test
-	public void testEqualsDTO2(){
+	public void testEqualsDTO2ReturnsFalse(){
 		PermitsCard fixture = new PermitsCard(b,l);
 		PermitsCardDTO pcDTO= new PermitsCardDTO();
 		pcDTO.setBonuses(b1DTO);
