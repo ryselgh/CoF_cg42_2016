@@ -176,7 +176,7 @@ public class GameHandler extends Observable implements Runnable, Observer{
 		
 		boolean lastPl = client.isEquals(players.get(players.size()-1));
 		boolean buyState = context.getState().getStateID().equals("BuyItemState");
-		boolean lastBuyState = this.orderCounter == this.players.size()-1;
+		boolean lastBuyState = this.orderCounter == this.players.size();
 		
 		if((lastPl&&!buyState) || (lastBuyState&&buyState)){ //se è l'ultimo del giro
 			State newState = nextState(context.getState());//ricavo lo stato successivo
@@ -191,6 +191,12 @@ public class GameHandler extends Observable implements Runnable, Observer{
 						Collections.shuffle(order);
 					this.orderCounter=0;
 					nextIndex = order.get(orderCounter);
+					game.setMarketCurrentPlayer(this.players.get(nextIndex).getUserName());
+					try {
+						updateClientGame();
+					} catch (RemoteException e) {
+						e.printStackTrace();
+					}
 					orderCounter++;
 				}
 			}
@@ -208,16 +214,26 @@ public class GameHandler extends Observable implements Runnable, Observer{
 		else{//non è l'ultimo del giro
 			context.getState().restoreState();//refresho lo stato
 			ClientHandler nextPl;
+			int nextIndex ;
 			if(context.getState().getStateID().equals("BuyItemState")){
-				nextPl = players.get(this.order.get(this.orderCounter));
+				nextIndex = this.order.get(this.orderCounter);
+				nextPl = players.get(nextIndex);
+				game.setMarketCurrentPlayer(nextPl.getUserName());
+				try {
+					updateClientGame();
+				} catch (RemoteException e) {
+					e.printStackTrace();
+				}
 				orderCounter++;
 			}
-			else
+			else{
 				nextPl = nextPlayer(client);
+				nextIndex = game.getActualPlayerIndex() +1;
+			}
 			context.setClienthandler(nextPl);//aggiorno il riferimento al client
 			if(RMI)
 				context.setRemoteController(RMISubscribed.getRemoteController(remoteControllers, nextPl));
-			game.setActualPlayer(game.getActualPlayerIndex() +1);//aggiorno il giocatore in game
+			game.setActualPlayer(nextIndex);//aggiorno il giocatore in game
 			if(!nextPl.isActive()){//se il giocatore è disconnesso skippa il turno
 				changeState(context);
 				return;

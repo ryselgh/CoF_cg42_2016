@@ -24,7 +24,8 @@ public class GameDTO implements Serializable{
 	private String mapName;
 	private MainActionDTO mainAction;
 	private SpeedActionDTO speedAction;
-	
+	/**The name of the player currently buying at the market. We need this because of the shuffled order*/
+	private String marketCurrentPlayer="";
 	/**
 	 * @return the players
 	 */
@@ -157,5 +158,12 @@ public class GameDTO implements Serializable{
 	public static int getInitialcards() {
 		return INITIALCARDS;
 	}
+	public String getMarketCurrentPlayer() {
+		return marketCurrentPlayer;
+	}
+	public void setMarketCurrentPlayer(String marketCurrentPlayer) {
+		this.marketCurrentPlayer = marketCurrentPlayer;
+	}
+	
 	
 }

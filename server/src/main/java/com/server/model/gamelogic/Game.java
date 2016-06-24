@@ -58,6 +58,8 @@ public class Game {
 	/** The client names. */
 	private String[] clientNames;
 	
+	/**The name of the player currently buying at the market. We need this because of the shuffled order*/
+	private String marketCurrentPlayer="";
 	/**
 	 * Constructs a new object of type Game.
 	 *
@@ -243,24 +245,18 @@ public class Game {
 		gameDTO.setMap(map.toDTO(plsDTO));
 		gameDTO.setMarket(market.toDTO());
 		gameDTO.setPlayersQty(playersQty);
+		gameDTO.setMarketCurrentPlayer(marketCurrentPlayer);
 		return gameDTO;
 	}
+
+	public String getMarketCurrentPlayer() {
+		return marketCurrentPlayer;
+	}
+
+	public void setMarketCurrentPlayer(String marketCurrentPlayer) {
+		this.marketCurrentPlayer = marketCurrentPlayer;
+	}
 	
-//	public boolean checkWin() {
-//		int count = 0;
-//		for (City city : this.getMap().getCity())
-//			for (Emporium e : city.getEmporium()){
-//				if(e!=null){
-//				if (e.getPlayer().getID().equals("1"))
-//					count++;
-//				}
-//			}
-//		if (count >= 10) {
-//		//	this.gamehandler.endGame(clienthandler);
-//			return true;
-//		}
-//		return false;
-//
-//	}
+	
 	
 }

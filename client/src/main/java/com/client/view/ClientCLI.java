@@ -644,7 +644,7 @@ public class ClientCLI {
 			else return "";
 			out.print("Seller: Player" + osDTO.getSeller().getPlayerID() + ", item: " + whatIs + ", price: " + osDTO.getPrice() + "\n");
 		}
-		int input = waitCorrectIntInput("\nHi " + game.getActualPlayer().getPlayerID() + ", insert the index of the item you want to buy on the market. Insert 0 to pass.\n",0,size);
+		int input = waitCorrectIntInput("\nHi " + game.getMarketCurrentPlayer() + ", insert the index of the item you want to buy on the market. Insert 0 to pass.\n",0,size);
 		if(input==0)
 			return "";
 		return UIDs[input - 1];
