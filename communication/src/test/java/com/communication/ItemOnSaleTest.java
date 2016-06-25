@@ -14,7 +14,7 @@ public class ItemOnSaleTest {
 	}
 	
 	@Test
-	public void testItemOnSale_1()
+	public void testItemOnSale()
 		throws Exception {
 		int pr = 1;
 		
@@ -25,9 +25,12 @@ public class ItemOnSaleTest {
 		assertEquals(obj, result.getObj());
 		assertEquals(1, result.getPrice());
 	}
+	
+	// getters and setters are tested together
+
 
 	@Test
-	public void testGetObj_1()
+	public void testGetObj()
 		throws Exception {
 		ItemOnSale fixture = new ItemOnSale(1, obj);
 
@@ -37,7 +40,7 @@ public class ItemOnSaleTest {
 	}
 
 	@Test
-	public void testGetPrice_1()
+	public void testGetPrice()
 		throws Exception {
 		ItemOnSale fixture = new ItemOnSale(1, obj);
 

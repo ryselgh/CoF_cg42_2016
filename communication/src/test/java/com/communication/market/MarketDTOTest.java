@@ -11,21 +11,21 @@ public class MarketDTOTest {
 	
 	ArrayList<OnSaleDTO> objectsOnSale= new ArrayList();
 	
-	@Before
-	public void setUp()
-		throws Exception {
-	}
+	
 			
 	@Test
-	public void testMarketDTO_1()
+	public void testMarketDTO()
 		throws Exception {
 		MarketDTO result = new MarketDTO();
 		
 		assertNotNull(result);
 	}
+	
+	// getters and setters are tested together
+
 
 	@Test
-	public void testGetObjectsOnSale_1()
+	public void testGetObjectsOnSale()
 		throws Exception {
 		MarketDTO fixture = new MarketDTO();
 

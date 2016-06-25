@@ -4,10 +4,16 @@ import org.junit.*;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import com.communication.decks.PermitsCardDTO;
+import com.communication.decks.PermitsDeckDTO;
 import com.communication.decks.PoliticsCardDTO;
+import com.communication.decks.PoliticsDeckDTO;
 import com.communication.gamelogic.PlayerDTO;
+import com.communication.values.BonusType;
+import com.communication.values.CityColor;
+import com.communication.values.CouncilorColor;
 
 public class PawnDTOTest {
 	
@@ -16,6 +22,8 @@ public class PawnDTOTest {
 	@Before
 	public void setUp()
 		throws Exception {
+		
+		//all you need to test methods. most features of the player aren't instqntiated completly
 		ArrayList<AssistantDTO> availableAssistants = new ArrayList();
 		ArrayList<EmporiumDTO> availableEmporiums = new ArrayList();
 		ArrayList<BonusCardDTO>bonusCards= new ArrayList();
@@ -41,15 +49,16 @@ public class PawnDTOTest {
 	}
 	
 	
-//	@Test
-//	public void testPawnDTO_1()
-//		throws Exception {
-//		PawnDTO result = new PawnDTO();
-//		assertNotNull(result);
-//	}
+	@Test
+	public void testPawnDTO()
+		throws Exception {
+		PawnDTO result = new PawnDTO();
+		assertNotNull(result);
+	}
+	// getters and setters are tested together
 
 	@Test
-	public void testGetHexColor_1()
+	public void testGetHexColor()
 		throws Exception {
 		PawnDTO fixture = new PawnDTO();
 		fixture.setP(player);
@@ -62,7 +71,7 @@ public class PawnDTOTest {
 	}
 
 	@Test
-	public void testGetP_1()
+	public void testGetPlayer()
 		throws Exception {
 		PawnDTO fixture = new PawnDTO();
 		fixture.setP(player);
@@ -72,13 +81,12 @@ public class PawnDTOTest {
 		PlayerDTO result = fixture.getP();
 
 		assertNotNull(result);
-		
 		assertEquals("5", result.getPlayerID());
 		
 	}
 
 	@Test
-	public void testGetPos_1()
+	public void testGetPosition()
 		throws Exception {
 		PawnDTO fixture = new PawnDTO();
 		fixture.setP(player);
@@ -90,48 +98,7 @@ public class PawnDTOTest {
 		assertEquals(7, result);
 	}
 
-//	@Test
-//	public void testSetHexColor_1()
-//		throws Exception {
-//		PawnDTO fixture = new PawnDTO();
-//		fixture.setP(new PlayerDTO());
-//		fixture.setPos(1);
-//		fixture.setHexColor("");
-//		String hexColor = "";
-//
-//		fixture.setHexColor(hexColor);
-//
-//	}
-//
-//	@Test
-//	public void testSetP_1()
-//		throws Exception {
-//		PawnDTO fixture = new PawnDTO();
-//		fixture.setP(new PlayerDTO());
-//		fixture.setPos(1);
-//		fixture.setHexColor("");
-//		PlayerDTO p = new PlayerDTO();
-//
-//		fixture.setP(p);
-//
-//	}
-//
-//	@Test
-//	public void testSetPos_1()
-//		throws Exception {
-//		PawnDTO fixture = new PawnDTO();
-//		fixture.setP(new PlayerDTO());
-//		fixture.setPos(1);
-//		fixture.setHexColor("");
-//		int pos = 1;
-//
-//		fixture.setPos(pos);
-//
-//	}
 
-	
-
-	
 
 	public static void main(String[] args) {
 		new org.junit.runner.JUnitCore().run(PawnDTOTest.class);

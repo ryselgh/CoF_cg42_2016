@@ -32,7 +32,7 @@ public class OnSaleDTOTest {
 		
 
 		pawn=new PawnDTO();
-		pawn.setHexColor("verde");
+		pawn.setHexColor("FF0000");
 		pawn.setPos(7);
 		pawn.setP(player);
 		
@@ -54,15 +54,18 @@ public class OnSaleDTOTest {
 		
 	}
 	
-//	@Test
-//	public void testOnSaleDTO_1()
-//		throws Exception {
-//		OnSaleDTO result = new OnSaleDTO();
-//		assertNotNull(result);
-//	}
+	@Test
+	public void testOnSaleDTO()
+		throws Exception {
+		OnSaleDTO result = new OnSaleDTO();
+		assertNotNull(result);
+	}
+	
+	// getters and setters are tested together
+
 
 	@Test
-	public void testGetObj_1()
+	public void testGetObj()
 		throws Exception {
 		OnSaleDTO fixture = new OnSaleDTO();
 		fixture.setPrice(1);
@@ -75,7 +78,7 @@ public class OnSaleDTOTest {
 	}
 
 	@Test
-	public void testGetPrice_1()
+	public void testGetPrice()
 		throws Exception {
 		OnSaleDTO fixture = new OnSaleDTO();
 		fixture.setPrice(1);
@@ -88,7 +91,7 @@ public class OnSaleDTOTest {
 	}
 
 	@Test
-	public void testGetSeller_1()
+	public void testGetSeller()
 		throws Exception {
 		OnSaleDTO fixture = new OnSaleDTO();
 		fixture.setPrice(1);
@@ -109,46 +112,6 @@ public class OnSaleDTOTest {
 		assertEquals(bonusCards, result.getBonusCards());
 	}
 
-//	@Test
-//	public void testSetObj_1()
-//		throws Exception {
-//		OnSaleDTO fixture = new OnSaleDTO();
-//		fixture.setPrice(1);
-//		fixture.setObj(new ObjectDTO());
-//		fixture.setSeller(new PlayerDTO());
-//		ObjectDTO obj = new ObjectDTO();
-//
-//		fixture.setObj(obj);
-//
-//	}
-//
-//	@Test
-//	public void testSetPrice_1()
-//		throws Exception {
-//		OnSaleDTO fixture = new OnSaleDTO();
-//		fixture.setPrice(1);
-//		fixture.setObj(new ObjectDTO());
-//		fixture.setSeller(new PlayerDTO());
-//		int price = 1;
-//
-//		fixture.setPrice(price);
-//
-//	}
-//
-//	@Test
-//	public void testSetSeller_1()
-//		throws Exception {
-//		OnSaleDTO fixture = new OnSaleDTO();
-//		fixture.setPrice(1);
-//		fixture.setObj(new ObjectDTO());
-//		fixture.setSeller(new PlayerDTO());
-//		PlayerDTO seller = new PlayerDTO();
-//
-//		fixture.setSeller(seller);
-//
-//	}
-
-	
 
 	
 

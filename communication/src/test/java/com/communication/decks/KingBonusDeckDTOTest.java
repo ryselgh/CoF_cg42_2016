@@ -22,6 +22,8 @@ public class KingBonusDeckDTOTest {
 	public void setUp()
 		throws Exception {
 		
+		//the creation of a king Bonus Deck used in the methods of the test
+		
 		bonus = new BonusDTO();
 		bonus.setQuantity(3);
 		bonus.setType(BonusType.POINT);
@@ -48,15 +50,17 @@ public class KingBonusDeckDTOTest {
 
 
 	
-	//	@Test
-//	public void testKingBonusDeckDTO_1()
-//		throws Exception {
-//		KingBonusDeckDTO result = new KingBonusDeckDTO();
-//		assertNotNull(result);
-//	}
+	@Test
+	public void testKingBonusDeckDTO()
+		throws Exception {
+		KingBonusDeckDTO result = new KingBonusDeckDTO();
+		assertNotNull(result);
+	}
+	
+	// getters and setters are tested together
 
 	@Test
-	public void testGetKingBonusDeck_1()
+	public void testGetKingBonusDeck()
 		throws Exception {
 		KingBonusDeckDTO fixture = new KingBonusDeckDTO();
 		fixture.setKingBonusDeck(kingBonusDeck);
@@ -68,7 +72,7 @@ public class KingBonusDeckDTOTest {
 	}
 
 	@Test
-	public void testGetKingqty_1()
+	public void testGetKingqty()
 		throws Exception {
 
 		int result = KingBonusDeckDTO.getKingqty();
@@ -76,16 +80,6 @@ public class KingBonusDeckDTOTest {
 		assertEquals(5, result);
 	}
 
-//	@Test
-//	public void testSetKingBonusDeck_1()
-//		throws Exception {
-//		KingBonusDeckDTO fixture = new KingBonusDeckDTO();
-//		fixture.setKingBonusDeck(new ArrayList());
-//		ArrayList<KingBonusCardDTO> kingBonusDeck = new ArrayList();
-//
-//		fixture.setKingBonusDeck(kingBonusDeck);
-//
-//	}
 
 	
 

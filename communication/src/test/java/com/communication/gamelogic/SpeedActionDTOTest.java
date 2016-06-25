@@ -4,7 +4,11 @@ import org.junit.*;
 import static org.junit.Assert.*;
 
 public class SpeedActionDTOTest {
+	
+	
 	GameDTO gameDTO;
+	
+	
 	@Before
 	public void setUp()
 		throws Exception {
@@ -12,14 +16,17 @@ public class SpeedActionDTOTest {
 		gameDTO = new GameDTO();
 	}
 	@Test
-	public void testSpeedActionDTO_1()
+	public void testSpeedActionDTO()
 		throws Exception {
 		SpeedActionDTO result = new SpeedActionDTO();
 		assertNotNull(result);
 	}
+	
+	// getters and setters are tested together
+
 
 	@Test
-	public void testGetActionCounter_1()
+	public void testGetActionCounter()
 		throws Exception {
 		SpeedActionDTO fixture = new SpeedActionDTO();
 		fixture.setGame(gameDTO);
@@ -31,7 +38,7 @@ public class SpeedActionDTOTest {
 	}
 
 	@Test
-	public void testGetGame_1()
+	public void testGetGame()
 		throws Exception {
 		SpeedActionDTO fixture = new SpeedActionDTO();
 		fixture.setGame(gameDTO);
@@ -40,15 +47,7 @@ public class SpeedActionDTOTest {
 		GameDTO result = fixture.getGame();
 
 		assertNotNull(result);
-		assertEquals(null, result.getMap());
-		assertEquals(null, result.getMarket());
-		assertEquals(false, result.isFinalTurn());
-		assertEquals(false, result.isDefaultMap());
-		assertEquals(null, result.getMainAction());
-		assertEquals(null, result.getPlayers());
-		assertEquals(0, result.getPlayersQty());
-		assertEquals(null, result.getSpeedAction());
-		assertEquals(null, result.getActualPlayer());
+		
 	}
 
 	

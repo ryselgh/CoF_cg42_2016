@@ -12,6 +12,9 @@ public class ObtainPermitDTOTest {
 	@Before
 	public void setUp()
 		throws Exception {
+		
+	//in the setUp there are the 4 cards used in the methods of the test
+		
 		polDTO = new PoliticsCardDTO[4];
 		polDTO[0]= new PoliticsCardDTO();
 		polDTO[0].setColor(CouncilorColor.JOLLY);
@@ -22,8 +25,9 @@ public class ObtainPermitDTOTest {
 		polDTO[3]= new PoliticsCardDTO();
 		polDTO[3].setColor(CouncilorColor.JOLLY);
 	}
+
 	@Test
-	public void testObtainPermitDTO_1()
+	public void testObtainPermitDTO()
 		throws Exception {
 
 		ObtainPermitDTO result = new ObtainPermitDTO();
@@ -31,9 +35,11 @@ public class ObtainPermitDTOTest {
 		assertNotNull(result);
 		
 	}
+	
+	// getters and setters are tested together
 
 	@Test
-	public void testGetPolitics_1()
+	public void testGetPolitics()
 		throws Exception {
 		ObtainPermitDTO fixture = new ObtainPermitDTO();
 		fixture.setSlot(1);
@@ -47,7 +53,7 @@ public class ObtainPermitDTOTest {
 	}
 
 	@Test
-	public void testGetRegionIndex_1()
+	public void testGetRegionIndex()
 		throws Exception {
 		ObtainPermitDTO fixture = new ObtainPermitDTO();
 		fixture.setSlot(1);
@@ -60,7 +66,7 @@ public class ObtainPermitDTOTest {
 	}
 
 	@Test
-	public void testGetSlot_1()
+	public void testGetSlot()
 		throws Exception {
 		ObtainPermitDTO fixture = new ObtainPermitDTO();
 		fixture.setSlot(1);

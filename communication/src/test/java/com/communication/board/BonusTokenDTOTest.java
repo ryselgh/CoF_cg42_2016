@@ -23,15 +23,17 @@ public class BonusTokenDTOTest {
 		
 	}
 	
-//	@Test
-//	public void testBonusTokenDTO_1()
-//		throws Exception {
-//		BonusTokenDTO result = new BonusTokenDTO();
-//		assertNotNull(result);
-//	}
+	@Test
+	public void testBonusTokenDTO()
+		throws Exception {
+		BonusTokenDTO result = new BonusTokenDTO();
+		assertNotNull(result);
+	}
+	
+	// getters and setters are tested together
 
 	@Test
-	public void testGetBonus_1()
+	public void testGetBonus()
 		throws Exception {
 		BonusTokenDTO btDTO = new BonusTokenDTO();
 		btDTO.setBonus(fixture);
@@ -39,6 +41,7 @@ public class BonusTokenDTOTest {
 		BonusDTO[] result = btDTO.getBonus();
 
 		assertEquals(fixture, result);
+		
 	}
 
 	

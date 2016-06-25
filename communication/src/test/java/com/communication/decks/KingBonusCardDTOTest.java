@@ -13,6 +13,8 @@ public class KingBonusCardDTOTest {
 	public void setUp()
 		throws Exception {
 		
+		//in the setUp there is the bonus used in the methods of the test
+		
 		bonus = new BonusDTO();
 		bonus.setQuantity(3);
 		bonus.setType(BonusType.POINT);
@@ -21,15 +23,17 @@ public class KingBonusCardDTOTest {
 	}
 	
 	
-//	@Test
-//	public void testKingBonusCardDTO_1()
-//		throws Exception {
-//		KingBonusCardDTO result = new KingBonusCardDTO();
-//		assertNotNull(result);
-//	}
+	@Test
+	public void testKingBonusCardDTO()
+		throws Exception {
+		KingBonusCardDTO result = new KingBonusCardDTO();
+		assertNotNull(result);
+	}
+	
+	// getters and setters are tested together
 
 	@Test
-	public void testGetBonus_1()
+	public void testGetBonus()
 		throws Exception {
 		KingBonusCardDTO fixture = new KingBonusCardDTO();
 		fixture.setBonus(bonus);
@@ -43,7 +47,7 @@ public class KingBonusCardDTOTest {
 	}
 
 	@Test
-	public void testGetNumber_1()
+	public void testGetNumber()
 		throws Exception {
 		KingBonusCardDTO fixture = new KingBonusCardDTO();
 		fixture.setBonus(bonus);
@@ -54,33 +58,7 @@ public class KingBonusCardDTOTest {
 		assertEquals(1, result);
 	}
 
-//	@Test
-//	public void testSetBonus_1()
-//		throws Exception {
-//		KingBonusCardDTO fixture = new KingBonusCardDTO();
-//		fixture.setBonus(new BonusDTO());
-//		fixture.setNumber(1);
-//		BonusDTO bonus = new BonusDTO();
-//
-//		fixture.setBonus(bonus);
-//
-//	}
-//
-//	@Test
-//	public void testSetNumber_1()
-//		throws Exception {
-//		KingBonusCardDTO fixture = new KingBonusCardDTO();
-//		fixture.setBonus(new BonusDTO());
-//		fixture.setNumber(1);
-//		int n = 1;
-//
-//		fixture.setNumber(n);
-//
-//	}
 
-	
-
-	
 
 	public static void main(String[] args) {
 		new org.junit.runner.JUnitCore().run(KingBonusCardDTOTest.class);

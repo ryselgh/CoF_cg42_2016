@@ -59,21 +59,22 @@ public class MapDTOTest {
 	public void setUp()
 		throws Exception {
 		
+		//all you need to set on a map
+		//3 pawns
 		pawns=new PawnDTO[3];
 		pawns[0]=new PawnDTO();
 		pawns[0].setHexColor("green");
 		pawns[0].setPos(7);
 		pawns[0].setP(player1);
-		
 		pawns[1]=new PawnDTO();
 		pawns[1].setHexColor("yellow");
 		pawns[1].setPos(7);
 		pawns[1].setP(player2);
-		
 		pawns[2]=new PawnDTO();
 		pawns[2].setHexColor("red");
 		pawns[2].setPos(7);
 		pawns[2].setP(player3);
+		
 		
 		b = new BonusDTO[2];
 		b[0]=new BonusDTO();
@@ -92,10 +93,10 @@ public class MapDTOTest {
 		
 		fixture1.setSlot(new EmporiumDTO[10] );
 		fixture1.setPlayerNum(1);
-		fixture1.setToken(btDTO);
+		
 		king = new KingDTO();
 		king.setLocation(fixture1);
-		
+		//3 players
 		players= new PlayerDTO[3];
 		players[0]=new PlayerDTO();
 		players[0].setAvailableAssistants(availableAssistants);
@@ -107,7 +108,6 @@ public class MapDTOTest {
 		players[0].setPermits(permits);
 		players[0].setPlayerID("5");
 		players[0].setScore(20);
-		
 		players[1]=new PlayerDTO();
 		players[1].setAvailableAssistants(availableAssistants);
 		players[1].setAvailableEmporiums(availableEmporiums);
@@ -118,7 +118,6 @@ public class MapDTOTest {
 		players[1].setPermits(permits);
 		players[1].setPlayerID("5");
 		players[1].setScore(20);
-		
 		players[2]=new PlayerDTO();
 		players[2].setAvailableAssistants(availableAssistants);
 		players[2].setAvailableEmporiums(availableEmporiums);
@@ -129,6 +128,7 @@ public class MapDTOTest {
 		players[2].setPermits(permits);
 		players[2].setPlayerID("5");
 		players[2].setScore(20);
+		
 		
 		councilor= new CouncilorDTO[3];
 		councilor[0]= new CouncilorDTO();
@@ -145,6 +145,7 @@ public class MapDTOTest {
 		assistant[2]= new AssistantDTO();
 		assistants = new ArrayList<AssistantDTO>(Arrays.asList(assistant));
 		
+		//4 balconies
 		counc=new CouncilorDTO[4];
 		balcony= new BalconyDTO[3];
 		balcony[0]= new BalconyDTO();
@@ -163,6 +164,7 @@ public class MapDTOTest {
 		bonuses[1].setQuantity(2);
 		bonuses[1].setType(BonusType.CARD);
 		
+		//3 permitsDeck
 		cityLetters=new String[2];
 		cityLetters[0]="l";
 		cityLetters[1]="m";
@@ -190,6 +192,9 @@ public class MapDTOTest {
 		permitsDeck[2].setRegionCode(3);
 		permitsDeck[2].setSlot(new PermitsCardDTO[2]);
 		
+		
+		//politicsdeck
+		
 		politicsDeckDTO= new  PoliticsCardDTO[12];
 		for (PoliticsCardDTO pc: politicsDeckDTO){
 			pc= new PoliticsCardDTO();
@@ -202,6 +207,7 @@ public class MapDTOTest {
 		politicDeck.setGarbage(new ArrayList());
 		politicDeck.setPoliticsDeck(politicsDeck);
 		
+		//3regions
 		region=  new RegionDTO[3];
 		region[0]= new RegionDTO();
 		region[1]= new RegionDTO();
@@ -211,15 +217,18 @@ public class MapDTOTest {
 	}
 	
 	
-//	@Test
-//	public void testMapDTO_1()
-//		throws Exception {
-//		MapDTO result = new MapDTO();
-//		assertNotNull(result);
-//	}
+	@Test
+	public void testMapDTO()
+		throws Exception {
+		MapDTO result = new MapDTO();
+		assertNotNull(result);
+	}
+	
+	// getters and setters are tested together
+
 
 	@Test
-	public void testGetAssistants_1()
+	public void testGetAssistants()
 		throws Exception {
 		MapDTO fixture = new MapDTO();
 		fixture.setPawn(pawns);
@@ -242,7 +251,7 @@ public class MapDTOTest {
 	}
 
 	@Test
-	public void testGetBalcony_1()
+	public void testGetBalcony()
 		throws Exception {
 		MapDTO fixture = new MapDTO();
 		fixture.setPawn(pawns);
@@ -261,10 +270,11 @@ public class MapDTOTest {
 		BalconyDTO result = fixture.getBalcony(0);
 
 		assertNotNull(result);
+		assertEquals(result.getCouncilor().length,4);
 	}
 
 	@Test
-	public void testGetCity_1()
+	public void testGetCity()
 		throws Exception {
 		MapDTO fixture = new MapDTO();
 		fixture.setPawn(pawns);
@@ -287,7 +297,7 @@ public class MapDTOTest {
 	}
 
 	@Test
-	public void testGetColorGroups_1()
+	public void testGetColorGroups()
 		throws Exception {
 		MapDTO fixture = new MapDTO();
 		fixture.setPawn(pawns);
@@ -306,10 +316,11 @@ public class MapDTOTest {
 		ColorGroupDTO result = fixture.getColorGroup(0);
 
 		assertNotNull(fixture);
+		
 	}
 
 	@Test
-	public void testGetCouncilors_1()
+	public void testGetCouncilors()
 		throws Exception {
 		MapDTO fixture = new MapDTO();
 		fixture.setPawn(pawns);
@@ -334,7 +345,7 @@ public class MapDTOTest {
 	
 
 	@Test
-	public void testGetKing_1()
+	public void testGetKing()
 		throws Exception {
 		MapDTO fixture = new MapDTO();
 		fixture.setPawn(pawns);
@@ -357,7 +368,7 @@ public class MapDTOTest {
 	}
 
 	@Test
-	public void testGetKingBonus_1()
+	public void testGetKingBonus()
 		throws Exception {
 		MapDTO fixture = new MapDTO();
 		fixture.setPawn(pawns);
@@ -380,7 +391,7 @@ public class MapDTOTest {
 	}
 
 	@Test
-	public void testGetNobilityTrack_1()
+	public void testGetNobilityTrack()
 		throws Exception {
 		MapDTO fixture = new MapDTO();
 		fixture.setPawn(pawns);
@@ -399,12 +410,11 @@ public class MapDTOTest {
 		NobilityTrackDTO result = fixture.getNobilityTrack();
 
 		assertNotNull(result);
-		assertEquals(null, result.getBonusVector());
-		assertEquals(null, result.getPawns());
+		
 	}
 
 	@Test
-	public void testGetPawn_1()
+	public void testGetPawn()
 		throws Exception {
 		MapDTO fixture = new MapDTO();
 		fixture.setPawn(pawns);
@@ -427,7 +437,7 @@ public class MapDTOTest {
 	}
 
 	@Test
-	public void testGetPermitsDeck_1()
+	public void testGetPermitsDeck()
 		throws Exception {
 		MapDTO fixture = new MapDTO();
 		fixture.setPawn(pawns);
@@ -450,7 +460,7 @@ public class MapDTOTest {
 
 
 	@Test
-	public void testGetPoliticsDeck_1()
+	public void testGetPoliticsDeck()
 		throws Exception {
 		MapDTO fixture = new MapDTO();
 		fixture.setPawn(pawns);
@@ -474,7 +484,7 @@ public class MapDTOTest {
 	}
 
 	@Test
-	public void testGetRegions_1()
+	public void testGetRegions()
 		throws Exception {
 		MapDTO fixture = new MapDTO();
 		fixture.setPawn(pawns);
@@ -493,346 +503,10 @@ public class MapDTOTest {
 		RegionDTO result = fixture.getRegion(0);
 
 		assertNotNull(result);
+		
 	}
 
-//	@Test
-//	public void testSetAssistants_1()
-//		throws Exception {
-//		MapDTO fixture = new MapDTO();
-//		fixture.setPawn(new PawnDTO[] {});
-//		fixture.setNobilityTrack(new NobilityTrackDTO());
-//		fixture.setKingBonus(new ArrayList());
-//		fixture.setKing(new KingDTO());
-//		fixture.setPlayers(new PlayerDTO[] {});
-//		fixture.setCouncilors(new ArrayList());
-//		fixture.setRegions(new RegionDTO[] {});
-//		fixture.setEmporiums(new EmporiumDTO[] {});
-//		fixture.setCity(new CityDTO[] {});
-//		fixture.setPoliticsDeck(new PoliticsDeckDTO());
-//		fixture.setPermitsDeck(new PermitsDeckDTO[] {});
-//		fixture.setBalcony(new BalconyDTO[] {});
-//		fixture.setColorGroups(new ColorGroupDTO[] {});
-//		fixture.setAssistants(new ArrayList());
-//		ArrayList<AssistantDTO> assistants = new ArrayList();
-//
-//		fixture.setAssistants(assistants);
-//
-//	}
-//
-//	@Test
-//	public void testSetBalcony_1()
-//		throws Exception {
-//		MapDTO fixture = new MapDTO();
-//		fixture.setPawn(new PawnDTO[] {});
-//		fixture.setNobilityTrack(new NobilityTrackDTO());
-//		fixture.setKingBonus(new ArrayList());
-//		fixture.setKing(new KingDTO());
-//		fixture.setPlayers(new PlayerDTO[] {});
-//		fixture.setCouncilors(new ArrayList());
-//		fixture.setRegions(new RegionDTO[] {});
-//		fixture.setEmporiums(new EmporiumDTO[] {});
-//		fixture.setCity(new CityDTO[] {});
-//		fixture.setPoliticsDeck(new PoliticsDeckDTO());
-//		fixture.setPermitsDeck(new PermitsDeckDTO[] {});
-//		fixture.setBalcony(new BalconyDTO[] {});
-//		fixture.setColorGroups(new ColorGroupDTO[] {});
-//		fixture.setAssistants(new ArrayList());
-//		BalconyDTO[] balcony = new BalconyDTO[] {};
-//
-//		fixture.setBalcony(balcony);
-//
-//	}
-//
-//	@Test
-//	public void testSetCity_1()
-//		throws Exception {
-//		MapDTO fixture = new MapDTO();
-//		fixture.setPawn(new PawnDTO[] {});
-//		fixture.setNobilityTrack(new NobilityTrackDTO());
-//		fixture.setKingBonus(new ArrayList());
-//		fixture.setKing(new KingDTO());
-//		fixture.setPlayers(new PlayerDTO[] {});
-//		fixture.setCouncilors(new ArrayList());
-//		fixture.setRegions(new RegionDTO[] {});
-//		fixture.setEmporiums(new EmporiumDTO[] {});
-//		fixture.setCity(new CityDTO[] {});
-//		fixture.setPoliticsDeck(new PoliticsDeckDTO());
-//		fixture.setPermitsDeck(new PermitsDeckDTO[] {});
-//		fixture.setBalcony(new BalconyDTO[] {});
-//		fixture.setColorGroups(new ColorGroupDTO[] {});
-//		fixture.setAssistants(new ArrayList());
-//		CityDTO[] city = new CityDTO[] {};
-//
-//		fixture.setCity(city);
-//
-//	}
-//
-//	@Test
-//	public void testSetColorGroups_1()
-//		throws Exception {
-//		MapDTO fixture = new MapDTO();
-//		fixture.setPawn(new PawnDTO[] {});
-//		fixture.setNobilityTrack(new NobilityTrackDTO());
-//		fixture.setKingBonus(new ArrayList());
-//		fixture.setKing(new KingDTO());
-//		fixture.setPlayers(new PlayerDTO[] {});
-//		fixture.setCouncilors(new ArrayList());
-//		fixture.setRegions(new RegionDTO[] {});
-//		fixture.setEmporiums(new EmporiumDTO[] {});
-//		fixture.setCity(new CityDTO[] {});
-//		fixture.setPoliticsDeck(new PoliticsDeckDTO());
-//		fixture.setPermitsDeck(new PermitsDeckDTO[] {});
-//		fixture.setBalcony(new BalconyDTO[] {});
-//		fixture.setColorGroups(new ColorGroupDTO[] {});
-//		fixture.setAssistants(new ArrayList());
-//		ColorGroupDTO[] colorGroups = new ColorGroupDTO[] {};
-//
-//		fixture.setColorGroups(colorGroups);
-//
-//	}
-//
-//	@Test
-//	public void testSetCouncilors_1()
-//		throws Exception {
-//		MapDTO fixture = new MapDTO();
-//		fixture.setPawn(new PawnDTO[] {});
-//		fixture.setNobilityTrack(new NobilityTrackDTO());
-//		fixture.setKingBonus(new ArrayList());
-//		fixture.setKing(new KingDTO());
-//		fixture.setPlayers(new PlayerDTO[] {});
-//		fixture.setCouncilors(new ArrayList());
-//		fixture.setRegions(new RegionDTO[] {});
-//		fixture.setEmporiums(new EmporiumDTO[] {});
-//		fixture.setCity(new CityDTO[] {});
-//		fixture.setPoliticsDeck(new PoliticsDeckDTO());
-//		fixture.setPermitsDeck(new PermitsDeckDTO[] {});
-//		fixture.setBalcony(new BalconyDTO[] {});
-//		fixture.setColorGroups(new ColorGroupDTO[] {});
-//		fixture.setAssistants(new ArrayList());
-//		ArrayList<CouncilorDTO> councilors = new ArrayList();
-//
-//		fixture.setCouncilors(councilors);
-//
-//	}
-//
-//	@Test
-//	public void testSetEmporiums_1()
-//		throws Exception {
-//		MapDTO fixture = new MapDTO();
-//		fixture.setPawn(new PawnDTO[] {});
-//		fixture.setNobilityTrack(new NobilityTrackDTO());
-//		fixture.setKingBonus(new ArrayList());
-//		fixture.setKing(new KingDTO());
-//		fixture.setPlayers(new PlayerDTO[] {});
-//		fixture.setCouncilors(new ArrayList());
-//		fixture.setRegions(new RegionDTO[] {});
-//		fixture.setEmporiums(new EmporiumDTO[] {});
-//		fixture.setCity(new CityDTO[] {});
-//		fixture.setPoliticsDeck(new PoliticsDeckDTO());
-//		fixture.setPermitsDeck(new PermitsDeckDTO[] {});
-//		fixture.setBalcony(new BalconyDTO[] {});
-//		fixture.setColorGroups(new ColorGroupDTO[] {});
-//		fixture.setAssistants(new ArrayList());
-//		EmporiumDTO[] emporiums = new EmporiumDTO[] {};
-//
-//		fixture.setEmporiums(emporiums);
-//
-//	}
-//
-//	@Test
-//	public void testSetKing_1()
-//		throws Exception {
-//		MapDTO fixture = new MapDTO();
-//		fixture.setPawn(new PawnDTO[] {});
-//		fixture.setNobilityTrack(new NobilityTrackDTO());
-//		fixture.setKingBonus(new ArrayList());
-//		fixture.setKing(new KingDTO());
-//		fixture.setPlayers(new PlayerDTO[] {});
-//		fixture.setCouncilors(new ArrayList());
-//		fixture.setRegions(new RegionDTO[] {});
-//		fixture.setEmporiums(new EmporiumDTO[] {});
-//		fixture.setCity(new CityDTO[] {});
-//		fixture.setPoliticsDeck(new PoliticsDeckDTO());
-//		fixture.setPermitsDeck(new PermitsDeckDTO[] {});
-//		fixture.setBalcony(new BalconyDTO[] {});
-//		fixture.setColorGroups(new ColorGroupDTO[] {});
-//		fixture.setAssistants(new ArrayList());
-//		KingDTO king = new KingDTO();
-//
-//		fixture.setKing(king);
-//
-//	}
-//
-//	@Test
-//	public void testSetKingBonus_1()
-//		throws Exception {
-//		MapDTO fixture = new MapDTO();
-//		fixture.setPawn(new PawnDTO[] {});
-//		fixture.setNobilityTrack(new NobilityTrackDTO());
-//		fixture.setKingBonus(new ArrayList());
-//		fixture.setKing(new KingDTO());
-//		fixture.setPlayers(new PlayerDTO[] {});
-//		fixture.setCouncilors(new ArrayList());
-//		fixture.setRegions(new RegionDTO[] {});
-//		fixture.setEmporiums(new EmporiumDTO[] {});
-//		fixture.setCity(new CityDTO[] {});
-//		fixture.setPoliticsDeck(new PoliticsDeckDTO());
-//		fixture.setPermitsDeck(new PermitsDeckDTO[] {});
-//		fixture.setBalcony(new BalconyDTO[] {});
-//		fixture.setColorGroups(new ColorGroupDTO[] {});
-//		fixture.setAssistants(new ArrayList());
-//		ArrayList<BonusDTO> kingBonus = new ArrayList();
-//
-//		fixture.setKingBonus(kingBonus);
-//
-//	}
-//
-//	@Test
-//	public void testSetNobilityTrack_1()
-//		throws Exception {
-//		MapDTO fixture = new MapDTO();
-//		fixture.setPawn(new PawnDTO[] {});
-//		fixture.setNobilityTrack(new NobilityTrackDTO());
-//		fixture.setKingBonus(new ArrayList());
-//		fixture.setKing(new KingDTO());
-//		fixture.setPlayers(new PlayerDTO[] {});
-//		fixture.setCouncilors(new ArrayList());
-//		fixture.setRegions(new RegionDTO[] {});
-//		fixture.setEmporiums(new EmporiumDTO[] {});
-//		fixture.setCity(new CityDTO[] {});
-//		fixture.setPoliticsDeck(new PoliticsDeckDTO());
-//		fixture.setPermitsDeck(new PermitsDeckDTO[] {});
-//		fixture.setBalcony(new BalconyDTO[] {});
-//		fixture.setColorGroups(new ColorGroupDTO[] {});
-//		fixture.setAssistants(new ArrayList());
-//		NobilityTrackDTO nobilityTrack = new NobilityTrackDTO();
-//
-//		fixture.setNobilityTrack(nobilityTrack);
-//
-//	}
-//
-//	@Test
-//	public void testSetPawn_1()
-//		throws Exception {
-//		MapDTO fixture = new MapDTO();
-//		fixture.setPawn(new PawnDTO[] {});
-//		fixture.setNobilityTrack(new NobilityTrackDTO());
-//		fixture.setKingBonus(new ArrayList());
-//		fixture.setKing(new KingDTO());
-//		fixture.setPlayers(new PlayerDTO[] {});
-//		fixture.setCouncilors(new ArrayList());
-//		fixture.setRegions(new RegionDTO[] {});
-//		fixture.setEmporiums(new EmporiumDTO[] {});
-//		fixture.setCity(new CityDTO[] {});
-//		fixture.setPoliticsDeck(new PoliticsDeckDTO());
-//		fixture.setPermitsDeck(new PermitsDeckDTO[] {});
-//		fixture.setBalcony(new BalconyDTO[] {});
-//		fixture.setColorGroups(new ColorGroupDTO[] {});
-//		fixture.setAssistants(new ArrayList());
-//		PawnDTO[] pawn = new PawnDTO[] {};
-//
-//		fixture.setPawn(pawn);
-//
-//	}
-//
-//	@Test
-//	public void testSetPermitsDeck_1()
-//		throws Exception {
-//		MapDTO fixture = new MapDTO();
-//		fixture.setPawn(new PawnDTO[] {});
-//		fixture.setNobilityTrack(new NobilityTrackDTO());
-//		fixture.setKingBonus(new ArrayList());
-//		fixture.setKing(new KingDTO());
-//		fixture.setPlayers(new PlayerDTO[] {});
-//		fixture.setCouncilors(new ArrayList());
-//		fixture.setRegions(new RegionDTO[] {});
-//		fixture.setEmporiums(new EmporiumDTO[] {});
-//		fixture.setCity(new CityDTO[] {});
-//		fixture.setPoliticsDeck(new PoliticsDeckDTO());
-//		fixture.setPermitsDeck(new PermitsDeckDTO[] {});
-//		fixture.setBalcony(new BalconyDTO[] {});
-//		fixture.setColorGroups(new ColorGroupDTO[] {});
-//		fixture.setAssistants(new ArrayList());
-//		PermitsDeckDTO[] permitsDeck = new PermitsDeckDTO[] {};
-//
-//		fixture.setPermitsDeck(permitsDeck);
-//
-//	}
-//
-//	@Test
-//	public void testSetPlayers_1()
-//		throws Exception {
-//		MapDTO fixture = new MapDTO();
-//		fixture.setPawn(new PawnDTO[] {});
-//		fixture.setNobilityTrack(new NobilityTrackDTO());
-//		fixture.setKingBonus(new ArrayList());
-//		fixture.setKing(new KingDTO());
-//		fixture.setPlayers(new PlayerDTO[] {});
-//		fixture.setCouncilors(new ArrayList());
-//		fixture.setRegions(new RegionDTO[] {});
-//		fixture.setEmporiums(new EmporiumDTO[] {});
-//		fixture.setCity(new CityDTO[] {});
-//		fixture.setPoliticsDeck(new PoliticsDeckDTO());
-//		fixture.setPermitsDeck(new PermitsDeckDTO[] {});
-//		fixture.setBalcony(new BalconyDTO[] {});
-//		fixture.setColorGroups(new ColorGroupDTO[] {});
-//		fixture.setAssistants(new ArrayList());
-//		PlayerDTO[] players = new PlayerDTO[] {};
-//
-//		fixture.setPlayers(players);
-//
-//	}
-//
-//	@Test
-//	public void testSetPoliticsDeck_1()
-//		throws Exception {
-//		MapDTO fixture = new MapDTO();
-//		fixture.setPawn(new PawnDTO[] {});
-//		fixture.setNobilityTrack(new NobilityTrackDTO());
-//		fixture.setKingBonus(new ArrayList());
-//		fixture.setKing(new KingDTO());
-//		fixture.setPlayers(new PlayerDTO[] {});
-//		fixture.setCouncilors(new ArrayList());
-//		fixture.setRegions(new RegionDTO[] {});
-//		fixture.setEmporiums(new EmporiumDTO[] {});
-//		fixture.setCity(new CityDTO[] {});
-//		fixture.setPoliticsDeck(new PoliticsDeckDTO());
-//		fixture.setPermitsDeck(new PermitsDeckDTO[] {});
-//		fixture.setBalcony(new BalconyDTO[] {});
-//		fixture.setColorGroups(new ColorGroupDTO[] {});
-//		fixture.setAssistants(new ArrayList());
-//		PoliticsDeckDTO politicsDeck = new PoliticsDeckDTO();
-//
-//		fixture.setPoliticsDeck(politicsDeck);
-//
-//	}
-//
-//	@Test
-//	public void testSetRegions_1()
-//		throws Exception {
-//		MapDTO fixture = new MapDTO();
-//		fixture.setPawn(new PawnDTO[] {});
-//		fixture.setNobilityTrack(new NobilityTrackDTO());
-//		fixture.setKingBonus(new ArrayList());
-//		fixture.setKing(new KingDTO());
-//		fixture.setPlayers(new PlayerDTO[] {});
-//		fixture.setCouncilors(new ArrayList());
-//		fixture.setRegions(new RegionDTO[] {});
-//		fixture.setEmporiums(new EmporiumDTO[] {});
-//		fixture.setCity(new CityDTO[] {});
-//		fixture.setPoliticsDeck(new PoliticsDeckDTO());
-//		fixture.setPermitsDeck(new PermitsDeckDTO[] {});
-//		fixture.setBalcony(new BalconyDTO[] {});
-//		fixture.setColorGroups(new ColorGroupDTO[] {});
-//		fixture.setAssistants(new ArrayList());
-//		RegionDTO[] regions = new RegionDTO[] {};
-//
-//		fixture.setRegions(regions);
-//
-//	}
 
-
-	
 
 	public static void main(String[] args) {
 		new org.junit.runner.JUnitCore().run(MapDTOTest.class);

@@ -15,6 +15,8 @@ public class LobbyStatusTest {
 	@Before
 	public void setUp()
 		throws Exception {
+		
+		//all the sets for the tests
 		freeClients = new ArrayList();
 		rooms = new ArrayList();
 		client1="ilfiglio";
@@ -25,7 +27,7 @@ public class LobbyStatusTest {
 	}
 	
 	@Test
-	public void testLobbyStatus_1()
+	public void testLobbyStatus()
 		throws Exception {
 		
 
@@ -33,9 +35,12 @@ public class LobbyStatusTest {
 
 		assertNotNull(result);
 	}
+	
+	// getters and setters are tested together
+
 
 	@Test
-	public void testGetFreeClients_1()
+	public void testGetFreeClients()
 		throws Exception {
 		LobbyStatus fixture = new LobbyStatus(freeClients, rooms);
 
@@ -46,7 +51,7 @@ public class LobbyStatusTest {
 	}
 
 	@Test
-	public void testGetRooms_1()
+	public void testGetRooms()
 		throws Exception {
 		LobbyStatus fixture = new LobbyStatus(freeClients, rooms);
 

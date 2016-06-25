@@ -7,15 +7,17 @@ import com.communication.values.CouncilorColor;
 public class CouncilorDTOTest {
 	
 	
-//	@Test
-//	public void testCouncilorDTO_1()
-//		throws Exception {
-//		CouncilorDTO result = new CouncilorDTO();
-//		assertNotNull(result);
-//	}
+	@Test
+	public void testCouncilorDTO()
+		throws Exception {
+		CouncilorDTO result = new CouncilorDTO();
+		assertNotNull(result);
+	}
+	
+	// getters and setters are tested together
 
 	@Test
-	public void testGetColor_1()
+	public void testGetColor()
 		throws Exception {
 		CouncilorDTO fixture = new CouncilorDTO();
 		fixture.setColor(CouncilorColor.BLACK);
@@ -28,26 +30,7 @@ public class CouncilorDTOTest {
 		
 	}
 
-//	@Test
-//	public void testSetColor_1()
-//		throws Exception {
-//		CouncilorDTO fixture = new CouncilorDTO();
-//		fixture.setColor(CouncilorColor.BLACK);
-//		CouncilorColor color = CouncilorColor.BLACK;
-//
-//		fixture.setColor(color);
-//
-//	}
-//
-//	@Before
-//	public void setUp()
-//		throws Exception {
-//	}
-//
-//	@After
-//	public void tearDown()
-//		throws Exception {
-//	}
+
 
 	public static void main(String[] args) {
 		new org.junit.runner.JUnitCore().run(CouncilorDTOTest.class);

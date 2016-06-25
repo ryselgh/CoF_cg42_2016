@@ -23,6 +23,9 @@ public class SatisfyKingDTOTest {
 	@Before
 	public void setUp()
 		throws Exception {
+		
+		//in the setUp there are the 4 cards used in the methods of the test
+		
 		polDTO = new PoliticsCardDTO[4];
 		polDTO[0]= new PoliticsCardDTO();
 		polDTO[0].setColor(CouncilorColor.JOLLY);
@@ -33,11 +36,12 @@ public class SatisfyKingDTOTest {
 		polDTO[3]= new PoliticsCardDTO();
 		polDTO[3].setColor(CouncilorColor.JOLLY);
 		
-		
+		//the city CloseCities
 		closeCities=new String[2];
 		closeCities[0]="Osium";
 		closeCities[1]="Karl";
 		
+		//the bonus on the permitsCard
 		b = new BonusDTO[2];
 		b[0]=new BonusDTO();
 		b[0].setQuantity(1);
@@ -48,6 +52,7 @@ public class SatisfyKingDTOTest {
 		btDTO = new BonusTokenDTO();
 		btDTO.setBonus(b);
 		
+		//the city
 		cityDTO = new CityDTO();
 		cityDTO.setName("Juvelar");
 		cityDTO.setColor(CityColor.BLUE);
@@ -59,18 +64,19 @@ public class SatisfyKingDTOTest {
 	
 	
 	@Test
-	public void testSatisfyKingDTO_1()
+	public void testSatisfyKingDTO()
 		throws Exception {
 
 		SatisfyKingDTO result = new SatisfyKingDTO();
 
 		assertNotNull(result);
-		assertEquals(null, result.getDestination());
-		assertEquals(null, result.getPolitics());
+		
 	}
+	
+	// getters and setters are tested together
 
 	@Test
-	public void testGetDestination_1()
+	public void testGetDestination()
 		throws Exception {
 		SatisfyKingDTO fixture = new SatisfyKingDTO();
 		fixture.setPolitics(polDTO);
@@ -87,7 +93,7 @@ public class SatisfyKingDTOTest {
 	}
 
 	@Test
-	public void testGetPolitics_1()
+	public void testGetPolitics()
 		throws Exception {
 		SatisfyKingDTO fixture = new SatisfyKingDTO();
 		fixture.setPolitics(polDTO);

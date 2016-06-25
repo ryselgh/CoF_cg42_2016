@@ -24,21 +24,20 @@ public class RoomStatusTest {
 	
 	
 	@Test
-	public void testRoomStatus_1()
+	public void testRoomStatus()
 		throws Exception {
 		
-		
-		
-		boolean defMap = true;
-
-		RoomStatus result = new RoomStatus(rn, an, minpl, maxpl, players, defMap);
+		RoomStatus result = new RoomStatus(rn, an, minpl, maxpl, players, true);
 
 		assertNotNull(result);
 		
 	}
+	
+	// getters and setters are tested together
+
 
 	@Test
-	public void testGetAdminName_1()
+	public void testGetAdminName()
 		throws Exception {
 		RoomStatus fixture = new RoomStatus(rn, an, minpl, maxpl, players, true);
 
@@ -48,7 +47,7 @@ public class RoomStatusTest {
 	}
 
 	@Test
-	public void testGetMaxPlayers_1()
+	public void testGetMaxPlayers()
 		throws Exception {
 		RoomStatus fixture = new RoomStatus(rn, an, minpl, maxpl, players, true);
 
@@ -58,7 +57,7 @@ public class RoomStatusTest {
 	}
 
 	@Test
-	public void testGetMinPlayers_1()
+	public void testGetMinPlayers()
 		throws Exception {
 		RoomStatus fixture = new RoomStatus(rn, an, minpl, maxpl, players, true);
 
@@ -68,7 +67,7 @@ public class RoomStatusTest {
 	}
 
 	@Test
-	public void testGetPlayers_1()
+	public void testGetPlayers()
 		throws Exception {
 		RoomStatus fixture = new RoomStatus(rn, an, minpl, maxpl, players, true);
 
@@ -79,7 +78,7 @@ public class RoomStatusTest {
 	}
 
 	@Test
-	public void testGetRoomName_1()
+	public void testGetRoomName()
 		throws Exception {
 		RoomStatus fixture = new RoomStatus(rn, an, minpl, maxpl, players,true);
 		String result = fixture.getRoomName();
@@ -88,7 +87,7 @@ public class RoomStatusTest {
 	}
 
 	@Test
-	public void testIsDefaultMap_1()
+	public void testIsDefaultMapReturnsTrue()
 		throws Exception {
 		RoomStatus fixture = new RoomStatus(rn, an, minpl, maxpl, players, true);
 
@@ -98,7 +97,7 @@ public class RoomStatusTest {
 	}
 
 	@Test
-	public void testIsDefaultMap_2()
+	public void testIsDefaultMapReturnsFalse()
 		throws Exception {
 		RoomStatus fixture = new RoomStatus(rn, an, minpl, maxpl, players, false);
 

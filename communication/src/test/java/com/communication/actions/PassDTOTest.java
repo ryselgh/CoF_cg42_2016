@@ -5,20 +5,10 @@ import static org.junit.Assert.*;
 
 public class PassDTOTest {
 	@Test
-	public void testPassDTO_1()
+	public void testPassDTO()
 		throws Exception {
 		PassDTO result = new PassDTO();
 		assertNotNull(result);
-	}
-
-	@Before
-	public void setUp()
-		throws Exception {
-	}
-
-	@After
-	public void tearDown()
-		throws Exception {
 	}
 
 	public static void main(String[] args) {

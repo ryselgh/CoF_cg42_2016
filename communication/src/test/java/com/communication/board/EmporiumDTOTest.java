@@ -37,15 +37,17 @@ public class EmporiumDTOTest {
 		player.setScore(20);
 	}
 	
-//	@Test
-//	public void testEmporiumDTO_1()
-//		throws Exception {
-//		EmporiumDTO result = new EmporiumDTO();
-//		assertNotNull(result);
-//	}
+	@Test
+	public void testEmporiumDTO()
+		throws Exception {
+		EmporiumDTO result = new EmporiumDTO();
+		assertNotNull(result);
+	}
+	
+	// getters and setters are tested together
 
 	@Test
-	public void testGetPlayer_1()
+	public void testGetPlayer()
 		throws Exception {
 		EmporiumDTO fixture = new EmporiumDTO();
 		fixture.setPlayer(player);
@@ -58,26 +60,7 @@ public class EmporiumDTOTest {
 		
 	}
 
-//	@Test
-//	public void testSetPlayer_1()
-//		throws Exception {
-//		EmporiumDTO fixture = new EmporiumDTO();
-//		fixture.setPlayer(new PlayerDTO());
-//		PlayerDTO player = new PlayerDTO();
-//
-//		fixture.setPlayer(player);
-//
-//	}
 
-//	@Before
-//	public void setUp()
-//		throws Exception {
-//	}
-//
-//	@After
-//	public void tearDown()
-//		throws Exception {
-//	}
 
 	public static void main(String[] args) {
 		new org.junit.runner.JUnitCore().run(EmporiumDTOTest.class);

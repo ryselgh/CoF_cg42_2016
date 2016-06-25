@@ -6,15 +6,19 @@ import com.communication.values.BonusType;
 
 public class BonusDTOTest {
 	
-//	@Test
-//	public void testBonusDTO_1()
-//		throws Exception {
-//		BonusDTO result = new BonusDTO();
-//		assertNotNull(result);
-//	}
+	
+	
+	@Test
+	public void testBonusDTO()
+		throws Exception {
+		BonusDTO result = new BonusDTO();
+		assertNotNull(result);
+	}
+	
+	// getters and setters are tested together
 
 	@Test
-	public void testGetQnt_1()
+	public void testGetQnt()
 		throws Exception {
 		BonusDTO fixture = new BonusDTO();
 		fixture.setQuantity(1);
@@ -25,7 +29,7 @@ public class BonusDTOTest {
 	}
 
 	@Test
-	public void testGetType_1()
+	public void testGetType()
 		throws Exception {
 		BonusDTO fixture = new BonusDTO();
 		fixture.setType(BonusType.ASSISTANT);
@@ -34,16 +38,9 @@ public class BonusDTOTest {
 		assertEquals(BonusType.ASSISTANT, result);
 	}
 
-	@Before
-	public void setUp()
-		throws Exception {
-	}
+	
 
-	@After
-	public void tearDown()
-		throws Exception {
-	}
-
+	
 	public static void main(String[] args) {
 		new org.junit.runner.JUnitCore().run(BonusDTOTest.class);
 	}
