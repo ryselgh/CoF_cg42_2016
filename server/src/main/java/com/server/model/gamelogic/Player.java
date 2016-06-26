@@ -255,9 +255,9 @@ public class Player {
 	 */
 	public void removePermit(PermitsCard pc)
 	{
-		for(PermitsCard p : permits)
-			if(p.equals(pc))
-				permits.remove(p);
+		for(int i=0;i<permits.size();i++)
+		      if(permits.get(i).equals(pc))
+		        permits.remove(i);
 	}
 
 	/**

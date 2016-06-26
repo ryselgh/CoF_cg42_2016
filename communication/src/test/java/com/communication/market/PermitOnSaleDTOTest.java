@@ -85,6 +85,7 @@ public class PermitOnSaleDTOTest {
 		fixture.setPermit(permitsCardDTO);
 		fixture.setSeller(player);
 		fixture.setPrice(1);
+		fixture.setUID("1");
 
 		PermitsCardDTO result = fixture.getPermit();
 
@@ -101,6 +102,7 @@ public class PermitOnSaleDTOTest {
 		fixture.setPermit(permitsCardDTO);
 		fixture.setSeller(player);
 		fixture.setPrice(1);
+		fixture.setUID("1");
 
 		int result = fixture.getPrice();
 
@@ -114,6 +116,7 @@ public class PermitOnSaleDTOTest {
 		fixture.setPermit(permitsCardDTO);
 		fixture.setSeller(player);
 		fixture.setPrice(1);
+		fixture.setUID("1");
 
 		PlayerDTO result = fixture.getSeller();
 
@@ -128,14 +131,24 @@ public class PermitOnSaleDTOTest {
 		assertEquals(hand, result.getHand());
 		assertEquals(bonusCards, result.getBonusCards());
 	}
-
-
-
-
-	@After
-	public void tearDown()
-		throws Exception {
+	
+	
+	@Test 
+	public void testGetUID(){
+		PermitOnSaleDTO fixture = new PermitOnSaleDTO();
+		fixture.setObj(permits);;
+		fixture.setPrice(1);
+		fixture.setSeller(player);
+		fixture.setUID("1");
+		
+		String result = fixture.getUID();
+		assertNotNull(result);
+		assertEquals(result,"1");
 	}
+
+
+
+
 
 	public static void main(String[] args) {
 		new org.junit.runner.JUnitCore().run(PermitOnSaleDTOTest.class);

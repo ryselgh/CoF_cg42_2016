@@ -53,8 +53,6 @@ public class BuildTest {
 		players[0] = "1";
 		players[1] = "2";
 		players[2] = "3";
-//		PermitsCard e = new PermitsCard(b,l2);
-//		PermitsCard e1 = new PermitsCard(b,l3);
 		game = new Game(3, true, null, players);
 	}
 
@@ -74,12 +72,18 @@ public class BuildTest {
 
 		ActionReturn result = fixture.execute();
 
-		// An unexpected exception was thrown in user code while executing this test:
-		//    java.lang.NullPointerException
-		//       at com.server.model.board.Map.<init>(Map.java:147)
-		//       at com.server.model.gamelogic.Game.initializeObjects(Game.java:71)
-		//       at com.server.model.gamelogic.Game.<init>(Game.java:49)
+		
 		assertNotNull(result);
+		
+	}
+	
+	@Test
+	public void testGetCity(){
+		
+		Build fixture = new Build(game.getMap().getCity()[4], new PermitsCard(b,l2));		
+		fixture.setGame(game);
+		City city = fixture.getCity();
+		assertEquals(city,game.getMap().getCity()[4]);
 		
 	}
 	
@@ -95,11 +99,7 @@ public class BuildTest {
 		fixture2.isValid();
 		ActionReturn result = fixture2.execute();
 
-		// An unexpected exception was thrown in user code while executing this test:
-		//    java.lang.NullPointerException
-		//       at com.server.model.board.Map.<init>(Map.java:147)
-		//       at com.server.model.gamelogic.Game.initializeObjects(Game.java:71)
-		//       at com.server.model.gamelogic.Game.<init>(Game.java:49)
+		
 		assertEquals(result.getError(),"\nYou already have an emporium in the selected city\nYou have not enought assistants");
 		
 	}
@@ -116,11 +116,7 @@ public class BuildTest {
 		ActionReturn result = fixture.execute();
 		ArrayList<Bonus> arrayList = new ArrayList<Bonus>(Arrays.asList(result.getBonus()));
 
-		// An unexpected exception was thrown in user code while executing this test:
-		//    java.lang.NullPointerException
-		//       at com.server.model.board.Map.<init>(Map.java:147)
-		//       at com.server.model.gamelogic.Game.initializeObjects(Game.java:71)
-		//       at com.server.model.gamelogic.Game.<init>(Game.java:49)
+		
 		assertTrue(arrayList.isEmpty());
 	}
 
@@ -240,11 +236,6 @@ public class BuildTest {
 
 		boolean result = fixture.isValid();
 
-		// An unexpected exception was thrown in user code while executing this test:
-		//    java.lang.NullPointerException
-		//       at com.server.model.board.Map.<init>(Map.java:147)
-		//       at com.server.model.gamelogic.Game.initializeObjects(Game.java:71)
-		//       at com.server.model.gamelogic.Game.<init>(Game.java:49)
 		assertTrue(result);
 	}
 
@@ -258,22 +249,12 @@ public class BuildTest {
 
 		boolean result = fixture.isValid();
 
-		// An unexpected exception was thrown in user code while executing this test:
-		//    java.lang.NullPointerException
-		//       at com.server.model.board.Map.<init>(Map.java:147)
-		//       at com.server.model.gamelogic.Game.initializeObjects(Game.java:71)
-		//       at com.server.model.gamelogic.Game.<init>(Game.java:49)
+		
 		assertFalse(result);
 	}
 	
-	
-	
-	
-
-	
-
 	@Test
-	public void testSetterFromDTO_1()
+	public void testSetterFromDTO()
 		throws Exception {
 		PermitsCard pec = new PermitsCard(b,l3);
 		game.getActualPlayer().addPermits(pec);
@@ -287,36 +268,18 @@ public class BuildTest {
 
 		fixture.setterFromDTO(buildDTO, game.getActualPlayer(), game);
 
-		// An unexpected exception was thrown in user code while executing this test:
-		//    java.lang.NullPointerException
-		//       at com.server.model.board.Map.<init>(Map.java:147)
-		//       at com.server.model.gamelogic.Game.initializeObjects(Game.java:71)
-		//       at com.server.model.gamelogic.Game.<init>(Game.java:49)
+		
 		assertTrue(fixture instanceof Build);
 	}
-//
-//	
-//
-////	@After
-////	public void tearDown()
-////		throws Exception {
-//	Build fixture2 = new Build(game.getMap().getCity()[8], new PermitsCard(b,l3));
-//	fixture2.setGame(new Game(3,true,null));
-//	
-//	ActionReturn result2 = fixture2.execute();
-//	
-//	Build fixture = new Build(game.getMap().getCity()[9], new PermitsCard(b,l3));		
-//	
-//	fixture.setGame(new Game(3, true, null));
-//
-//	ActionReturn result = fixture.execute();
-//	
-//	fixture = new Build(game.getMap().getCity()[8], new PermitsCard(b,l3));
-//	Bonus[] bonus = new Bonus[3];
-//	bonus[0] = game.getMap().getCity()[9].getBonusToken().getBonus()[0];
-//	bonus[1] = game.getMap().getCity()[8].getBonusToken().getBonus()[0];
-//	bonus[2] = game.getMap().getCity()[8].getBonusToken().getBonus()[1];
-////	}
+	
+//	@Test
+//	public void testIfYouPayAssistantInCaseThereIsAlreadyAnEmporiumInTheCity(){
+//		PermitsCard pec = new PermitsCard(b,l3);
+//		game.getActualPlayer().addPermits(pec);
+//		Build fixture = new Build(game.getMap().getCity()[4], game.getActualPlayer().getPermits().get(0));
+//		
+//	}
+
 
 	public static void main(String[] args) {
 		new org.junit.runner.JUnitCore().run(BuildTest.class);

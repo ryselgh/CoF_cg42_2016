@@ -67,6 +67,7 @@ public class PoliticsOnSaleDTOTest {
 		fixture.setPrice(1);
 		fixture.setPoliticsCard(politicsCard);
 		fixture.setSeller(player);
+		fixture.setUID("1");
 
 		PoliticsCardDTO result = fixture.getPoliticsCard();
 
@@ -81,6 +82,7 @@ public class PoliticsOnSaleDTOTest {
 		fixture.setPrice(1);
 		fixture.setPoliticsCard(politicsCard);
 		fixture.setSeller(player);
+		fixture.setUID("1");
 
 		int result = fixture.getPrice();
 
@@ -94,6 +96,7 @@ public class PoliticsOnSaleDTOTest {
 		fixture.setPrice(1);
 		fixture.setPoliticsCard(politicsCard);
 		fixture.setSeller(player);
+		fixture.setUID("1");
 
 		PlayerDTO result = fixture.getSeller();
 
@@ -109,6 +112,19 @@ public class PoliticsOnSaleDTOTest {
 		assertEquals(bonusCards, result.getBonusCards());
 	}
 
+	
+	@Test 
+	public void testGetUID(){
+		PoliticsOnSaleDTO fixture = new PoliticsOnSaleDTO();
+		fixture.setObj(politicsCard);
+		fixture.setPrice(1);
+		fixture.setSeller(player);
+		fixture.setUID("1");
+		
+		String result = fixture.getUID();
+		assertNotNull(result);
+		assertEquals(result,"1");
+	}
 
 
 	public static void main(String[] args) {

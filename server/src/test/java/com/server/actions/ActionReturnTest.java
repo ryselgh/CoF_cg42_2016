@@ -24,7 +24,7 @@ public class ActionReturnTest {
 	
 	
 	@Test
-	public void testActionReturn_1()
+	public void testActionReturn()
 		throws Exception {
 		boolean success = true;
 		String error = "";
@@ -38,7 +38,7 @@ public class ActionReturnTest {
 	}
 
 	@Test
-	public void testGetBonus_1()
+	public void testGetBonus()
 		throws Exception {
 		ActionReturn fixture = new ActionReturn(true, "", b);
 
@@ -49,7 +49,7 @@ public class ActionReturnTest {
 	}
 
 	@Test
-	public void testGetError_1()
+	public void testGetError()
 		throws Exception {
 		ActionReturn fixture = new ActionReturn(false, "non prendi bonus", b);
 
@@ -59,7 +59,7 @@ public class ActionReturnTest {
 	}
 
 	@Test
-	public void testIsSuccess_1()
+	public void testIsSuccessReturnsTrue()
 		throws Exception {
 		ActionReturn fixture = new ActionReturn(true, "", b);
 
@@ -69,7 +69,7 @@ public class ActionReturnTest {
 	}
 
 	@Test
-	public void testIsSuccess_2()
+	public void testIsSuccessReturnsFalse()
 		throws Exception {
 		ActionReturn fixture = new ActionReturn(false, "", new Bonus[] {});
 

@@ -62,6 +62,7 @@ public class AssistantOnSaleDTOTest {
 		fixture.setAssistant(assistant);
 		fixture.setPrice(1);
 		fixture.setSeller(player);
+		fixture.setUID("1");
 
 		AssistantDTO result = fixture.getAssistant();
 
@@ -75,6 +76,7 @@ public class AssistantOnSaleDTOTest {
 		fixture.setAssistant(assistant);
 		fixture.setPrice(1);
 		fixture.setSeller(player);
+		fixture.setUID("1");
 
 		int result = fixture.getPrice();
 
@@ -88,6 +90,7 @@ public class AssistantOnSaleDTOTest {
 		fixture.setAssistant(assistant);
 		fixture.setPrice(1);
 		fixture.setSeller(player);
+		fixture.setUID("1");
 
 		PlayerDTO result = fixture.getSeller();
 
@@ -101,6 +104,19 @@ public class AssistantOnSaleDTOTest {
 		assertEquals(availableEmporiums, result.getAvailableEmporiums());
 		assertEquals(hand, result.getHand());
 		assertEquals(bonusCards, result.getBonusCards());
+	}
+	
+	@Test
+	public void getUID(){
+		AssistantOnSaleDTO fixture = new AssistantOnSaleDTO();
+		fixture.setAssistant(assistant);
+		fixture.setPrice(1);
+		fixture.setSeller(player);
+		fixture.setUID("1");
+		
+		String result = fixture.getUID();
+		assertNotNull(result);
+		assertEquals(result,"1");
 	}
 
 

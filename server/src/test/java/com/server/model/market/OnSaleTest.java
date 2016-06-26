@@ -4,40 +4,52 @@ import org.junit.*;
 import static org.junit.Assert.*;
 import com.communication.gamelogic.PlayerDTO;
 import com.communication.market.OnSaleDTO;
+import com.server.model.board.Assistant;
+import com.server.model.gamelogic.Game;
 import com.server.model.gamelogic.Player;
 
 public class OnSaleTest {
-	String UID="";
+	String UID="1";
+	Game game;
+	Player player;
+	String[] players;
+	Player buyer;
+	Object obj;
+	
+	
+	@Before
+	
+	public void setUp()
+		throws Exception {
+		
+		obj = new Object();
+		players = new String[3];
+		players[0] = "smemo";
+		players[1] = "figlio";
+		players[2] = "negro";
+		game = new Game(3, true, UID, players);
+		player = game.getActualPlayer();
+		buyer = game.getThatPlayer(2);
+	}
+	
+	
 	@Test
-	public void testOnSale_1()
+	public void testOnSale()
 		throws Exception {
 
 		OnSale result = new OnSale();
 
 		assertNotNull(result);
-		assertEquals("", result.printDetails());
-		assertEquals(0, result.getPrice());
+		
 	}
 
-	@Test
-	public void testOnSale_2()
-		throws Exception {
-		Player p = new Player("1");
-		Object o = new Object();
-		int pr = 1;
-
-		OnSale result = new OnSale(p, o, pr,UID);
-
-		assertNotNull(result);
-		assertEquals("", result.printDetails());
-		assertEquals(0, result.getPrice());
-	}
+	
 
 
 	@Test
-	public void testGetPrice_1()
+	public void testGetPrice()
 		throws Exception {
-		OnSale fixture = new OnSale(new Player("1"), new Object(), 1,UID);
+		OnSale fixture = new OnSale(player, obj, 1,UID);
 
 		int result = fixture.getPrice();
 
@@ -45,9 +57,9 @@ public class OnSaleTest {
 	}
 
 	@Test
-	public void testObtain_1()
+	public void testObtain()
 		throws Exception {
-		OnSale fixture = new OnSale(new Player("1"), new Object(), 1,UID);
+		OnSale fixture = new OnSale(player, obj, 1,UID);
 		Player buyer = new Player("1");
 
 		fixture.obtain(buyer);
@@ -55,24 +67,13 @@ public class OnSaleTest {
 	}
 
 	@Test
-	public void testPrintDetails_1()
+	public void testPrintDetails()
 		throws Exception {
-		OnSale fixture = new OnSale(new Player("1"), new Object(), 1,UID);
+		OnSale fixture = new OnSale(player, obj,1,UID);
 
 		String result = fixture.printDetails();
 
 		assertEquals("", result);
-	}
-
-
-	@Before
-	public void setUp()
-		throws Exception {
-	}
-
-	@After
-	public void tearDown()
-		throws Exception {
 	}
 
 	public static void main(String[] args) {

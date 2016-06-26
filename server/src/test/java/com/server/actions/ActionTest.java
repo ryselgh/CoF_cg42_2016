@@ -24,7 +24,7 @@ public class ActionTest {
 	}
 
 	@Test
-	public void testExecute_1()
+	public void testExecute()
 		throws Exception {
 		Action fixture = new Action();
 
@@ -34,7 +34,7 @@ public class ActionTest {
 	}
 
 	@Test
-	public void testIsValid_1()
+	public void testIsValid()
 		throws Exception {
 		Action fixture = new Action();
 
@@ -47,13 +47,13 @@ public class ActionTest {
 
 
 	@Test
-	public void testSetterFromDTO_1()
+	public void testSetterFromDTO()
 		throws Exception {
 		Action fixture = new Action();
 		ActionDTO actDTO = new ActionDTO();
 		
 		fixture.setterFromDTO(actDTO, game.getActualPlayer(), game);
-
+		assertTrue(fixture instanceof Action);
 	
 	}
 
