@@ -17,9 +17,11 @@ import javafx.animation.RotateTransition;
 import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
 import javafx.application.Application;
+import javafx.application.ConditionalFeature;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -33,8 +35,14 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.effect.Effect;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -63,6 +71,8 @@ public class GameWindow extends Application implements javafx.fxml.Initializable
 	@FXML
 	private ChoiceBox<String> choiceMap;
 	private ObservableList<String> mapList = FXCollections.observableArrayList("Default","Map2","Map3","Map4","Map5","Map6","Map7","Map8");
+	@FXML
+	private ToggleButton btnToggleShift;
 	//TEST AREA
 	
 	@FXML
@@ -70,7 +80,15 @@ public class GameWindow extends Application implements javafx.fxml.Initializable
 	@FXML
 	private Label lblMsg;
 	@FXML
+	private Label lblCouncPoolBlack, lblCouncPoolOrange, lblCouncPoolBlue, lblCouncPoolPink, lblCouncPoolPurple, lblCouncPoolWhite, lblMyEmporiums, lblMyAssistants, lblMyCoins, lblMyNobility, lblMyPoints;
+	@FXML
+	private ImageView councToDragBlack, councToDragBlue, councToDragOrange, councToDragPink, councToDragPurple, councToDragWhite;
+	@FXML
+	private ImageView seaBalcony, hillBalcony, mountainBalcony, kingBalcony;
+	@FXML
 	private ToggleButton btnToggleActions;
+	@FXML
+	private ImageView councSea1, councSea2, councSea3, councSea4, councHill1, councHill2, councHill3, councHill4, councMount1, councMount2, councMount3, councMount4, councKing1, councKing2, councKing3, councKing4;
 	@FXML
 	private ImageView seaDeck, seaSlot1, seaSlot2, hillDeck, hillSlot1, hillSlot2, mountainDeck, mountainSlot1, mountainSlot2, kingBonus1, kingBonus2, kingBonus3, kingBonus4, kingBonus5, colorBonusBlue, colorBonusOrange, colorBonusGrey, colorBonusYellow, seaBonus, hillBonus, mountainBonus;
 	@FXML
@@ -82,6 +100,11 @@ public class GameWindow extends Application implements javafx.fxml.Initializable
 	private Group actionsGroup, msgGroup;
 	@FXML
 	private Rectangle trickActions;
+	@FXML
+	private ImageView rightPane;
+	private boolean enableShift = false;
+	private boolean isAskingForShift = false;
+	private Image councToShift;
 	
 	@Override
 	public void start(Stage stage) {
@@ -157,11 +180,41 @@ public class GameWindow extends Application implements javafx.fxml.Initializable
 
 	    msgGroup.setLayoutX(0.0);
 	    msgGroup.setLayoutY(0.0);
+	    
 	}
 	
-	public void printMsg(){
+	public void printMsgTest(){
 		long msgTime = 1500;
 		String msg = txtMsg.getText();
+		int msgSize = ((1000+msg.length())/4)/(msg.length()+3) + 10;
+		ScaleTransition st = new ScaleTransition(Duration.millis(1000), msgGroup);
+		msgGroup.setOpacity(1.0);
+		lblMsg.setText(msg);
+		lblMsg.setStyle("-fx-font-size: "+Integer.toString(msgSize)+"pt; -fx-font-family: \"PerryGothic\"; -fx-text-fill: #A11212; -fx-effect: dropshadow(three-pass-box, rgba(209,181,82,0.9), 5, 0.8, 0, 0);");
+		st.setFromX(0.0);
+		st.setFromY(0.0);
+		st.setToX(1.0);
+		st.setToY(1.0);
+		st.play();
+		st.setOnFinished(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				try {
+					Thread.sleep(msgTime);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				FadeTransition ft = new FadeTransition(Duration.millis(500), msgGroup);
+				ft.setToValue(0.0);
+				ft.play();
+			}
+		});
+	}
+	
+	public void printMsg(String message){
+		long msgTime = 1500;
+		String msg = message;
 		int msgSize = ((1000+msg.length())/4)/(msg.length()+3) + 10;
 		ScaleTransition st = new ScaleTransition(Duration.millis(1000), msgGroup);
 		msgGroup.setOpacity(1.0);
@@ -394,5 +447,138 @@ public class GameWindow extends Application implements javafx.fxml.Initializable
 		        rotator.play();
 			}
 		});
+    }
+    
+    public void toggleShift(){
+    	if(!enableShift)
+    		enableShift = true;
+    	else
+    		enableShift = false;
+    }
+    
+    private void dragCouncilor(ImageView councilor){
+    	if(enableShift){
+    		councilor.getScene().setCursor(new ImageCursor(councilor.getImage()));
+    		balconyHighlight(true);
+    		isAskingForShift = true;
+    	}
+    }
+    
+    private void dropCouncilor(ImageView councilor){
+    	councilor.getScene().setCursor(new ImageCursor(new Image(getClass().getResourceAsStream("img/cof-cursor.png"))));
+    	balconyHighlight(false);
+    	isAskingForShift = true;
+    	councToShift = councilor.getImage();
+    	map.setOnMouseEntered(new EventHandler<Event>() {
+			@Override
+			public void handle(Event event) {
+		    	isAskingForShift = false;
+			}
+		});
+    	rightPane.setOnMouseEntered(new EventHandler<Event>() {
+			@Override
+			public void handle(Event event) {
+		    	isAskingForShift = false;
+			}
+		});
+    }
+    
+    public void dragBlack(){
+    	dragCouncilor(councToDragBlack);
+    }
+    
+    public void dragBlackDone(){
+    	dropCouncilor(councToDragBlack);
+    }
+    
+    public void dragBlue(){
+    	dragCouncilor(councToDragBlue);
+    }
+    
+    public void dragBlueDone(){
+    	dropCouncilor(councToDragBlue);
+    }
+    
+    public void dragOrange(){
+    	dragCouncilor(councToDragOrange);
+    }
+    
+    public void dragOrangeDone(){
+    	dropCouncilor(councToDragOrange);
+    }
+    
+    public void dragPink(){
+    	dragCouncilor(councToDragPink);
+    }
+    
+    public void dragPinkDone(){
+    	dropCouncilor(councToDragPink);
+    }
+    
+    public void dragPurple(){
+    	dragCouncilor(councToDragPurple);
+    }
+    
+    public void dragPurpleDone(){
+    	dropCouncilor(councToDragPurple);
+    }
+    
+    public void dragWhite(){
+    	dragCouncilor(councToDragWhite);
+    }
+    
+    public void dragWhiteDone(){
+    	dropCouncilor(councToDragWhite);
+    }
+    
+    private void highlightObject(ImageView obj, boolean set){
+    	if(set)
+    		obj.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(255,255,255,0.9), 5, 0.64, 0, 0);");
+    	else
+    		obj.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(255,255,255,0), 5, 0.64, 0, 0);");
+    }
+    
+    private void balconyHighlight(boolean set){
+    		highlightObject(seaBalcony,set);
+    		highlightObject(hillBalcony,set);
+    		highlightObject(mountainBalcony,set);
+    		highlightObject(kingBalcony,set);
+    }
+    
+    public void seaBalconyActionRequest(){
+    	if(isAskingForShift){
+			councSea4.setImage(councSea3.getImage());
+			councSea3.setImage(councSea2.getImage());
+			councSea2.setImage(councSea1.getImage());
+			councSea1.setImage(councToShift);
+			isAskingForShift = false;
+    	}
+    }
+    public void hillBalconyActionRequest(){
+    	if(isAskingForShift){
+			councHill4.setImage(councHill3.getImage());
+			councHill3.setImage(councHill2.getImage());
+			councHill2.setImage(councHill1.getImage());
+			councHill1.setImage(councToShift);
+			isAskingForShift = false;
+    	}
+    }
+    public void mountainBalconyActionRequest(){
+    	if(isAskingForShift){
+			councMount4.setImage(councMount3.getImage());
+			councMount3.setImage(councMount2.getImage());
+			councMount2.setImage(councMount1.getImage());
+			councMount1.setImage(councToShift);
+			isAskingForShift = false;
+    	}
+    }
+    public void kingBalconyActionRequest(){
+    	if(isAskingForShift){
+			councKing4.setImage(councKing3.getImage());
+			councKing3.setImage(councKing2.getImage());
+			councKing2.setImage(councKing1.getImage());
+			councKing1.setImage(councToShift);
+			isAskingForShift = false;
+    	}
     }
 }
