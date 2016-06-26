@@ -1,9 +1,15 @@
 package com.server.model.gamelogic;
 import java.rmi.RemoteException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 //gamehandler.waitfortwotokens(this (ActionState))
 //da spostare la sendtoclient sul gamehandler
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 
 import com.communication.RMIClientControllerRemote;
 import com.communication.actions.ActionDTO;
@@ -70,12 +76,33 @@ public class ActionState implements State {
 	/** The remote controller. */
 	private RMIClientControllerRemote remoteController;
 	
+	String startDate = "";
+	
 	/**
 	 * Instantiates a new action state.
 	 */
 	public ActionState(){
+		
 	}
 	
+	private String getTime(){
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date date = new Date();
+		return dateFormat.format(date);
+	}
+	
+	private boolean timeoutReached(String start, String current){
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		LocalDateTime dateTime1= LocalDateTime.parse(start, formatter);
+		LocalDateTime dateTime2= LocalDateTime.parse(current, formatter);
+		long diffInSeconds = java.time.Duration.between(dateTime1, dateTime2).toMillis();
+		if(diffInSeconds>gamehandler.getTimerDelay()){
+			gamehandler.RMIAbortTurn();
+			return true;
+		}
+		return false;
+		
+	}
 	/* (non-Javadoc)
 	 * @see com.server.model.gamelogic.State#getStateID()
 	 */
@@ -93,7 +120,13 @@ public class ActionState implements State {
 		boolean pass = false;
 		Action action = null;
 		if(RMI){
+			if(startDate.equals(""))
+				startDate = getTime();
 			actionDTO = remoteController.RMIgetAction(getAvailableActions());
+			if(timeoutReached(startDate, getTime())){
+				endTurn(true);
+				return;
+				}
 		}
 		else{
 		if(actionDTO==null){
@@ -117,8 +150,13 @@ public class ActionState implements State {
 				return;
 			}
 		}
-		if(RMI)
+		if(RMI){
 			remoteController.RMIprintMsg("ActionAccepted");
+			if(timeoutReached(startDate, getTime())){
+				endTurn(true);
+				return;
+				}
+		}
 		else
 			clienthandler.sendToClient("ActionAccepted", null);
 		if(action instanceof Pass)//niente check perchè è abilitata solo quando mainaction già fatta
@@ -131,15 +169,23 @@ public class ActionState implements State {
 		if(action instanceof Build)
 			if(checkWin())
 				return;
-		if(pass || !(mainCounter > 0 || speedCounter > 0))
-			gamehandler.changeState(context);
-		else{
-			gamehandler.updateClientGame();
-			this.execute(null);
-		}
+		endTurn(pass);
 		
 	}
 	
+	private void endTurn(boolean pass){
+		if(pass || !(mainCounter > 0 || speedCounter > 0))
+			gamehandler.changeState(context);
+		else{
+			try {
+				gamehandler.updateClientGame();
+				this.execute(null);
+			} catch (RemoteException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
 	/**
 	 * Check win.
 	 *
@@ -427,8 +473,11 @@ public class ActionState implements State {
 	 */
 	public void collectFREECARD(PermitsCardDTO chosen) throws RemoteException{
 		boolean found = false;
-		if(RMI)
+		if(RMI){
 			chosen = this.remoteController.RMIFreeCard();
+			if(timeoutReached(startDate, getTime()))
+				return;
+		}
 		else if(chosen==null){
 				clienthandler.sendToClient("FREECARD", null);
 				gamehandler.waitForInput("FREECARD", this);
@@ -468,8 +517,11 @@ public class ActionState implements State {
 	 */
 	public void collectBONUSCARD(PermitsCardDTO chosen) throws RemoteException{
 		ArrayList<PermitsCard> pcOwned = game.getActualPlayer().getPermits();
-		if(RMI)
+		if(RMI){
 			chosen = this.remoteController.RMIBonusCard();
+			if(timeoutReached(startDate, getTime()))
+				return;
+		}
 		else if(chosen==null){
 			clienthandler.sendToClient("BONUSCARD", null);
 			gamehandler.waitForInput("BONUSCARD",this);

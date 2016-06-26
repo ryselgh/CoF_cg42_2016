@@ -89,6 +89,7 @@ public class ClientController extends Observable implements Observer, RMIClientC
 	/** The client port. */
 	private int CLIENT_PORT;
 	
+	private boolean abortFlag=false;
 	/**
 	 * Instantiates a new client controller. Creates the cli object and starts a new console listener thread
 	 *
@@ -283,8 +284,10 @@ public class ClientController extends Observable implements Observer, RMIClientC
 				break;
 			case "TIMEOUT":
 				if(this.userName.equals((String) obj)){
-					currentActState.setAbortFlag(true);
-					this.cliQueue.add("ABORT");
+					this.abortFlag = true;
+					this.notifyObservers("ABORT");//lo passo alla view
+					currentActState.setAbortFlag(true);//per passarlo allo stato
+					this.cliQueue.add("ABORT");//per passarlo alla cli
 					view.printMsg("You ran out of time. Turn skipped");
 				}
 				else
@@ -384,6 +387,8 @@ public class ClientController extends Observable implements Observer, RMIClientC
 				break;
 
 			case "AvailableActions":
+				this.abortFlag = false;
+				this.notifyObservers("RESETABORT");
 				availableActions = (boolean[]) obj;
 				this.availableActions= availableActions;//non date ascolto al warning, serve per il case "ActionNotValid"
 				SelectActionState actState = new SelectActionState(this.game, availableActions, this.view, connection);
@@ -488,6 +493,8 @@ public class ClientController extends Observable implements Observer, RMIClientC
 	public ActionDTO RMIgetAction(boolean[] availableActions){
 		int selectedAction = view.getActionIndex(availableActions);
 		SelectActionState actState = new SelectActionState(this.game, availableActions, this.view, null);
+		if(abortFlag)
+			return null;
 		ActionDTO compiledAction = actState.getActionInstance(selectedAction);
 		return compiledAction;
 	}
@@ -496,6 +503,16 @@ public class ClientController extends Observable implements Observer, RMIClientC
 	 * @see com.communication.RMIClientControllerRemote#RMIStartTurn(com.communication.decks.PoliticsCardDTO)
 	 * receive the politics card drawn at the beginning of the turn
 	 */
+	
+	public void RMIAbort(){
+		this.abortFlag = true;
+		this.notifyObservers("ABORT");//lo passo alla view
+		if(currentActState != null)
+			currentActState.setAbortFlag(true);//per passarlo all'eventuale stato di select action
+		this.cliQueue.add("ABORT");//per passarlo alla cli
+		view.printMsg("You ran out of time. Turn skipped");
+	}
+	
 	public void RMIStartTurn(PoliticsCardDTO polcDTO){
 		view.startTurn(polcDTO);
 	}

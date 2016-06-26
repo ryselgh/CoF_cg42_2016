@@ -1,6 +1,8 @@
 package com.client.view;
 
 import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.concurrent.ArrayBlockingQueue;
 
 import com.client.controller.ClientController;
@@ -25,7 +27,7 @@ import com.communication.gamelogic.GameDTO;
 import com.communication.market.OnSaleDTO;
 import com.communication.values.CouncilorColor;
 
-public class InterfaceMiddleware {
+public class InterfaceMiddleware extends Observable implements Observer{
 	private boolean isGUI;// true gui false cli
 	private ClientController controller;
 	private ClientCLI cli;
@@ -208,6 +210,8 @@ public class InterfaceMiddleware {
 	private PermitsCardDTO CLIFreeCard(GameDTO game) {
 		PermitsCardDTO pcDTO = null;
 		int regIndex = cli.getTargetRegion(2);
+		if(abortFlag)
+			return null;
 		ArrayList<PermitsCardDTO> availablePermits = new ArrayList<PermitsCardDTO>();
 		availablePermits.add(game.getMap().getPermitsDeck(regIndex).getSlot(0));
 		availablePermits.add(game.getMap().getPermitsDeck(regIndex).getSlot(1));
@@ -243,7 +247,7 @@ public class InterfaceMiddleware {
 	private ItemOnSale CLIToSell() {
 		ItemOnSale its = null;
 		Object item = cli.getItemToSell();
-		if (item instanceof String) {
+		if (item instanceof String || abortFlag) {
 			return null;
 		} else {
 			int price = cli.getSellPrice();
@@ -515,6 +519,17 @@ public class InterfaceMiddleware {
 			return null;
 		} else
 			return this.CLIgetUserName();
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		if(arg instanceof String){
+			if(((String) arg).equals("ABORT"))
+				this.abortFlag=true;
+			else if(((String) arg).equals("RESETABORT"))
+				this.abortFlag=false;
+		}
+		
 	}
 
 }

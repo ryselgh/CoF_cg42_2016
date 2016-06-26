@@ -22,5 +22,6 @@ public interface RMIClientControllerRemote extends Remote{
 	public BonusTokenDTO RMIOneToken(BonusTokenDTO[] availBts)throws RemoteException;
 	public ItemOnSale RMIToSell()throws RemoteException;
 	public String RMIToBuy()throws RemoteException;
+	public void RMIAbort() throws RemoteException;
 	
 }

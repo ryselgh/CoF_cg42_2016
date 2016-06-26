@@ -435,4 +435,18 @@ public class GameHandler extends Observable implements Runnable, Observer{
 			timerThread.start();
 		}
 	}
+
+	public int getTimerDelay() {
+		return timerDelay;
+	}
+	
+	public void RMIAbortTurn(){
+		try {
+			context.getRemoteController().RMIAbort();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 }

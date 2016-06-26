@@ -120,10 +120,6 @@ public class Lobby extends Observable implements Runnable, Observer, RMILobbyRem
 				sendToClient(sender, "lobby_msg-" + "You are not the room admin");
 				return 0;
 			}
-			else if(this.RMI){
-				sendToClient(sender, "lobby_msg-" + "Timer not aailable in RMI mode");
-				return 0;
-			}
 			int sec;
 			try{
 				sec = Integer.parseInt(ret[1]);
@@ -609,8 +605,6 @@ public class Lobby extends Observable implements Runnable, Observer, RMILobbyRem
 				return "You are not the room admin";
 				
 			}
-			else if(this.RMI)
-				return "Timer not aailable in RMI mode";
 			int sec;
 			try{
 				sec = Integer.parseInt(ret[1]);
