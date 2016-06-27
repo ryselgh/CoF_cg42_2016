@@ -30,6 +30,7 @@ public class MarketTest {
 	@Before
 	public void setUp()
 		throws Exception {
+		//sets for the game and the market
 		
 		players = new String[3];
 		players[0] = "smemo";

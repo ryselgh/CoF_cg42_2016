@@ -22,6 +22,8 @@ public class PlayerTest {
 	@Before
 	public void setUp()
 		throws Exception {
+		
+		//sets for the game
 		players = new String[3];
 		players[0] = "1";
 		players[1] = "2";
@@ -31,7 +33,7 @@ public class PlayerTest {
 		
 	}
 	@Test
-	public void testPlayer_1()
+	public void testPlayer()
 		throws Exception {
 		
 
@@ -46,7 +48,7 @@ public class PlayerTest {
 	}
 
 	@Test
-	public void testAddAssistant_1()
+	public void testAddAssistant()
 		throws Exception {
 		Player fixture = game.getActualPlayer();
 		
@@ -58,7 +60,7 @@ public class PlayerTest {
 	}
 
 	@Test
-	public void testAddAssistant_2()
+	public void testAddAssistantMoreThanOne()
 		throws Exception {
 		Player fixture = game.getActualPlayer();
 		ArrayList<Assistant> assistants = new ArrayList();
@@ -76,7 +78,7 @@ public class PlayerTest {
 	}
 
 	@Test
-	public void testAddBonusCards_1()
+	public void testAddBonusCards()
 		throws Exception {
 		Player fixture = game.getActualPlayer();
 		Bonus b= new Bonus(BonusType.POINT,5);
@@ -94,7 +96,7 @@ public class PlayerTest {
 	}
 
 	@Test
-	public void testAddCoins_1()
+	public void testAddCoins()
 		throws Exception {
 		Player fixture = game.getActualPlayer();
 		
@@ -106,7 +108,7 @@ public class PlayerTest {
 	}
 
 	@Test
-	public void testAddPermits_1()
+	public void testAddPermits()
 		throws Exception {
 		Player fixture = game.getActualPlayer();
 		Bonus[] b= new Bonus[1];
@@ -125,7 +127,7 @@ public class PlayerTest {
 	}
 
 	@Test
-	public void testAddPolitics_1()
+	public void testAddPolitics()
 		throws Exception {
 		Player fixture = game.getActualPlayer();
 		
@@ -138,7 +140,7 @@ public class PlayerTest {
 	}
 
 	@Test
-	public void testCompareToDTOs_1()
+	public void testCompareToDTOs()
 		throws Exception {
 		Player fixture = game.getActualPlayer();
 		
@@ -159,7 +161,7 @@ public class PlayerTest {
 	}
 
 	@Test
-	public void testCompareToDTOs_2()
+	public void testCompareToDTOsReturnsNull()
 		throws Exception {
 		Player fixture = game.getActualPlayer();
 		
@@ -173,18 +175,23 @@ public class PlayerTest {
 	
 
 	@Test
-	public void testGetAvailableAssistants_1()
+	public void testGetAvailableAssistants()
 		throws Exception {
+		Assistant e1 = new Assistant();
+		Assistant e2 = new Assistant();
 		Player fixture = game.getActualPlayer();
-		
+		ArrayList<Assistant> ass = new ArrayList<Assistant>();
+		ass.add(e1);
+		ass.add(e2);
+		game.getActualPlayer().setAvailableAssistants(ass);
 		ArrayList<Assistant> result = fixture.getAvailableAssistants();
 
 		assertNotNull(result);
-		assertEquals(1, result.size());
+		assertEquals(2, result.size());
 	}
 
 	@Test
-	public void testGetAvailableEmporiums_1()
+	public void testGetAvailableEmporiums()
 		throws Exception {
 		Player fixture = game.getActualPlayer();
 		
@@ -196,7 +203,7 @@ public class PlayerTest {
 	}
 
 	@Test
-	public void testGetBonusCards_1()
+	public void testGetBonusCards()
 		throws Exception {
 		Player fixture = game.getActualPlayer();
 		
@@ -208,7 +215,7 @@ public class PlayerTest {
 	}
 
 	@Test
-	public void testGetCoins_1()
+	public void testGetCoins()
 		throws Exception {
 		Player fixture = game.getActualPlayer();
 		fixture.setCoins(1);
@@ -219,30 +226,10 @@ public class PlayerTest {
 		assertEquals(1, result);
 	}
 
-//	@Test
-//	public void testGetColor_1()
-//		throws Exception {
-//		Player fixture = new Player("1");
-//		Pawn pawn = new Pawn(fixture, "FF0000");
-//		
-//		
-//		fixture.setCoins(1);
-//		fixture.setAvailableEmporiums(new ArrayList());
-//		fixture.setScore(1);
-//		fixture.setAvailableAssistants(new ArrayList());
-//		fixture.addPolitics(new PoliticsCard(CouncilorColor.BLACK));
-//		fixture.addPermits(new PermitsCard(new Bonus[] {}, new String[] {}));
-//
-//		String result = fixture.getColor();
-//
-//		// An unexpected exception was thrown in user code while executing this test:
-//		//    java.lang.NullPointerException
-//		//       at com.server.model.gamelogic.Player.getColor(Player.java:109)
-//		assertNotNull(result);
-//	}
+	
 
 	@Test
-	public void testGetHand_1()
+	public void testGetHand()
 		throws Exception {
 		Player fixture = game.getActualPlayer();
 		
@@ -254,7 +241,7 @@ public class PlayerTest {
 	}
 
 	@Test
-	public void testGetID_1()
+	public void testGetID()
 		throws Exception {
 		Player fixture = game.getActualPlayer();
 		
@@ -265,7 +252,7 @@ public class PlayerTest {
 	}
 
 	@Test
-	public void testGetPawn_1()
+	public void testGetPawn()
 		throws Exception {
 		Player fixture = game.getActualPlayer();
 		
@@ -276,7 +263,7 @@ public class PlayerTest {
 	}
 
 	@Test
-	public void testGetPermits_1()
+	public void testGetPermits()
 		throws Exception {
 		Player fixture = game.getActualPlayer();
 		
@@ -288,7 +275,7 @@ public class PlayerTest {
 	}
 
 	@Test
-	public void testGetScore_1()
+	public void testGetScore()
 		throws Exception {
 		Player fixture = game.getActualPlayer();
 		
@@ -301,7 +288,7 @@ public class PlayerTest {
 	}
 
 	@Test
-	public void testHasUncoveredPermits_1()
+	public void testHasUncoveredPermitsReturnTrue()
 		throws Exception {
 		Player fixture = game.getActualPlayer();
 		Bonus[] b= new Bonus[1];
@@ -324,7 +311,7 @@ public class PlayerTest {
 	}
 	
 	@Test
-	public void testHasUncoveredPermits_2()
+	public void testHasUncoveredPermitsReturnFalse()
 		throws Exception {
 		Player fixture = game.getActualPlayer();
 		Bonus[] b= new Bonus[1];
@@ -347,7 +334,7 @@ public class PlayerTest {
 	}
 
 	@Test
-	public void testHasUncoveredPermits_3()
+	public void testHasUncoveredPermitsReturnFalseBeacuseHeHasntPermits()
 		throws Exception {
 		Player fixture = game.getActualPlayer();
 		
@@ -360,7 +347,7 @@ public class PlayerTest {
 	
 
 	@Test
-	public void testRemoveAssistant_1()
+	public void testRemoveAssistant()
 		throws Exception {
 		
 		Player fixture = game.getActualPlayer();
@@ -374,66 +361,10 @@ public class PlayerTest {
 
 	
 
-	
 
-//	@Test
-//	public void testRemovePermit_1()
-//		throws Exception {
-//		Player fixture = game.getActualPlayer();
-//		Bonus[] b= new Bonus[1];
-//		b[0] = new Bonus(BonusType.POINT,5);
-//		String[] letters = new String[2];
-//		letters[0] = "l";
-//		letters[1] = "m";
-//		Bonus[] b2= new Bonus[1];
-//		b2[0] = new Bonus(BonusType.POINT,5);
-//		String[] letterss = new String[2];
-//		letterss[0] = "j";
-//		letterss[1] = "k";
-//		PermitsCard pec1 = new PermitsCard(b,letters);
-//		PermitsCard pec2 = new PermitsCard(b2,letterss);
-//		fixture.addPermits(pec1);
-//		fixture.addPermits(pec2);
-//		fixture.removePermit(fixture.getPermits().get(1));
-//
-//		assertEquals(fixture.getPermits().size(),1);
-//
-//	}
-
-//	@Test
-//	public void testRemovePermit_2()
-//		throws Exception {
-//		Player fixture = new Player("");
-//		fixture.setCoins(1);
-//		fixture.setAvailableEmporiums(new ArrayList());
-//		fixture.setScore(1);
-//		fixture.setAvailableAssistants(new ArrayList());
-//		fixture.addPolitics(new PoliticsCard(CouncilorColor.BLACK));
-//		fixture.addPermits(new PermitsCard(new Bonus[] {}, new String[] {}));
-//		PermitsCard pc = new PermitsCard(new Bonus[] {}, new String[] {});
-//
-//		fixture.removePermit(pc);
-//
-//	}
-//
-//	@Test
-//	public void testRemovePermit_3()
-//		throws Exception {
-//		Player fixture = new Player("");
-//		fixture.setCoins(1);
-//		fixture.setAvailableEmporiums(new ArrayList());
-//		fixture.setScore(1);
-//		fixture.setAvailableAssistants(new ArrayList());
-//		fixture.addPolitics(new PoliticsCard(CouncilorColor.BLACK));
-//		fixture.addPermits(new PermitsCard(new Bonus[] {}, new String[] {}));
-//		PermitsCard pc = new PermitsCard(new Bonus[] {}, new String[] {});
-//
-//		fixture.removePermit(pc);
-//
-//	}
 
 	@Test
-	public void testRemovePolitics_1()
+	public void testRemovePolitics()
 		throws Exception {
 		Player fixture = game.getActualPlayer();
 		
@@ -441,138 +372,14 @@ public class PlayerTest {
 
 		fixture.removePolitics(fixture.getHand().get(0));
 
-		// An unexpected exception was thrown in user code while executing this test:
-		//    java.lang.IndexOutOfBoundsException: Index: 1, Size: 1
-		//       at java.util.ArrayList.rangeCheck(ArrayList.java:653)
-		//       at java.util.ArrayList.remove(ArrayList.java:492)
-		//       at com.server.model.gamelogic.Player.removePolitics(Player.java:190)
+		
 		
 		assertEquals(fixture.getHand().size(),5);
 	}
 
-	
-
-	
-
-	
-
-	
-
-//	@Test
-//	public void testSellAssistant_1()
-//		throws Exception {
-//		Player fixture = game.getActualPlayer();
-//		fixture.setCoins(1);
-//		fixture.setAvailableEmporiums(new ArrayList());
-//		fixture.setScore(1);
-//		fixture.setAvailableAssistants(new ArrayList());
-//		fixture.addPolitics(new PoliticsCard(CouncilorColor.BLACK));
-//		fixture.addPermits(new PermitsCard(new Bonus[] {}, new String[] {}));
-//		Assistant a = new Assistant();
-//
-//		fixture.sellAssistant(fixture.getAvailableAssistants().get(0));
-//		
-//
-//	}
-//
-//	@Test
-//	public void testSellPermitsCard_1()
-//		throws Exception {
-//		Player fixture = new Player("");
-//		fixture.setCoins(1);
-//		fixture.setAvailableEmporiums(new ArrayList());
-//		fixture.setScore(1);
-//		fixture.setAvailableAssistants(new ArrayList());
-//		fixture.addPolitics(new PoliticsCard(CouncilorColor.BLACK));
-//		fixture.addPermits(new PermitsCard(new Bonus[] {}, new String[] {}));
-//		PermitsCard perc = new PermitsCard(new Bonus[] {}, new String[] {});
-//
-//		fixture.sellPermitsCard(perc);
-//
-//	}
-//
-//	@Test
-//	public void testSellPoliticsCard_1()
-//		throws Exception {
-//		Player fixture = new Player("");
-//		fixture.setCoins(1);
-//		fixture.setAvailableEmporiums(new ArrayList());
-//		fixture.setScore(1);
-//		fixture.setAvailableAssistants(new ArrayList());
-//		fixture.addPolitics(new PoliticsCard(CouncilorColor.BLACK));
-//		fixture.addPermits(new PermitsCard(new Bonus[] {}, new String[] {}));
-//		PoliticsCard polc = new PoliticsCard(CouncilorColor.BLACK);
-//
-//		fixture.sellPoliticsCard(polc);
-//
-//	}
-//
-//	@Test
-//	public void testSetAvailableAssistants_1()
-//		throws Exception {
-//		Player fixture = new Player("");
-//		fixture.setCoins(1);
-//		fixture.setAvailableEmporiums(new ArrayList());
-//		fixture.setScore(1);
-//		fixture.setAvailableAssistants(new ArrayList());
-//		fixture.addPolitics(new PoliticsCard(CouncilorColor.BLACK));
-//		fixture.addPermits(new PermitsCard(new Bonus[] {}, new String[] {}));
-//		ArrayList<Assistant> availableAssistants = new ArrayList();
-//
-//		fixture.setAvailableAssistants(availableAssistants);
-//
-//	}
-//
-//	@Test
-//	public void testSetAvailableEmporiums_1()
-//		throws Exception {
-//		Player fixture = new Player("");
-//		fixture.setCoins(1);
-//		fixture.setAvailableEmporiums(new ArrayList());
-//		fixture.setScore(1);
-//		fixture.setAvailableAssistants(new ArrayList());
-//		fixture.addPolitics(new PoliticsCard(CouncilorColor.BLACK));
-//		fixture.addPermits(new PermitsCard(new Bonus[] {}, new String[] {}));
-//		ArrayList<Emporium> availableEmporiums = new ArrayList();
-//
-//		fixture.setAvailableEmporiums(availableEmporiums);
-//
-//	}
-//
-//	@Test
-//	public void testSetCoins_1()
-//		throws Exception {
-//		Player fixture = new Player("");
-//		fixture.setCoins(1);
-//		fixture.setAvailableEmporiums(new ArrayList());
-//		fixture.setScore(1);
-//		fixture.setAvailableAssistants(new ArrayList());
-//		fixture.addPolitics(new PoliticsCard(CouncilorColor.BLACK));
-//		fixture.addPermits(new PermitsCard(new Bonus[] {}, new String[] {}));
-//		int coins = 1;
-//
-//		fixture.setCoins(coins);
-//
-//	}
-//
-//	@Test
-//	public void testSetScore_1()
-//		throws Exception {
-//		Player fixture = new Player("");
-//		fixture.setCoins(1);
-//		fixture.setAvailableEmporiums(new ArrayList());
-//		fixture.setScore(1);
-//		fixture.setAvailableAssistants(new ArrayList());
-//		fixture.addPolitics(new PoliticsCard(CouncilorColor.BLACK));
-//		fixture.addPermits(new PermitsCard(new Bonus[] {}, new String[] {}));
-//		int score = 1;
-//
-//		fixture.setScore(score);
-//
-//	}
 
 	@Test
-	public void testToDTO_1()
+	public void testToDTO()
 		throws Exception {
 		Player fixture = game.getActualPlayer();
 		PlayerDTO result = fixture.toDTO();
@@ -582,6 +389,7 @@ public class PlayerTest {
 		assertEquals(null, result.getPawn());
 		assertEquals(10, result.getCoins());
 		assertEquals("1", result.getPlayerID());
+		
 	}
 
 	

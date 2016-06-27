@@ -23,7 +23,7 @@ public class KingTest {
 	@Before
 	public void setUp()
 		throws Exception {
-		
+		//all the sets for King Tests
 		close = new String[1];
 		close[0]= "Castrum";
 		b = new Bonus[1]; 
@@ -45,7 +45,7 @@ public class KingTest {
 	
 	
 	@Test
-	public void testKing_1()
+	public void testKing()
 		throws Exception {
 		
 		King result = new King(city);
@@ -54,7 +54,7 @@ public class KingTest {
 	}
 
 	@Test
-	public void testGetLocation_1()
+	public void testGetLocation()
 		throws Exception {
 		King fixture = new King(city);
 
@@ -66,7 +66,7 @@ public class KingTest {
 	}
 
 	@Test
-	public void testSetLocation_1()
+	public void testSetLocation()
 		throws Exception {
 		King fixture = new King(city);
 		fixture.setLocation(city2);
@@ -77,27 +77,20 @@ public class KingTest {
 	}
 
 	@Test
-	public void testToDTO_1()
+	public void testToDTO()
 		throws Exception {
 		King fixture = new King(city);
 		fixture.setLocation(city);
 
 		KingDTO result = fixture.toDTO(new ArrayList<PlayerDTO>());
 
-		// An unexpected exception was thrown in user code while executing this test:
-		//    java.lang.NullPointerException
-		//       at com.server.model.board.City.toDTO(City.java:27)
-		//       at com.server.model.board.King.toDTO(King.java:39)
 		assertNotNull(result);
 		assertTrue(result instanceof KingDTO);
 	}
 
 	
 
-	@After
-	public void tearDown()
-		throws Exception {
-	}
+	
 
 	public static void main(String[] args) {
 		new org.junit.runner.JUnitCore().run(KingTest.class);

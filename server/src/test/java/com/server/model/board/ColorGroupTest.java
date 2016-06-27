@@ -66,7 +66,7 @@ public class ColorGroupTest {
 	}
 
 	@Test
-	public void testGetBonus_1()
+	public void testGetBonus()
 		throws Exception {
 		ColorGroup colGroup = new ColorGroup(CityColor.BLUE);
 		
@@ -81,14 +81,16 @@ public class ColorGroupTest {
 		assertEquals(bc,result);
 		
 
+	}
 	
-
-		
-		
+	@Test(expected=NullPointerException.class)
+	public void testYouCannotSetANullBonus(){
+		ColorGroup colG = new ColorGroup(CityColor.YELLOW);
+		colG.setBonus(null);
 	}
 
 	@Test
-	public void testGetCity_1()
+	public void testGetCity()
 		throws Exception {
 		ColorGroup colGroup  = new ColorGroup(CityColor.BLUE);
 		colGroup.setBonus(new BonusCard(new Bonus(BonusType.POINT, 1)));
@@ -111,18 +113,7 @@ public class ColorGroupTest {
 		
 	}
 
-//	@Test
-//	public void testSetBonus_1()
-//		throws Exception {
-//		ColorGroup fixture = new ColorGroup(CityColor.BLUE);
-//		fixture.setBonus(new BonusCard(new Bonus(BonusType.ASSISTANT, 1)));
-//		fixture.addCity(new City("", CityColor.BLUE, new String[] {}, 1, new BonusToken(new Bonus[] {})));
-//		BonusCard b = new BonusCard(new Bonus(BonusType.ASSISTANT, 1));
-//
-//		fixture.setBonus(b);
-//
-//	}
-//
+
 	@Test
 	public void testToDTO_1()
 		throws Exception {
@@ -133,31 +124,12 @@ public class ColorGroupTest {
 
 		ColorGroupDTO result = fixture.toDTO(new ArrayList<PlayerDTO>());
 
-		// An unexpected exception was thrown in user code while executing this test:
-		//    java.lang.NullPointerException
-		//       at com.server.model.board.City.toDTO(City.java:27)
-		//       at com.server.model.board.ColorGroup.toDTO(ColorGroup.java:23)
+		
 		assertNotNull(result);
 		assertTrue (result instanceof ColorGroupDTO);
 	}
-//
-//	@Test
-//	public void testToDTO_2()
-//		throws Exception {
-//		ColorGroup fixture = new ColorGroup(CityColor.BLUE);
-//		fixture.setBonus(new BonusCard(new Bonus(BonusType.ASSISTANT, 1)));
-//
-//		ColorGroupDTO result = fixture.toDTO();
-//
-//		assertNotNull(result);
-//	}
-//
 
-//
-//	@After
-//	public void tearDown()
-//		throws Exception {
-//	}
+
 
 	public static void main(String[] args) {
 		new org.junit.runner.JUnitCore().run(ColorGroupTest.class);

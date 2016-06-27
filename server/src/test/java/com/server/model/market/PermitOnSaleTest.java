@@ -26,7 +26,7 @@ public class PermitOnSaleTest {
 	@Before
 	public void setUp()
 		throws Exception {
-		
+		//sets for the game and the market
 		players = new String[3];
 		players[0] = "smemo";
 		players[1] = "figlio";

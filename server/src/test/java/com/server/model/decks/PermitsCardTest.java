@@ -132,18 +132,36 @@ public class PermitsCardTest {
 	public void testFromDTO(){
 		Player p = new Player("1");
 		PermitsCard fixture = new PermitsCard(b,l);
-		PermitsCard fixture2 = new PermitsCard(b2,l);
+		
 	
 		PermitsCardDTO pcDTO = new PermitsCardDTO();
 		pcDTO.setBonuses(bDTO);
 		pcDTO.setCityLetter(l);
 		
 		p.addPermits(fixture);
-		p.addPermits(fixture2);
+		
+		
+		
+		PermitsCard pc2 = fixture.fromDTO(pcDTO, p);
+		assertEquals(pc2,fixture);
+	
+	}
+	@Test
+	public void testFromDTOReturnNull(){
+		Player p = new Player("1");
+		PermitsCard fixture = new PermitsCard(b2,l);
+		
+	
+		PermitsCardDTO pcDTO = new PermitsCardDTO();
+		pcDTO.setBonuses(bDTO);
+		pcDTO.setCityLetter(l);
+		
+		p.addPermits(fixture);
+		
 		
 		PermitsCard pc = new PermitsCard(b, l);
-		PermitsCard pc2 = pc.fromDTO(pcDTO, p);
-		assertEquals(pc2,fixture);
+		
+		assertNull(pc.fromDTO(pcDTO, p));
 	
 	}
 

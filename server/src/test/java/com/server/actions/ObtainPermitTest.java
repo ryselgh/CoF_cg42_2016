@@ -18,6 +18,7 @@ public class ObtainPermitTest {
 	@Before
 	public void setUp()
 		throws Exception {
+		//sets for create the game
 		players = new String[3];
 		players[0] = "1";
 		players[1] = "2";
@@ -29,7 +30,7 @@ public class ObtainPermitTest {
 	
 	
 	@Test
-	public void testObtainPermit_1()
+	public void testObtainPermit()
 		throws Exception {
 		
 		int regionIndex = 1;
@@ -41,7 +42,7 @@ public class ObtainPermitTest {
 	}
 
 	@Test
-	public void testExecute_1()
+	public void testExecute()
 		throws Exception {
 		PermitsCard pc = game.getMap().getPermitsDeck(1).getSlot(1, false);
 		ObtainPermit fixture = new ObtainPermit(new PoliticsCard[5] , 1, 1);
@@ -54,17 +55,13 @@ public class ObtainPermitTest {
 
 		ActionReturn result = fixture.execute();
 
-		// An unexpected exception was thrown in user code while executing this test:
-		//    java.lang.NullPointerException
-		//       at com.server.model.board.Map.<init>(Map.java:147)
-		//       at com.server.model.gamelogic.Game.initializeObjects(Game.java:71)
-		//       at com.server.model.gamelogic.Game.<init>(Game.java:49)
+		
 		assertNotNull(result);
 		assertEquals(result.getBonus(),pc.getBonus());
 	}
 
 	@Test
-	public void testExecute_2()
+	public void testExecuteOnlyJolly()
 		throws Exception {
 		PoliticsCard card1= new PoliticsCard(CouncilorColor.JOLLY);
 		PoliticsCard card2= new PoliticsCard(CouncilorColor.JOLLY);
@@ -94,7 +91,7 @@ public class ObtainPermitTest {
 	
 
 	@Test
-	public void testExecute_4()
+	public void testExecuteTwoCards()
 		throws Exception {
 		PoliticsCard card1= new PoliticsCard(CouncilorColor.JOLLY);
 		PoliticsCard card2= new PoliticsCard(CouncilorColor.JOLLY);
@@ -120,7 +117,7 @@ public class ObtainPermitTest {
 		assertEquals(game.getActualPlayer().getCoins(),11);
 	}
 	@Test
-	public void testExecute_5()
+	public void testExecuteThreeCards()
 		throws Exception {
 		PoliticsCard card1= new PoliticsCard(CouncilorColor.JOLLY);
 		PoliticsCard card2= new PoliticsCard(CouncilorColor.JOLLY);
@@ -150,7 +147,7 @@ public class ObtainPermitTest {
 	}
 
 	@Test
-	public void testIsValid_1()
+	public void testIsValidReturnFalse()
 		throws Exception {
 		PoliticsCard[] tempHand= new PoliticsCard[3];
 		tempHand[0] = game.getActualPlayer().getHand().get(0);
@@ -165,16 +162,12 @@ public class ObtainPermitTest {
 		boolean result = fixture.isValid();
 		
 
-		// An unexpected exception was thrown in user code while executing this test:
-		//    java.lang.NullPointerException
-		//       at com.server.model.board.Map.<init>(Map.java:147)
-		//       at com.server.model.gamelogic.Game.initializeObjects(Game.java:71)
-		//       at com.server.model.gamelogic.Game.<init>(Game.java:49)
+		
 		assertFalse(result);
 	}
 
 	@Test
-	public void testIsValid_2()
+	public void testIsValidReturnTrue()
 		throws Exception {
 		PoliticsCard card1= new PoliticsCard(CouncilorColor.JOLLY);
 		PoliticsCard card2= new PoliticsCard(CouncilorColor.JOLLY);
@@ -198,40 +191,13 @@ public class ObtainPermitTest {
 		
 		boolean result = fixture.isValid();
 
-		// An unexpected exception was thrown in user code while executing this test:
-		//    java.lang.NullPointerException
-		//       at com.server.model.board.Map.<init>(Map.java:147)
-		//       at com.server.model.gamelogic.Game.initializeObjects(Game.java:71)
-		//       at com.server.model.gamelogic.Game.<init>(Game.java:49)
+		
 		assertTrue(result);
 	}
 	
-//	@Test
-//	public void testIsValid_3()
-//		throws Exception {
-//		PoliticsCard[] tempHand= new PoliticsCard[1];
-//		PoliticsCard e = new PoliticsCard(CouncilorColor.BLACK);
-//		game.getActualPlayer().getHand().clear();
-//		game.getActualPlayer().getHand().add(e);
-//		tempHand[0] = new PoliticsCard(CouncilorColor.WHITE);
-//		
-//		
-//		ObtainPermit fixture = new ObtainPermit(tempHand, 1, 1);
-//		
-//		fixture.setGame(game);
-//		game.getActualPlayer().setCoins(15);
-//		
-//		fixture.isValid();
-//		ActionReturn result = fixture.execute();
-//		assertEquals(result.getError(),"\nInvalid input cards");
-//		
-//		
-//
-//		
-//	}
 
 	@Test
-	public void testSetterFromDTO_1()
+	public void testSetterFromDTO()
 		throws Exception {
 		ObtainPermit perm = new ObtainPermit(null, 0, 0);
 		perm.setGame(game);
@@ -265,7 +231,7 @@ public class ObtainPermitTest {
 		perm.setterFromDTO(obtainPermitDTO, game.getActualPlayer(), game);
 		perm.isValid();
 		perm.execute();
-//		assertEquals(game.getActualPlayer().getCoins(),20);
+		assertTrue(perm instanceof ObtainPermit);
 		
 	}
 

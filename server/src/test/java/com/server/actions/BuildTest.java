@@ -35,6 +35,9 @@ public class BuildTest {
 	@Before
 	public void setUp()
 		throws Exception {
+		
+		//sets for create the game
+		//some letters for the permits
 		l = new String[3];
 		l[0] = "b";
 		l[1] = "c";
@@ -88,7 +91,7 @@ public class BuildTest {
 	}
 	
 	@Test
-	public void testAReturn2()
+	public void testAReturnWithError()
 		throws Exception {
 		PermitsCard e = new PermitsCard(b,l2);
 		game.getActualPlayer().getPermits().add(e);
@@ -101,6 +104,21 @@ public class BuildTest {
 
 		
 		assertEquals(result.getError(),"\nYou already have an emporium in the selected city\nYou have not enought assistants");
+		
+	}
+	
+	@Test
+	public void testRemovingAssistant()
+			throws Exception {
+		
+			PermitsCard e = new PermitsCard(b,l2);
+			game.getActualPlayer().getPermits().add(e);
+			Build fixture2 = new Build(game.getMap().getCity()[4], e);
+			game.getMap().getCity()[4].setEmporium(new Emporium(game.getThatPlayer(2)));
+			fixture2.setGame(game);
+			ActionReturn result = fixture2.execute();
+		
+			assertTrue(game.getActualPlayer().getAvailableAssistants().isEmpty());
 		
 	}
 	
@@ -176,6 +194,7 @@ public class BuildTest {
 	@Test
 	public void testAnYConfigurationWithKingCityAndAnotherRandomCityNotLinked()
 		throws Exception {
+		
 		Bonus[] bonusToken8 = game.getMap().getCity()[8].getBonusToken().getBonus();
 		Bonus[] bonusToken7 = game.getMap().getCity()[7].getBonusToken().getBonus();
 		Bonus[] bonusToken9 = game.getMap().getCity()[9].getBonusToken().getBonus();
@@ -272,13 +291,6 @@ public class BuildTest {
 		assertTrue(fixture instanceof Build);
 	}
 	
-//	@Test
-//	public void testIfYouPayAssistantInCaseThereIsAlreadyAnEmporiumInTheCity(){
-//		PermitsCard pec = new PermitsCard(b,l3);
-//		game.getActualPlayer().addPermits(pec);
-//		Build fixture = new Build(game.getMap().getCity()[4], game.getActualPlayer().getPermits().get(0));
-//		
-//	}
 
 
 	public static void main(String[] args) {

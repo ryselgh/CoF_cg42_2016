@@ -23,7 +23,7 @@ public class PoliticsOnSaleTest {
 	
 	public void setUp()
 		throws Exception {
-		
+		//sets for the game and the market
 		pol = new PoliticsCard(CouncilorColor.BLACK);
 		players = new String[3];
 		players[0] = "smemo";

@@ -19,7 +19,7 @@ public class PawnTest {
 	}
 	
 	@Test
-	public void testPawn_1()
+	public void testPawn()
 		throws Exception {
 		
 		Pawn result = new Pawn(player, hexColor);
@@ -31,7 +31,7 @@ public class PawnTest {
 	}
 
 	@Test
-	public void testGetColor_1()
+	public void testGetColor()
 		throws Exception {
 		Pawn fixture = new Pawn(player,hexColor);
 		fixture.setPos(1);
@@ -42,7 +42,7 @@ public class PawnTest {
 	}
 
 	@Test
-	public void testGetPlayer_1()
+	public void testGetPlayer()
 		throws Exception {
 		Pawn fixture = new Pawn(player,hexColor);
 		fixture.setPos(1);
@@ -58,7 +58,7 @@ public class PawnTest {
 	}
 
 	@Test
-	public void testGetPos_1()
+	public void testGetPos()
 		throws Exception {
 		Pawn fixture = new Pawn(player,hexColor);
 		fixture.setPos(1);
@@ -68,19 +68,10 @@ public class PawnTest {
 		assertEquals(1, result);
 	}
 
-//	@Test
-//	public void testSetPos_1()
-//		throws Exception {
-//		Pawn fixture = new Pawn(new Player(1), "");
-//		fixture.setPos(1);
-//		int pos = 1;
-//
-//		fixture.setPos(pos);
-//
-//	}
+
 
 	@Test
-	public void testToDTO_1()
+	public void testToDTO()
 		throws Exception {
 		Pawn fixture = new Pawn(player,hexColor);
 		fixture.setPos(1);
@@ -94,11 +85,7 @@ public class PawnTest {
 	}
 
 	
-//
-//	@After
-//	public void tearDown()
-//		throws Exception {
-//	}
+
 
 	public static void main(String[] args) {
 		new org.junit.runner.JUnitCore().run(PawnTest.class);

@@ -18,6 +18,8 @@ public class GraphMapTest {
 	@Before
 	public void setUp()
 		throws Exception {
+		
+		//sets for the Game
 		players = new String[3];
 		players[0] = "1";
 		players[1] = "2";
@@ -29,7 +31,7 @@ public class GraphMapTest {
 	
 	
 	@Test
-	public void testGraphMap_1()
+	public void testGraphMap()
 		throws Exception {
 		Map map = game.getMap();
 

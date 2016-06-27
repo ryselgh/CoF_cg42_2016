@@ -15,6 +15,7 @@ public class ActionTest {
 	@Before
 	public void setUp()
 		throws Exception {
+		//sets for create the game
 		players = new String[3];
 		players[0] = "1";
 		players[1] = "2";
@@ -42,6 +43,8 @@ public class ActionTest {
 
 		assertTrue(result);
 	}
+	
+	
 
 
 

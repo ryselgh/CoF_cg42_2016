@@ -303,8 +303,7 @@ public class Lobby extends Observable implements Runnable, Observer, RMILobbyRem
 					this.clients.remove(i);// rimuovo il client dalla lista dei clients nella lobby
 		} else {
 			if (!clientHandler.inGame) {// se il giocatore non è il gioco viene cancellato forever
-				if (room != null)
-					room.getPlayers().remove(clientHandler);
+				room.getPlayers().remove(clientHandler);
 			} else {// se il giocatore sta giocando
 				clientHandler.setActive(false);
 				inactiveClients.add(clientHandler);

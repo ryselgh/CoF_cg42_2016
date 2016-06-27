@@ -21,6 +21,7 @@ public class OnSaleTest {
 	
 	public void setUp()
 		throws Exception {
+		//sets for the game and the market
 		
 		obj = new Object();
 		players = new String[3];

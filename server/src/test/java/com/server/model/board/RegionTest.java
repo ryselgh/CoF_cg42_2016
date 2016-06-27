@@ -21,7 +21,7 @@ public class RegionTest {
 	@Before
 	public void setUp()
 		throws Exception {
-		
+		//city in the region and the regionBonus
 		close = new String[1];
 		close[0]= "Castrum";
 		close2 = new String[3];
@@ -38,7 +38,7 @@ public class RegionTest {
 	
 	
 	@Test
-	public void testRegion_1()
+	public void testRegion()
 		throws Exception {
 		RegionName n = RegionName.HILL;
 
@@ -49,7 +49,7 @@ public class RegionTest {
 	}
 
 	@Test
-	public void testAddCity_1()
+	public void testAddCity()
 		throws Exception {
 		Region fixture = new Region(RegionName.HILL);
 		fixture.setBonus(new BonusCard(new Bonus(BonusType.ASSISTANT, 1)));
@@ -64,7 +64,7 @@ public class RegionTest {
 	}
 
 	@Test
-	public void testGetBonus_1()
+	public void testGetBonus()
 		throws Exception {
 		Region fixture = new Region(RegionName.HILL);
 		fixture.setBonus(bonC);
@@ -77,7 +77,7 @@ public class RegionTest {
 	}
 
 	@Test
-	public void testGetCities_1()
+	public void testGetCities()
 		throws Exception {
 		Region fixture = new Region(RegionName.HILL);
 		fixture.setBonus(new BonusCard(new Bonus(BonusType.ASSISTANT, 1)));
@@ -93,7 +93,7 @@ public class RegionTest {
 	}
 
 	@Test
-	public void testGetName_1()
+	public void testGetName()
 		throws Exception {
 		Region fixture = new Region(RegionName.HILL);
 		fixture.setBonus(new BonusCard(new Bonus(BonusType.ASSISTANT, 1)));
@@ -107,20 +107,9 @@ public class RegionTest {
 		
 	}
 
-//	@Test
-//	public void testSetBonus_1()
-//		throws Exception {
-//		Region fixture = new Region(RegionName.HILL);
-//		fixture.setBonus(new BonusCard(new Bonus(BonusType.ASSISTANT, 1)));
-//		fixture.addCity(new City("", CityColor.BLUE, new String[] {}, 1, new BonusToken(new Bonus[] {})));
-//		BonusCard b = new BonusCard(new Bonus(BonusType.ASSISTANT, 1));
-//
-//		fixture.setBonus(b);
-//
-//	}
 
 	@Test
-	public void testToDTO_1()
+	public void testToDTO()
 		throws Exception {
 		Region fixture = new Region(RegionName.HILL);
 		fixture.setBonus(new BonusCard(new Bonus(BonusType.ASSISTANT, 1)));
@@ -128,31 +117,16 @@ public class RegionTest {
 
 		RegionDTO result = fixture.toDTO(new ArrayList<PlayerDTO>());
 
-		// An unexpected exception was thrown in user code while executing this test:
-		//    java.lang.NullPointerException
-		//       at com.server.model.board.City.toDTO(City.java:27)
-		//       at com.server.model.board.Region.toDTO(Region.java:23)
+		
 		assertNotNull(result);
 		assertTrue(result instanceof RegionDTO);
 	}
 
-	@Test
-	public void testToDTO_2()
-		throws Exception {
-		Region fixture = new Region(RegionName.HILL);
-		fixture.setBonus(new BonusCard(new Bonus(BonusType.ASSISTANT, 1)));
-
-		RegionDTO result = fixture.toDTO(new ArrayList<PlayerDTO>());
-
-		assertNotNull(result);
-	}
+	
 
 	
 
-//	@After
-//	public void tearDown()
-//		throws Exception {
-//	}
+
 
 	public static void main(String[] args) {
 		new org.junit.runner.JUnitCore().run(RegionTest.class);

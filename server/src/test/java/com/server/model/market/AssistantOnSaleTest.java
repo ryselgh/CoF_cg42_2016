@@ -26,7 +26,7 @@ public class AssistantOnSaleTest {
 	
 	public void setUp()
 		throws Exception {
-		
+		//sets for the game and the market
 		as = new Assistant();
 		players = new String[3];
 		players[0] = "smemo";

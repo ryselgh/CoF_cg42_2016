@@ -49,14 +49,14 @@ public class BonusTest {
 	}
 	
 	@Test(expected=NullPointerException.class)
-	public void testTheEqualMethod(){
+	public void testTheEqualMethodThrowAnExceptionIfTheArgumentIsNull(){
 		
 		Bonus bn = new Bonus(BonusType.ASSISTANT,2);
 		bn.equalsDTO(null);
 	}
 	
 	@Test
-	public void testingEqualMethod(){
+	public void testingEqualMethodReturnTrue(){
 			
 		BonusDTO b = new BonusDTO();
 		b.setQuantity(2);
@@ -66,7 +66,7 @@ public class BonusTest {
 		assertTrue(bn.equalsDTO(b));
 	}
 	@Test
-	public void testingEqualMethod2(){
+	public void testingEqualMethodReturnFalse(){
 			
 		BonusDTO b = new BonusDTO();
 		b.setQuantity(3);
@@ -87,7 +87,7 @@ public class BonusTest {
 	}
 	
 	@Test
-	public void testHasNobility(){
+	public void testHasNobilityReturnTrue(){
 		
 		Bonus[] bn = new Bonus[2];
 		bn[0] = new Bonus(BonusType.NOBILITY,1);
@@ -98,7 +98,7 @@ public class BonusTest {
 	}
 	
 	@Test
-	public void testHasNobility2(){
+	public void testHasNobilityReturnFalse(){
 		
 		Bonus[] bn = new Bonus[2];
 		bn[0] = new Bonus(BonusType.ASSISTANT,3);

@@ -17,6 +17,7 @@ public class BalconyTest{
 
 	@Before
 	public void setUp(){
+		//a balcony
 		councilorsInTheBalcony = new Councilor[4];
 		councilorsInTheBalcony[0] = new Councilor (CouncilorColor.BLACK);
 		councilorsInTheBalcony[1] = new Councilor (CouncilorColor.BLUESKY);
@@ -24,10 +25,7 @@ public class BalconyTest{
 		councilorsInTheBalcony[3] = new Councilor (CouncilorColor.BLUESKY);
 	}
 	
-	@Test
-    public void testpippo(){
-    	assertNotNull(councilorsInTheBalcony);
-    }
+	
 	@Test
 	public void testthecreationofaBalcony() {
 		assertNotNull(new Balcony(councilorsInTheBalcony));
