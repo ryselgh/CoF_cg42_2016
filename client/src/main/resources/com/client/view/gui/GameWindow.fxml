@@ -296,6 +296,7 @@
                   <TextField fx:id="txtMsg" layoutX="1100.0" layoutY="48.0" prefHeight="25.0" prefWidth="120.0" promptText="Message" />
                   <Button fx:id="btnPrint" layoutX="1221.0" layoutY="48.0" mnemonicParsing="false" onAction="#printMsgTest" text="Print" />
                   <ToggleButton fx:id="btnToggleShift" layoutX="857.0" layoutY="85.0" mnemonicParsing="false" onAction="#toggleShift" text="Toggle ShiftCouncilor" />
+                  <ToggleButton fx:id="btnToggleSatisfy" layoutX="994.0" layoutY="85.0" mnemonicParsing="false" onAction="#toggleSatisfy" text="Toggle SatisfyCouncil" />
                </children>
             </Group>
             <Group>
@@ -674,16 +675,21 @@
                   </ImageView>
                </children>
             </Group>
-         </children>
-      </Group>
-      <Group fx:id="actionsGroup">
-         <children>
-            <ImageView fitHeight="223.0" fitWidth="337.0" layoutX="945.0" layoutY="426.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="deckPlaceHolder" fitHeight="155.0" fitWidth="103.0" layoutX="896.0" layoutY="357.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@img/board/actionsCard.png" />
+                  <Image url="@img/board/pol-back.png" />
                </image>
             </ImageView>
-            <ToggleButton fx:id="btnToggleActions" layoutX="951.0" layoutY="490.0" mnemonicParsing="false" onAction="#toggleActions" opacity="0.0" prefHeight="92.0" prefWidth="27.0" />
+            <ImageView fx:id="garbagePlaceHolder" fitHeight="150.0" fitWidth="200.0" layoutX="897.0" layoutY="210.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@img/board/pol-black.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="drawnPlaceHolder" fitHeight="150.0" fitWidth="200.0" layoutX="899.0" layoutY="359.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@img/board/pol-black.png" />
+               </image>
+            </ImageView>
          </children>
       </Group>
       <Group fx:id="msgGroup" opacity="0.0">
@@ -759,6 +765,25 @@
                   <Font name="Segoe UI" size="20.0" />
                </font>
             </Label>
+         </children>
+      </Group>
+      <Pane fx:id="handPane" layoutX="1149.0" layoutY="500.0" nodeOrientation="RIGHT_TO_LEFT" onDragDetected="#startDrag" onMouseEntered="#expandHand" onMouseExited="#retractHand" onMouseReleased="#dropCards">
+         <children>
+            <ImageView fx:id="handPlaceHolder" fitHeight="150.0" fitWidth="200.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@img/board/pol-black.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
+      <Group fx:id="actionsGroup">
+         <children>
+            <ImageView fitHeight="223.0" fitWidth="337.0" layoutX="945.0" layoutY="426.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@img/board/actionsCard.png" />
+               </image>
+            </ImageView>
+            <ToggleButton fx:id="btnToggleActions" layoutX="951.0" layoutY="490.0" mnemonicParsing="false" onAction="#toggleActions" opacity="0.0" prefHeight="92.0" prefWidth="27.0" />
          </children>
       </Group>
    </children>

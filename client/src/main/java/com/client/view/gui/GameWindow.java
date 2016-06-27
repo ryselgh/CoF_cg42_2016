@@ -5,6 +5,7 @@ import java.lang.reflect.Field;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Random;
 import java.util.ResourceBundle;
 
 import com.communication.board.BonusDTO;
@@ -17,7 +18,6 @@ import javafx.animation.RotateTransition;
 import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
 import javafx.application.Application;
-import javafx.application.ConditionalFeature;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -35,14 +35,10 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
-import javafx.scene.effect.Effect;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.ClipboardContent;
-import javafx.scene.input.DragEvent;
-import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.input.TransferMode;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -67,12 +63,12 @@ public class GameWindow extends Application implements javafx.fxml.Initializable
 	private TextField txtCitySlot, txtHexColor, txtMsg;
 	@FXML
 	private ChoiceBox<String> selectTest;
-	private ObservableList<String> testList = FXCollections.observableArrayList("flipDownCardAnimation()","flipUpCardAnimation()","setupTokens()");
+	private ObservableList<String> testList = FXCollections.observableArrayList("setupTokens()","draw(1)","draw(5)","flipDownCardAnimation()","flipUpCardAnimation()");
 	@FXML
 	private ChoiceBox<String> choiceMap;
 	private ObservableList<String> mapList = FXCollections.observableArrayList("Default","Map2","Map3","Map4","Map5","Map6","Map7","Map8");
 	@FXML
-	private ToggleButton btnToggleShift;
+	private ToggleButton btnToggleShift, btnToggleSatisfy;
 	//TEST AREA
 	
 	@FXML
@@ -99,12 +95,25 @@ public class GameWindow extends Application implements javafx.fxml.Initializable
 	@FXML
 	private Group actionsGroup, msgGroup;
 	@FXML
+	private Pane handPane;
+	@FXML
 	private Rectangle trickActions;
 	@FXML
 	private ImageView rightPane;
+	@FXML
+	private ImageView handPlaceHolder, deckPlaceHolder, drawnPlaceHolder, garbagePlaceHolder;
 	private boolean enableShift = false;
+	private boolean enableSatisfy = false;
 	private boolean isAskingForShift = false;
+	private boolean isAskingForSatisfy = false;
+	private boolean deckIsEmpty = false;
+	private boolean handIsEmpty = true;
+	private boolean garbageIsEmpty = true;
+	private boolean expanded = false;
 	private Image councToShift;
+	private ArrayList<ImageView> handArray;
+	private ArrayList<ImageView> selectedCards;
+	private ArrayList<ImageView> councilors;
 	
 	@Override
 	public void start(Stage stage) {
@@ -146,14 +155,6 @@ public class GameWindow extends Application implements javafx.fxml.Initializable
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		//TEST AREA
-	    selectTest.setItems(testList);
-	    choiceMap.setItems(mapList);
-	    //TEST AREA
-	    
-	    actionsGroup.setTranslateX(306);
-	    trickActions.setTranslateX(-306);
-	    
 	    try {
 	    	emporiums = new SVGPath[15][8];
 	    	for(int i=0; i<15; i++){
@@ -168,6 +169,28 @@ public class GameWindow extends Application implements javafx.fxml.Initializable
 					emporiums[i][j].setStroke(Color.BLACK);
 	    		}
 	    	}
+	    	councilors = new ArrayList<ImageView>();
+	    	for(int j=0; j<16; j++){
+	    		String start = "counc";
+	    		String region = null;
+	    		String num = Integer.toString(j%4+1);
+	    		switch(j/4){
+	    			case 0:
+	    				region = "Sea";
+	    				break;
+	    			case 1:
+	    				region = "Hill";
+	    				break;
+	    			case 2:
+	    				region = "Mount";
+	    				break;
+	    			case 3:
+	    				region = "King";
+	    				break;
+	    		}
+    			Field field = this.getClass().getDeclaredField(start+region+num);
+    			councilors.add((ImageView) field.get(this));
+	    	}
 		} catch (NoSuchFieldException e) {
 			e.printStackTrace();
 		} catch (SecurityException e) {
@@ -177,10 +200,22 @@ public class GameWindow extends Application implements javafx.fxml.Initializable
 		} catch (IllegalAccessException e) {
 			e.printStackTrace();
 		}
-
+		//TEST AREA
+	    selectTest.setItems(testList);
+	    choiceMap.setItems(mapList);
+	    String[] councImgPaths = {"img/board/counc-black.png","img/board/counc-orange.png","img/board/counc-blue.png","img/board/counc-pink.png","img/board/counc-purple.png","img/board/counc-white.png"};
+    	for(ImageView c: councilors){
+    		int rnd = new Random().nextInt(councImgPaths.length);
+    		c.setImage(new Image(getClass().getResourceAsStream(councImgPaths[rnd])));
+    	}
+	    //TEST AREA
+	    
+	    actionsGroup.setTranslateX(306);
+	    trickActions.setTranslateX(-306);
 	    msgGroup.setLayoutX(0.0);
 	    msgGroup.setLayoutY(0.0);
-	    
+	    handArray = new ArrayList<ImageView>();
+	    selectedCards = new ArrayList<ImageView>();
 	}
 	
 	public void printMsgTest(){
@@ -252,6 +287,12 @@ public class GameWindow extends Application implements javafx.fxml.Initializable
     			break;
     		case "setupTokens()":
     			setupTokens();
+    			break;
+    		case "draw(1)":
+    			draw(1);
+    			break;
+    		case "draw(5)":
+    			draw(5);
     			break;
     	}
     }
@@ -456,6 +497,16 @@ public class GameWindow extends Application implements javafx.fxml.Initializable
     		enableShift = false;
     }
     
+    public void toggleSatisfy(){
+    	if(!enableSatisfy){
+    		enableSatisfy = true;
+    		expandHand();
+    	}else{
+    		enableSatisfy = false;
+    		retractHand();
+    	}
+    }
+    
     private void dragCouncilor(ImageView councilor){
     	if(enableShift){
     		councilor.getScene().setCursor(new ImageCursor(councilor.getImage()));
@@ -553,7 +604,14 @@ public class GameWindow extends Application implements javafx.fxml.Initializable
 			councSea1.setImage(councToShift);
 			isAskingForShift = false;
     	}
+    	if(isAskingForSatisfy){
+        	for(ImageView card: selectedCards){
+            	toGarbage(card);
+        	}
+        	printMsg("Ok!");
+    	}
     }
+    
     public void hillBalconyActionRequest(){
     	if(isAskingForShift){
 			councHill4.setImage(councHill3.getImage());
@@ -562,7 +620,14 @@ public class GameWindow extends Application implements javafx.fxml.Initializable
 			councHill1.setImage(councToShift);
 			isAskingForShift = false;
     	}
+    	if(isAskingForSatisfy){
+    		for(ImageView card: selectedCards){
+            	toGarbage(card);
+        	}
+        	printMsg("Ok!");
+    	}
     }
+    
     public void mountainBalconyActionRequest(){
     	if(isAskingForShift){
 			councMount4.setImage(councMount3.getImage());
@@ -571,7 +636,14 @@ public class GameWindow extends Application implements javafx.fxml.Initializable
 			councMount1.setImage(councToShift);
 			isAskingForShift = false;
     	}
+    	if(isAskingForSatisfy){
+    		for(ImageView card: selectedCards){
+            	toGarbage(card);
+        	}
+        	printMsg("Ok!");
+    	}
     }
+    
     public void kingBalconyActionRequest(){
     	if(isAskingForShift){
 			councKing4.setImage(councKing3.getImage());
@@ -580,5 +652,144 @@ public class GameWindow extends Application implements javafx.fxml.Initializable
 			councKing1.setImage(councToShift);
 			isAskingForShift = false;
     	}
+    	if(isAskingForSatisfy){
+    		for(ImageView card: selectedCards){
+            	toGarbage(card);
+        	}
+        	printMsg("Ok!");
+    	}
     }
+    
+    private void draw(int qnt){
+    	String[] cardsImgPaths = {"img/board/pol-black.png","img/board/pol-orange.png","img/board/pol-blue.png","img/board/pol-pink.png","img/board/pol-purple.png","img/board/pol-white.png","img/board/pol-jolly.png"};
+    	int rnd = new Random().nextInt(cardsImgPaths.length); //DA RIMUOVERE! Solo a scopo di testing
+    	drawnPlaceHolder.setImage(new Image(getClass().getResourceAsStream(cardsImgPaths[rnd])));
+    	FadeTransition ft = new FadeTransition(Duration.millis(150),drawnPlaceHolder);
+    	ft.setToValue(1.0);
+    	ft.play();
+    	TranslateTransition tt = new TranslateTransition(Duration.millis(250),drawnPlaceHolder);
+    	tt.setFromX(0);
+    	tt.setFromY(0);
+    	tt.setToX(250-handArray.size()*10);
+    	tt.setToY(142);
+    	tt.play();
+    	tt.setOnFinished(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+		    	drawnPlaceHolder.setOpacity(0.0);
+		    	handArray.add(new ImageView(new Image(getClass().getResourceAsStream(cardsImgPaths[rnd]))));
+		    	ImageView drawnCard = handArray.get(handArray.size()-1);
+		    	handPane.getChildren().add(drawnCard);
+		    	drawnCard.setPreserveRatio(true);
+		    	drawnCard.setFitHeight(150);
+		    	drawnCard.setTranslateX(10*(handArray.size()-1));
+		    	drawnCard.addEventHandler(MouseEvent.MOUSE_CLICKED, new SelectCardEvent());
+		    	if(qnt>1)
+		    		draw(qnt-1);
+			}
+		});
+	}
+    
+    public void expandHand(){
+    	if(!expanded){
+	    	for(int i=1; i<handArray.size();i++){
+	    		ImageView card = handArray.get(i);
+	    		TranslateTransition tt = new TranslateTransition(Duration.millis(500),card);
+	    		tt.setFromX(10*i);
+	    		tt.setByX(15*i);
+	    		tt.play();
+	    		tt.setOnFinished(new EventHandler<ActionEvent>() {
+					@Override
+					public void handle(ActionEvent event) {
+							expanded = true;
+					}
+				});
+	    	}
+    	}
+    }
+    
+    public void retractHand(){
+    	if(expanded && !enableSatisfy){
+	    	for(int i=1; i<handArray.size();i++){
+	    		ImageView card = handArray.get(i);
+	    		TranslateTransition tt = new TranslateTransition(Duration.millis(500),card);
+	    		tt.setFromX(25*i);
+	    		tt.setByX(-15*i);
+	    		tt.play();
+	    		tt.setOnFinished(new EventHandler<ActionEvent>() {
+					@Override
+					public void handle(ActionEvent event) {
+				    	expanded = false;
+					}
+				});
+	    	}
+    	}
+    }
+    
+    private class SelectCardEvent implements EventHandler<Event>{
+        @Override
+        public void handle(Event e) {
+        	ImageView card = ((ImageView)(e.getSource()));
+        	if(enableSatisfy){
+        		if(!selectedCards.contains(card) && selectedCards.size()<4){
+	        		highlightObject(card,true);
+	        		card.setTranslateY(-10);
+	        		selectedCards.add(card);
+        		}else if(selectedCards.contains(card)){
+        			highlightObject(card,false);
+	        		card.setTranslateY(0);
+	        		selectedCards.remove(card);
+        		}
+        	}
+        }
+    }
+    
+    public void startDrag(){
+    	if(enableSatisfy && selectedCards.size()>0)
+    		dragCards(selectedCards);
+    }
+    
+	private void dragCards(ArrayList<ImageView> selectedCards){
+    	handPane.getScene().setCursor(new ImageCursor(new Image(getClass().getResourceAsStream("img/drag-cards-cursor.png"))));
+    	balconyHighlight(true);
+    	isAskingForSatisfy = true;
+    }
+    
+    public void dropCards(){
+    	if(enableSatisfy){
+	    	handPane.getScene().setCursor(new ImageCursor(new Image(getClass().getResourceAsStream("img/cof-cursor.png"))));
+	    	balconyHighlight(false);
+	    	isAskingForSatisfy = true;
+	    	map.setOnMouseEntered(new EventHandler<Event>() {
+				@Override
+				public void handle(Event event) {
+			    	isAskingForSatisfy = false;
+				}
+			});
+	    	rightPane.setOnMouseEntered(new EventHandler<Event>() {
+				@Override
+				public void handle(Event event) {
+			    	isAskingForSatisfy = false;
+				}
+			});
+    	}
+    }
+    
+    private void toGarbage(ImageView cardToRemove){
+    	TranslateTransition tt = new TranslateTransition(Duration.millis(250),cardToRemove);
+    	tt.setToX(250);
+    	tt.setToY(-300);
+    	tt.play();
+    	tt.setOnFinished(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+	    		garbagePlaceHolder.setOpacity(1.0);
+	    		garbagePlaceHolder.setImage(cardToRemove.getImage());
+	    		handPane.getChildren().remove(cardToRemove);
+	    		handArray.remove(cardToRemove);
+	    		selectedCards.remove(cardToRemove);
+			}
+		});
+    }
+    
 }
