@@ -12,6 +12,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
@@ -34,6 +35,8 @@ public class MainMenu implements javafx.fxml.Initializable {
 	@FXML
 	private Label lblNickname;
 	@FXML
+	private Label lblTimer;
+	@FXML
 	private TextField txtNickname;
 	@FXML
 	private TextField txtPlayersInLobby;
@@ -51,6 +54,8 @@ public class MainMenu implements javafx.fxml.Initializable {
 	private ImageView formNewRoom;
 	@FXML
 	private TextField txtRoomName;
+	@FXML
+	private TextField txtTimer;
 	@FXML
 	private ChoiceBox<String> choiceMinPl;
 	private ObservableList<String> minList = FXCollections.observableArrayList("2","3","4","5","6","7","8");
@@ -78,6 +83,10 @@ public class MainMenu implements javafx.fxml.Initializable {
 	private Label lblMap;
 	@FXML
 	private ImageView roomMask;
+	@FXML
+	private Group groupRoom1, groupRoom2, groupRoom3, groupRoom4, groupRoom5, groupRoom6, groupRoom7, groupRoom8;
+	@FXML
+	private Label lblRoomName1, lblRoomName2, lblRoomName3, lblRoomName4, lblRoomName5, lblRoomName6, lblRoomName7, lblRoomName8, lblPlMin1, lblPlMin2, lblPlMin3, lblPlMin4, lblPlMin5, lblPlMin6, lblPlMin7, lblPlMin8, lblPlMax1, lblPlMax2, lblPlMax3, lblPlMax4, lblPlMax5, lblPlMax6, lblPlMax7, lblPlMax8, lblMap1, lblMap2, lblMap3, lblMap4, lblMap5, lblMap6, lblMap7, lblMap8, lblPlayers1, lblPlayers2, lblPlayers3, lblPlayers4, lblPlayers5, lblPlayers6, lblPlayers7, lblPlayers8, lblStatus1, lblStatus2, lblStatus3, lblStatus4, lblStatus5, lblStatus6, lblStatus7, lblStatus8;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -371,6 +380,11 @@ public class MainMenu implements javafx.fxml.Initializable {
 		ft7.setToValue(1.0);
 		ft7.play();
 		
+		FadeTransition ft8 = new FadeTransition(Duration.millis(1000), txtTimer);
+		ft8.setFromValue(0.0);
+		ft8.setToValue(1.0);
+		ft8.play();
+		
 	}
 	
 	private void invertAnimateNewRoomForm() {
@@ -409,6 +423,11 @@ public class MainMenu implements javafx.fxml.Initializable {
 		ft7.setFromValue(1.0);
 		ft7.setToValue(0.0);
 		ft7.play();
+		
+		FadeTransition ft8 = new FadeTransition(Duration.millis(1000), txtTimer);
+		ft8.setFromValue(1.0);
+		ft8.setToValue(0.0);
+		ft8.play();
 		
 	}
 	
@@ -453,6 +472,11 @@ public class MainMenu implements javafx.fxml.Initializable {
 		ft7.setFromValue(0.0);
 		ft7.setToValue(1.0);
 		ft7.play();
+		
+		FadeTransition ft8 = new FadeTransition(Duration.millis(1000), lblTimer);
+		ft8.setFromValue(0.0);
+		ft8.setToValue(1.0);
+		ft8.play();
 	}
 	
 	
@@ -497,6 +521,11 @@ public void invertAnimateRoom(){
 		ft7.setFromValue(1.0);
 		ft7.setToValue(0.0);
 		ft7.play();
+		
+		FadeTransition ft8 = new FadeTransition(Duration.millis(1000), lblTimer);
+		ft8.setFromValue(1.0);
+		ft8.setToValue(0.0);
+		ft8.play();
 	}
 
 }
