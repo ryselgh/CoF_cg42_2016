@@ -35,7 +35,7 @@ public class MapTest {
 		boolean _default = true;
 		String rawMap = null;
 
-		Map result = new Map(p, _default, rawMap);
+		Map result = new Map(p, "Default map1.xml", rawMap);
 
 		assertNotNull(result);
 		
@@ -45,7 +45,7 @@ public class MapTest {
 	@Test
 	public void testGetAssistant()
 		throws Exception {
-		Map fixture = new Map(p,true, null);
+		Map fixture = new Map(p,"Default map1.xml", null);
 		
 		int qty = 1;
 
@@ -60,7 +60,7 @@ public class MapTest {
 	@Test
 	public void testGetAssistantsPool()
 		throws Exception {
-		Map fixture = new Map(p,true,null);
+		Map fixture = new Map(p,"Default map1.xml",null);
 		
 
 		ArrayList<Assistant> result = fixture.getAssistantsPool();
@@ -72,7 +72,7 @@ public class MapTest {
 	@Test
 	public void testGetAvailableColors()
 		throws Exception {
-		Map fixture = new Map(p,true,null);
+		Map fixture = new Map(p,"Default map1.xml",null);
 		
 
 		ArrayList<CouncilorColor> result = fixture.getAvailableColors();
@@ -86,7 +86,7 @@ public class MapTest {
 	@Test
 	public void testGetBalcony()
 		throws Exception {
-		Map fixture = new Map(p,true,null);
+		Map fixture = new Map(p,"Default map1.xml",null);
 		
 		int selection = 1;
 
@@ -99,7 +99,7 @@ public class MapTest {
 	@Test
 	public void testGetCity()
 		throws Exception {
-		Map fixture = new Map(p,true,null);
+		Map fixture = new Map(p,"Default map1.xml",null);
 		
 
 		City[] result = fixture.getCity();
@@ -111,7 +111,7 @@ public class MapTest {
 	@Test
 	public void testGetColorGroup()
 		throws Exception {
-		Map fixture = new Map(p,true,null);
+		Map fixture = new Map(p,"Default map1.xml",null);
 		
 		int index = 1;
 
@@ -124,7 +124,7 @@ public class MapTest {
 	@Test
 	public void testGetCouncilor()
 		throws Exception {
-		Map fixture = new Map(p,true,null);
+		Map fixture = new Map(p,"Default map1.xml",null);
 		
 		CouncilorColor col = CouncilorColor.BLACK;
 		fixture.getCouncilorsPool().add(new Councilor(col));
@@ -140,7 +140,7 @@ public class MapTest {
 	@Test
 	public void testGetCouncilorsPool_1()
 		throws Exception {
-		Map fixture = new Map(p,true,null);
+		Map fixture = new Map(p,"Default map1.xml",null);
 	
 
 		ArrayList<Councilor> result = fixture.getCouncilorsPool();
@@ -152,7 +152,7 @@ public class MapTest {
 	@Test
 	public void testGetKing()
 		throws Exception {
-		Map fixture = new Map(p,true,null);
+		Map fixture = new Map(p,"Default map1.xml",null);
 		
 		King result = fixture.getKing();
 
@@ -162,7 +162,7 @@ public class MapTest {
 	@Test
 	public void testGetKingBonus()
 		throws Exception {
-		Map fixture = new Map(p,true,null);
+		Map fixture = new Map(p,"Default map1.xml",null);
 		fixture.setKingBonus(new ArrayList());
 		
 
@@ -176,7 +176,7 @@ public class MapTest {
 	@Test
 	public void testGetNobilityTrack_1()
 		throws Exception {
-		Map fixture = new Map(p,true,null);
+		Map fixture = new Map(p,"Default map1.xml",null);
 		
 		fixture.setNobilityTrack(new NobilityTrack(new Pawn[] {}, new Bonus[][] {}));
 		
@@ -190,7 +190,7 @@ public class MapTest {
 	@Test
 	public void testGetPermitsDeck_1()
 		throws Exception {
-		Map fixture = new Map(p,true,null);
+		Map fixture = new Map(p,"Default map1.xml",null);
 		
 		int index = 1;
 
@@ -206,7 +206,7 @@ public class MapTest {
 	@Test
 	public void testGetPlayerEmporiums()
 		throws Exception {
-		Map fixture = new Map(p,true,null);
+		Map fixture = new Map(p,"Default map1.xml",null);
 		
 		int index = 1;
 
@@ -221,7 +221,7 @@ public class MapTest {
 	@Test
 	public void testGetPoliticsDeck()
 		throws Exception {
-		Map fixture = new Map(p,true,null);
+		Map fixture = new Map(p,"Default map1.xml",null);
 		
 
 		PoliticsDeck result = fixture.getPoliticsDeck();
@@ -233,7 +233,7 @@ public class MapTest {
 	@Test
 	public void testGetRegion()
 		throws Exception {
-		Map fixture = new Map(new Player[] {}, true, (String) null);
+		Map fixture = new Map(new Player[] {}, "Default map1.xml", (String) null);
 		
 		int index = 1;
 
@@ -246,14 +246,13 @@ public class MapTest {
 	@Test
 	public void testImportMap()
 		throws Exception {
-		Map fixture = new Map(p, true, (String) null);
+		Map fixture = new Map(p, "Default map1.xml", (String) null);
 		fixture.setKingBonus(new ArrayList());
 		fixture.setNobilityTrack(new NobilityTrack(new Pawn[] {}, new Bonus[][] {}));
 		fixture.setCity(new City[] {});
 		String file = null;
-		boolean _default = true;
 
-		int result = fixture.importMap(file, _default);
+		int result = fixture.importMap(file, "Default map1.xml");
 		
 
 		
@@ -267,7 +266,7 @@ public class MapTest {
 	@Test
 	public void testInsertCity()
 		throws Exception {
-		Map fixture = new Map(p, true, (String) null);
+		Map fixture = new Map(p, "Default map1.xml", (String) null);
 		
 		City c = new City("", CityColor.BLUE, new String[] {}, 1, new BonusToken(new Bonus[] {}));
 		String regione = "sea";
@@ -284,7 +283,7 @@ public class MapTest {
 	@Test
 	public void testToDTO()
 		throws Exception {
-		Map fixture = new Map(p, true, (String) null);
+		Map fixture = new Map(p, "Default map1.xml", (String) null);
 		fixture.setKingBonus(new ArrayList());
 		Pawn[] pawns = new Pawn[3];
 		pawns[0] = new Pawn(p[0],"#FFFFFF");

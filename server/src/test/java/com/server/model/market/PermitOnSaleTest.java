@@ -36,7 +36,7 @@ public class PermitOnSaleTest {
 		letters = new String[2];
 		letters[0] = "l";
 		letters[1] = "m";
-		game = new Game(3, true, UID, players);
+		game = new Game(3, "Default map1.xml", UID, players);
 		player = game.getActualPlayer();
 		pc = new PermitsCard(b,letters);
 		game.getActualPlayer().addPermits(pc);

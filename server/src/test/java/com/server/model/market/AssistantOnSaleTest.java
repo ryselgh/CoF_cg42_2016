@@ -32,7 +32,7 @@ public class AssistantOnSaleTest {
 		players[0] = "smemo";
 		players[1] = "figlio";
 		players[2] = "negro";
-		game = new Game(3, true, UID, players);
+		game = new Game(3, "Default map1.xml", UID, players);
 		player = game.getActualPlayer();
 		buyer = game.getThatPlayer(2);
 		

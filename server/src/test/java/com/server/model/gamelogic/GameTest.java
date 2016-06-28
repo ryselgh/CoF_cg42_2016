@@ -21,7 +21,7 @@ public class GameTest {
 		players[0] = "1";
 		players[1] = "2";
 		players[2] = "3";
-		game = new Game(3, true, null, players);
+		game = new Game(3, "Default map1.xml", null, players);
 	}
 	
 //	@Test
@@ -101,7 +101,7 @@ public class GameTest {
 		players2[2] = "3";
 		players2[3] = "4";
 		players2[4] = "5";
-		Game result = new Game(5, true, null, players2);
+		Game result = new Game(5, "Default map1.xml", null, players2);
 		
 
 	
