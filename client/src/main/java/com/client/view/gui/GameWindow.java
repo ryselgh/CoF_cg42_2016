@@ -25,11 +25,14 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.NodeOrientation;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.ImageCursor;
 import javafx.scene.Node;
+import javafx.scene.PerspectiveCamera;
 import javafx.scene.Scene;
+import javafx.scene.SceneAntialiasing;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
@@ -42,10 +45,15 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Material;
+import javafx.scene.paint.PhongMaterial;
+import javafx.scene.shape.Box;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.MeshView;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.SVGPath;
 import javafx.scene.shape.StrokeType;
+import javafx.scene.shape.TriangleMesh;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -63,7 +71,7 @@ public class GameWindow extends Application implements javafx.fxml.Initializable
 	private TextField txtCitySlot, txtHexColor, txtMsg;
 	@FXML
 	private ChoiceBox<String> selectTest;
-	private ObservableList<String> testList = FXCollections.observableArrayList("setupTokens()","draw(1)","draw(5)","flipDownCardAnimation()","flipUpCardAnimation()");
+	private ObservableList<String> testList = FXCollections.observableArrayList("setupTokens()","draw(1)","draw(5)","flipDownCardAnimation()","flipUpCardAnimation()","flipMap()","moveKing(Arkon)","moveKing(Castrum)","moveKing(Hellar)");
 	@FXML
 	private ChoiceBox<String> choiceMap;
 	private ObservableList<String> mapList = FXCollections.observableArrayList("Default","Map2","Map3","Map4","Map5","Map6","Map7","Map8");
@@ -76,7 +84,7 @@ public class GameWindow extends Application implements javafx.fxml.Initializable
 	@FXML
 	private Label lblMsg;
 	@FXML
-	private Label lblCouncPoolBlack, lblCouncPoolOrange, lblCouncPoolBlue, lblCouncPoolPink, lblCouncPoolPurple, lblCouncPoolWhite, lblMyEmporiums, lblMyAssistants, lblMyCoins, lblMyNobility, lblMyPoints;
+	private Label lblCouncPoolBlack, lblCouncPoolOrange, lblCouncPoolBlue, lblCouncPoolPink, lblCouncPoolPurple, lblCouncPoolWhite, lblMyEmporiums, lblMyAssistants, lblMyCoins, lblMyNobility, lblMyPoints, lblMyUsedPerms, lblMyMainActions, lblMySpeedActions;
 	@FXML
 	private ImageView councToDragBlack, councToDragBlue, councToDragOrange, councToDragPink, councToDragPurple, councToDragWhite;
 	@FXML
@@ -93,7 +101,7 @@ public class GameWindow extends Application implements javafx.fxml.Initializable
 	private SVGPath empA1, empA2, empA3, empA4, empA5, empA6, empA7, empA8, empB1, empB2, empB3, empB4, empB5, empB6, empB7, empB8, empC1, empC2, empC3, empC4, empC5, empC6, empC7, empC8, empD1, empD2, empD3, empD4, empD5, empD6, empD7, empD8, empE1, empE2, empE3, empE4, empE5, empE6, empE7, empE8, empF1, empF2, empF3, empF4, empF5, empF6, empF7, empF8, empG1, empG2, empG3, empG4, empG5, empG6, empG7, empG8, empH1, empH2, empH3, empH4, empH5, empH6, empH7, empH8, empI1, empI2, empI3, empI4, empI5, empI6, empI7, empI8, empJ1, empJ2, empJ3, empJ4, empJ5, empJ6, empJ7, empJ8, empK1, empK2, empK3, empK4, empK5, empK6, empK7, empK8, empL1, empL2, empL3, empL4, empL5, empL6, empL7, empL8, empM1, empM2, empM3, empM4, empM5, empM6, empM7, empM8, empN1, empN2, empN3, empN4, empN5, empN6, empN7, empN8, empO1, empO2, empO3, empO4, empO5, empO6, empO7, empO8;
 	private SVGPath[][] emporiums;
 	@FXML
-	private Group actionsGroup, msgGroup;
+	private Group actionsGroup, msgGroup, boardGroup, marketGroup, mapGroup;
 	@FXML
 	private Pane handPane;
 	@FXML
@@ -102,6 +110,8 @@ public class GameWindow extends Application implements javafx.fxml.Initializable
 	private ImageView rightPane;
 	@FXML
 	private ImageView handPlaceHolder, deckPlaceHolder, drawnPlaceHolder, garbagePlaceHolder;
+	@FXML
+	private ImageView kingA, kingB, kingC, kingD, kingE, kingF, kingG, kingH, kingI, kingJ, kingK, kingL, kingM, kingN, kingO;
 	private boolean enableShift = false;
 	private boolean enableSatisfy = false;
 	private boolean isAskingForShift = false;
@@ -110,10 +120,12 @@ public class GameWindow extends Application implements javafx.fxml.Initializable
 	private boolean handIsEmpty = true;
 	private boolean garbageIsEmpty = true;
 	private boolean expanded = false;
+	private boolean switchedMap = false;
 	private Image councToShift;
 	private ArrayList<ImageView> handArray;
 	private ArrayList<ImageView> selectedCards;
 	private ArrayList<ImageView> councilors;
+	private String kingPreviousLoc = null;
 	
 	@Override
 	public void start(Stage stage) {
@@ -132,6 +144,7 @@ public class GameWindow extends Application implements javafx.fxml.Initializable
 			String cursorPath = getClass().getResource("img/cof-cursor.png").toString();
 			Image image = new Image(cursorPath);
 			scene.setCursor(new ImageCursor(image));
+	        scene.setCamera(new PerspectiveCamera());
 		    stage.setScene(scene);
 		    Screen screen = Screen.getPrimary();
 		    Rectangle2D bounds = screen.getVisualBounds();
@@ -294,23 +307,35 @@ public class GameWindow extends Application implements javafx.fxml.Initializable
     		case "draw(5)":
     			draw(5);
     			break;
+    		case "flipMap()":
+    			flipMap();
+    			break;
+    		case "moveKing(Arkon)":
+    			moveKing("Arkon");
+    			break;
+    		case "moveKing(Castrum)":
+    			moveKing("Castrum");
+    			break;
+    		case "moveKing(Hellar)":
+    			moveKing("Hellar");
+    			break;
     	}
     }
-    
-    public void toggleActions(){
+
+	public void toggleActions(){
     	if(btnToggleActions.isSelected()){
 	    	TranslateTransition tt = new TranslateTransition(Duration.millis(500),actionsGroup);
-	    	tt.setByX(-306);
+	    	tt.setByX(-356);
 	    	tt.play();
 	    	TranslateTransition tt2 = new TranslateTransition(Duration.millis(500),trickActions);
-	    	tt2.setByX(306);
+	    	tt2.setByX(356);
 	    	tt2.play();
     	}else if(!btnToggleActions.isSelected()){
 	    	TranslateTransition tt = new TranslateTransition(Duration.millis(500),actionsGroup);
-	    	tt.setByX(306);
+	    	tt.setByX(356);
 	    	tt.play();
 	    	TranslateTransition tt2 = new TranslateTransition(Duration.millis(500),trickActions);
-	    	tt2.setByX(-306);
+	    	tt2.setByX(-356);
 	    	tt2.play();
     	}
     }
@@ -670,8 +695,9 @@ public class GameWindow extends Application implements javafx.fxml.Initializable
     	TranslateTransition tt = new TranslateTransition(Duration.millis(250),drawnPlaceHolder);
     	tt.setFromX(0);
     	tt.setFromY(0);
-    	tt.setToX(250-handArray.size()*10);
-    	tt.setToY(142);
+    	tt.setToX(220-handArray.size()*10);
+    	tt.setToY(280);
+    	drawnPlaceHolder.toFront();
     	tt.play();
     	tt.setOnFinished(new EventHandler<ActionEvent>() {
 			@Override
@@ -777,7 +803,7 @@ public class GameWindow extends Application implements javafx.fxml.Initializable
     
     private void toGarbage(ImageView cardToRemove){
     	TranslateTransition tt = new TranslateTransition(Duration.millis(250),cardToRemove);
-    	tt.setToX(250);
+    	tt.setToX(90);
     	tt.setToY(-300);
     	tt.play();
     	tt.setOnFinished(new EventHandler<ActionEvent>() {
@@ -791,5 +817,177 @@ public class GameWindow extends Application implements javafx.fxml.Initializable
 			}
 		});
     }
+    
+    private void flipMap(){
+    	RotateTransition rotator = new RotateTransition(Duration.millis(1000), boardGroup);
+        rotator.setAxis(Rotate.Y_AXIS);
+        if(!switchedMap){
+	        rotator.setFromAngle(0);
+	        rotator.setToAngle(85);
+        }else{
+        	rotator.setFromAngle(180);
+            rotator.setToAngle(265);
+        }
+        rotator.setInterpolator(Interpolator.LINEAR);
+        rotator.play();
+        rotator.setOnFinished(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				switchMap();
+				RotateTransition rotator2 = new RotateTransition(Duration.millis(1000), boardGroup);
+		        rotator2.setAxis(Rotate.Y_AXIS);
+		        if(switchedMap){
+			        rotator2.setFromAngle(85);
+			        rotator2.setToAngle(180);
+		        }else{
+			        rotator2.setFromAngle(265);
+			        rotator2.setToAngle(360);
+		        }
+		        rotator2.setInterpolator(Interpolator.LINEAR);
+		        rotator2.play();
+		        rotator2.setOnFinished(new EventHandler<ActionEvent>() {
+					@Override
+					public void handle(ActionEvent event) {
+						//if(switchedMap)
+							//printMsg("It's market\ntime!");
+					}
+				});
+			}
+		});
+    }
+    
+    private void switchMap(){
+    	if(switchedMap){
+    		mapGroup.toFront();
+    		switchedMap = false;
+    	}else{
+    		marketGroup.toFront();
+    		RotateTransition rt = new RotateTransition(Duration.millis(1), marketGroup);
+    		rt.setAxis(Rotate.Y_AXIS);
+    		rt.setFromAngle(0);
+    		rt.setToAngle(180);
+    		rt.play();
+    		switchedMap = true;
+    	}
+    }
+    
+    private void startMarket(){
+    	
+    }
+    
+    private void moveKing(String cityName) {
+    	if(kingPreviousLoc == null)
+    		kingPreviousLoc = cityName;
+    	String cityLetter = Character.toString(kingPreviousLoc.charAt(0));
+		kingPreviousLoc = cityName;
+    	FadeTransition tt = new FadeTransition(Duration.millis(300));
+		tt.setFromValue(1.0);
+		tt.setToValue(0.0);
+    	switch(cityLetter){
+    		case "A":
+    			tt.setNode(kingA);
+    			break;
+    		case "B":
+    			tt.setNode(kingB);
+    			break;
+    		case "C":
+    			tt.setNode(kingC);
+    			break;
+    		case "D":
+    			tt.setNode(kingD);
+    			break;
+    		case "E":
+    			tt.setNode(kingE);
+    			break;
+    		case "F":
+    			tt.setNode(kingF);
+    			break;
+    		case "G":
+    			tt.setNode(kingG);
+    			break;
+    		case "H":
+    			tt.setNode(kingH);
+    			break;
+    		case "I":
+    			tt.setNode(kingI);
+    			break;
+    		case "J":
+    			tt.setNode(kingJ);
+    			break;
+    		case "K":
+    			tt.setNode(kingK);
+    			break;
+    		case "L":
+    			tt.setNode(kingL);
+    			break;
+    		case "M":
+    			tt.setNode(kingM);
+    			break;
+    		case "N":
+    			tt.setNode(kingN);
+    			break;
+    		case "O":
+    			tt.setNode(kingO);
+    			break;
+    	}
+		tt.play();
+    	tt.setOnFinished(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+		    	String cityLetter = Character.toString(cityName.charAt(0));
+				FadeTransition tt = new FadeTransition(Duration.millis(300));
+    			tt.setFromValue(0.0);
+    			tt.setToValue(1.0);
+		    	switch(cityLetter){
+			    	case "A":
+		    			tt.setNode(kingA);
+		    			break;
+		    		case "B":
+		    			tt.setNode(kingB);
+		    			break;
+		    		case "C":
+		    			tt.setNode(kingC);
+		    			break;
+		    		case "D":
+		    			tt.setNode(kingD);
+		    			break;
+		    		case "E":
+		    			tt.setNode(kingE);
+		    			break;
+		    		case "F":
+		    			tt.setNode(kingF);
+		    			break;
+		    		case "G":
+		    			tt.setNode(kingG);
+		    			break;
+		    		case "H":
+		    			tt.setNode(kingH);
+		    			break;
+		    		case "I":
+		    			tt.setNode(kingI);
+		    			break;
+		    		case "J":
+		    			tt.setNode(kingJ);
+		    			break;
+		    		case "K":
+		    			tt.setNode(kingK);
+		    			break;
+		    		case "L":
+		    			tt.setNode(kingL);
+		    			break;
+		    		case "M":
+		    			tt.setNode(kingM);
+		    			break;
+		    		case "N":
+		    			tt.setNode(kingN);
+		    			break;
+		    		case "O":
+		    			tt.setNode(kingO);
+		    			break;
+		    	}
+    			tt.play();
+			}
+		});
+	}
     
 }
