@@ -6,6 +6,7 @@ import static org.junit.Assert.*;
 public class ItemOnSaleDTOTest {
 	
 	Object obj;
+	
 	@Before
 	public void setUp()
 		throws Exception {
@@ -17,14 +18,15 @@ public class ItemOnSaleDTOTest {
 	}
 	
 	@Test
-	public void testItemOnSaleDTO_1()
+	public void testItemOnSaleDTO()
 		throws Exception {
 		ItemOnSaleDTO result = new ItemOnSaleDTO();
 		assertNotNull(result);
 	}
+	// getters and setters are tested together
 
 	@Test
-	public void testGetObj_1()
+	public void testGetObj()
 		throws Exception {
 		ItemOnSaleDTO fixture = new ItemOnSaleDTO();
 		fixture.setPrice(1);
@@ -36,7 +38,7 @@ public class ItemOnSaleDTOTest {
 	}
 
 	@Test
-	public void testGetPrice_1()
+	public void testGetPrice()
 		throws Exception {
 		ItemOnSaleDTO fixture = new ItemOnSaleDTO();
 		fixture.setPrice(1);

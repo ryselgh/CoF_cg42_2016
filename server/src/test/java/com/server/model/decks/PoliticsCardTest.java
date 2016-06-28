@@ -9,6 +9,8 @@ import com.server.model.gamelogic.Player;
 import static org.junit.Assert.*;
 
 public class PoliticsCardTest {
+	
+	//test the construcotr
 	@Test
 	public void testPoliticsCard_1()
 		throws Exception {
@@ -23,9 +25,12 @@ public class PoliticsCardTest {
 	public void testIfYouCanCreateNullPoliticsCards(){
 		PoliticsCard pc = new PoliticsCard(null);
 	}
-
+// ------------------------------------------------------------
+	
+	//testing the methods
+	
 	@Test
-	public void testGetColor_1()
+	public void testGetColor()
 		throws Exception {
 		PoliticsCard fixture = new PoliticsCard(CouncilorColor.BLACK);
 
@@ -36,6 +41,9 @@ public class PoliticsCardTest {
 		assertEquals("BLACK", result.toString());
 		
 	}
+	
+	
+	// testing DTO methods
 	
 	@Test 
 	public void testToDTO(){
@@ -48,7 +56,7 @@ public class PoliticsCardTest {
 
 	
 	@Test
-	public void testEqualsDTO(){
+	public void testEqualsDTOTrueCondition(){
 		
 		PoliticsCard fixture = new PoliticsCard(CouncilorColor.BLACK);
 		PoliticsCardDTO pcDTO = new PoliticsCardDTO();
@@ -57,6 +65,16 @@ public class PoliticsCardTest {
 		assertTrue(fixture.equalsDTO(pcDTO));
 		
 		
+	}
+	
+	@Test
+	public void testEqualsDTOFalseCondition(){
+		
+		PoliticsCard fixture = new PoliticsCard(CouncilorColor.WHITE);
+		PoliticsCardDTO pcDTO = new PoliticsCardDTO();
+		pcDTO.setColor(CouncilorColor.BLACK);
+		
+		assertFalse(fixture.equalsDTO(pcDTO));
 	}
 	
 	@Test (expected=NullPointerException.class)
@@ -68,23 +86,57 @@ public class PoliticsCardTest {
 		fixture.equalsDTO(null);
 		
 	}
+	
+	
 	@Test
 	public void testFromDTO(){
 		
 		PoliticsCard fixture = new PoliticsCard(CouncilorColor.BLACK);
-		PoliticsCard fixture2 = new PoliticsCard(CouncilorColor.WHITE);
-		PoliticsCardDTO pcDTO = new PoliticsCardDTO();
-		pcDTO.setColor(CouncilorColor.BLACK);
 		Player player = new Player("1");
 		player.addPolitics(fixture);
-		PoliticsCard pc = new PoliticsCard(CouncilorColor.BLACK);
-		PoliticsCard pc2 = pc.fromDTO(pcDTO, player);
+
+		PoliticsCardDTO pcDTO = new PoliticsCardDTO();
+		pcDTO.setColor(CouncilorColor.BLACK);
+		
+		PoliticsCard pc2 = PoliticsCard.fromDTO(pcDTO, player);
 		
 		assertEquals(pc2,fixture);
 		
 		
 		
 	}
+	
+	
+	@Test(expected=NullPointerException.class)
+	public void testIfFromDTOThrowsException(){
+		PoliticsCard fixture = new PoliticsCard(CouncilorColor.BLACK);
+		Player player = new Player("1");
+		player.addPolitics(fixture);
+		
+		PoliticsCard.fromDTO(null, player);
+		
+		
+	}
+	
+	@Test
+	public void testFromDTO_ReturnNull(){
+		
+		PoliticsCard fixture = new PoliticsCard(CouncilorColor.WHITE);
+		Player player = new Player("1");
+		player.addPolitics(fixture);
+
+		PoliticsCardDTO pcDTO = new PoliticsCardDTO();
+		pcDTO.setColor(CouncilorColor.BLACK);
+	
+		
+		assertNull(PoliticsCard.fromDTO(pcDTO, player));
+		
+		
+		
+	}
+	
+	
+	// --------------------------------------------------------------
 
 	public static void main(String[] args) {
 		new org.junit.runner.JUnitCore().run(PoliticsCardTest.class);

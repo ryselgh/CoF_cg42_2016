@@ -35,7 +35,7 @@ public class PermitOnSaleDTOTest {
 	public void setUp()
 		throws Exception {
 		pawn=new PawnDTO();
-		pawn.setHexColor("verde");
+		pawn.setHexColor("FF0000");
 		pawn.setPos(7);
 		pawn.setP(player);
 		
@@ -67,21 +67,25 @@ public class PermitOnSaleDTOTest {
 		permitsCardDTO.setCityLetter(cityLetters);
 	}
 	
-//	
-//	@Test
-//	public void testPermitOnSaleDTO_1()
-//		throws Exception {
-//		PermitOnSaleDTO result = new PermitOnSaleDTO();
-//		assertNotNull(result);
-//	}
+	
+	@Test
+	public void testPermitOnSaleDTO()
+		throws Exception {
+		PermitOnSaleDTO result = new PermitOnSaleDTO();
+		assertNotNull(result);
+	}
+	
+	// getters and setters are tested together
+
 
 	@Test
-	public void testGetPermit_1()
+	public void testGetPermit()
 		throws Exception {
 		PermitOnSaleDTO fixture = new PermitOnSaleDTO();
 		fixture.setPermit(permitsCardDTO);
 		fixture.setSeller(player);
 		fixture.setPrice(1);
+		fixture.setUID("1");
 
 		PermitsCardDTO result = fixture.getPermit();
 
@@ -92,12 +96,13 @@ public class PermitOnSaleDTOTest {
 	}
 
 	@Test
-	public void testGetPrice_1()
+	public void testGetPrice()
 		throws Exception {
 		PermitOnSaleDTO fixture = new PermitOnSaleDTO();
 		fixture.setPermit(permitsCardDTO);
 		fixture.setSeller(player);
 		fixture.setPrice(1);
+		fixture.setUID("1");
 
 		int result = fixture.getPrice();
 
@@ -105,12 +110,13 @@ public class PermitOnSaleDTOTest {
 	}
 
 	@Test
-	public void testGetSeller_1()
+	public void testGetSeller()
 		throws Exception {
 		PermitOnSaleDTO fixture = new PermitOnSaleDTO();
 		fixture.setPermit(permitsCardDTO);
 		fixture.setSeller(player);
 		fixture.setPrice(1);
+		fixture.setUID("1");
 
 		PlayerDTO result = fixture.getSeller();
 
@@ -125,51 +131,24 @@ public class PermitOnSaleDTOTest {
 		assertEquals(hand, result.getHand());
 		assertEquals(bonusCards, result.getBonusCards());
 	}
-
-//	@Test
-//	public void testSetPermit_1()
-//		throws Exception {
-//		PermitOnSaleDTO fixture = new PermitOnSaleDTO();
-//		fixture.setPermit(new PermitsCardDTO());
-//		fixture.setSeller(new PlayerDTO());
-//		fixture.setPrice(1);
-//		PermitsCardDTO permit = new PermitsCardDTO();
-//
-//		fixture.setPermit(permit);
-//
-//	}
-//
-//	@Test
-//	public void testSetPrice_1()
-//		throws Exception {
-//		PermitOnSaleDTO fixture = new PermitOnSaleDTO();
-//		fixture.setPermit(new PermitsCardDTO());
-//		fixture.setSeller(new PlayerDTO());
-//		fixture.setPrice(1);
-//		int price = 1;
-//
-//		fixture.setPrice(price);
-//
-//	}
-//
-//	@Test
-//	public void testSetSeller_1()
-//		throws Exception {
-//		PermitOnSaleDTO fixture = new PermitOnSaleDTO();
-//		fixture.setPermit(new PermitsCardDTO());
-//		fixture.setSeller(new PlayerDTO());
-//		fixture.setPrice(1);
-//		PlayerDTO seller = new PlayerDTO();
-//
-//		fixture.setSeller(seller);
-//
-//	}
-
-
-	@After
-	public void tearDown()
-		throws Exception {
+	
+	
+	@Test 
+	public void testGetUID(){
+		PermitOnSaleDTO fixture = new PermitOnSaleDTO();
+		fixture.setObj(permits);;
+		fixture.setPrice(1);
+		fixture.setSeller(player);
+		fixture.setUID("1");
+		
+		String result = fixture.getUID();
+		assertNotNull(result);
+		assertEquals(result,"1");
 	}
+
+
+
+
 
 	public static void main(String[] args) {
 		new org.junit.runner.JUnitCore().run(PermitOnSaleDTOTest.class);

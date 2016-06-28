@@ -91,7 +91,7 @@ public class ClientHandler extends Observable implements Observer, Runnable{
 		listener = new ClientListener(inputStream);
 		Thread clListThread = new Thread(listener);
 		listener.addObserver(this);
-		clListThread.run();
+		clListThread.start();
 	}
 	
 	/**

@@ -4,8 +4,10 @@ import org.junit.*;
 import static org.junit.Assert.*;
 
 public class ChangeCardsDTOTest {
+	
+	
 	@Test
-	public void testChangeCardsDTO_1()
+	public void testChangeCardsDTO()
 		throws Exception {
 
 		ChangeCardsDTO result = new ChangeCardsDTO();
@@ -13,9 +15,11 @@ public class ChangeCardsDTOTest {
 		assertNotNull(result);
 		assertEquals(0, result.getBalconyIndex());
 	}
+	
+	// getters and setters are tested together
 
 	@Test
-	public void testGetBalconyIndex_1()
+	public void testGetBalconyIndex()
 		throws Exception {
 		ChangeCardsDTO fixture = new ChangeCardsDTO();
 		fixture.setBalconyIndex(1);

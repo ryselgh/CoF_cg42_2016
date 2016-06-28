@@ -16,14 +16,14 @@ public class EmporiumTest {
 	@Before
 	public void setUp()
 		throws Exception {
-		
+		//a player
 		player= new Player("1");
 		
 	}
 	
 	
 	@Test
-	public void testEmporium_1()
+	public void testEmporium()
 		throws Exception {
 		
 		Emporium result = new Emporium(player);
@@ -32,7 +32,7 @@ public class EmporiumTest {
 	}
 
 	@Test
-	public void testGetPlayer_1()
+	public void testGetPlayer()
 		throws Exception {
 		Emporium emp = new Emporium(player);
 
@@ -47,26 +47,20 @@ public class EmporiumTest {
 	}
 
 	@Test
-	public void testToDTO_1()
+	public void testToDTO()
 		throws Exception {
 		Emporium fixture = new Emporium(player);
 
 		EmporiumDTO result = fixture.toDTO(new PlayerDTO());
 
-		// An unexpected exception was thrown in user code while executing this test:
-		//    java.lang.NullPointerException
-		//       at com.server.model.gamelogic.Player.toDTO(Player.java:299)
-		//       at com.server.model.board.Emporium.toDTO(Emporium.java:34)
+		
 		assertNotNull(result);
 		assertTrue(result instanceof EmporiumDTO);
 	}
 
 	
 
-//	@After
-//	public void tearDown()
-//		throws Exception {
-//	}
+
 
 	public static void main(String[] args) {
 		new org.junit.runner.JUnitCore().run(EmporiumTest.class);

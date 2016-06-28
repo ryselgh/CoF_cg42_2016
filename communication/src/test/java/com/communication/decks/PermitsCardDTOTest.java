@@ -14,6 +14,8 @@ public class PermitsCardDTOTest {
 	public void setUp()
 		throws Exception {
 		
+		//in the setup there is what is needed to create a permitsCard
+		
 		bonuses = new BonusDTO[2];
 		bonuses[0]= new BonusDTO();
 		bonuses[0].setQuantity(1);
@@ -30,15 +32,18 @@ public class PermitsCardDTOTest {
 		
 		
 	}
-//	@Test
-//	public void testPermitsCardDTO_1()
-//		throws Exception {
-//		PermitsCardDTO result = new PermitsCardDTO();
-//		assertNotNull(result);
-//	}
+	
+	@Test
+	public void testPermitsCardDTO()
+		throws Exception {
+		PermitsCardDTO result = new PermitsCardDTO();
+		assertNotNull(result);
+	}
+	
+	// getters and setters are tested together
 
 	@Test
-	public void testGetBonuses_1()
+	public void testGetBonuses()
 		throws Exception {
 		PermitsCardDTO fixture = new PermitsCardDTO();
 		fixture.setBonuses(bonuses);
@@ -52,7 +57,7 @@ public class PermitsCardDTOTest {
 	}
 
 	@Test
-	public void testGetCityLetter_1()
+	public void testGetCityLetter()
 		throws Exception {
 		PermitsCardDTO fixture = new PermitsCardDTO();
 		fixture.setBonuses(bonuses);
@@ -66,7 +71,7 @@ public class PermitsCardDTOTest {
 	}
 
 	@Test
-	public void testIsFaceDown_1()
+	public void testIsFaceDownReturnsTrue()
 		throws Exception {
 		PermitsCardDTO fixture = new PermitsCardDTO();
 		fixture.setBonuses(bonuses);
@@ -79,7 +84,7 @@ public class PermitsCardDTOTest {
 	}
 
 	@Test
-	public void testIsFaceDown_2()
+	public void testIsFaceDownReturnsFalse()
 		throws Exception {
 		PermitsCardDTO fixture = new PermitsCardDTO();
 		fixture.setBonuses(bonuses);
@@ -91,44 +96,6 @@ public class PermitsCardDTOTest {
 		assertEquals(false, result);
 	}
 
-//	@Test
-//	public void testSetBonuses_1()
-//		throws Exception {
-//		PermitsCardDTO fixture = new PermitsCardDTO();
-//		fixture.setBonuses(new BonusDTO[] {});
-//		fixture.setFaceDown(true);
-//		fixture.setCityLetter(new String[] {});
-//		BonusDTO[] bonuses = new BonusDTO[] {};
-//
-//		fixture.setBonuses(bonuses);
-//
-//	}
-//
-//	@Test
-//	public void testSetCityLetter_1()
-//		throws Exception {
-//		PermitsCardDTO fixture = new PermitsCardDTO();
-//		fixture.setBonuses(new BonusDTO[] {});
-//		fixture.setFaceDown(true);
-//		fixture.setCityLetter(new String[] {});
-//		String[] cityLetter = new String[] {};
-//
-//		fixture.setCityLetter(cityLetter);
-//
-//	}
-//
-//	@Test
-//	public void testSetFaceDown_1()
-//		throws Exception {
-//		PermitsCardDTO fixture = new PermitsCardDTO();
-//		fixture.setBonuses(new BonusDTO[] {});
-//		fixture.setFaceDown(true);
-//		fixture.setCityLetter(new String[] {});
-//		boolean faceDown = true;
-//
-//		fixture.setFaceDown(faceDown);
-//
-//	}
 
 	
 

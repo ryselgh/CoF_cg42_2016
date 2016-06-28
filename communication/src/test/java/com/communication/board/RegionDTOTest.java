@@ -28,16 +28,20 @@ public class RegionDTOTest {
 	public void setUp()
 		throws Exception {
 		
+		//all you need to test the methods
+		
+		//bonus
 		bonus = new BonusDTO();
 		bonus.setQuantity(2);
 		bonus.setType(BonusType.POINT);
 		
-		
+		//the city in the region
 		cities=new CityDTO[2];
 		cities[0]= fixture1;
 		cities[1]= fixture2;
 		regCities = new ArrayList<CityDTO>(Arrays.asList(cities));
 
+		//all features of the cities
 		closeCities=new String[2];
 		closeCities[0]="Indur";
 		closeCities[1]="Hellar";
@@ -82,20 +86,24 @@ public class RegionDTOTest {
 		fixture2.setPlayerNum(2);
 		fixture2.setToken(btDTO2);
 		
+		//the bonusCard assigned to the regio 
 		bcDTO = new BonusCardDTO();
 		bcDTO.setBonus(bonus);
 		
 	}
 	
-//	@Test
-//	public void testRegionDTO_1()
-//		throws Exception {
-//		RegionDTO result = new RegionDTO();
-//		assertNotNull(result);
-//	}
+	@Test
+	public void testRegionDTO()
+		throws Exception {
+		RegionDTO result = new RegionDTO();
+		assertNotNull(result);
+	}
+
+	// getters and setters are tested together
+
 
 	@Test
-	public void testGetBonusCard_1()
+	public void testGetBonusCard()
 		throws Exception {
 		RegionDTO fixture = new RegionDTO();
 		fixture.setName(RegionName.HILL);
@@ -109,7 +117,7 @@ public class RegionDTOTest {
 	}
 
 	@Test
-	public void testGetCities_1()
+	public void testGetCities()
 		throws Exception {
 		RegionDTO fixture = new RegionDTO();
 		fixture.setName(RegionName.HILL);
@@ -123,7 +131,7 @@ public class RegionDTOTest {
 	}
 
 	@Test
-	public void testGetName_1()
+	public void testGetName()
 		throws Exception {
 		RegionDTO fixture = new RegionDTO();
 		fixture.setName(RegionName.HILL);
@@ -138,51 +146,6 @@ public class RegionDTOTest {
 		
 	}
 
-//	@Test
-//	public void testSetBonusCard_1()
-//		throws Exception {
-//		RegionDTO fixture = new RegionDTO();
-//		fixture.setName(RegionName.HILL);
-//		fixture.setCities(new ArrayList());
-//		fixture.setBonusCard(new BonusCardDTO());
-//		BonusCardDTO bc = new BonusCardDTO();
-//
-//		fixture.setBonusCard(bc);
-//
-//	}
-//
-//	@Test
-//	public void testSetCities_1()
-//		throws Exception {
-//		RegionDTO fixture = new RegionDTO();
-//		fixture.setName(RegionName.HILL);
-//		fixture.setCities(new ArrayList());
-//		fixture.setBonusCard(new BonusCardDTO());
-//		ArrayList<CityDTO> cities = new ArrayList();
-//
-//		fixture.setCities(cities);
-//
-//	}
-//
-//	@Test
-//	public void testSetName_1()
-//		throws Exception {
-//		RegionDTO fixture = new RegionDTO();
-//		fixture.setName(RegionName.HILL);
-//		fixture.setCities(new ArrayList());
-//		fixture.setBonusCard(new BonusCardDTO());
-//		RegionName name = RegionName.HILL;
-//
-//		fixture.setName(name);
-//
-//	}
-
-	
-
-	@After
-	public void tearDown()
-		throws Exception {
-	}
 
 	public static void main(String[] args) {
 		new org.junit.runner.JUnitCore().run(RegionDTOTest.class);

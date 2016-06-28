@@ -16,10 +16,14 @@ public class CityDTOTest {
 	@Before
 	public void setUp()
 		throws Exception {
+		
+		// all you need to test the methods
+		
+		//the closeCities
 		closeCities=new String[2];
 		closeCities[0]="Osium";
 		closeCities[1]="Karl";
-		
+		//bonuses on the BonusToken
 		b = new BonusDTO[2];
 		b[0]=new BonusDTO();
 		b[0].setQuantity(1);
@@ -30,11 +34,11 @@ public class CityDTOTest {
 		BonusTokenDTO btDTO = new BonusTokenDTO();
 		btDTO.setBonus(b);
 		
+		//the City
 		fixture = new CityDTO();
 		fixture.setName("Juvelar");
 		fixture.setColor(CityColor.BLUE);
 		fixture.setCloseCities(closeCities);
-		
 		fixture.setSlot(new EmporiumDTO[10] );
 		fixture.setPlayerNum(1);
 		fixture.setToken(btDTO);
@@ -42,15 +46,17 @@ public class CityDTOTest {
 		
 	}
 
-//	@Test
-//	public void testCityDTO_1()
-//		throws Exception {
-//		CityDTO result = new CityDTO();
-//		assertNotNull(result);
-//	}
+	@Test
+	public void testCityDTO()
+		throws Exception {
+		CityDTO result = new CityDTO();
+		assertNotNull(result);
+	}
+	
+	// getters and setters are tested together
 
 	@Test
-	public void testGetCloseCities_1()
+	public void testGetCloseCities()
 		throws Exception {
 		
 		String[] result = fixture.getCloseCities();
@@ -73,7 +79,7 @@ public class CityDTOTest {
 	}
 
 	@Test
-	public void testGetName_1()
+	public void testGetName()
 		throws Exception {
 		
 
@@ -83,7 +89,7 @@ public class CityDTOTest {
 	}
 
 	@Test
-	public void testGetPlayerNum_1()
+	public void testGetPlayerNum()
 		throws Exception {
 		
 
@@ -93,7 +99,7 @@ public class CityDTOTest {
 	}
 
 	@Test
-	public void testGetSlot_1()
+	public void testGetSlot()
 		throws Exception {
 		
 		EmporiumDTO[] result = fixture.getSlot();
@@ -103,7 +109,7 @@ public class CityDTOTest {
 	}
 
 	@Test
-	public void testGetToken_1()
+	public void testGetToken()
 		throws Exception {
 		
 
@@ -113,108 +119,7 @@ public class CityDTOTest {
 		assertEquals(b, result.getBonus());
 	}
 	
-	
-//	@Test
-//	public void testSetCloseCities_1()
-//		throws Exception {
-//		CityDTO fixture = new CityDTO();
-//		fixture.setName("");
-//		fixture.setColor(CityColor.BLUE);
-//		fixture.setCloseCities(new String[] {});
-//		fixture.setSlot(new EmporiumDTO[] {});
-//		fixture.setPlayerNum(1);
-//		fixture.setToken(new BonusTokenDTO());
-//		String[] closeCities = new String[] {};
-//
-//		fixture.setCloseCities(closeCities);
-//
-//	}
-//
-//	@Test
-//	public void testSetColor_1()
-//		throws Exception {
-//		CityDTO fixture = new CityDTO();
-//		fixture.setName("");
-//		fixture.setColor(CityColor.BLUE);
-//		fixture.setCloseCities(new String[] {});
-//		fixture.setSlot(new EmporiumDTO[] {});
-//		fixture.setPlayerNum(1);
-//		fixture.setToken(new BonusTokenDTO());
-//		CityColor color = CityColor.BLUE;
-//
-//		fixture.setColor(color);
-//
-//	}
-//
-//	@Test
-//	public void testSetName_1()
-//		throws Exception {
-//		CityDTO fixture = new CityDTO();
-//		fixture.setName("");
-//		fixture.setColor(CityColor.BLUE);
-//		fixture.setCloseCities(new String[] {});
-//		fixture.setSlot(new EmporiumDTO[] {});
-//		fixture.setPlayerNum(1);
-//		fixture.setToken(new BonusTokenDTO());
-//		String name = "";
-//
-//		fixture.setName(name);
-//
-//	}
-//
-//	@Test
-//	public void testSetPlayerNum_1()
-//		throws Exception {
-//		CityDTO fixture = new CityDTO();
-//		fixture.setName("");
-//		fixture.setColor(CityColor.BLUE);
-//		fixture.setCloseCities(new String[] {});
-//		fixture.setSlot(new EmporiumDTO[] {});
-//		fixture.setPlayerNum(1);
-//		fixture.setToken(new BonusTokenDTO());
-//		int playerNum = 1;
-//
-//		fixture.setPlayerNum(playerNum);
-//
-//	}
-//
-//	@Test
-//	public void testSetSlot_1()
-//		throws Exception {
-//		CityDTO fixture = new CityDTO();
-//		fixture.setName("");
-//		fixture.setColor(CityColor.BLUE);
-//		fixture.setCloseCities(new String[] {});
-//		fixture.setSlot(new EmporiumDTO[] {});
-//		fixture.setPlayerNum(1);
-//		fixture.setToken(new BonusTokenDTO());
-//		EmporiumDTO[] slot = new EmporiumDTO[] {};
-//
-//		fixture.setSlot(slot);
-//
-//	}
-//
-//	@Test
-//	public void testSetToken_1()
-//		throws Exception {
-//		CityDTO fixture = new CityDTO();
-//		fixture.setName("");
-//		fixture.setColor(CityColor.BLUE);
-//		fixture.setCloseCities(new String[] {});
-//		fixture.setSlot(new EmporiumDTO[] {});
-//		fixture.setPlayerNum(1);
-//		fixture.setToken(new BonusTokenDTO());
-//		BonusTokenDTO token = new BonusTokenDTO();
-//
-//		fixture.setToken(token);
-//
-//	}
-//
-//	
-//	@After
-//	public void tearDown()
-//		throws Exception {
-//	}
+
 
 	public static void main(String[] args) {
 		new org.junit.runner.JUnitCore().run(CityDTOTest.class);

@@ -29,7 +29,7 @@ public class AssistantOnSaleDTOTest {
 		
 		
 		pawn=new PawnDTO();
-		pawn.setHexColor("verde");
+		pawn.setHexColor("FF0000");
 		pawn.setPos(7);
 		pawn.setP(player);
 		
@@ -52,13 +52,17 @@ public class AssistantOnSaleDTOTest {
 		
 	}
 	
+	// getters and setters are tested together
+
+	
 	@Test
-	public void testGetAssistant_1()
+	public void testGetAssistant()
 		throws Exception {
 		AssistantOnSaleDTO fixture = new AssistantOnSaleDTO();
 		fixture.setAssistant(assistant);
 		fixture.setPrice(1);
 		fixture.setSeller(player);
+		fixture.setUID("1");
 
 		AssistantDTO result = fixture.getAssistant();
 
@@ -66,12 +70,13 @@ public class AssistantOnSaleDTOTest {
 	}
 
 	@Test
-	public void testGetPrice_1()
+	public void testGetPrice()
 		throws Exception {
 		AssistantOnSaleDTO fixture = new AssistantOnSaleDTO();
 		fixture.setAssistant(assistant);
 		fixture.setPrice(1);
 		fixture.setSeller(player);
+		fixture.setUID("1");
 
 		int result = fixture.getPrice();
 
@@ -79,12 +84,13 @@ public class AssistantOnSaleDTOTest {
 	}
 
 	@Test
-	public void testGetSeller_1()
+	public void testGetSeller()
 		throws Exception {
 		AssistantOnSaleDTO fixture = new AssistantOnSaleDTO();
 		fixture.setAssistant(assistant);
 		fixture.setPrice(1);
 		fixture.setSeller(player);
+		fixture.setUID("1");
 
 		PlayerDTO result = fixture.getSeller();
 
@@ -99,47 +105,20 @@ public class AssistantOnSaleDTOTest {
 		assertEquals(hand, result.getHand());
 		assertEquals(bonusCards, result.getBonusCards());
 	}
-
-//	@Test
-//	public void testSetAssistant_1()
-//		throws Exception {
-//		AssistantOnSaleDTO fixture = new AssistantOnSaleDTO();
-//		fixture.setAssistant(new AssistantDTO());
-//		fixture.setPrice(1);
-//		fixture.setSeller(new PlayerDTO());
-//		AssistantDTO assistant = new AssistantDTO();
-//
-//		fixture.setAssistant(assistant);
-//
-//	}
-//
-//	@Test
-//	public void testSetPrice_1()
-//		throws Exception {
-//		AssistantOnSaleDTO fixture = new AssistantOnSaleDTO();
-//		fixture.setAssistant(new AssistantDTO());
-//		fixture.setPrice(1);
-//		fixture.setSeller(new PlayerDTO());
-//		int price = 1;
-//
-//		fixture.setPrice(price);
-//
-//	}
-//
-//	@Test
-//	public void testSetSeller_1()
-//		throws Exception {
-//		AssistantOnSaleDTO fixture = new AssistantOnSaleDTO();
-//		fixture.setAssistant(new AssistantDTO());
-//		fixture.setPrice(1);
-//		fixture.setSeller(new PlayerDTO());
-//		PlayerDTO seller = new PlayerDTO();
-//
-//		fixture.setSeller(seller);
-//
-//	}
-
 	
+	@Test
+	public void getUID(){
+		AssistantOnSaleDTO fixture = new AssistantOnSaleDTO();
+		fixture.setAssistant(assistant);
+		fixture.setPrice(1);
+		fixture.setSeller(player);
+		fixture.setUID("1");
+		
+		String result = fixture.getUID();
+		assertNotNull(result);
+		assertEquals(result,"1");
+	}
+
 
 	
 

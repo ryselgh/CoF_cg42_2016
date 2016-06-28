@@ -30,7 +30,7 @@ public class PoliticsOnSaleDTOTest {
 	public void setUp()
 		throws Exception {
 		pawn=new PawnDTO();
-		pawn.setHexColor("verde");
+		pawn.setHexColor("FF0000");
 		pawn.setPos(7);
 		pawn.setP(player);
 		
@@ -50,20 +50,24 @@ public class PoliticsOnSaleDTOTest {
 	}
 	
 	
-//	@Test
-//	public void testPoliticsOnSaleDTO_1()
-//		throws Exception {
-//		PoliticsOnSaleDTO result = new PoliticsOnSaleDTO();
-//		assertNotNull(result);
-//	}
+	@Test
+	public void testPoliticsOnSaleDTO()
+		throws Exception {
+		PoliticsOnSaleDTO result = new PoliticsOnSaleDTO();
+		assertNotNull(result);
+	}
+	
+	// getters and setters are tested together
+
 
 	@Test
-	public void testGetPoliticsCard_1()
+	public void testGetPoliticsCard()
 		throws Exception {
 		PoliticsOnSaleDTO fixture = new PoliticsOnSaleDTO();
 		fixture.setPrice(1);
 		fixture.setPoliticsCard(politicsCard);
 		fixture.setSeller(player);
+		fixture.setUID("1");
 
 		PoliticsCardDTO result = fixture.getPoliticsCard();
 
@@ -72,12 +76,13 @@ public class PoliticsOnSaleDTOTest {
 	}
 
 	@Test
-	public void testGetPrice_1()
+	public void testGetPrice()
 		throws Exception {
 		PoliticsOnSaleDTO fixture = new PoliticsOnSaleDTO();
 		fixture.setPrice(1);
 		fixture.setPoliticsCard(politicsCard);
 		fixture.setSeller(player);
+		fixture.setUID("1");
 
 		int result = fixture.getPrice();
 
@@ -85,12 +90,13 @@ public class PoliticsOnSaleDTOTest {
 	}
 
 	@Test
-	public void testGetSeller_1()
+	public void testGetSeller()
 		throws Exception {
 		PoliticsOnSaleDTO fixture = new PoliticsOnSaleDTO();
 		fixture.setPrice(1);
 		fixture.setPoliticsCard(politicsCard);
 		fixture.setSeller(player);
+		fixture.setUID("1");
 
 		PlayerDTO result = fixture.getSeller();
 
@@ -106,53 +112,20 @@ public class PoliticsOnSaleDTOTest {
 		assertEquals(bonusCards, result.getBonusCards());
 	}
 
-//	@Test
-//	public void testSetPoliticsCard_1()
-//		throws Exception {
-//		PoliticsOnSaleDTO fixture = new PoliticsOnSaleDTO();
-//		fixture.setPrice(1);
-//		fixture.setPoliticsCard(new PoliticsCardDTO());
-//		fixture.setSeller(new PlayerDTO());
-//		PoliticsCardDTO politicsCard = new PoliticsCardDTO();
-//
-//		fixture.setPoliticsCard(politicsCard);
-//
-//	}
-//
-//	@Test
-//	public void testSetPrice_1()
-//		throws Exception {
-//		PoliticsOnSaleDTO fixture = new PoliticsOnSaleDTO();
-//		fixture.setPrice(1);
-//		fixture.setPoliticsCard(new PoliticsCardDTO());
-//		fixture.setSeller(new PlayerDTO());
-//		int price = 1;
-//
-//		fixture.setPrice(price);
-//
-//	}
-//
-//	@Test
-//	public void testSetSeller_1()
-//		throws Exception {
-//		PoliticsOnSaleDTO fixture = new PoliticsOnSaleDTO();
-//		fixture.setPrice(1);
-//		fixture.setPoliticsCard(new PoliticsCardDTO());
-//		fixture.setSeller(new PlayerDTO());
-//		PlayerDTO seller = new PlayerDTO();
-//
-//		fixture.setSeller(seller);
-//
-//	}
-
 	
-	
-	
-
-	@After
-	public void tearDown()
-		throws Exception {
+	@Test 
+	public void testGetUID(){
+		PoliticsOnSaleDTO fixture = new PoliticsOnSaleDTO();
+		fixture.setObj(politicsCard);
+		fixture.setPrice(1);
+		fixture.setSeller(player);
+		fixture.setUID("1");
+		
+		String result = fixture.getUID();
+		assertNotNull(result);
+		assertEquals(result,"1");
 	}
+
 
 	public static void main(String[] args) {
 		new org.junit.runner.JUnitCore().run(PoliticsOnSaleDTOTest.class);

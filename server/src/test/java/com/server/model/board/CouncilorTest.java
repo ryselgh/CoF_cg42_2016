@@ -9,15 +9,9 @@ public class CouncilorTest {
 	
 	
 	
-
-	@Before
-	public void setUp()
-		throws Exception {
-	}
-	
 	
 	@Test
-	public void testCouncilor_1()
+	public void testCouncilor()
 		throws Exception {
 		CouncilorColor cc = CouncilorColor.BLACK;
 
@@ -34,20 +28,9 @@ public class CouncilorTest {
 		
 		
 	}
-//	@Test
-//	public void testEquals_1()
-//		throws Exception {
-//		Councilor fixture = new Councilor(CouncilorColor.BLACK);
-//		CouncilorDTO cDTO = new CouncilorDTO();
-//		cDTO.setColor(CouncilorColor.BLACK);
-//
-//		boolean result = fixture.equals(cDTO);
-//
-//		assertEquals(true, result);
-//	}
-//
+
 	@Test
-	public void testEquals_2()
+	public void testEqualsReturnTrue()
 		throws Exception {
 		Councilor fixture = new Councilor(CouncilorColor.BLACK);
 		CouncilorDTO cDTO = new CouncilorDTO();
@@ -57,20 +40,32 @@ public class CouncilorTest {
 
 		assertEquals(true, result);
 	}
+	
+	@Test
+	public void testEqualsReturnFalse()
+		throws Exception {
+		Councilor fixture = new Councilor(CouncilorColor.PINK);
+		CouncilorDTO cDTO = new CouncilorDTO();
+		cDTO.setColor(CouncilorColor.BLACK);
+
+		boolean result = fixture.equalsDTO(cDTO);
+
+		assertEquals(false, result);
+	}
 
 	@Test(expected = NullPointerException.class)
-	public void testEquals_3()
+	public void testEqualsThrowExceptionIfSomethingIsFalse()
 		throws Exception {
 		Councilor fixture = new Councilor(CouncilorColor.BLACK);
 		CouncilorDTO cDTO = null;
 
-		boolean result = fixture.equalsDTO(cDTO);
+		fixture.equalsDTO(cDTO);
 
-		assertTrue(result);
+		
 	}
 
 	@Test
-	public void testGetCouncilorColor_1()
+	public void testGetCouncilorColor()
 		throws Exception {
 		Councilor councilor = new Councilor(CouncilorColor.BLACK);
 
@@ -83,7 +78,7 @@ public class CouncilorTest {
 	}
 
 	@Test
-	public void testToDTO_1()
+	public void testToDTO()
 		throws Exception {
 		Councilor fixture = new Councilor(CouncilorColor.BLACK);
 
@@ -94,10 +89,7 @@ public class CouncilorTest {
 	}
 
 
-//	@After
-//	public void tearDown()
-//		throws Exception {
-//	}
+
 
 	public static void main(String[] args) {
 		new org.junit.runner.JUnitCore().run(CouncilorTest.class);

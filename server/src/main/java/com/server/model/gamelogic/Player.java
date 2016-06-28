@@ -133,15 +133,7 @@ public class Player {
 		this.availableAssistants = availableAssistants;
 	}
 
-	/**
-	 * Gets the color.
-	 *
-	 * @return player's color
-	 */
-
-	public String getColor() {
-		return this.getPawn().getColor();
-	}
+	
 
 	/**
 	 * Gets the pawn.
@@ -227,15 +219,15 @@ public class Player {
 		hand.add(poc);
 	}
 
-	/**
-	 * Removes a politics card from the hand.
-	 *
-	 * @param index            the index of the card in the ArrayList
-	 */
-
-	public void removePolitics(int index) {
-		hand.remove(index);
-	}
+//	/**
+//	 * Removes a politics card from the hand.
+//	 *
+//	 * @param index            the index of the card in the ArrayList
+//	 */
+//
+//	public void removePolitics(int index) {
+//		hand.remove(index);
+//	}
 	
 	/**
 	 * Removes the politics.
@@ -255,9 +247,9 @@ public class Player {
 	 */
 	public void removePermit(PermitsCard pc)
 	{
-		for(PermitsCard p : permits)
-			if(p.equals(pc))
-				permits.remove(p);
+		for(int i=0;i<permits.size();i++)
+		      if(permits.get(i).equals(pc))
+		        permits.remove(i);
 	}
 
 	/**
@@ -302,29 +294,29 @@ public class Player {
 	 * @param a            the assistant that is being sold
 	 */
 
-	public void sellAssistant(Assistant a) {
-		// TODO implement me
-	}
+//	public void sellAssistant(Assistant a) {
+//		// TODO implement me
+//	}
 
-	/**
-	 * Sell a politics card.
-	 *
-	 * @param polc            the politics card that is being sold
-	 */
-
-	public void sellPoliticsCard(PoliticsCard polc) {
-		// TODO implement me
-	}
-
-	/**
-	 * Sell a permit.
-	 *
-	 * @param perc            the permit that is being sold
-	 */
-
-	public void sellPermitsCard(PermitsCard perc) {
-		// TODO implement me
-	}
+//	/**
+//	 * Sell a politics card.
+//	 *
+//	 * @param polc            the politics card that is being sold
+//	 */
+//
+//	public void sellPoliticsCard(PoliticsCard polc) {
+//		// TODO implement me
+//	}
+//
+//	/**
+//	 * Sell a permit.
+//	 *
+//	 * @param perc            the permit that is being sold
+//	 */
+//
+//	public void sellPermitsCard(PermitsCard perc) {
+//		// TODO implement me
+//	}
 
 	/**
 	 * Gets the bonus cards.

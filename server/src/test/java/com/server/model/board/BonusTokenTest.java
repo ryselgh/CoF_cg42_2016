@@ -16,6 +16,8 @@ public class BonusTokenTest {
 	
 	@Before
 	public void setUp() throws Exception {
+		
+		//sets Bonus
 		bonus = new Bonus[2];
 		bonus[0]= new Bonus(BonusType.CARD, 2);
 		bonus[1]= new Bonus(BonusType.ASSISTANT, 9);
@@ -29,7 +31,7 @@ public class BonusTokenTest {
 	
 
 	@Test
-	public void testGetBonus_1()
+	public void testGetBonus()
 		throws Exception {
 		BonusToken fixture = new BonusToken(bonus);
 
@@ -87,17 +89,6 @@ public class BonusTokenTest {
 	
 	
 
-//	@Test
-//	public void testGetBonus() {
-//		BonusToken bonusToken =new BonusToken(bonus);
-//		Assert.assertArrayEquals(bonusToken.getBonus(), bonus);
-//	}
-
-
-	@After
-	public void tearDown()
-		throws Exception {
-	}
 
 	public static void main(String[] args) {
 		new org.junit.runner.JUnitCore().run(BonusTokenTest.class);

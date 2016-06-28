@@ -8,7 +8,7 @@ import static org.junit.Assert.*;
 
 public class AssistantTest {
 	@Test
-	public void testAssistant_1()
+	public void testAssistant()
 		throws Exception {
 
 		Assistant result = new Assistant();
@@ -26,15 +26,7 @@ public class AssistantTest {
 		
 	}
 
-//	@Before
-//	public void setUp()
-//		throws Exception {
-//	}
-//
-//	@After
-//	public void tearDown()
-//		throws Exception {
-//	}
+
 
 	public static void main(String[] args) {
 		new org.junit.runner.JUnitCore().run(AssistantTest.class);

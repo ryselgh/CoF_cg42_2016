@@ -12,6 +12,9 @@ public class ShiftCouncilSpeedDTOTest {
 	@Before
 	public void setUp()
 		throws Exception {
+		
+		//in the setUp there is the councilor used in the methods of the test
+	
 		councilDTO = new CouncilorDTO();
 		councilDTO.setColor(CouncilorColor.BLACK);
 	}
@@ -22,12 +25,13 @@ public class ShiftCouncilSpeedDTOTest {
 		ShiftCouncilSpeedDTO result = new ShiftCouncilSpeedDTO();
 
 		assertNotNull(result);
-		assertEquals(null, result.getCouncilor());
-		assertEquals(0, result.getBalconyIndex());
+		
 	}
+	
+	// getters and setters are tested together
 
 	@Test
-	public void testGetBalconyIndex_1()
+	public void testGetBalconyIndex()
 		throws Exception {
 		ShiftCouncilSpeedDTO fixture = new ShiftCouncilSpeedDTO();
 		fixture.setCouncilor(councilDTO);
@@ -39,7 +43,7 @@ public class ShiftCouncilSpeedDTOTest {
 	}
 
 	@Test
-	public void testGetCouncilor_1()
+	public void testGetCouncilor()
 		throws Exception {
 		ShiftCouncilSpeedDTO fixture = new ShiftCouncilSpeedDTO();
 		fixture.setCouncilor(councilDTO);

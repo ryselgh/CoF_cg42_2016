@@ -4,29 +4,52 @@ import org.junit.*;
 import static org.junit.Assert.*;
 import com.communication.market.PoliticsOnSaleDTO;
 import com.communication.values.CouncilorColor;
+import com.server.model.board.Assistant;
 import com.server.model.decks.PoliticsCard;
+import com.server.model.gamelogic.Game;
 import com.server.model.gamelogic.Player;
 
 public class PoliticsOnSaleTest {
-	String UID="";
-	@Test
-	public void testPoliticsOnSale_1()
+	
+	PoliticsCard pol;
+	String UID="1";
+	Game game;
+	Player player;
+	String[] players;
+	Player buyer;
+	
+	
+	@Before
+	
+	public void setUp()
 		throws Exception {
-		Player pl = new Player("1");
-		PoliticsCard pc = new PoliticsCard(CouncilorColor.BLACK);
-		int pr = 1;
+		//sets for the game and the market
+		pol = new PoliticsCard(CouncilorColor.BLACK);
+		players = new String[3];
+		players[0] = "smemo";
+		players[1] = "figlio";
+		players[2] = "negro";
+		game = new Game(3, true, UID, players);
+		player = game.getActualPlayer();
+		buyer = game.getThatPlayer(2);
+	}
+	
+	
+	@Test
+	public void testPoliticsOnSale()
+		throws Exception {
+		
 
-		PoliticsOnSale result = new PoliticsOnSale(pl, pc, pr,UID);
+		PoliticsOnSale result = new PoliticsOnSale(player, pol, 1,UID);
 
 		assertNotNull(result);
-		assertEquals("Politic card: [Color= BLACK]\nPrice= 1\n\n", result.printDetails());
-		assertEquals(1, result.getPrice());
+		
 	}
 
 	@Test
-	public void testGetPrice_1()
+	public void testGetPrice()
 		throws Exception {
-		PoliticsOnSale fixture = new PoliticsOnSale(new Player("1"), new PoliticsCard(CouncilorColor.BLACK), 1,UID);
+		PoliticsOnSale fixture = new PoliticsOnSale(player, pol, 1,UID);
 
 		int result = fixture.getPrice();
 
@@ -34,10 +57,10 @@ public class PoliticsOnSaleTest {
 	}
 
 	@Test
-	public void testObtain_1()
+	public void testObtain()
 		throws Exception {
-		PoliticsOnSale fixture = new PoliticsOnSale(new Player("1"), new PoliticsCard(CouncilorColor.BLACK), 1,UID);
-		Player buyer = new Player("1");
+		PoliticsOnSale fixture = new PoliticsOnSale(player, pol, 1,UID);
+		Player buyer = game.getThatPlayer(2);
 		buyer.setCoins(1);
 
 		fixture.obtain(buyer);
@@ -45,9 +68,9 @@ public class PoliticsOnSaleTest {
 	}
 
 	@Test
-	public void testPrintDetails_1()
+	public void testPrintDetails()
 		throws Exception {
-		PoliticsOnSale fixture = new PoliticsOnSale(new Player("1"), new PoliticsCard(CouncilorColor.BLACK), 1,UID);
+		PoliticsOnSale fixture = new PoliticsOnSale(player, pol, 1,UID);
 
 		String result = fixture.printDetails();
 
@@ -55,26 +78,19 @@ public class PoliticsOnSaleTest {
 	}
 
 	@Test
-	public void testToDTO_1()
+	public void testToDTO()
 		throws Exception {
-		PoliticsOnSale fixture = new PoliticsOnSale(new Player("1"), new PoliticsCard(CouncilorColor.BLACK), 1,UID);
+		PoliticsOnSale fixture = new PoliticsOnSale(player, pol, 1,UID);
 
 		PoliticsOnSaleDTO result = fixture.toDTO();
 
 		assertNotNull(result);
 		assertEquals(1, result.getPrice());
-		assertEquals(null, result.getObj());
+		assertTrue(result instanceof PoliticsOnSaleDTO);
 	}
 
-	@Before
-	public void setUp()
-		throws Exception {
-	}
-
-	@After
-	public void tearDown()
-		throws Exception {
-	}
+	
+	
 
 	public static void main(String[] args) {
 		new org.junit.runner.JUnitCore().run(PoliticsOnSaleTest.class);

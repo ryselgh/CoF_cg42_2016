@@ -16,7 +16,7 @@ public class CommunicationObjectTest {
 		o = new Object();
 	}
 	@Test
-	public void testCommunicationObject_1()
+	public void testCommunicationObject()
 		throws Exception {
 		
 		
@@ -26,9 +26,12 @@ public class CommunicationObjectTest {
 		assertNotNull(result);
 		
 	}
+	
+	// getters and setters are tested together
+
 
 	@Test
-	public void testGetMsg_1()
+	public void testGetMsg()
 		throws Exception {
 		CommunicationObject fixture =  new CommunicationObject(s, o);
 
@@ -38,7 +41,7 @@ public class CommunicationObjectTest {
 	}
 
 	@Test
-	public void testGetObj_1()
+	public void testGetObj()
 		throws Exception {
 		CommunicationObject fixture = new CommunicationObject(s,o);
 

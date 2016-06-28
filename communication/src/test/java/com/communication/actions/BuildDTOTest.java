@@ -25,15 +25,18 @@ public class BuildDTOTest {
 	public void setUp()
 		throws Exception {
 		
+		//there is instantiated what the action Build needs to be permormed  
+		//the permits letters
 		letters = new String[2];
 		letters[0] = "f";
 		letters[1] = "j";
 		
-		
+		//the city CloseCities
 		closeCities=new String[2];
 		closeCities[0]="Osium";
 		closeCities[1]="Karl";
 		
+		//the bonus on the permitsCard
 		b = new BonusDTO[2];
 		b[0]=new BonusDTO();
 		b[0].setQuantity(1);
@@ -44,6 +47,7 @@ public class BuildDTOTest {
 		btDTO = new BonusTokenDTO();
 		btDTO.setBonus(b);
 		
+		//the city
 		cityDTO = new CityDTO();
 		cityDTO.setName("Juvelar");
 		cityDTO.setColor(CityColor.BLUE);
@@ -52,6 +56,7 @@ public class BuildDTOTest {
 		cityDTO.setPlayerNum(1);
 		cityDTO.setToken(btDTO);
 		
+		//the permitsCard
 		pcDTO = new PermitsCardDTO();
 		pcDTO.setBonuses(b);
 		pcDTO.setCityLetter(letters);
@@ -59,7 +64,7 @@ public class BuildDTOTest {
 	}
 	
 	@Test
-	public void testBuildDTO_1()
+	public void testBuildDTO()
 		throws Exception {
 
 		BuildDTO result = new BuildDTO();
@@ -68,9 +73,11 @@ public class BuildDTOTest {
 		assertEquals(null, result.getCity());
 		assertEquals(null, result.getPermit());
 	}
+	
+	// getters and setters are tested together
 
 	@Test
-	public void testGetCity_1()
+	public void testGetCity()
 		throws Exception {
 		BuildDTO fixture = new BuildDTO();
 		fixture.setPermit(new PermitsCardDTO());
@@ -87,7 +94,7 @@ public class BuildDTOTest {
 	}
 
 	@Test
-	public void testGetPermit_1()
+	public void testGetPermit()
 		throws Exception {
 		BuildDTO fixture = new BuildDTO();
 		fixture.setPermit(pcDTO);

@@ -2,10 +2,19 @@ package com.communication.board;
 
 import org.junit.*;
 
+import com.communication.decks.PermitsCardDTO;
+import com.communication.decks.PermitsDeckDTO;
+import com.communication.decks.PoliticsCardDTO;
+import com.communication.decks.PoliticsDeckDTO;
 import com.communication.gamelogic.PlayerDTO;
 import com.communication.values.BonusType;
+import com.communication.values.CityColor;
+import com.communication.values.CouncilorColor;
 
 import static org.junit.Assert.*;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class NobilityTrackDTOTest {
 	
@@ -14,86 +23,74 @@ public class NobilityTrackDTOTest {
 	PlayerDTO player2;
 	PlayerDTO player3;
 	BonusDTO[][] bonusVector;
+	PawnDTO[] pawns;
 	
 	@Before
 	public void setUp()
 		throws Exception {
 		
-		bonus = new BonusDTO();
-		bonus.setQuantity(1);
-		bonus.setType(BonusType.ASSISTANT);
-		bonusVector=new BonusDTO[15][];
+		//all you need to set on a map
+				//3 pawns
+				pawns=new PawnDTO[3];
+				pawns[0]=new PawnDTO();
+				pawns[0].setHexColor("green");
+				pawns[0].setPos(7);
+				pawns[0].setP(player1);
+				pawns[1]=new PawnDTO();
+				pawns[1].setHexColor("yellow");
+				pawns[1].setPos(7);
+				pawns[1].setP(player2);
+				pawns[2]=new PawnDTO();
+				pawns[2].setHexColor("red");
+				pawns[2].setPos(7);
+				pawns[2].setP(player3);
+				
+				bonus = new BonusDTO();
+				bonus.setQuantity(1);
+				bonus.setType(BonusType.ASSISTANT);
+				bonusVector=new BonusDTO[15][];
 		
 		
 		
 	}
 	
-//	@Test
-//	public void testNobilityTrackDTO_1()
-//		throws Exception {
-//		NobilityTrackDTO result = new NobilityTrackDTO();
-//		assertNotNull(result);
-//	}
+	@Test
+	public void testNobilityTrackDTO()
+		throws Exception {
+		NobilityTrackDTO result = new NobilityTrackDTO();
+		assertNotNull(result);
+	}
+	// getters and setters are tested together
+
 
 	@Test
-	public void testGetBonusVector_1()
+	public void testGetBonusVector()
 		throws Exception {
 		NobilityTrackDTO fixture = new NobilityTrackDTO();
 		fixture.setBonusVector(bonusVector);
-		fixture.setPawns(new PawnDTO[] {});
+		fixture.setPawns(pawns);
 
 		BonusDTO[][] result = fixture.getBonusVector();
 
-		// An unexpected exception was thrown in user code while executing this test:
-		//    java.lang.IllegalArgumentException: argument type mismatch
+		
 		assertNotNull(result);
 	}
 
 	@Test
-	public void testGetPawns_1()
+	public void testGetPawns()
 		throws Exception {
 		NobilityTrackDTO fixture = new NobilityTrackDTO();
-		fixture.setBonusVector(new BonusDTO[][] {});
-		fixture.setPawns(new PawnDTO[] {});
+		fixture.setBonusVector(bonusVector);
+		fixture.setPawns(pawns);
 
 		PawnDTO[] result = fixture.getPawns();
 
-		// An unexpected exception was thrown in user code while executing this test:
-		//    java.lang.IllegalArgumentException: argument type mismatch
+		
 		assertNotNull(result);
+		assertEquals(result.length,3);
 	}
 
-//	@Test
-//	public void testSetBonusVector_1()
-//		throws Exception {
-//		NobilityTrackDTO fixture = new NobilityTrackDTO();
-//		fixture.setBonusVector(new BonusDTO[][] {});
-//		fixture.setPawns(new PawnDTO[] {});
-//		BonusDTO[][] bonusVector = new BonusDTO[][] {};
-//
-//		fixture.setBonusVector(bonusVector);
-//
-//		// An unexpected exception was thrown in user code while executing this test:
-//		//    java.lang.IllegalArgumentException: argument type mismatch
-//	}
-//
-//	@Test
-//	public void testSetPawns_1()
-//		throws Exception {
-//		NobilityTrackDTO fixture = new NobilityTrackDTO();
-//		fixture.setBonusVector(new BonusDTO[][] {});
-//		fixture.setPawns(new PawnDTO[] {});
-//		PawnDTO[] pawns = new PawnDTO[] {};
-//
-//		fixture.setPawns(pawns);
-//
-//		// An unexpected exception was thrown in user code while executing this test:
-//		//    java.lang.IllegalArgumentException: argument type mismatch
-//	}
 
-	
-
-	
 
 	public static void main(String[] args) {
 		new org.junit.runner.JUnitCore().run(NobilityTrackDTOTest.class);

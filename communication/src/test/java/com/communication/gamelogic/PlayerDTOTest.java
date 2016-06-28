@@ -1,6 +1,8 @@
 package com.communication.gamelogic;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+
 import org.junit.*;
 import static org.junit.Assert.*;
 import com.communication.board.AssistantDTO;
@@ -13,7 +15,7 @@ import com.communication.values.CouncilorColor;
 
 public class PlayerDTOTest {
 	
-	PlayerDTO player;
+	PlayerDTO fixture;
 	ArrayList<PoliticsCardDTO> polCDTO;
 	PoliticsCardDTO pcDTO1;
 	PoliticsCardDTO pcDTO2;
@@ -23,6 +25,9 @@ public class PlayerDTOTest {
 	AssistantDTO asDTO;
 	PermitsCardDTO perDTO;
 	ArrayList<PermitsCardDTO> permiDTO;
+	PawnDTO pawn;
+	EmporiumDTO[] empDTO;
+	ArrayList<EmporiumDTO> emp;
 	
 	
 	
@@ -30,6 +35,13 @@ public class PlayerDTOTest {
 	@Before
 	public void setUp()
 		throws Exception {
+		
+		
+		//all sets of the player
+		
+		
+		
+		
 		permiDTO = new ArrayList<PermitsCardDTO>();
 		
 		perDTO = new PermitsCardDTO();
@@ -54,69 +66,77 @@ public class PlayerDTOTest {
 		polCDTO = new ArrayList<PoliticsCardDTO>();
 		polCDTO.add(pcDTO1);
 		polCDTO.add(pcDTO2);
-		player = new PlayerDTO();
+		
+		pawn = new PawnDTO();
+		
+		empDTO= new EmporiumDTO[10];
+		for(int i=0; i<empDTO.length;i++){
+			empDTO[i] = new EmporiumDTO();
+			empDTO[i].setPlayer(fixture);
+		}
+		emp = new ArrayList<EmporiumDTO>(Arrays.asList(empDTO));
+		
+		
+		
+		fixture = new PlayerDTO();
+		fixture.setBonusCards(bonCardDTO);
+		fixture.setHand(polCDTO);
+		fixture.setAvailableAssistants(assDTO);
+		fixture.setPermits(permiDTO);
+		fixture.setCoins(10);
+		fixture.setScore(1);
+		fixture.setAvailableEmporiums(emp);
+		fixture.setPawn(pawn);
+		fixture.setPlayerID("1");
+		
+		pawn.setHexColor("FF0000");
+		pawn.setP(fixture);
+		pawn.setPos(2);
+		
+		
+		
+		
+		
 	}
 
 	@Test
-	public void testPlayerDTO_1()
+	public void testPlayerDTO()
 		throws Exception {
 		PlayerDTO result = new PlayerDTO();
 		assertNotNull(result);
 	}
+	
+	// getters and setters are tested together
+
 
 	@Test
-	public void testGetAvailableAssistants_1()
+	public void testGetAvailableAssistants()
 		throws Exception {
-		PlayerDTO fixture = new PlayerDTO();
-		fixture.setBonusCards(new ArrayList());
-		fixture.setHand(new ArrayList());
-		fixture.setAvailableAssistants(assDTO);
-		fixture.setPermits(new ArrayList());
-		fixture.setCoins(1);
-		fixture.setScore(1);
-		fixture.setAvailableEmporiums(new ArrayList());
-		fixture.setPawn(new PawnDTO());
-		fixture.setPlayerID("");
+		
 
 		ArrayList<AssistantDTO> result = fixture.getAvailableAssistants();
 
 		assertNotNull(result);
 		assertEquals(1, result.size());
 	}
+	
+	
 
 	@Test
-	public void testGetAvailableEmporiums_1()
+	public void testGetAvailableEmporiums()
 		throws Exception {
-		PlayerDTO fixture = new PlayerDTO();
-		fixture.setBonusCards(new ArrayList());
-		fixture.setHand(new ArrayList());
-		fixture.setAvailableAssistants(new ArrayList());
-		fixture.setPermits(new ArrayList());
-		fixture.setCoins(1);
-		fixture.setScore(1);
-		fixture.setAvailableEmporiums(new ArrayList());
-		fixture.setPawn(new PawnDTO());
-		fixture.setPlayerID("");
+		
 
 		ArrayList<EmporiumDTO> result = fixture.getAvailableEmporiums();
 
 		assertNotNull(result);
-		assertEquals(0, result.size());
+		assertEquals(10, result.size());
 	}
 
 	@Test
-	public void testGetBonusCards_1()
+	public void testGetBonusCards()
 		throws Exception {
-		PlayerDTO fixture = new PlayerDTO();
-		fixture.setBonusCards(bonCardDTO);
-		fixture.setHand(new ArrayList());
-		fixture.setAvailableAssistants(new ArrayList());
-		fixture.setPermits(new ArrayList());
-		fixture.setCoins(1);
-		fixture.setScore(1);
-		fixture.setAvailableEmporiums(new ArrayList());
-		fixture.setPawn(new PawnDTO());
-		fixture.setPlayerID("");
+		
 
 		ArrayList<BonusCardDTO> result = fixture.getBonusCards();
 
@@ -125,37 +145,19 @@ public class PlayerDTOTest {
 	}
 
 	@Test
-	public void testGetCoins_1()
+	public void testGetCoins()
 		throws Exception {
-		PlayerDTO fixture = new PlayerDTO();
-		fixture.setBonusCards(new ArrayList());
-		fixture.setHand(new ArrayList());
-		fixture.setAvailableAssistants(new ArrayList());
-		fixture.setPermits(new ArrayList());
-		fixture.setCoins(20);
-		fixture.setScore(1);
-		fixture.setAvailableEmporiums(new ArrayList());
-		fixture.setPawn(new PawnDTO());
-		fixture.setPlayerID("");
+		
 
 		int result = fixture.getCoins();
 
-		assertEquals(20, result);
+		assertEquals(10, result);
 	}
 
 	@Test
-	public void testGetHand_1()
+	public void testGetHand()
 		throws Exception {
-		PlayerDTO fixture = new PlayerDTO();
-		fixture.setBonusCards(new ArrayList());
-		fixture.setHand(polCDTO);
-		fixture.setAvailableAssistants(new ArrayList());
-		fixture.setPermits(new ArrayList());
-		fixture.setCoins(1);
-		fixture.setScore(1);
-		fixture.setAvailableEmporiums(new ArrayList());
-		fixture.setPawn(new PawnDTO());
-		fixture.setPlayerID("");
+		
 
 		ArrayList<PoliticsCardDTO> result = fixture.getHand();
 
@@ -164,25 +166,9 @@ public class PlayerDTOTest {
 	}
 
 	@Test
-	public void testGetPawn_1()
+	public void testGetPawn()
 		throws Exception {
 		
-		PawnDTO pawn = new PawnDTO();
-		
-		PlayerDTO fixture = new PlayerDTO();
-		pawn.setHexColor("FF0000");
-		pawn.setP(fixture);
-		pawn.setPos(2);
-		fixture.setBonusCards(new ArrayList());
-		fixture.setHand(new ArrayList());
-		fixture.setAvailableAssistants(new ArrayList());
-		fixture.setPermits(new ArrayList());
-		fixture.setCoins(1);
-		fixture.setScore(1);
-		fixture.setAvailableEmporiums(new ArrayList());
-		fixture.setPawn(pawn);
-		fixture.setPlayerID("");
-
 		PawnDTO result = fixture.getPawn();
 
 		assertNotNull(result);
@@ -192,18 +178,9 @@ public class PlayerDTOTest {
 	}
 
 	@Test
-	public void testGetPermits_1()
+	public void testGetPermits()
 		throws Exception {
-		PlayerDTO fixture = new PlayerDTO();
-		fixture.setBonusCards(new ArrayList());
-		fixture.setHand(new ArrayList());
-		fixture.setAvailableAssistants(new ArrayList());
-		fixture.setPermits(permiDTO);
-		fixture.setCoins(1);
-		fixture.setScore(1);
-		fixture.setAvailableEmporiums(new ArrayList());
-		fixture.setPawn(new PawnDTO());
-		fixture.setPlayerID("");
+		
 
 		ArrayList<PermitsCardDTO> result = fixture.getPermits();
 
@@ -212,18 +189,9 @@ public class PlayerDTOTest {
 	}
 
 	@Test
-	public void testGetPlayerID_1()
+	public void testGetPlayerID()
 		throws Exception {
-		PlayerDTO fixture = new PlayerDTO();
-		fixture.setBonusCards(new ArrayList());
-		fixture.setHand(new ArrayList());
-		fixture.setAvailableAssistants(new ArrayList());
-		fixture.setPermits(new ArrayList());
-		fixture.setCoins(1);
-		fixture.setScore(1);
-		fixture.setAvailableEmporiums(new ArrayList());
-		fixture.setPawn(new PawnDTO());
-		fixture.setPlayerID("1");
+		
 
 		String result = fixture.getPlayerID();
 
@@ -231,22 +199,12 @@ public class PlayerDTOTest {
 	}
 
 	@Test
-	public void testGetScore_1()
+	public void testGetScore()
 		throws Exception {
-		PlayerDTO fixture = new PlayerDTO();
-		fixture.setBonusCards(new ArrayList());
-		fixture.setHand(new ArrayList());
-		fixture.setAvailableAssistants(new ArrayList());
-		fixture.setPermits(new ArrayList());
-		fixture.setCoins(1);
-		fixture.setScore(10);
-		fixture.setAvailableEmporiums(new ArrayList());
-		fixture.setPawn(new PawnDTO());
-		fixture.setPlayerID("");
-
+		
 		int result = fixture.getScore();
 
-		assertEquals(10, result);
+		assertEquals(1, result);
 	}
 
 	

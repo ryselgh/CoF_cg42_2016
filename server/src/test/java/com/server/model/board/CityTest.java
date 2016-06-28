@@ -25,6 +25,8 @@ public class CityTest {
 
 	@Before
 	public void setUp(){
+		
+		//sets closeCities and a bonusToken
 		close = new String[2];
 		close[0] = "Framek";
 		close[1] = "Osium";
@@ -38,7 +40,7 @@ public class CityTest {
 	}
 
 	@Test
-	public void testCity_1()
+	public void testCity()
 		throws Exception {
 		
 
@@ -49,17 +51,20 @@ public class CityTest {
 	}
 
 	@Test
-	public void testGetBonusToken_1()
+	public void testGetBonusToken()
 		throws Exception {
 		City fixture =new City("Juvelar",CityColor.PURPLE, close, 3, bT);
-
+		Bonus[] bonus = new Bonus[1];
+		bonus[0] = new Bonus(BonusType.ASSISTANT,5);
+		BonusToken bt = new BonusToken(bonus);
+		fixture.setToken(bt);
 		BonusToken result = fixture.getBonusToken();
 
-		assertEquals(bT,result);
+		assertEquals(bt,result);
 	}
 
 	@Test
-	public void testGetCloseCity_1()
+	public void testGetCloseCity()
 		throws Exception {
 		City fixture = new City("Juvelar",CityColor.PURPLE, close, 3, bT);
 
@@ -70,7 +75,7 @@ public class CityTest {
 	}
 
 	@Test
-	public void testGetColor_1()
+	public void testGetColor()
 		throws Exception {
 		City fixture = new City("Juvelar",CityColor.PURPLE, close, 3, bT);
 
@@ -83,19 +88,21 @@ public class CityTest {
 	}
 
 	@Test
-	public void testGetEmporium_1()
+	public void testGetEmporium()
 		throws Exception {
 		City fixture = new City("Juvelar",CityColor.PURPLE, close, 3, bT);
+		Emporium e = new Emporium(new Player("1"));
 
+		fixture.setEmporium(e);
 		Emporium[] result = fixture.getEmporium();
 
 		assertNotNull(result);
 		assertEquals(3, result.length);
-		assertEquals(null, result[0]);
+		assertNotNull(result[0]);
 	}
 
 	@Test
-	public void testGetName_1()
+	public void testGetName()
 		throws Exception {
 		City fixture = new City("Juvelar",CityColor.PURPLE, close, 3, bT);
 
@@ -105,7 +112,7 @@ public class CityTest {
 	}
 
 	@Test
-	public void testHasEmporium_1()
+	public void testHasEmporiumReturnFalse()
 		throws Exception {
 		City fixture = new City("Juvelar",CityColor.PURPLE, close, 3, bT);
 		Player p = new Player("1");
@@ -116,7 +123,7 @@ public class CityTest {
 	}
 
 	@Test
-	public void testHasEmporium_2()
+	public void testHasEmporiumReturnTrue()
 		throws Exception {
 		City fixture = new City("", CityColor.BLUE, new String[] {}, 1, new BonusToken(new Bonus[] {}));
 		Player p = new Player("1");
@@ -131,7 +138,7 @@ public class CityTest {
 	
 
 	@Test
-	public void testIsCloseCityOf_1()
+	public void testIsCloseCityOfReturnsTrue()
 		throws Exception {
 		 
 		City fixture =new City("Juvelar",CityColor.PURPLE, close, 3, bT);
@@ -143,7 +150,7 @@ public class CityTest {
 	}
 
 	@Test
-	public void testIsCloseCityOf_2()
+	public void testIsCloseCityOfReturnFalse()
 		throws Exception {
 		City fixture =new City("Juvelar",CityColor.PURPLE, close, 3, bT);
 		City city = new City("Hellar", CityColor.BLUE, close2, 3, bT);
@@ -155,40 +162,19 @@ public class CityTest {
 
 
 
-	@Test
-	public void testSetEmporium_1()
-		throws Exception {
-		City fixture = new City("", CityColor.BLUE, new String[] {}, 1, new BonusToken(new Bonus[] {}));
-		Emporium e = new Emporium(new Player("1"));
-
-		int result = fixture.setEmporium(e);
-
-		assertEquals(1, result);
-	}
-
 	
-
 	
-
-	@Test
-	public void testSetToken_1()
-		throws Exception {
-		City fixture = new City("Juvelar",CityColor.PURPLE, close, 3,new BonusToken(new Bonus[] {}));
-		
-
-		fixture.setToken(bT);
-		assertEquals(fixture.getBonusToken(),bT);
-
-	}
-
 	
 	@Test
 	public void testToDTO(){
 		ArrayList<PlayerDTO> plsDTO = new ArrayList<PlayerDTO>(3);
 		
+		Emporium e = new Emporium(new Player("1"));
+
 		
 		
 		City fixture =new City("Juvelar",CityColor.PURPLE, close, 3, bT);		
+		fixture.setEmporium(e);
 		CityDTO cDTO = fixture.toDTO(plsDTO);
 		
 		assertEquals(cDTO.getName(),"Juvelar");

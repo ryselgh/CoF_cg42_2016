@@ -29,25 +29,29 @@ public class ColorGroupDTOTest {
 	public void setUp()
 		throws Exception {
 		
+		//all you need to test methods
+		
+		//bonus on the bonsCard
 		bonus = new BonusDTO();
 		bonus.setQuantity(1);
 		bonus.setType(BonusType.POINT);
+		//the bonusCard
 		bcDTO = new BonusCardDTO();
 		bcDTO.setBonus(bonus);
-		
+		//theCitiesWithTheSameColor; a list of 2 cities
 		cities=new CityDTO[2];
 		cities[0]= fixture1;
 		cities[1]= fixture2;
 		colCities = new ArrayList<CityDTO>(Arrays.asList(cities));
-
+		//theCloseCitiesOfTheCities
 		closeCities=new String [2];
-		closeCities2=new String[2];
 		closeCities[0]="Indur";
 		closeCities[1]="Hellar";
-		
+		closeCities2=new String[2];
 		closeCities2[0]="Kultos";
 		closeCities2[1]="Juvelar";
 		
+		//theBonusTokenOnTheFirstCity
 		b = new BonusDTO[2];
 		b[0]=new BonusDTO();
 		b[0].setQuantity(1);
@@ -57,7 +61,7 @@ public class ColorGroupDTOTest {
 		b[1].setType(BonusType.CARD);
 		BonusTokenDTO btDTO = new BonusTokenDTO();
 		btDTO.setBonus(b);
-		
+		//theBonusTokenOnTheSecondCity
 		b2 = new BonusDTO[2];
 		b2[0]=new BonusDTO();
 		b2[0].setQuantity(1);
@@ -67,7 +71,7 @@ public class ColorGroupDTOTest {
 		b2[1].setType(BonusType.CARD);
 		BonusTokenDTO btDTO2 = new BonusTokenDTO();
 		btDTO2.setBonus(b2);
-		
+		//the first city
 		fixture1 = new CityDTO();
 		fixture1.setName("Juvelar");
 		fixture1.setColor(CityColor.BLUE);
@@ -76,7 +80,7 @@ public class ColorGroupDTOTest {
 		fixture1.setPlayerNum(1);
 		fixture1.setToken(btDTO);
 		
-		
+		//the second city
 		fixture2 = new CityDTO();
 		fixture2.setName("Indur");
 		fixture2.setColor(CityColor.BLUE);
@@ -91,16 +95,18 @@ public class ColorGroupDTOTest {
 	}
 	
 	
-//	@Test
-//	public void testColorGroupDTO_1()
-//		throws Exception {
-//		ColorGroupDTO result = new ColorGroupDTO();
-//		result.setCities(colCities);
-//		assertNotNull(result);
-//	}
+	@Test
+	public void testColorGroupDTO()
+		throws Exception {
+		ColorGroupDTO result = new ColorGroupDTO();
+		result.setCities(colCities);
+		assertNotNull(result);
+	}
+	
+	// getters and setters are tested together
 
 	@Test
-	public void testGetBc_1()
+	public void testGetBc()
 		throws Exception {
 		ColorGroupDTO fixture = new ColorGroupDTO();
 		
@@ -115,7 +121,7 @@ public class ColorGroupDTOTest {
 	}
 
 	@Test
-	public void testGetCities_1()
+	public void testGetCities()
 		throws Exception {
 		ColorGroupDTO fixture = new ColorGroupDTO();
 		fixture.setColor(CityColor.BLUE);
@@ -129,7 +135,7 @@ public class ColorGroupDTOTest {
 	}
 
 	@Test
-	public void testGetColor_1()
+	public void testGetColor()
 		throws Exception {
 		ColorGroupDTO fixture = new ColorGroupDTO();
 		fixture.setColor(CityColor.BLUE);
@@ -144,51 +150,7 @@ public class ColorGroupDTOTest {
 		
 	}
 
-//	@Test
-//	public void testSetBc_1()
-//		throws Exception {
-//		ColorGroupDTO fixture = new ColorGroupDTO();
-//		fixture.setColor(CityColor.BLUE);
-//		fixture.setBc(new BonusCardDTO());
-//		fixture.setCities(new ArrayList());
-//		BonusCardDTO bc = new BonusCardDTO();
-//
-//		fixture.setBc(bc);
-//
-//	}
-//
-//	@Test
-//	public void testSetCities_1()
-//		throws Exception {
-//		ColorGroupDTO fixture = new ColorGroupDTO();
-//		fixture.setColor(CityColor.BLUE);
-//		fixture.setBc(new BonusCardDTO());
-//		fixture.setCities(new ArrayList());
-//		ArrayList<CityDTO> cities = new ArrayList();
-//
-//		fixture.setCities(cities);
-//
-//	}
-//
-//	@Test
-//	public void testSetColor_1()
-//		throws Exception {
-//		ColorGroupDTO fixture = new ColorGroupDTO();
-//		fixture.setColor(CityColor.BLUE);
-//		fixture.setBc(new BonusCardDTO());
-//		fixture.setCities(new ArrayList());
-//		CityColor color = CityColor.BLUE;
-//
-//		fixture.setColor(color);
-//
-//	}
-//
-//	
-//
-//	@After
-//	public void tearDown()
-//		throws Exception {
-//	}
+
 
 	public static void main(String[] args) {
 		new org.junit.runner.JUnitCore().run(ColorGroupDTOTest.class);

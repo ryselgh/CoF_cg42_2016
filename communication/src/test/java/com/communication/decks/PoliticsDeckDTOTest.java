@@ -13,9 +13,15 @@ public class PoliticsDeckDTOTest {
 	
 	PoliticsCardDTO[] politicsDeckDTO;
 	ArrayList<PoliticsCardDTO> politicsDeck; 
+	PoliticsCardDTO[] garbageDTO;
+	ArrayList<PoliticsCardDTO> garbage; 
+	
+	
 	@Before
 	public void setUp()
 		throws Exception {
+		
+		//all you need for the methods of the test
 		
 		politicsDeckDTO= new  PoliticsCardDTO[12];
 		for (PoliticsCardDTO pc: politicsDeckDTO){
@@ -24,31 +30,42 @@ public class PoliticsDeckDTOTest {
 		}
 		
 		politicsDeck = new ArrayList<PoliticsCardDTO>(Arrays.asList(politicsDeckDTO));
+		
+		garbageDTO= new PoliticsCardDTO[3];
+		for (PoliticsCardDTO pc: garbageDTO){
+			pc= new PoliticsCardDTO();
+			pc.setColor(CouncilorColor.PURPLE);
+		}
+		
+		garbage = new ArrayList<PoliticsCardDTO>(Arrays.asList(garbageDTO));
+		
 	}
 	
 	
-//	@Test
-//	public void testPoliticsDeckDTO_1()
-//		throws Exception {
-//		PoliticsDeckDTO result = new PoliticsDeckDTO();
-//		assertNotNull(result);
-//	}
+	@Test
+	public void testPoliticsDeckDTO()
+		throws Exception {
+		PoliticsDeckDTO result = new PoliticsDeckDTO();
+		assertNotNull(result);
+	}
+	
+	// getters and setters are tested together
 
 	@Test
-	public void testGetGarbage_1()
+	public void testGetGarbage()
 		throws Exception {
 		PoliticsDeckDTO fixture = new PoliticsDeckDTO();
 		fixture.setPoliticsDeck(politicsDeck);
-		fixture.setGarbage(new ArrayList());
+		fixture.setGarbage(garbage);
 
 		ArrayList<PoliticsCardDTO> result = fixture.getGarbage();
 
 		assertNotNull(result);
-		assertEquals(0, result.size());
+		assertEquals(3, result.size());
 	}
 
 	@Test
-	public void testGetPoliticsDeck_1()
+	public void testGetPoliticsDeck()
 		throws Exception {
 		PoliticsDeckDTO fixture = new PoliticsDeckDTO();
 		fixture.setPoliticsDeck(politicsDeck);
@@ -60,31 +77,6 @@ public class PoliticsDeckDTOTest {
 		assertEquals(12, result.size());
 	}
 
-//	@Test
-//	public void testSetGarbage_1()
-//		throws Exception {
-//		PoliticsDeckDTO fixture = new PoliticsDeckDTO();
-//		fixture.setPoliticsDeck(new ArrayList());
-//		fixture.setGarbage(new ArrayList());
-//		ArrayList<PoliticsCardDTO> garbage = new ArrayList();
-//
-//		fixture.setGarbage(garbage);
-//
-//	}
-//
-//	@Test
-//	public void testSetPoliticsDeck_1()
-//		throws Exception {
-//		PoliticsDeckDTO fixture = new PoliticsDeckDTO();
-//		fixture.setPoliticsDeck(new ArrayList());
-//		fixture.setGarbage(new ArrayList());
-//		ArrayList<PoliticsCardDTO> politicsDeck = new ArrayList();
-//
-//		fixture.setPoliticsDeck(politicsDeck);
-//
-//	}
-
-	
 
 
 	public static void main(String[] args) {

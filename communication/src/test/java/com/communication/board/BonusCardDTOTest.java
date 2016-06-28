@@ -7,25 +7,34 @@ import com.communication.values.BonusType;
 import static org.junit.Assert.*;
 
 public class BonusCardDTOTest {
-//	@Test
-//	public void testBonusCardDTO_1()
-//		throws Exception {
-//		BonusCardDTO result = new BonusCardDTO();
-//		assertNotNull(result);
-//	}
+	
+	
+	
+	
 	BonusDTO fixture;
 	@Before
 	public void setUp()
 		throws Exception {
+		
+		// all you need to test the methods
 		
 		fixture = new BonusDTO();
 		fixture.setQuantity(1);
 		fixture.setType(BonusType.ASSISTANT);
 		
 	}
+	
+	@Test
+	public void testBonusCardDTO()
+		throws Exception {
+		BonusCardDTO result = new BonusCardDTO();
+		assertNotNull(result);
+	}
+	
+	// getters and setters are tested together
 
 	@Test
-	public void testGetB_1()
+	public void testGetBonus()
 		throws Exception {
 		
 		BonusCardDTO bcDTO = new BonusCardDTO();
@@ -38,23 +47,6 @@ public class BonusCardDTOTest {
 		assertEquals(1, result.getQnt());
 	}
 
-//	@Test
-//	public void testSetB_1()
-//		throws Exception {
-//		BonusCardDTO fixture = new BonusCardDTO();
-//		fixture.setB(new BonusDTO());
-//		BonusDTO b = new BonusDTO();
-//
-//		fixture.setB(b);
-//
-//	}
-
-	
-
-//	@After
-//	public void tearDown()
-//		throws Exception {
-//	}
 
 	public static void main(String[] args) {
 		new org.junit.runner.JUnitCore().run(BonusCardDTOTest.class);

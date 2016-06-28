@@ -16,6 +16,7 @@ public class PermitsDeckTest {
 	
 	@Before
 	public void setUp(){
+		//declaring this array of pemitscards as an option to the creation of a game
 		b=new Bonus[2];
 		b[0]= new Bonus (BonusType.ASSISTANT,2);
 		b[1]= new Bonus (BonusType.CARD,3);
@@ -39,13 +40,11 @@ public class PermitsDeckTest {
 		permCard[13]=new PermitsCard(b,l);
 		permCard[14]=new PermitsCard(b,l);
 		
-//		slot= new PermitsCrad[2];
-//		slot[0]= 
-	
+
     }
 	
 	@Test(expected=NullPointerException.class)
-	public void testPermitsDeck_1()
+	public void testTheThrowingOfTheExceptionByTheConstructor()
 		throws Exception {
 		PermitsCard[] p = null ;
 		int r = 1;
@@ -69,7 +68,7 @@ public class PermitsDeckTest {
 
 
 	@Test(expected = NullPointerException.class)
-	public void testDraw_5()
+	public void testDraw_ThrowsExceptionIfTheDeckIsEmpty()
 		throws Exception {
 		PermitsDeck fixture = new PermitsDeck(new PermitsCard[] {}, 1);
 		fixture.draw();
@@ -77,7 +76,7 @@ public class PermitsDeckTest {
 	}
 
 	@Test
-	public void testGetSlot_1()
+	public void testGetSlot1()
 		throws Exception {
 		PermitsDeck fixture = new PermitsDeck(permCard, 1);
 		
@@ -87,42 +86,17 @@ public class PermitsDeckTest {
 	}
 
 	@Test
-	public void testGetSlot_2()
+	public void testGetSlot2()
 		throws Exception {
 		PermitsDeck fixture = new PermitsDeck(permCard, 1);
 		
 		boolean draw = false;
+		
 		PermitsCard result = fixture.getSlot(0, draw);
 		assertNotNull(result);
 	}
 
-//	@Test
-//	public void testSetSlot1_1()
-//		throws Exception {
-//		PermitsDeck fixture = new PermitsDeck(new PermitsCard[] {}, 1);
-//		PermitsCard card = new PermitsCard(new Bonus[] {}, new String[] {});
-//
-//		fixture.setSlot1(card);
-//
-//		// An unexpected exception was thrown in user code while executing this test:
-//		//    java.lang.NullPointerException: Cards are over
-//		//       at com.server.model.decks.PermitsDeck.draw(PermitsDeck.java:73)
-//		//       at com.server.model.decks.PermitsDeck.<init>(PermitsDeck.java:29)
-//	}
-//
-//	@Test
-//	public void testSetSlot2_1()
-//		throws Exception {
-//		PermitsDeck fixture = new PermitsDeck(new PermitsCard[] {}, 1);
-//		PermitsCard card = new PermitsCard(new Bonus[] {}, new String[] {});
-//
-//		fixture.setSlot2(card);
-//
-//		// An unexpected exception was thrown in user code while executing this test:
-//		//    java.lang.NullPointerException: Cards are over
-//		//       at com.server.model.decks.PermitsDeck.draw(PermitsDeck.java:73)
-//		//       at com.server.model.decks.PermitsDeck.<init>(PermitsDeck.java:29)
-//	}
+
 
 	@Test
 	public void toDTO(){

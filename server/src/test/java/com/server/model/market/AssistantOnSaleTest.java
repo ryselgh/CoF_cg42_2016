@@ -8,25 +8,40 @@ import java.util.ArrayList;
 import com.communication.board.AssistantDTO;
 import com.communication.market.AssistantOnSaleDTO;
 import com.server.model.board.Assistant;
+import com.server.model.gamelogic.Game;
 import com.server.model.gamelogic.Player;
 
 public class AssistantOnSaleTest {
 	
-	Player player;
+	
 	Assistant as;
-	String UID="";
+	String UID="1";
+	Game game;
+	Player player;
+	String[] players;
+	Player buyer;
+	
+	
 	@Before
+	
 	public void setUp()
 		throws Exception {
-		
-		player = new Player("1");
+		//sets for the game and the market
 		as = new Assistant();
+		players = new String[3];
+		players[0] = "smemo";
+		players[1] = "figlio";
+		players[2] = "negro";
+		game = new Game(3, true, UID, players);
+		player = game.getActualPlayer();
+		buyer = game.getThatPlayer(2);
+		
 		
 	}
 	
 	
 	@Test
-	public void testAssistantOnSale_1()
+	public void testAssistantOnSale()
 		throws Exception {
 		
 		int pr = 1;
@@ -45,7 +60,7 @@ public class AssistantOnSaleTest {
 	}
 
 	@Test
-	public void testGetPrice_1()
+	public void testGetPrice()
 		throws Exception {
 		AssistantOnSale fixture = new AssistantOnSale(player, as, 1,UID);
 
@@ -55,12 +70,9 @@ public class AssistantOnSaleTest {
 	}
 
 	@Test
-	public void testObtain_1()
+	public void testObtain_checkIfThePlayerLosesMoney()
 		throws Exception {
 		AssistantOnSale fixture = new AssistantOnSale(player, as, 1,UID);
-		
-		
-		Player buyer = new Player("1");
 		buyer.setCoins(1);
 		
 
@@ -68,16 +80,11 @@ public class AssistantOnSaleTest {
 		
 		assertEquals(buyer.getCoins(),0);
 
-		// An unexpected exception was thrown in user code while executing this test:
-		//    java.util.ConcurrentModificationException
-		//       at java.util.ArrayList$Itr.checkForComodification(ArrayList.java:901)
-		//       at java.util.ArrayList$Itr.next(ArrayList.java:851)
-		//       at com.server.model.gamelogic.Player.removeAssistant(Player.java:70)
-		//       at com.server.model.market.AssistantOnSale.obtain(AssistantOnSale.java:26)
+		
 	}
 
 	@Test
-	public void testPrintDetails_1()
+	public void testPrintDetails()
 		throws Exception {
 		AssistantOnSale fixture = new AssistantOnSale(player, as, 1,UID);
 
@@ -87,7 +94,7 @@ public class AssistantOnSaleTest {
 	}
 
 	@Test
-	public void testToDTO_1()
+	public void testToDTO()
 		throws Exception {
 		AssistantOnSale fixture = new AssistantOnSale(player, as, 1,UID);
 
@@ -100,12 +107,6 @@ public class AssistantOnSaleTest {
 	}
 
 	
-
-//	@After
-//	public void tearDown()
-//		throws Exception {
-//	}
-
 	public static void main(String[] args) {
 		new org.junit.runner.JUnitCore().run(AssistantOnSaleTest.class);
 	}

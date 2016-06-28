@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 
 public class BuyMainActionDTOTest {
 	@Test
-	public void testBuyMainActionDTO_1()
+	public void testBuyMainActionDTO()
 		throws Exception {
 
 		BuyMainActionDTO result = new BuyMainActionDTO();
@@ -13,15 +13,6 @@ public class BuyMainActionDTOTest {
 		assertNotNull(result);
 	}
 
-	@Before
-	public void setUp()
-		throws Exception {
-	}
-
-	@After
-	public void tearDown()
-		throws Exception {
-	}
 
 	public static void main(String[] args) {
 		new org.junit.runner.JUnitCore().run(BuyMainActionDTOTest.class);

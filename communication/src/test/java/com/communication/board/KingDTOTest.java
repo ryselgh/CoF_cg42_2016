@@ -19,6 +19,10 @@ public class KingDTOTest {
 	@Before
 	public void setUp()
 		throws Exception {
+		
+		
+		//all you need to instantiate a city
+		
 		closeCities= new String[2];
 		closeCities[0]="Osium";
 		closeCities[1]="Karl";
@@ -37,20 +41,23 @@ public class KingDTOTest {
 		fixture1.setName("Juvelar");
 		fixture1.setColor(CityColor.BLUE);
 		fixture1.setCloseCities(closeCities);
-		
 		fixture1.setSlot(new EmporiumDTO[10] );
 		fixture1.setPlayerNum(1);
 		fixture1.setToken(btDTO);
 	}
-//	@Test
-//	public void testKingDTO_1()
-//		throws Exception {
-//		KingDTO result = new KingDTO();
-//		assertNotNull(result);
-//	}
+	
+	
+	@Test
+	public void testKingDTO()
+		throws Exception {
+		KingDTO result = new KingDTO();
+		assertNotNull(result);
+	}
+	
+	// getters and setters are tested together
 
 	@Test
-	public void testGetLocation_1()
+	public void testGetLocation()
 		throws Exception {
 		KingDTO fixture = new KingDTO();
 		fixture.setLocation(fixture1);
@@ -62,18 +69,6 @@ public class KingDTOTest {
 		
 	}
 
-//	@Test
-//	public void testSetLocation_1()
-//		throws Exception {
-//		KingDTO fixture = new KingDTO();
-//		fixture.setLocation(new CityDTO());
-//		CityDTO l = new CityDTO();
-//
-//		fixture.setLocation(l);
-//
-//	}
-
-	
 
 	
 

@@ -6,19 +6,19 @@ import com.communication.values.CouncilorColor;
 
 public class PoliticsCardDTOTest {
 	
-	@Before
-	public void setUp()
+	
+	
+	@Test
+	public void testPoliticsCardDTO()
 		throws Exception {
+		PoliticsCardDTO result = new PoliticsCardDTO();
+		assertNotNull(result);
 	}
-//	@Test
-//	public void testPoliticsCardDTO_1()
-//		throws Exception {
-//		PoliticsCardDTO result = new PoliticsCardDTO();
-//		assertNotNull(result);
-//	}
+	
+	// getters and setters are tested together
 
 	@Test
-	public void testGetColor_1()
+	public void testGetColor()
 		throws Exception {
 		PoliticsCardDTO fixture = new PoliticsCardDTO();
 		fixture.setColor(CouncilorColor.BLACK);
@@ -31,20 +31,6 @@ public class PoliticsCardDTOTest {
 		
 	}
 
-//	@Test
-//	public void testSetColor_1()
-//		throws Exception {
-//		PoliticsCardDTO fixture = new PoliticsCardDTO();
-//		fixture.setColor(CouncilorColor.BLACK);
-//		CouncilorColor color = CouncilorColor.BLACK;
-//
-//		fixture.setColor(color);
-//
-//	}
-
-	
-
-	
 
 	public static void main(String[] args) {
 		new org.junit.runner.JUnitCore().run(PoliticsCardDTOTest.class);
