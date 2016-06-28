@@ -24,7 +24,7 @@ public class CouncilorTest {
 	@Test(expected= NullPointerException.class)
 	public void aCouncilorCannotBeUncoloured(){
 		
-		Councilor result = new Councilor(null);
+		new Councilor(null);
 		
 		
 	}

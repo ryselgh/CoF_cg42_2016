@@ -63,7 +63,7 @@ public class PlayerTest {
 	public void testAddAssistantMoreThanOne()
 		throws Exception {
 		Player fixture = game.getActualPlayer();
-		ArrayList<Assistant> assistants = new ArrayList();
+		ArrayList<Assistant> assistants = new ArrayList<Assistant>();
 		Assistant ass1 = new Assistant();
 		Assistant ass2 = new Assistant();
 		Assistant ass3 = new Assistant();
@@ -82,7 +82,7 @@ public class PlayerTest {
 		throws Exception {
 		Player fixture = game.getActualPlayer();
 		Bonus b= new Bonus(BonusType.POINT,5);
-		ArrayList<BonusCard> bonusCards = new ArrayList();
+		ArrayList<BonusCard> bonusCards = new ArrayList<BonusCard>();
 		BonusCard bc1 = new BonusCard(b);
 		BonusCard bc2 = new BonusCard(b);
 		BonusCard bc3 = new BonusCard(b);
@@ -144,7 +144,7 @@ public class PlayerTest {
 		throws Exception {
 		Player fixture = game.getActualPlayer();
 		
-		ArrayList<PlayerDTO> plsDTO = new ArrayList();
+		ArrayList<PlayerDTO> plsDTO = new ArrayList<PlayerDTO>();
 		PlayerDTO pDTO1= new PlayerDTO();
 		pDTO1.setPlayerID("1");
 		PlayerDTO pDTO2= new PlayerDTO();
@@ -165,7 +165,7 @@ public class PlayerTest {
 		throws Exception {
 		Player fixture = game.getActualPlayer();
 		
-		ArrayList<PlayerDTO> plsDTO = new ArrayList();
+		ArrayList<PlayerDTO> plsDTO = new ArrayList<PlayerDTO>();
 
 		PlayerDTO result = fixture.compareToDTOs(plsDTO);
 

@@ -3,7 +3,7 @@ package com.server.actions;
 import java.util.ArrayList;
 
 import com.server.model.board.Bonus;
-import com.server.model.gamelogic.Game;
+
 import com.communication.values.BonusType;
 
 

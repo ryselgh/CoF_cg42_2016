@@ -2,13 +2,13 @@ package com.server.actions;
 
 import org.junit.*;
 import static org.junit.Assert.*;
-import org.w3c.dom.Document;
+
 import com.communication.actions.ShiftCouncilMainDTO;
 import com.communication.board.CouncilorDTO;
 import com.communication.values.CouncilorColor;
 import com.server.model.board.Councilor;
 import com.server.model.gamelogic.Game;
-import com.server.model.gamelogic.Player;
+
 
 public class ShiftCouncilMainTest {
 	Game game;
@@ -18,7 +18,7 @@ public class ShiftCouncilMainTest {
 	@Before
 	public void setUp()
 		throws Exception {
-		//sets for create the game
+		//sets to create the game
 
 		players = new String[3];
 		players[0] = "1";
@@ -55,7 +55,7 @@ public class ShiftCouncilMainTest {
 		ShiftCouncilMain fixture = new ShiftCouncilMain(1, game.getMap().getCouncilorsPool().get(0));		
 		fixture.setGame(game);
 
-		ActionReturn result = fixture.execute();
+		fixture.execute();
 
 		
 		assertEquals(game.getActualPlayer().getCoins(),14);
@@ -69,7 +69,7 @@ public class ShiftCouncilMainTest {
 		fixture.setGame(game);
 		
 
-		ActionReturn result = fixture.execute();
+		fixture.execute();
 
 		
 		assertNotEquals(balcony,game.getMap().getBalcony(1).getCouncilors());
@@ -161,10 +161,7 @@ public class ShiftCouncilMainTest {
 			
 			assertFalse(result);
 		}
-	
-	
-
-	
+		
 
 
 
@@ -174,6 +171,21 @@ public class ShiftCouncilMainTest {
 		CouncilorDTO councDTO = new CouncilorDTO();
 		councDTO.setColor(CouncilorColor.BLACK);
 		ShiftCouncilMain fixture = new ShiftCouncilMain(0, game.getMap().getCouncilorsPool().get(0));
+		fixture.setGame(game);
+		ShiftCouncilMainDTO scmDTO = new ShiftCouncilMainDTO();
+		scmDTO.setBalconyIndex(1);
+		scmDTO.setCouncilor(councDTO);
+		
+		fixture.setterFromDTO(scmDTO, game.getActualPlayer(), game);
+		
+		assertTrue(fixture instanceof ShiftCouncilMain);
+	}
+	@Test
+	public void testSetterFromDTOWithNull()
+		throws Exception {
+		CouncilorDTO councDTO = new CouncilorDTO();
+		councDTO.setColor(CouncilorColor.BLACK);
+		ShiftCouncilMain fixture = new ShiftCouncilMain(0, null);
 		fixture.setGame(game);
 		ShiftCouncilMainDTO scmDTO = new ShiftCouncilMainDTO();
 		scmDTO.setBalconyIndex(1);

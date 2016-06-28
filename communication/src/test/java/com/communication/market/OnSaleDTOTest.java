@@ -17,11 +17,11 @@ public class OnSaleDTOTest {
 	
 	PlayerDTO player;
 	AssistantDTO assistant;
-	ArrayList<AssistantDTO> availableAssistants = new ArrayList();
-	ArrayList<EmporiumDTO> availableEmporiums = new ArrayList();
-	ArrayList<BonusCardDTO>bonusCards= new ArrayList();
-	ArrayList<PoliticsCardDTO> hand = new ArrayList();
-	ArrayList<PermitsCardDTO> permits = new ArrayList();
+	ArrayList<AssistantDTO> availableAssistants = new ArrayList<AssistantDTO>();
+	ArrayList<EmporiumDTO> availableEmporiums = new ArrayList<EmporiumDTO>();
+	ArrayList<BonusCardDTO>bonusCards= new ArrayList<BonusCardDTO>();
+	ArrayList<PoliticsCardDTO> hand = new ArrayList<PoliticsCardDTO>();
+	ArrayList<PermitsCardDTO> permits = new ArrayList<PermitsCardDTO>();
 	PawnDTO pawn;
 	Object obj;
 	

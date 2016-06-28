@@ -2,14 +2,12 @@ package com.server.actions;
 
 import org.junit.*;
 import static org.junit.Assert.*;
-import org.w3c.dom.Document;
-import com.communication.actions.ShiftCouncilMainDTO;
 import com.communication.actions.ShiftCouncilSpeedDTO;
 import com.communication.board.CouncilorDTO;
 import com.communication.values.CouncilorColor;
 import com.server.model.board.Councilor;
 import com.server.model.gamelogic.Game;
-import com.server.model.gamelogic.Player;
+
 
 public class ShiftCouncilSpeedTest {
 	Game game;
@@ -18,7 +16,7 @@ public class ShiftCouncilSpeedTest {
  	@Before
  	public void setUp()
  		throws Exception {
-		//sets for create the game
+		//sets to create the game
 
  		players = new String[3];
  		players[0] = "1";
@@ -58,7 +56,7 @@ public class ShiftCouncilSpeedTest {
  		ShiftCouncilMain fixture = new ShiftCouncilMain(1, new Councilor(CouncilorColor.BLACK));
  		fixture.setGame(game);
  
- 		ActionReturn result = fixture.execute();
+ 		fixture.execute();
  
  		
  		assertNotEquals(balcony,game.getMap().getBalcony(1).getCouncilors());
@@ -70,7 +68,7 @@ public class ShiftCouncilSpeedTest {
  		ShiftCouncilSpeed fixture = new ShiftCouncilSpeed(1, new Councilor(CouncilorColor.BLACK));
  		fixture.setGame(game);
  
- 		ActionReturn result = fixture.execute();
+ 		 fixture.execute();
  
  	
  		assertTrue(game.getActualPlayer().getAvailableAssistants().isEmpty());
@@ -84,7 +82,7 @@ public class ShiftCouncilSpeedTest {
 		fixture.setGame(game);
  
 
-		ActionReturn result = fixture.execute();
+		fixture.execute();
 
 		
 		assertEquals(game.getMap().getCouncilorsPool().size(),8);
@@ -146,6 +144,22 @@ public class ShiftCouncilSpeedTest {
 
 	
 		assertFalse(result);
+	}
+	
+	@Test
+	public void testSetterFromDTOwithNull(){
+		
+		ShiftCouncilSpeed fixture = new ShiftCouncilSpeed(0, game.getMap().getCouncilorsPool().get(0));
+		fixture.setGame(game);
+		CouncilorDTO councDTO = new CouncilorDTO();
+		councDTO.setColor(CouncilorColor.BLACK);
+		ShiftCouncilSpeedDTO scmDTO = new ShiftCouncilSpeedDTO();
+		scmDTO.setBalconyIndex(1);
+		scmDTO.setCouncilor(councDTO);
+		
+		fixture.setterFromDTO(scmDTO, game.getActualPlayer(), game);
+		assertTrue(fixture instanceof ShiftCouncilSpeed);
+		
 	}
 	
 	@Test

@@ -2,9 +2,7 @@ package com.server.model.market;
 
 import org.junit.*;
 import static org.junit.Assert.*;
-import com.communication.gamelogic.PlayerDTO;
-import com.communication.market.OnSaleDTO;
-import com.server.model.board.Assistant;
+
 import com.server.model.gamelogic.Game;
 import com.server.model.gamelogic.Player;
 
@@ -77,6 +75,14 @@ public class OnSaleTest {
 		assertEquals("", result);
 	}
 
+	@Test
+	public void testGetUID(){
+		OnSale fixture = new OnSale(player, obj,1,UID);
+		String result = fixture.getUID();
+		
+		assertEquals(result, "1");
+		
+	}
 	public static void main(String[] args) {
 		new org.junit.runner.JUnitCore().run(OnSaleTest.class);
 	}

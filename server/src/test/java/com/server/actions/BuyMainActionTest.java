@@ -2,13 +2,13 @@ package com.server.actions;
 
 import org.junit.*;
 import static org.junit.Assert.*;
-import org.w3c.dom.Document;
+
 
 import com.communication.values.BonusType;
 import com.server.model.board.Assistant;
 import com.server.model.board.Bonus;
 import com.server.model.gamelogic.Game;
-import com.server.model.gamelogic.Player;
+
 
 public class BuyMainActionTest {
 	Game game;
@@ -17,7 +17,7 @@ public class BuyMainActionTest {
 	public void setUp()
 		throws Exception {
 		
-		//sets for create the game
+		//sets to create the game
 		
 		players = new String[3];
 		players[0] = "1";

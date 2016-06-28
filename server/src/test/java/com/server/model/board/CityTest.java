@@ -1,6 +1,6 @@
 package com.server.model.board;
 
-import org.junit.*;
+
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
@@ -14,7 +14,7 @@ import com.communication.values.BonusType;
 import com.communication.values.CityColor;
 import com.server.model.gamelogic.Player;
 
-import junit.framework.Assert;
+
 
 public class CityTest {
 	

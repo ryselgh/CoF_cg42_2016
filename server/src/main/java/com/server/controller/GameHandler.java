@@ -8,7 +8,7 @@ import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.w3c.dom.Document;
+
 
 import com.communication.CommunicationObject;
 import com.communication.ItemOnSale;
@@ -16,8 +16,7 @@ import com.communication.actions.ActionDTO;
 import com.communication.board.BonusTokenDTO;
 import com.communication.decks.PermitsCardDTO;
 import com.communication.gamelogic.GameDTO;
-import com.communication.market.OnSaleDTO;
-import com.server.actions.Action;
+
 import com.server.model.decks.PoliticsCard;
 import com.server.model.gamelogic.ActionState;
 import com.server.model.gamelogic.BuyItemState;

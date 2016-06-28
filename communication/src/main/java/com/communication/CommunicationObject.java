@@ -1,6 +1,6 @@
 package com.communication;
 
-import java.io.Serializable;
+
 
 
 public class CommunicationObject implements SellableSer{

@@ -3,8 +3,6 @@ package com.server.model.board;
 import org.junit.*;
 import static org.junit.Assert.*;
 
-import java.util.ArrayList;
-
 import com.communication.board.EmporiumDTO;
 import com.communication.gamelogic.PlayerDTO;
 import com.server.model.gamelogic.Player;

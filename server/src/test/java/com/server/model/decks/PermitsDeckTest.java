@@ -48,7 +48,7 @@ public class PermitsDeckTest {
 		throws Exception {
 		PermitsCard[] p = null ;
 		int r = 1;
-		PermitsDeck result = new PermitsDeck(p, r);
+		new PermitsDeck(p, r);
 
 		
 	}

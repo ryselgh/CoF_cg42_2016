@@ -1,10 +1,10 @@
 package com.communication.actions;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+
 
 import com.communication.board.CouncilorDTO;
-import com.communication.gamelogic.GameDTO;
+
 
 
 /**

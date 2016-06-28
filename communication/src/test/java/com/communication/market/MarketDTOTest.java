@@ -3,13 +3,13 @@ package com.communication.market;
 import java.util.ArrayList;
 import org.junit.*;
 
-import com.communication.decks.PermitsCardDTO;
+
 
 import static org.junit.Assert.*;
 
 public class MarketDTOTest {
 	
-	ArrayList<OnSaleDTO> objectsOnSale= new ArrayList();
+	ArrayList<OnSaleDTO> objectsOnSale= new ArrayList<OnSaleDTO>();
 	
 	
 			

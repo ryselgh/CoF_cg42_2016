@@ -8,9 +8,7 @@ import com.communication.RMIClientControllerRemote;
 import com.communication.board.AssistantDTO;
 import com.communication.decks.PermitsCardDTO;
 import com.communication.decks.PoliticsCardDTO;
-import com.communication.market.AssistantOnSaleDTO;
-import com.communication.market.OnSaleDTO;
-import com.communication.market.PermitOnSaleDTO;
+
 import com.communication.market.PoliticsOnSaleDTO;
 import com.server.controller.ClientHandler;
 import com.server.controller.GameHandler;
@@ -19,7 +17,7 @@ import com.server.model.decks.PermitsCard;
 import com.server.model.decks.PoliticsCard;
 import com.server.model.market.AssistantOnSale;
 import com.server.model.market.OnSale;
-import com.server.model.market.OnSaleInterface;
+
 import com.server.model.market.PermitOnSale;
 import com.server.model.market.PoliticsOnSale;
 

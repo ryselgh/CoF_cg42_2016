@@ -54,7 +54,7 @@ public class PoliticsDeckTest {
 	public void testTheUpdateOfTheCardsNumber(){
 		
 		PoliticsDeck pd= new PoliticsDeck();
-		PoliticsCard pc= pd.draw();
+		pd.draw();
 		assertEquals(pd.getPoliticsDeck().size(),89);
 	}
 	

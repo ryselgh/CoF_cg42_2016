@@ -43,15 +43,15 @@ public class GameDTOTest {
 	BonusDTO[] b;
 	KingDTO king;
 	
-	ArrayList<AssistantDTO> availableAssistants = new ArrayList();
-	ArrayList<EmporiumDTO> availableEmporiums = new ArrayList();
-	ArrayList<BonusCardDTO>bonusCards= new ArrayList();
-	ArrayList<PoliticsCardDTO> hand = new ArrayList();
-	ArrayList<PermitsCardDTO> permits = new ArrayList();
+	ArrayList<AssistantDTO> availableAssistants = new ArrayList<AssistantDTO>();
+	ArrayList<EmporiumDTO> availableEmporiums = new ArrayList<EmporiumDTO>();
+	ArrayList<BonusCardDTO>bonusCards= new ArrayList<BonusCardDTO>();
+	ArrayList<PoliticsCardDTO> hand = new ArrayList<PoliticsCardDTO>();
+	ArrayList<PermitsCardDTO> permits = new ArrayList<PermitsCardDTO>();
 	CouncilorDTO[] councilor;
 	ArrayList<CouncilorDTO> councilors;
 	AssistantDTO[] assistant;
-	ArrayList<AssistantDTO> assistants = new ArrayList();
+	ArrayList<AssistantDTO> assistants = new ArrayList<AssistantDTO>();
 	BalconyDTO[] balcony;
 	
 	CouncilorDTO[] counc;
@@ -219,7 +219,7 @@ public class GameDTOTest {
 				politicsDeck = new ArrayList<PoliticsCardDTO>(Arrays.asList(politicsDeckDTO));
 				
 				politicDeck = new PoliticsDeckDTO();
-				politicDeck.setGarbage(new ArrayList());
+				politicDeck.setGarbage(new ArrayList<PoliticsCardDTO>());
 				politicDeck.setPoliticsDeck(politicsDeck);
 				
 				//3regions
@@ -248,7 +248,8 @@ public class GameDTOTest {
 		fixture.setPlayers(player);
 		fixture.setMap(new MapDTO());
 		fixture.setSpeedAction(sADTO);
-		
+		fixture.setMapName("Default map1.xml");
+		fixture.setMarketCurrentPlayer("1");
 		
 	}
 	@Test
@@ -329,13 +330,13 @@ public class GameDTOTest {
 
 		assertNotNull(result);
 		assertEquals(null, result.getNobilityTrack());
-		assertEquals(null, result.getCity());
+		assertArrayEquals(null, result.getCity());
 		assertEquals(null, result.getPoliticsDeck());
 		assertEquals(null, result.getKingBonus());
 		assertEquals(null, result.getKing());
 		assertEquals(null, result.getAssistants());
 		assertEquals(null, result.getCouncilors());
-		assertEquals(null, result.getPawn());
+		assertArrayEquals(null, result.getPawn());
 	}
 
 	@Test
@@ -414,7 +415,21 @@ public class GameDTOTest {
 
 		assertEquals(false, result);
 	}
+	
+	@Test
+	public void testGetMapName(){
+		
+		String result = fixture.getMapName();
+		assertEquals("Default map1.xml", result);
+	}
 
+	@Test
+	public void testGetMarketCurrentPlayer(){
+		
+		String result = fixture.getMarketCurrentPlayer();
+		assertEquals("1", result);
+		
+	}
 	
 	
 

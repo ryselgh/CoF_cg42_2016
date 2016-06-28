@@ -116,7 +116,7 @@ public class CityDTOTest {
 		BonusTokenDTO result = fixture.getToken();
 
 		assertNotNull(result);
-		assertEquals(b, result.getBonus());
+		assertArrayEquals(b, result.getBonus());
 	}
 	
 

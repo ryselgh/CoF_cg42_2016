@@ -24,63 +24,7 @@ public class GameTest {
 		game = new Game(3, "Default map1.xml", null, players);
 	}
 	
-//	@Test
-//	public void checkWinTest(){
-//		
-//		
-//		game.getMap().getCity()[0].setEmporium(game.getActualPlayer().getAvailableEmporiums().get(0));
-//		game.getActualPlayer().getAvailableEmporiums().remove(0);
-//		game.getMap().getCity()[1].setEmporium(game.getActualPlayer().getAvailableEmporiums().get(0));
-//		game.getActualPlayer().getAvailableEmporiums().remove(0);
-//		game.getMap().getCity()[2].setEmporium(game.getActualPlayer().getAvailableEmporiums().get(0));
-//		game.getActualPlayer().getAvailableEmporiums().remove(0);
-//		game.getMap().getCity()[3].setEmporium(game.getActualPlayer().getAvailableEmporiums().get(0));
-//		game.getActualPlayer().getAvailableEmporiums().remove(0);
-//		game.getMap().getCity()[4].setEmporium(game.getActualPlayer().getAvailableEmporiums().get(0));
-//		game.getActualPlayer().getAvailableEmporiums().remove(0);
-//		game.getMap().getCity()[5].setEmporium(game.getActualPlayer().getAvailableEmporiums().get(0));
-//		game.getActualPlayer().getAvailableEmporiums().remove(0);
-//		game.getMap().getCity()[6].setEmporium(game.getActualPlayer().getAvailableEmporiums().get(0));
-//		game.getActualPlayer().getAvailableEmporiums().remove(0);
-//		game.getMap().getCity()[7].setEmporium(game.getActualPlayer().getAvailableEmporiums().get(0));
-//		game.getActualPlayer().getAvailableEmporiums().remove(0);
-//		game.getMap().getCity()[8].setEmporium(game.getActualPlayer().getAvailableEmporiums().get(0));
-//		game.getActualPlayer().getAvailableEmporiums().remove(0);
-//		game.getMap().getCity()[9].setEmporium(game.getActualPlayer().getAvailableEmporiums().get(0));
-//		game.getActualPlayer().getAvailableEmporiums().remove(0);
-//		
-//		boolean res = game.checkWin();
-//		assertTrue(res);
-//		
-//	}
-//	@Test
-//	public void checkWinTest2(){
-//		
-//		
-//		game.getMap().getCity()[0].setEmporium(game.getActualPlayer().getAvailableEmporiums().get(0));
-//		game.getActualPlayer().getAvailableEmporiums().remove(0);
-//		game.getMap().getCity()[1].setEmporium(game.getActualPlayer().getAvailableEmporiums().get(0));
-//		game.getActualPlayer().getAvailableEmporiums().remove(0);
-//		game.getMap().getCity()[2].setEmporium(game.getActualPlayer().getAvailableEmporiums().get(0));
-//		game.getActualPlayer().getAvailableEmporiums().remove(0);
-//		game.getMap().getCity()[3].setEmporium(game.getActualPlayer().getAvailableEmporiums().get(0));
-//		game.getActualPlayer().getAvailableEmporiums().remove(0);
-//		game.getMap().getCity()[4].setEmporium(game.getActualPlayer().getAvailableEmporiums().get(0));
-//		game.getActualPlayer().getAvailableEmporiums().remove(0);
-//		game.getMap().getCity()[5].setEmporium(game.getActualPlayer().getAvailableEmporiums().get(0));
-//		game.getActualPlayer().getAvailableEmporiums().remove(0);
-//		game.getMap().getCity()[6].setEmporium(game.getActualPlayer().getAvailableEmporiums().get(0));
-//		game.getActualPlayer().getAvailableEmporiums().remove(0);
-//		game.getMap().getCity()[7].setEmporium(game.getActualPlayer().getAvailableEmporiums().get(0));
-//		game.getActualPlayer().getAvailableEmporiums().remove(0);
-//		game.getMap().getCity()[8].setEmporium(game.getActualPlayer().getAvailableEmporiums().get(0));
-//		game.getActualPlayer().getAvailableEmporiums().remove(0);
-//		
-//		
-//		boolean res = game.checkWin();
-//		assertFalse(res);
-//		
-//	}
+
 	@Test
 	public void testGame()
 		throws Exception {
@@ -131,6 +75,15 @@ public class GameTest {
 
 		
 		assertEquals(0, result);
+	}
+	
+	@Test
+	public void testGetMarketCurrentPlayer(){
+		Game fixture = game;
+		fixture.setMarketCurrentPlayer("1");
+		String result = fixture.getMarketCurrentPlayer();
+		assertEquals(result,"1");
+		
 	}
 
 	

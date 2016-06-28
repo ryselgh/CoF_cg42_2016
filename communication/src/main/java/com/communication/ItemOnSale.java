@@ -1,6 +1,6 @@
 package com.communication;
 
-import java.io.Serializable;
+
 
 public class ItemOnSale implements SellableSer{//used for client-server communication
 	private int price;

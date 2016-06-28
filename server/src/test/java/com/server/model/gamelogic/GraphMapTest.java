@@ -4,10 +4,7 @@ import org.jgrapht.UndirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
 import org.junit.*;
 import static org.junit.Assert.*;
-import com.communication.values.CityColor;
-import com.server.model.board.Bonus;
-import com.server.model.board.BonusToken;
-import com.server.model.board.City;
+
 import com.server.model.board.Map;
 
 public class GraphMapTest {

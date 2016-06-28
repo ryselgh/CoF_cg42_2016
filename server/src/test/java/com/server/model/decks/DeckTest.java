@@ -28,7 +28,7 @@ public class DeckTest {
 	@Test
 	public void testShuffle()
 		throws Exception {
-		ArrayList<Object> deck = new ArrayList();
+		ArrayList<Object> deck = new ArrayList<Object>();
 
 		Deck.shuffle(deck);
 

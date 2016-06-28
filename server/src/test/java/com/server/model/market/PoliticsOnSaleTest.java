@@ -4,7 +4,7 @@ import org.junit.*;
 import static org.junit.Assert.*;
 import com.communication.market.PoliticsOnSaleDTO;
 import com.communication.values.CouncilorColor;
-import com.server.model.board.Assistant;
+
 import com.server.model.decks.PoliticsCard;
 import com.server.model.gamelogic.Game;
 import com.server.model.gamelogic.Player;

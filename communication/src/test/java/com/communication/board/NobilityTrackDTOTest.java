@@ -2,19 +2,14 @@ package com.communication.board;
 
 import org.junit.*;
 
-import com.communication.decks.PermitsCardDTO;
-import com.communication.decks.PermitsDeckDTO;
-import com.communication.decks.PoliticsCardDTO;
-import com.communication.decks.PoliticsDeckDTO;
+
 import com.communication.gamelogic.PlayerDTO;
 import com.communication.values.BonusType;
-import com.communication.values.CityColor;
-import com.communication.values.CouncilorColor;
+
 
 import static org.junit.Assert.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+
 
 public class NobilityTrackDTOTest {
 	

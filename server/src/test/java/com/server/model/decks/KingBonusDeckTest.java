@@ -77,11 +77,11 @@ public class KingBonusDeckTest {
 	@Test
 	public void testthatTheSixthDrawnCardIsNull(){
 		KingBonusDeck kingbDeck = new KingBonusDeck(kbDeck);
-		KingBonusCard drawnCard1 = kingbDeck.draw();
-		KingBonusCard drawnCard2 = kingbDeck.draw();
-		KingBonusCard drawnCard3 = kingbDeck.draw();
-		KingBonusCard drawnCard4 = kingbDeck.draw();
-		KingBonusCard drawnCard5 = kingbDeck.draw();
+		kingbDeck.draw();
+		kingbDeck.draw();
+		kingbDeck.draw();
+		kingbDeck.draw();
+		kingbDeck.draw();
 		KingBonusCard drawnCard = kingbDeck.draw();
 
 		assertNull(drawnCard);

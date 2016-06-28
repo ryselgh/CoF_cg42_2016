@@ -1,7 +1,6 @@
 package com.server.actions;
 
 import com.server.model.board.Bonus;
-import com.server.model.board.BonusToken;
 
 
 /**

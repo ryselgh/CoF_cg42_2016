@@ -1,6 +1,6 @@
 package com.communication.market ;
 
-import java.io.Serializable;
+
 
 import com.communication.SellableSer;
 import com.communication.gamelogic.PlayerDTO;

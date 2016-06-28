@@ -1,11 +1,8 @@
 package com.communication.actions;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-
 import com.communication.board.CityDTO;
 import com.communication.decks.PermitsCardDTO;
-import com.communication.gamelogic.GameDTO;
 
 
 /**

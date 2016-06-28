@@ -40,7 +40,7 @@ public class KingTest {
 	
 	@Test(expected=NullPointerException.class)
 	public void locationCannotBeNull(){
-		King king= new King(null);
+		new King(null);
 	}
 	
 	

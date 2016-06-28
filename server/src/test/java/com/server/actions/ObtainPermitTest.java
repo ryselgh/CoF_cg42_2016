@@ -2,14 +2,14 @@ package com.server.actions;
 
 import org.junit.*;
 import static org.junit.Assert.*;
-import org.w3c.dom.Document;
+
 import com.communication.actions.ObtainPermitDTO;
 import com.communication.decks.PoliticsCardDTO;
 import com.communication.values.CouncilorColor;
 import com.server.model.decks.PermitsCard;
 import com.server.model.decks.PoliticsCard;
 import com.server.model.gamelogic.Game;
-import com.server.model.gamelogic.Player;
+
 
 public class ObtainPermitTest {
 	
@@ -18,7 +18,7 @@ public class ObtainPermitTest {
 	@Before
 	public void setUp()
 		throws Exception {
-		//sets for create the game
+		//sets to create the game
 		players = new String[3];
 		players[0] = "1";
 		players[1] = "2";
@@ -57,7 +57,7 @@ public class ObtainPermitTest {
 
 		
 		assertNotNull(result);
-		assertEquals(result.getBonus(),pc.getBonus());
+		assertArrayEquals(result.getBonus(),pc.getBonus());
 	}
 
 	@Test
@@ -108,7 +108,7 @@ public class ObtainPermitTest {
 		
 		ObtainPermit fixture = new ObtainPermit(tempHand, 1, 1);
 		fixture.setGame(game);
-		PermitsCard pc = game.getMap().getPermitsDeck(1).getSlot(1, false);
+		 game.getMap().getPermitsDeck(1).getSlot(1, false);
 		game.getActualPlayer().setCoins(20);
 		
 		fixture.isValid();
@@ -137,7 +137,7 @@ public class ObtainPermitTest {
 		
 		ObtainPermit fixture = new ObtainPermit(tempHand, 1, 1);
 		fixture.setGame(game);
-		PermitsCard pc = game.getMap().getPermitsDeck(1).getSlot(1, false);
+		game.getMap().getPermitsDeck(1).getSlot(1, false);
 		game.getActualPlayer().setCoins(20);
 		
 		fixture.isValid();

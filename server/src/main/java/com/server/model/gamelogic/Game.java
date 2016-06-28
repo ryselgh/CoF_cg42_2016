@@ -2,12 +2,12 @@ package com.server.model.gamelogic ;
 
 import java.util.ArrayList;
 
-import org.w3c.dom.Document;
+
 
 import com.communication.gamelogic.GameDTO;
 import com.communication.gamelogic.PlayerDTO;
 import com.server.model.board.City;
-import com.server.model.board.Emporium;
+
 import com.server.model.board.Map;
 import com.server.model.market.Market;
 

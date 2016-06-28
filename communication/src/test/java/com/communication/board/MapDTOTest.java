@@ -26,15 +26,15 @@ public class MapDTOTest {
 	BonusDTO[] b;
 	KingDTO king;
 	PlayerDTO[] players;
-	ArrayList<AssistantDTO> availableAssistants = new ArrayList();
-	ArrayList<EmporiumDTO> availableEmporiums = new ArrayList();
-	ArrayList<BonusCardDTO>bonusCards= new ArrayList();
-	ArrayList<PoliticsCardDTO> hand = new ArrayList();
-	ArrayList<PermitsCardDTO> permits = new ArrayList();
+	ArrayList<AssistantDTO> availableAssistants = new ArrayList<AssistantDTO>();
+	ArrayList<EmporiumDTO> availableEmporiums = new ArrayList<EmporiumDTO>();
+	ArrayList<BonusCardDTO>bonusCards= new ArrayList<BonusCardDTO>();
+	ArrayList<PoliticsCardDTO> hand = new ArrayList<PoliticsCardDTO>();
+	ArrayList<PermitsCardDTO> permits = new ArrayList<PermitsCardDTO>();
 	CouncilorDTO[] councilor;
 	ArrayList<CouncilorDTO> councilors;
 	AssistantDTO[] assistant;
-	ArrayList<AssistantDTO> assistants = new ArrayList();
+	ArrayList<AssistantDTO> assistants = new ArrayList<AssistantDTO>();
 	BalconyDTO[] balcony;
 	
 	CouncilorDTO[] counc;
@@ -204,7 +204,7 @@ public class MapDTOTest {
 		politicsDeck = new ArrayList<PoliticsCardDTO>(Arrays.asList(politicsDeckDTO));
 		
 		politicDeck = new PoliticsDeckDTO();
-		politicDeck.setGarbage(new ArrayList());
+		politicDeck.setGarbage(new ArrayList<PoliticsCardDTO>());
 		politicDeck.setPoliticsDeck(politicsDeck);
 		
 		//3regions
@@ -233,7 +233,7 @@ public class MapDTOTest {
 		MapDTO fixture = new MapDTO();
 		fixture.setPawn(pawns);
 		fixture.setNobilityTrack(new NobilityTrackDTO());
-		fixture.setKingBonus(new ArrayList());
+		fixture.setKingBonus(new ArrayList<BonusDTO>());
 		fixture.setKing(king);
 		fixture.setCouncilors(councilors);
 		fixture.setRegions(region);
@@ -256,7 +256,7 @@ public class MapDTOTest {
 		MapDTO fixture = new MapDTO();
 		fixture.setPawn(pawns);
 		fixture.setNobilityTrack(new NobilityTrackDTO());
-		fixture.setKingBonus(new ArrayList());
+		fixture.setKingBonus(new ArrayList<BonusDTO>());
 		fixture.setKing(king);
 		fixture.setCouncilors(councilors);
 		fixture.setRegions(region );
@@ -279,7 +279,7 @@ public class MapDTOTest {
 		MapDTO fixture = new MapDTO();
 		fixture.setPawn(pawns);
 		fixture.setNobilityTrack(new NobilityTrackDTO());
-		fixture.setKingBonus(new ArrayList());
+		fixture.setKingBonus(new ArrayList<BonusDTO>());
 		fixture.setKing(king);
 		fixture.setCouncilors(councilors);
 		fixture.setRegions(region );
@@ -300,9 +300,12 @@ public class MapDTOTest {
 	public void testGetColorGroups()
 		throws Exception {
 		MapDTO fixture = new MapDTO();
+		ColorGroupDTO[] cgsDTO = new ColorGroupDTO[5];
+		cgsDTO[0] = new ColorGroupDTO();
+		
 		fixture.setPawn(pawns);
 		fixture.setNobilityTrack(new NobilityTrackDTO());
-		fixture.setKingBonus(new ArrayList());
+		fixture.setKingBonus(new ArrayList<BonusDTO>());
 		fixture.setKing(king);
 		fixture.setCouncilors(councilors);
 		fixture.setRegions(region);
@@ -310,12 +313,12 @@ public class MapDTOTest {
 		fixture.setPoliticsDeck(politicDeck);
 		fixture.setPermitsDeck(permitsDeck);
 		fixture.setBalcony(balcony);
-		fixture.setColorGroups(new ColorGroupDTO[5] );
+		fixture.setColorGroups(cgsDTO );
 		fixture.setAssistants(assistants);
 
 		ColorGroupDTO result = fixture.getColorGroup(0);
 
-		assertNotNull(fixture);
+		assertNotNull(result);
 		
 	}
 
@@ -325,7 +328,7 @@ public class MapDTOTest {
 		MapDTO fixture = new MapDTO();
 		fixture.setPawn(pawns);
 		fixture.setNobilityTrack(new NobilityTrackDTO());
-		fixture.setKingBonus(new ArrayList());
+		fixture.setKingBonus(new ArrayList<BonusDTO>());
 		fixture.setKing(king);
 		fixture.setCouncilors(councilors);
 		fixture.setRegions(region);
@@ -350,7 +353,7 @@ public class MapDTOTest {
 		MapDTO fixture = new MapDTO();
 		fixture.setPawn(pawns);
 		fixture.setNobilityTrack(new NobilityTrackDTO());
-		fixture.setKingBonus(new ArrayList());
+		fixture.setKingBonus(new ArrayList<BonusDTO>());
 		fixture.setKing(king);
 		fixture.setCouncilors(councilors);
 		fixture.setRegions(region);
@@ -373,7 +376,7 @@ public class MapDTOTest {
 		MapDTO fixture = new MapDTO();
 		fixture.setPawn(pawns);
 		fixture.setNobilityTrack(new NobilityTrackDTO());
-		fixture.setKingBonus(new ArrayList());
+		fixture.setKingBonus(new ArrayList<BonusDTO>());
 		fixture.setKing(king);
 		fixture.setCouncilors(councilors);
 		fixture.setRegions(region);
@@ -396,7 +399,7 @@ public class MapDTOTest {
 		MapDTO fixture = new MapDTO();
 		fixture.setPawn(pawns);
 		fixture.setNobilityTrack(new NobilityTrackDTO());
-		fixture.setKingBonus(new ArrayList());
+		fixture.setKingBonus(new ArrayList<BonusDTO>());
 		fixture.setKing(king);
 		fixture.setCouncilors(councilors);
 		fixture.setRegions(region);
@@ -419,7 +422,7 @@ public class MapDTOTest {
 		MapDTO fixture = new MapDTO();
 		fixture.setPawn(pawns);
 		fixture.setNobilityTrack(new NobilityTrackDTO());
-		fixture.setKingBonus(new ArrayList());
+		fixture.setKingBonus(new ArrayList<BonusDTO>());
 		fixture.setKing(king);
 		fixture.setCouncilors(councilors);
 		fixture.setRegions(region);
@@ -442,7 +445,7 @@ public class MapDTOTest {
 		MapDTO fixture = new MapDTO();
 		fixture.setPawn(pawns);
 		fixture.setNobilityTrack(new NobilityTrackDTO());
-		fixture.setKingBonus(new ArrayList());
+		fixture.setKingBonus(new ArrayList<BonusDTO>());
 		fixture.setKing(king);
 		fixture.setCouncilors(councilors);
 		fixture.setRegions(region);
@@ -465,7 +468,7 @@ public class MapDTOTest {
 		MapDTO fixture = new MapDTO();
 		fixture.setPawn(pawns);
 		fixture.setNobilityTrack(new NobilityTrackDTO());
-		fixture.setKingBonus(new ArrayList());
+		fixture.setKingBonus(new ArrayList<BonusDTO>());
 		fixture.setKing(king);
 		fixture.setCouncilors(councilors);
 		fixture.setRegions(region);
@@ -489,7 +492,7 @@ public class MapDTOTest {
 		MapDTO fixture = new MapDTO();
 		fixture.setPawn(pawns);
 		fixture.setNobilityTrack(new NobilityTrackDTO());
-		fixture.setKingBonus(new ArrayList());
+		fixture.setKingBonus(new ArrayList<BonusDTO>());
 		fixture.setKing(king);
 		fixture.setCouncilors(councilors);
 		fixture.setRegions(region);

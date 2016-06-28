@@ -8,7 +8,7 @@ import org.jgrapht.*;
 import org.jgrapht.graph.*;
 
 import com.server.model.board.City;
-import com.server.model.board.King;
+
 import com.server.model.board.Map;
 
 import org.jgrapht.alg.*;
@@ -21,7 +21,7 @@ import org.jgrapht.alg.*;
 public class GraphMap {
 
 	/** The shortest path. */
-	private static DijkstraShortestPath shortestPath;
+	private static DijkstraShortestPath<?, ?> shortestPath;
 	
 	/** The cities. */
 	private ArrayList<City> cities;

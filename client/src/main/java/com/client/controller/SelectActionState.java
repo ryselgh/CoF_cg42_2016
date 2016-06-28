@@ -2,7 +2,7 @@ package com.client.controller;
 
 import java.util.ArrayList;
 
-import com.client.view.ClientCLI;
+
 import com.client.view.InterfaceMiddleware;
 import com.communication.actions.ActionDTO;
 import com.communication.actions.BuildDTO;
@@ -15,11 +15,10 @@ import com.communication.actions.SatisfyKingDTO;
 import com.communication.actions.ShiftCouncilMainDTO;
 import com.communication.actions.ShiftCouncilSpeedDTO;
 import com.communication.board.CityDTO;
-import com.communication.board.CouncilorDTO;
-import com.communication.decks.PermitsCardDTO;
+
 import com.communication.decks.PoliticsCardDTO;
 import com.communication.gamelogic.GameDTO;
-import com.communication.values.CouncilorColor;
+
 
 
 /**

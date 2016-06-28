@@ -3,12 +3,12 @@ package com.server.model.gamelogic;
 import java.rmi.RemoteException;
 
 import com.communication.RMIClientControllerRemote;
-import com.communication.market.OnSaleDTO;
+
 import com.server.controller.ClientHandler;
 import com.server.controller.GameHandler;
 import com.server.model.market.AssistantOnSale;
 import com.server.model.market.OnSale;
-import com.server.model.market.OnSaleInterface;
+
 import com.server.model.market.PermitOnSale;
 import com.server.model.market.PoliticsOnSale;
 

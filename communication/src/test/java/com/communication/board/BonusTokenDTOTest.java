@@ -40,7 +40,7 @@ public class BonusTokenDTOTest {
 
 		BonusDTO[] result = btDTO.getBonus();
 
-		assertEquals(fixture, result);
+		assertArrayEquals(fixture, result);
 		
 	}
 

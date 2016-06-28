@@ -23,7 +23,7 @@ public class KingBonusCardTest {
 	public void testNullPointerExc(){
 		int n=2;
 		
-		KingBonusCard result = new KingBonusCard(n, null);
+		new KingBonusCard(n, null);
 		
 	}
 	

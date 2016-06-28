@@ -2,14 +2,10 @@ package com.server.model.board;
 
 import static org.junit.Assert.*;
 
-import org.junit.Before;
 import org.junit.Test;
 
-import com.server.model.gamelogic.Game;
 import com.communication.board.BonusDTO;
 import com.communication.values.BonusType;
-
-import junit.framework.Assert;
 
 public class BonusTest {
 
@@ -26,7 +22,7 @@ public class BonusTest {
 	@Test(expected=IllegalArgumentException.class)
 	public void testAnIllegalArgumentInTheConstructorForTheQuantity(){
 		
-		Bonus b1= new Bonus(BonusType.ASSISTANT,0);
+		new Bonus(BonusType.ASSISTANT,0);
 		
 		
 		

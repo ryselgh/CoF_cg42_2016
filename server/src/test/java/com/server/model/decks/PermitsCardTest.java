@@ -63,7 +63,7 @@ public class PermitsCardTest {
 		PermitsCard fixture = new PermitsCard(b,l);
 		Bonus[] result = fixture.getBonus();
 		assertNotNull(result);
-		Assert.assertEquals(b,result);
+		Assert.assertArrayEquals(b,result);
 	}
 
 	@Test
@@ -71,7 +71,7 @@ public class PermitsCardTest {
 		PermitsCard fixture = new PermitsCard(b,l);
 		String[] result = fixture.getCityLetter();
 		assertNotNull(result);
-		Assert.assertEquals(l,result);
+		Assert.assertArrayEquals(l,result);
 	}
 
 	@Test

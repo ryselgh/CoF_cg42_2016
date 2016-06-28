@@ -1,6 +1,6 @@
 package com.server.model.board;
 
-import org.junit.*;
+
 import static org.junit.Assert.*;
 
 import org.junit.Assert;

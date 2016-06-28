@@ -8,7 +8,7 @@ import com.communication.board.BonusTokenDTO;
 import com.communication.board.CityDTO;
 import com.communication.board.EmporiumDTO;
 import com.communication.decks.PermitsCardDTO;
-import com.communication.gamelogic.GameDTO;
+
 import com.communication.values.BonusType;
 import com.communication.values.CityColor;
 
@@ -90,7 +90,7 @@ public class BuildDTOTest {
 		assertEquals("Juvelar", result.getName());
 		assertEquals(CityColor.BLUE, result.getColor());
 		assertEquals(1, result.getPlayerNum());
-		assertEquals(closeCities, result.getCloseCities());
+		assertArrayEquals(closeCities, result.getCloseCities());
 	}
 
 	@Test
@@ -104,8 +104,8 @@ public class BuildDTOTest {
 
 		assertNotNull(result);
 		assertEquals(false, result.isFaceDown());
-		assertEquals(letters, result.getCityLetter());
-		assertEquals(b, result.getBonuses());
+		assertArrayEquals(letters, result.getCityLetter());
+		assertArrayEquals(b, result.getBonuses());
 	}
 
 	

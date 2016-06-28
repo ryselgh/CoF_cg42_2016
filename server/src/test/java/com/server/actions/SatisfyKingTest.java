@@ -5,21 +5,17 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 
-import org.w3c.dom.Document;
 import com.communication.actions.SatisfyKingDTO;
-import com.communication.board.CityDTO;
 import com.communication.decks.PoliticsCardDTO;
 import com.communication.gamelogic.PlayerDTO;
 import com.communication.values.BonusType;
-import com.communication.values.CityColor;
 import com.communication.values.CouncilorColor;
 import com.server.model.board.Bonus;
-import com.server.model.board.BonusToken;
 import com.server.model.board.City;
+import com.server.model.board.Councilor;
 import com.server.model.decks.PermitsCard;
 import com.server.model.decks.PoliticsCard;
 import com.server.model.gamelogic.Game;
-import com.server.model.gamelogic.Player;
 
 public class SatisfyKingTest {
 	
@@ -96,7 +92,7 @@ public class SatisfyKingTest {
 		SatisfyKing fixture = new SatisfyKing(null, destination);
 		fixture.setGame(game);
 
-		ActionReturn result = fixture.execute();
+		 fixture.execute();
 
 		
 	}
@@ -107,7 +103,7 @@ public class SatisfyKingTest {
 		SatisfyKing fixture = new SatisfyKing(politics,null);
 		fixture.setGame(game);
 
-		ActionReturn result = fixture.execute();
+		fixture.execute();
 
 		
 	}
@@ -221,7 +217,7 @@ public class SatisfyKingTest {
 			result[bonusToken7.length+i] = bonusToken4[i];
 		
 		
-		assertEquals(result,bonusReturn.getBonus());
+		assertArrayEquals(result,bonusReturn.getBonus());
 		assertEquals(game.getActualPlayer().getCoins(),24);
 	}
 	
@@ -230,8 +226,7 @@ public class SatisfyKingTest {
 		throws Exception {
 		Bonus[] bonusToken4 = game.getMap().getCity()[4].getBonusToken().getBonus();
 		Bonus[] bonusToken7 = game.getMap().getCity()[7].getBonusToken().getBonus();
-		City kc1 = game.getMap().getCity()[4];
-		City kc2 = game.getMap().getCity()[7];
+		
 		City kc3 = game.getMap().getCity()[9];
 		
 		Build build = new Build(game.getMap().getCity()[4], new PermitsCard(b,l2));
@@ -275,7 +270,7 @@ public class SatisfyKingTest {
 			result[bonusToken7.length+i] = bonusToken4[i];
 		
 		
-		assertEquals(result,bonusReturn.getBonus());
+		assertArrayEquals(bonusReturn.getBonus(),result);
 		assertEquals(game.getActualPlayer().getCoins(),26);
 	}
 	
@@ -368,6 +363,13 @@ public class SatisfyKingTest {
 	@Test
 	public void testExecuteWithError()
 		throws Exception {
+		Councilor[] councilor = new Councilor[4]; 
+		councilor[0] = new Councilor(CouncilorColor.PINK);
+		councilor[1] = new Councilor(CouncilorColor.PINK);
+		councilor[2] = new Councilor(CouncilorColor.ORANGE);
+		councilor[3] = new Councilor(CouncilorColor.ORANGE);
+		
+		game.getMap().getBalcony(3).setCouncilor(councilor);
 		PoliticsCard[] card = new PoliticsCard[4];
 		card[0] = new PoliticsCard(CouncilorColor.BLACK);
 		card[1] = new PoliticsCard(CouncilorColor.WHITE);

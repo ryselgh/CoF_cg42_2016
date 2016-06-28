@@ -17,7 +17,7 @@ public class RoomStatusTest {
 		throws Exception {
 		rn = "SecretChamber";
 		an = "TomRiddle";
-		players = new ArrayList();
+		players = new ArrayList<String>();
 		minpl = 2;
 		maxpl = 6;
 	}
@@ -86,6 +86,20 @@ public class RoomStatusTest {
 		assertEquals("SecretChamber", result);
 	}
 
+	@Test
+	public void testGetMapName(){
+		RoomStatus fixture = new RoomStatus(rn, an, minpl, maxpl, players, "Default map1.xml",0);
+		String result = fixture.getMapName();
+		assertEquals("Default map1.xml", result);
+	}
+		
+		@Test 
+		public void testGetTimerDelay(){
+			RoomStatus fixture = new RoomStatus(rn, an, minpl, maxpl, players, "Default map1.xml",0);
+			int result = fixture.getTimerDelay();
+			assertEquals(0,result);
+	}
+	
 	
 
 	

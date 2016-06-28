@@ -23,7 +23,7 @@ public class PoliticsCardTest {
 	
 	@Test (expected= NullPointerException.class)
 	public void testIfYouCanCreateNullPoliticsCards(){
-		PoliticsCard pc = new PoliticsCard(null);
+		new PoliticsCard(null);
 	}
 // ------------------------------------------------------------
 	

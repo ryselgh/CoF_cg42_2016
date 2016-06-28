@@ -3,8 +3,7 @@ package com.client.controller;
 import java.util.Observable;
 import java.util.Scanner;
 import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ExecutionException;
+
 
 import com.client.view.ClientCLI;
 

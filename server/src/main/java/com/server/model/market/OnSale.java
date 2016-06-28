@@ -1,9 +1,6 @@
 package com.server.model.market ;
 
-import com.communication.market.AssistantOnSaleDTO;
-import com.communication.market.OnSaleDTO;
-import com.communication.market.PermitOnSaleDTO;
-import com.communication.market.PoliticsOnSaleDTO;
+
 import com.server.model.gamelogic.Player;
 
 public class OnSale{

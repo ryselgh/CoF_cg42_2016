@@ -3,8 +3,6 @@ package com.server.model.market;
 import org.junit.*;
 import static org.junit.Assert.*;
 
-import java.util.ArrayList;
-
 import com.communication.board.AssistantDTO;
 import com.communication.market.AssistantOnSaleDTO;
 import com.server.model.board.Assistant;
@@ -56,7 +54,7 @@ public class AssistantOnSaleTest {
 	public void youHaveToSellSomething(){
 		
 		int pr = 1;
-		AssistantOnSale asOnSale = new AssistantOnSale(player,null,pr,UID);
+		new AssistantOnSale(player,null,pr,UID);
 	}
 
 	@Test

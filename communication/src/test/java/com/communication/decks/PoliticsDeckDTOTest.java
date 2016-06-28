@@ -69,7 +69,7 @@ public class PoliticsDeckDTOTest {
 		throws Exception {
 		PoliticsDeckDTO fixture = new PoliticsDeckDTO();
 		fixture.setPoliticsDeck(politicsDeck);
-		fixture.setGarbage(new ArrayList());
+		fixture.setGarbage(new ArrayList<PoliticsCardDTO>());
 
 		ArrayList<PoliticsCardDTO> result = fixture.getPoliticsDeck();
 

@@ -2,14 +2,13 @@ package com.server.model.board;
 
 import static org.junit.Assert.*;
 
-import org.junit.Before;
+
 import org.junit.Test;
 
-import com.server.model.gamelogic.Game;
 import com.communication.board.BonusCardDTO;
 import com.communication.values.BonusType;
 
-import junit.framework.Assert;
+
 
 public class BonusCardTest {
 
@@ -23,7 +22,7 @@ public class BonusCardTest {
 	@Test(expected=NullPointerException.class)
 	public void testIfThereIsAnIllegalArgument(){
 		
-		BonusCard bc = new BonusCard(null);
+		new BonusCard(null);
 		
 	}
 	

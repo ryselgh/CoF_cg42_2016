@@ -1,26 +1,19 @@
 package com.server.actions;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.junit.*;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import org.w3c.dom.Document;
 import com.communication.actions.BuildDTO;
-import com.communication.board.CityDTO;
-import com.communication.decks.PermitsCardDTO;
 import com.communication.gamelogic.PlayerDTO;
 import com.communication.values.BonusType;
-import com.communication.values.CityColor;
 import com.server.model.board.Bonus;
-import com.server.model.board.BonusToken;
 import com.server.model.board.City;
 import com.server.model.board.Emporium;
 import com.server.model.decks.PermitsCard;
 import com.server.model.gamelogic.Game;
-import com.server.model.gamelogic.Player;
 
 public class BuildTest {
 	
@@ -36,7 +29,7 @@ public class BuildTest {
 	public void setUp()
 		throws Exception {
 		
-		//sets for create the game
+		//sets to create the game
 		//some letters for the permits
 		l = new String[3];
 		l[0] = "b";
@@ -116,7 +109,7 @@ public class BuildTest {
 			Build fixture2 = new Build(game.getMap().getCity()[4], e);
 			game.getMap().getCity()[4].setEmporium(new Emporium(game.getThatPlayer(2)));
 			fixture2.setGame(game);
-			ActionReturn result = fixture2.execute();
+			fixture2.execute();
 		
 			assertTrue(game.getActualPlayer().getAvailableAssistants().isEmpty());
 		
@@ -127,7 +120,7 @@ public class BuildTest {
 	@Test
 	public void testTheKingCity()
 		throws Exception {
-		Bonus[] bonusToken9 = game.getMap().getCity()[9].getBonusToken().getBonus();
+		game.getMap().getCity()[9].getBonusToken().getBonus();
 		Build fixture = new Build(game.getMap().getCity()[9], new PermitsCard(b,l3));		
 		fixture.setGame(game);
 
@@ -142,8 +135,8 @@ public class BuildTest {
 	public void testKingCityAndAnotherOne()
 		throws Exception {
 		
-		Bonus[] bonusToken8 = game.getMap().getCity()[8].getBonusToken().getBonus();
-		Bonus[] bonusToken9 = game.getMap().getCity()[9].getBonusToken().getBonus();
+		game.getMap().getCity()[8].getBonusToken().getBonus();
+		game.getMap().getCity()[9].getBonusToken().getBonus();
 		
 		Build fixture = new Build (game.getMap().getCity()[8], new PermitsCard(b,l3));
 		fixture.setGame(game);
@@ -158,23 +151,22 @@ public class BuildTest {
 
 	}
 
-	@SuppressWarnings("deprecation")
 	@Test
 	public void testTwoCiyiesAndTheKingCityIntheMiddle()
 		throws Exception {
 		Bonus[] bonusToken8 = game.getMap().getCity()[8].getBonusToken().getBonus();
 		Bonus[] bonusToken7 = game.getMap().getCity()[7].getBonusToken().getBonus();
-		Bonus[] bonusToken9 = game.getMap().getCity()[9].getBonusToken().getBonus();
+		
 		
 		
 		
 		Build fixture = new Build (game.getMap().getCity()[8], new PermitsCard(b,l2));
 		fixture.setGame(game);
-		ActionReturn bonusReturn1 = fixture.execute();
+		fixture.execute();
 	
 		fixture = new Build (game.getMap().getCity()[7], new PermitsCard(b,l3));
 		fixture.setGame(game);
-		ActionReturn bonusReturn2 = fixture.execute();
+		fixture.execute();
 		
 		fixture = new Build (game.getMap().getCity()[9], new PermitsCard(b,l3));
 		fixture.setGame(game);
@@ -197,23 +189,23 @@ public class BuildTest {
 		
 		Bonus[] bonusToken8 = game.getMap().getCity()[8].getBonusToken().getBonus();
 		Bonus[] bonusToken7 = game.getMap().getCity()[7].getBonusToken().getBonus();
-		Bonus[] bonusToken9 = game.getMap().getCity()[9].getBonusToken().getBonus();
+		game.getMap().getCity()[9].getBonusToken().getBonus();
 		Bonus[] bonusToken11 = game.getMap().getCity()[11].getBonusToken().getBonus();
-		Bonus[] bonusToken0 = game.getMap().getCity()[0].getBonusToken().getBonus();
+		game.getMap().getCity()[0].getBonusToken().getBonus();
  		
 		
 		
 		Build fixture = new Build (game.getMap().getCity()[8], new PermitsCard(b,l2));
 		fixture.setGame(game);
-		ActionReturn bonusReturn1 = fixture.execute();
+		fixture.execute();
 	
 		fixture = new Build (game.getMap().getCity()[7], new PermitsCard(b,l3));
 		fixture.setGame(game);
-		ActionReturn bonusReturn2 = fixture.execute();
+		fixture.execute();
 		
 		fixture = new Build (game.getMap().getCity()[9], new PermitsCard(b,l3));
 		fixture.setGame(game);
-		ActionReturn bonusReturn3 = fixture.execute();
+		fixture.execute();
 		
 		fixture = new Build (game.getMap().getCity()[11], new PermitsCard(b,l3));
 		fixture.setGame(game);
@@ -221,7 +213,7 @@ public class BuildTest {
 		
 		fixture = new Build (game.getMap().getCity()[0], new PermitsCard(b,l3));
 		fixture.setGame(game);
-		ActionReturn bonusReturn5 = fixture.execute();
+		fixture.execute();
 		
 		Bonus[] result = new Bonus[bonusToken8.length+bonusToken7.length+bonusToken11.length];
 		

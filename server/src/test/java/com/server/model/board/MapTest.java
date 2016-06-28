@@ -1,7 +1,7 @@
 package com.server.model.board;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+
 
 import org.junit.*;
 import static org.junit.Assert.*;
@@ -32,7 +32,7 @@ public class MapTest {
 	public void testMap()
 		throws Exception {
 		
-		boolean _default = true;
+		
 		String rawMap = null;
 
 		Map result = new Map(p, "Default map1.xml", rawMap);
@@ -163,7 +163,7 @@ public class MapTest {
 	public void testGetKingBonus()
 		throws Exception {
 		Map fixture = new Map(p,"Default map1.xml",null);
-		fixture.setKingBonus(new ArrayList());
+		fixture.setKingBonus(new ArrayList<Bonus>());
 		
 
 		ArrayList<Bonus> result = fixture.getKingBonus();
@@ -247,7 +247,7 @@ public class MapTest {
 	public void testImportMap()
 		throws Exception {
 		Map fixture = new Map(p, "Default map1.xml", (String) null);
-		fixture.setKingBonus(new ArrayList());
+		fixture.setKingBonus(new ArrayList<Bonus>());
 		fixture.setNobilityTrack(new NobilityTrack(new Pawn[] {}, new Bonus[][] {}));
 		fixture.setCity(new City[] {});
 		String file = null;
@@ -284,7 +284,7 @@ public class MapTest {
 	public void testToDTO()
 		throws Exception {
 		Map fixture = new Map(p, "Default map1.xml", (String) null);
-		fixture.setKingBonus(new ArrayList());
+		fixture.setKingBonus(new ArrayList<Bonus>());
 		Pawn[] pawns = new Pawn[3];
 		pawns[0] = new Pawn(p[0],"#FFFFFF");
 		pawns[1] = new Pawn(p[1],"#FFFFFF");

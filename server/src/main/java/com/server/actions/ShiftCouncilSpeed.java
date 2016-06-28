@@ -2,8 +2,6 @@ package com.server.actions;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-
-import com.communication.actions.ShiftCouncilMainDTO;
 import com.communication.actions.ShiftCouncilSpeedDTO;
 import com.communication.board.CouncilorDTO;
 import com.server.model.board.Councilor;

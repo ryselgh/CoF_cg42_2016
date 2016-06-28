@@ -89,7 +89,7 @@ public class SatisfyKingDTOTest {
 		assertEquals("Juvelar", result.getName());
 		assertEquals(CityColor.BLUE, result.getColor());
 		assertEquals(1, result.getPlayerNum());
-		assertEquals(closeCities, result.getCloseCities());
+		assertArrayEquals(closeCities, result.getCloseCities());
 	}
 
 	@Test

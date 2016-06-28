@@ -6,9 +6,9 @@ import static org.junit.Assert.*;
 import com.communication.board.BonusDTO;
 import com.communication.board.NobilityTrackDTO;
 import com.communication.board.PawnDTO;
-import com.communication.values.BonusType;
+
 import com.server.model.gamelogic.Game;
-import com.server.model.gamelogic.Player;
+
 
 public class NobilityTrackTest {
 	
@@ -70,7 +70,7 @@ public class NobilityTrackTest {
 		int pawnIndex = 1;
 		int av = 0;
 
-		Bonus[] result = fixture.advance(pawnIndex, av);
+		fixture.advance(pawnIndex, av);
 
 		
 		
@@ -83,7 +83,7 @@ public class NobilityTrackTest {
 		int pawnIndex = 7;
 		int av = 1;
 
-		Bonus[] result = fixture.advance(pawnIndex, av);
+		fixture.advance(pawnIndex, av);
 
 		
 		

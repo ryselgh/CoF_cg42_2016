@@ -101,7 +101,7 @@ public class PermitsDeckDTOTest {
 		PermitsCardDTO result = fixture.getSlot(0);
 
 		assertNotNull(result);
-		assertEquals(result.getBonuses(),bonuses);
+		assertArrayEquals(result.getBonuses(),bonuses);
 		
 	}
 	
@@ -126,7 +126,7 @@ public class PermitsDeckDTOTest {
 		PermitsCardDTO result = fixture.getSlot(1);
 
 		assertNotNull(result);
-		assertEquals(result.getCityLetter(),cityLetters);
+		assertArrayEquals(result.getCityLetter(),cityLetters);
 		
 	}
 	

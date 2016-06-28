@@ -17,8 +17,8 @@ public class LobbyStatusTest {
 		throws Exception {
 		
 		//all the sets for the tests
-		freeClients = new ArrayList();
-		rooms = new ArrayList();
+		freeClients = new ArrayList<String>();
+		rooms = new ArrayList<RoomStatus>();
 		client1="ilfiglio";
 		client2="smemo";
 		freeClients.add(client1);

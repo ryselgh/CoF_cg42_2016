@@ -2,8 +2,6 @@ package com.server.actions;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-
-import com.communication.actions.ObtainPermitDTO;
 import com.communication.actions.SatisfyKingDTO;
 import com.communication.decks.PoliticsCardDTO;
 import com.communication.values.CouncilorColor;

@@ -2,10 +2,8 @@ package com.server.actions;
 
 import org.junit.*;
 import static org.junit.Assert.*;
-import org.w3c.dom.Document;
 import com.communication.actions.ActionDTO;
 import com.server.model.gamelogic.Game;
-import com.server.model.gamelogic.Player;
 
 public class ActionTest {
 	
@@ -15,7 +13,7 @@ public class ActionTest {
 	@Before
 	public void setUp()
 		throws Exception {
-		//sets for create the game
+		//sets to create the game
 		players = new String[3];
 		players[0] = "1";
 		players[1] = "2";

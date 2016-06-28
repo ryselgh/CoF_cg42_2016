@@ -2,8 +2,7 @@ package com.server.actions;
 
 import org.junit.*;
 
-import com.server.model.decks.PermitsCard;
-import com.server.model.decks.PermitsDeck;
+
 import com.server.model.gamelogic.Game;
 
 import static org.junit.Assert.*;
@@ -18,7 +17,7 @@ public class ChangeCardsTest {
 	@Before
 	public void setUp()
 		throws Exception {
-		//sets for create the game
+		//sets to create the game
 		players = new String[3];
 		players[0] = "1";
 		players[1] = "2";

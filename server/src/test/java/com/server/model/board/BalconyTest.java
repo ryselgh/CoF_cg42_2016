@@ -8,8 +8,7 @@ import org.junit.Test;
 import com.communication.board.BalconyDTO;
 import com.communication.values.CouncilorColor;
 
-import junit.framework.Assert;
-import junit.framework.TestCase;
+
 
 public class BalconyTest{
 	
@@ -42,7 +41,7 @@ public class BalconyTest{
 		Councilor[] cons = new Councilor[4];
 		Balcony balcony=new Balcony (cons);
 		balcony.setCouncilor(councilorsInTheBalcony);
-		assertEquals(balcony.getCouncilors(), councilorsInTheBalcony);
+		assertArrayEquals(balcony.getCouncilors(), councilorsInTheBalcony);
 		
 	}
 	

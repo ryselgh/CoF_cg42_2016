@@ -51,7 +51,7 @@ public class ColorGroupTest {
 	@Test(expected=NullPointerException.class)
 	public void theConstructorCannotBeUncoloured(){
 		
-		ColorGroup colGroup= new ColorGroup(null);
+		new ColorGroup(null);
 		
 	}
 

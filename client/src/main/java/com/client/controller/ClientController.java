@@ -11,27 +11,27 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayList;
+
 import java.util.Observable;
 import java.util.Observer;
 import java.util.concurrent.ArrayBlockingQueue;
 
 
-import com.client.view.ClientCLI;
+
 import com.client.view.InterfaceMiddleware;
 import com.communication.CommunicationObject;
 import com.communication.ItemOnSale;
 import com.communication.LobbyStatus;
 import com.communication.RMIClientControllerRemote;
 import com.communication.RMILobbyRemote;
-import com.communication.RoomStatus;
+
 import com.communication.actions.ActionDTO;
 import com.communication.board.BonusTokenDTO;
 import com.communication.board.CityDTO;
 import com.communication.decks.PermitsCardDTO;
 import com.communication.decks.PoliticsCardDTO;
 import com.communication.gamelogic.GameDTO;
-import com.communication.market.OnSaleDTO;
+
 
 // TODO: Auto-generated Javadoc
 /**

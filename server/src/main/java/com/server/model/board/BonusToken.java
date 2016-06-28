@@ -2,8 +2,6 @@ package com.server.model.board ;
 
 import com.communication.board.BonusDTO;
 import com.communication.board.BonusTokenDTO;
-import com.communication.values.BonusType;
-import com.server.model.gamelogic.Game;
 
 
 /**
