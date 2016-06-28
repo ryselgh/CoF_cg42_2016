@@ -18,11 +18,12 @@ public class ChangeCardsTest {
 	@Before
 	public void setUp()
 		throws Exception {
+		//sets for create the game
 		players = new String[3];
 		players[0] = "1";
 		players[1] = "2";
 		players[2] = "3";
-		game = new Game(3,"default1","default1",players);
+		game = new Game(3,true,null,players);
 	}
 	
 	@Test
@@ -38,7 +39,7 @@ public class ChangeCardsTest {
 	}
 	
 	@Test
-	public void testChangeCards_2()
+	public void testChangeCardsGetError()
 		throws Exception {
 		int balconyIndex = 1;
 		ChangeCards fixture = new ChangeCards(balconyIndex);
@@ -51,51 +52,48 @@ public class ChangeCardsTest {
 	}
 	
 	
-
 	@Test
-	public void testExecute_1()
-		throws Exception {
-		ChangeCards fixture = new ChangeCards(1);
-		fixture.setGame(game);
-		
-		ActionReturn result = fixture.execute();
-
-		// An unexpected exception was thrown in user code while executing this test:
-		//    java.lang.NullPointerException
-		//       at com.server.actions.ChangeCards.execute(ChangeCards.java:43)
-		assertNotNull(result);
-	}
-
-	@Test
-	public void testExecute_2()
-		throws Exception {
-		ChangeCards fixture = new ChangeCards(2);
-		fixture.setGame(game);
-
-		ActionReturn result = fixture.execute();
-
-		// An unexpected exception was thrown in user code while executing this test:
-		//    java.lang.NullPointerException
-		//       at com.server.actions.ChangeCards.execute(ChangeCards.java:43)
-		assertNotNull(result);
-	}
-
-	@Test
-	public void testExecute_3()
+	public void testExecuteRegione0()
 		throws Exception {
 		ChangeCards fixture = new ChangeCards(0);
 		fixture.setGame(game);
 
 		ActionReturn result = fixture.execute();
 
-		// An unexpected exception was thrown in user code while executing this test:
-		//    java.lang.NullPointerException
-		//       at com.server.actions.ChangeCards.execute(ChangeCards.java:43)
+		
+		assertNotNull(result);
+	}
+	
+	
+
+	@Test
+	public void testExecuteRegion1()
+		throws Exception {
+		ChangeCards fixture = new ChangeCards(1);
+		fixture.setGame(game);
+		
+		ActionReturn result = fixture.execute();
+
+		
 		assertNotNull(result);
 	}
 
 	@Test
-	public void testIsValid_1()
+	public void testExecuteRegion2()
+		throws Exception {
+		ChangeCards fixture = new ChangeCards(2);
+		fixture.setGame(game);
+
+		ActionReturn result = fixture.execute();
+
+		
+		assertNotNull(result);
+	}
+
+	
+
+	@Test
+	public void testIsValidReturnsFalse()
 		throws Exception {
 		ChangeCards fixture = new ChangeCards(1);
 		fixture.setGame(game);
@@ -103,42 +101,23 @@ public class ChangeCardsTest {
 
 		boolean result = fixture.isValid();
 
-		// An unexpected exception was thrown in user code while executing this test:
-		//    java.lang.NullPointerException
-		//       at com.server.actions.ChangeCards.isValid(ChangeCards.java:24)
+		
 		assertFalse(result);
 	}
 
 	@Test
-	public void testIsValid_2()
+	public void testIsValidReturnsTrue()
 		throws Exception {
 		ChangeCards fixture = new ChangeCards(1);
 		fixture.setGame(game);
 
 		boolean result = fixture.isValid();
 
-		// An unexpected exception was thrown in user code while executing this test:
-		//    java.lang.NullPointerException
-		//       at com.server.actions.ChangeCards.isValid(ChangeCards.java:24)
+		
 		assertTrue(result);
 	}
 
-	
 
-//	@Test
-//	public void testTheCorrectChangementOfTheCards(){
-//		PermitsCard slot0 = game.getMap().getPermitsDeck(index)
-//	
-//	}
-	
-//	@Test
-//	public void testIfTheNumberOfCardsInThePermitsDeckDoesntChange(){
-//		ChangeCards fixture = new ChangeCards(1);
-//		fixture.setGame(game);
-//		PermitsDeck permD = game.getMap().getPermitsDeck(1);
-//		permD
-//		
-//	}
 
 	public static void main(String[] args) {
 		new org.junit.runner.JUnitCore().run(ChangeCardsTest.class);

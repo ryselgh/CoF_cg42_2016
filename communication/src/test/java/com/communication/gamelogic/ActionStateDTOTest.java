@@ -6,37 +6,35 @@ import com.communication.board.PawnDTO;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class ActionStateDTOTest {
 	
 		GameDTO gameDTO;
 		PlayerDTO actualPlayer;
 		PawnDTO pawn;
+		PlayerDTO[] players;
+		ArrayList<PlayerDTO> player;
+		
 		
 	
 	@Before
 	public void setUp()
 		throws Exception {
-//		pawn = new PawnDTO();
-//		pawn.setHexColor("FF0000");
-//		pawn.setP(actualPlayer);
-//		pawn.setPos(0);
-//		actualPlayer = new PlayerDTO();
-//		actualPlayer.setAvailableAssistants(null);
-//		actualPlayer.setAvailableEmporiums(null);
-//		actualPlayer.setBonusCards(null);
-//		actualPlayer.setHand(null);
-//		actualPlayer.setPawn(pawn);
-//		actualPlayer.setPermits(null);
-//		actualPlayer.setPlayerID("1");
-//		actualPlayer.setScore(10);
 		
+		//the settings of the game are non corrct. but in this case it doesn't mind
+
+		players = new PlayerDTO[3];
+		player = new ArrayList<PlayerDTO>(Arrays.asList(players));
 		gameDTO = new GameDTO();
-//		gameDTO.setActualPlayer(actualPlayer);
-//		gameDTO.setFinalTurn(false);
-//		gameDTO.setMainAction(null);
-//		gameDTO.setMarket(null);
-//		gameDTO.setSpeedAction(null);
-//		gameDTO.setPlayers(players);
+		gameDTO.setActualPlayer(players[0]);
+		gameDTO.setDefaultMap(true);
+		gameDTO.setFinalTurn(false);
+		gameDTO.setMainAction(null);
+		gameDTO.setMarket(null);
+		gameDTO.setSpeedAction(null);
+		gameDTO.setPlayers(player);
 		gameDTO.setPlayersQty(3);
 	}
 	
@@ -47,9 +45,11 @@ public class ActionStateDTOTest {
 		ActionStateDTO result = new ActionStateDTO();
 		assertNotNull(result);
 	}
+	
+	// getters and setters are tested together
 
 	@Test
-	public void testGetGame_1()
+	public void testGetGame()
 		throws Exception {
 		ActionStateDTO fixture = new ActionStateDTO();
 		fixture.setSpeedCounter(1);
@@ -59,18 +59,11 @@ public class ActionStateDTOTest {
 		GameDTO result = fixture.getGame();
 
 		assertNotNull(result);
-		assertEquals(null, result.getMap());
-		assertEquals(null, result.getMarket());
-		assertEquals(false, result.isFinalTurn());
-		assertEquals(null, result.getMainAction());
-		assertEquals(null, result.getPlayers());
-		assertEquals(3, result.getPlayersQty());
-		assertEquals(null, result.getSpeedAction());
-		assertEquals(null, result.getActualPlayer());
+		
 	}
 
 	@Test
-	public void testGetMainCounter_1()
+	public void testGetMainCounter()
 		throws Exception {
 		ActionStateDTO fixture = new ActionStateDTO();
 		fixture.setSpeedCounter(1);
@@ -83,7 +76,7 @@ public class ActionStateDTOTest {
 	}
 
 	@Test
-	public void testGetSpeedCounter_1()
+	public void testGetSpeedCounter()
 		throws Exception {
 		ActionStateDTO fixture = new ActionStateDTO();
 		fixture.setSpeedCounter(1);

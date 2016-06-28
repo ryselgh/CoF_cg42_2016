@@ -4,7 +4,10 @@ import org.junit.*;
 import static org.junit.Assert.*;
 
 public class SellItemStateDTOTest {
+	
+	
 	GameDTO gameDTO;
+	
 	@Before
 	public void setUp()
 		throws Exception {
@@ -18,9 +21,11 @@ public class SellItemStateDTOTest {
 		SellItemStateDTO result = new SellItemStateDTO();
 		assertNotNull(result);
 	}
+	// getters and setters are tested together
+
 
 	@Test
-	public void testGetGame_1()
+	public void testGetGame()
 		throws Exception {
 		SellItemStateDTO fixture = new SellItemStateDTO();
 		fixture.setGame(gameDTO);
@@ -28,14 +33,7 @@ public class SellItemStateDTOTest {
 		GameDTO result = fixture.getGame();
 
 		assertNotNull(result);
-		assertEquals(null, result.getMap());
-		assertEquals(null, result.getMarket());
-		assertEquals(false, result.isFinalTurn());
-		assertEquals(null, result.getMainAction());
-		assertEquals(null, result.getPlayers());
-		assertEquals(0, result.getPlayersQty());
-		assertEquals(null, result.getSpeedAction());
-		assertEquals(null, result.getActualPlayer());
+		
 	}
 
 	

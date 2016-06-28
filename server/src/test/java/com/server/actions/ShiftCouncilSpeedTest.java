@@ -18,15 +18,17 @@ public class ShiftCouncilSpeedTest {
  	@Before
  	public void setUp()
  		throws Exception {
+		//sets for create the game
+
  		players = new String[3];
  		players[0] = "1";
  		players[1] = "2";
  		players[2] = "3";
- 		game = new Game(3,"default1","default1",players);
+ 		game = new Game(3,true,null,players);
  	}
  
  	@Test
- 	public void testShiftCouncilSpeed_1()
+ 	public void testShiftCouncilSpeed()
 
  		throws Exception {
  		int balconyIndex = 1;
@@ -38,23 +40,19 @@ public class ShiftCouncilSpeedTest {
  	}
  
  	@Test
- 	public void testExecute_1()
+ 	public void testExecute()
  		throws Exception {
  		ShiftCouncilSpeed fixture = new ShiftCouncilSpeed(1, new Councilor(CouncilorColor.BLACK));
  		fixture.setGame(game);
  
  		ActionReturn result = fixture.execute();
  
- 		// An unexpected exception was thrown in user code while executing this test:
- 		//    java.lang.NullPointerException
- 		//       at com.server.model.board.Map.<init>(Map.java:147)
- 		//       at com.server.model.gamelogic.Game.initializeObjects(Game.java:71)
- 		//       at com.server.model.gamelogic.Game.<init>(Game.java:49)
+ 		
  		assertNotNull(result);
  	}
  
  	@Test
- 	public void testExecute_2()
+ 	public void testExecutethechangementInTheBalcony()
  		throws Exception {
  		Councilor[] balcony = game.getMap().getBalcony(1).getCouncilors();
  		ShiftCouncilMain fixture = new ShiftCouncilMain(1, new Councilor(CouncilorColor.BLACK));
@@ -62,32 +60,24 @@ public class ShiftCouncilSpeedTest {
  
  		ActionReturn result = fixture.execute();
  
- 		// An unexpected exception was thrown in user code while executing this test:
- 		//    java.lang.NullPointerException
- 		//       at com.server.model.board.Map.<init>(Map.java:147)
- 		//       at com.server.model.gamelogic.Game.initializeObjects(Game.java:71)
- 		//       at com.server.model.gamelogic.Game.<init>(Game.java:49)
+ 		
  		assertNotEquals(balcony,game.getMap().getBalcony(1).getCouncilors());
  	}
  
  	@Test
- 	public void testExecute_3()
+ 	public void testExecuteCheckIfYouPay()
  		throws Exception {
  		ShiftCouncilSpeed fixture = new ShiftCouncilSpeed(1, new Councilor(CouncilorColor.BLACK));
  		fixture.setGame(game);
  
  		ActionReturn result = fixture.execute();
  
- 		// An unexpected exception was thrown in user code while executing this test:
- 		//    java.lang.NullPointerException
- 		//       at com.server.model.board.Map.<init>(Map.java:147)
- 		//       at com.server.model.gamelogic.Game.initializeObjects(Game.java:71)
- 		//       at com.server.model.gamelogic.Game.<init>(Game.java:49)
+ 	
  		assertTrue(game.getActualPlayer().getAvailableAssistants().isEmpty());
  	}
 	
 	@Test
-	public void testExecute_4()
+	public void testExecuteDoesntChangeTheSizeOnThePool()
 		throws Exception {
 		
 		ShiftCouncilSpeed fixture = new ShiftCouncilSpeed(1, game.getMap().getCouncilorsPool().get(0));
@@ -96,16 +86,12 @@ public class ShiftCouncilSpeedTest {
 
 		ActionReturn result = fixture.execute();
 
-		// An unexpected exception was thrown in user code while executing this test:
-		//    java.lang.NullPointerException
-		//       at com.server.model.board.Map.<init>(Map.java:147)
-		//       at com.server.model.gamelogic.Game.initializeObjects(Game.java:71)
-		//       at com.server.model.gamelogic.Game.<init>(Game.java:49)
+		
 		assertEquals(game.getMap().getCouncilorsPool().size(),8);
 	}
 	
 	@Test
-	public void testExecute_7()
+	public void testExecuteNoError()
 		throws Exception {
 		ShiftCouncilMain fixture = new ShiftCouncilMain(1, game.getMap().getCouncilorsPool().get(0));
 		fixture.setGame(game);
@@ -113,16 +99,12 @@ public class ShiftCouncilSpeedTest {
 		
 		
 
-		// An unexpected exception was thrown in user code while executing this test:
-		//    java.lang.NullPointerException
-		//       at com.server.model.board.Map.<init>(Map.java:147)
-		//       at com.server.model.gamelogic.Game.initializeObjects(Game.java:71)
-		//       at com.server.model.gamelogic.Game.<init>(Game.java:49)
+		
 		assertEquals(result.getError(),"");
 	}
 	
 	@Test
-	public void testExecute_8()
+	public void testExecuteReturnErrors()
 		throws Exception {
 		ShiftCouncilSpeed fixture = new ShiftCouncilSpeed(1, game.getMap().getCouncilorsPool().get(0));
 		fixture.setGame(game);
@@ -134,31 +116,23 @@ public class ShiftCouncilSpeedTest {
 		
 		
 
-		// An unexpected exception was thrown in user code while executing this test:
-		//    java.lang.NullPointerException
-		//       at com.server.model.board.Map.<init>(Map.java:147)
-		//       at com.server.model.gamelogic.Game.initializeObjects(Game.java:71)
-		//       at com.server.model.gamelogic.Game.<init>(Game.java:49)
+		
 		assertEquals(result.getError(), "\nInvalid input councilor");
 			}
 
 	@Test
-	public void testIsValid_1()
+	public void testIsValidReturnTrue()
 		throws Exception {
 		ShiftCouncilSpeed fixture = new ShiftCouncilSpeed(1, game.getMap().getCouncilorsPool().get(0));
 		fixture.setGame(game);
 
 		boolean result = fixture.isValid();
-		// An unexpected exception was thrown in user code while executing this test:
-		//    java.lang.NullPointerException
-		//       at com.server.model.board.Map.<init>(Map.java:147)
-		//       at com.server.model.gamelogic.Game.initializeObjects(Game.java:71)
-		//       at com.server.model.gamelogic.Game.<init>(Game.java:49)
+		
 		assertTrue(result);
 	}
 	
 	@Test
-	public void testIsValid_2()
+	public void testIsValidReturnFalse()
 		throws Exception {
 		
 		ShiftCouncilSpeed fixture = new ShiftCouncilSpeed(1, game.getMap().getCouncilorsPool().get(0));
@@ -170,11 +144,7 @@ public class ShiftCouncilSpeedTest {
 
 		boolean result = fixture.isValid();
 
-		// An unexpected exception was thrown in user code while executing this test:
-		//    java.lang.NullPointerException
-		//       at com.server.model.board.Map.<init>(Map.java:147)
-		//       at com.server.model.gamelogic.Game.initializeObjects(Game.java:71)
-		//       at com.server.model.gamelogic.Game.<init>(Game.java:49)
+	
 		assertFalse(result);
 	}
 	
@@ -190,7 +160,7 @@ public class ShiftCouncilSpeedTest {
 		scmDTO.setCouncilor(councDTO);
 		
 		fixture.setterFromDTO(scmDTO, game.getActualPlayer(), game);
-		
+		assertTrue(fixture instanceof ShiftCouncilSpeed);
 		
 	}
 

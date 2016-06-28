@@ -6,21 +6,28 @@ import static org.junit.Assert.*;
 public class MainActionDTOTest {
 	
 		GameDTO gameDTO;
+	
+		
 	@Before
 	public void setUp()
 		throws Exception {
 		
 		gameDTO = new GameDTO();
 	}
+	
+	
 	@Test
-	public void testMainActionDTO_1()
+	public void testMainActionDTO()
 		throws Exception {
 		MainActionDTO result = new MainActionDTO();
 		assertNotNull(result);
 	}
+	
+	// getters and setters are tested together
+
 
 	@Test
-	public void testGetActionCounter_1()
+	public void testGetActionCounter()
 		throws Exception {
 		MainActionDTO fixture = new MainActionDTO();
 		fixture.setGame(gameDTO);
@@ -32,7 +39,7 @@ public class MainActionDTOTest {
 	}
 
 	@Test
-	public void testGetGame_1()
+	public void testGetGame()
 		throws Exception {
 		MainActionDTO fixture = new MainActionDTO();
 		fixture.setGame(gameDTO);
@@ -41,24 +48,10 @@ public class MainActionDTOTest {
 		GameDTO result = fixture.getGame();
 
 		assertNotNull(result);
-		assertEquals(null, result.getMap());
-		assertEquals(null, result.getMarket());
-		assertEquals(false, result.isFinalTurn());
-		assertEquals(null, result.getMainAction());
-		assertEquals(null, result.getPlayers());
-		assertEquals(0, result.getPlayersQty());
-		assertEquals(null, result.getSpeedAction());
-		assertEquals(null, result.getActualPlayer());
+		
 	}
 
 	
-
-	
-
-	@After
-	public void tearDown()
-		throws Exception {
-	}
 
 	public static void main(String[] args) {
 		new org.junit.runner.JUnitCore().run(MainActionDTOTest.class);

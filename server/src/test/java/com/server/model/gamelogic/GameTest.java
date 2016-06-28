@@ -16,12 +16,12 @@ public class GameTest {
 	@Before
 	public void setUp()
 		throws Exception {
-		
+		//sets for the game
 		players = new String[3];
 		players[0] = "1";
 		players[1] = "2";
 		players[2] = "3";
-		game = new Game(3, "default1", null, players);
+		game = new Game(3, true, null, players);
 	}
 	
 //	@Test
@@ -82,21 +82,18 @@ public class GameTest {
 //		
 //	}
 	@Test
-	public void testGame_1()
+	public void testGame()
 		throws Exception {
 		
 
 		Game result = game;
 
-		// An unexpected exception was thrown in user code while executing this test:
-		//    java.lang.ArrayIndexOutOfBoundsException: 0
-		//       at com.server.model.gamelogic.Game.initializeObjects(Game.java:68)
-		//       at com.server.model.gamelogic.Game.<init>(Game.java:51)
+		
 		assertNotNull(result);
 	}
 	
 	@Test
-	public void testGame_()
+	public void testGame_5Players()
 		throws Exception {
 		String[] players2 = new String[5];
 		players2[0] = "1";
@@ -104,20 +101,15 @@ public class GameTest {
 		players2[2] = "3";
 		players2[3] = "4";
 		players2[4] = "5";
-		Game result = new Game(5, "default1", null, players2);
+		Game result = new Game(5, true, null, players2);
 		
 
-		
-
-		// An unexpected exception was thrown in user code while executing this test:
-		//    java.lang.ArrayIndexOutOfBoundsException: 0
-		//       at com.server.model.gamelogic.Game.initializeObjects(Game.java:68)
-		//       at com.server.model.gamelogic.Game.<init>(Game.java:51)
+	
 		assertNotNull(result);
 	}
 
 	@Test
-	public void testGetActualPlayer_1()
+	public void testGetActualPlayer()
 		throws Exception {
 		Game fixture = game;
 		fixture.setFinalTurn(false);
@@ -125,25 +117,19 @@ public class GameTest {
 
 		Player result = fixture.getActualPlayer();
 
-		// An unexpected exception was thrown in user code while executing this test:
-		//    java.lang.ArrayIndexOutOfBoundsException: 0
-		//       at com.server.model.gamelogic.Game.initializeObjects(Game.java:68)
-		//       at com.server.model.gamelogic.Game.<init>(Game.java:51)
+		
 		assertNotNull(result);
 	}
 
 	@Test
-	public void testGetActualPlayerIndex_1()
+	public void testGetActualPlayerIndex()
 		throws Exception {
 		Game fixture = game;
 		fixture.setFinalTurn(false);
 
 		int result = fixture.getActualPlayerIndex();
 
-		// An unexpected exception was thrown in user code while executing this test:
-		//    java.lang.ArrayIndexOutOfBoundsException: 0
-		//       at com.server.model.gamelogic.Game.initializeObjects(Game.java:68)
-		//       at com.server.model.gamelogic.Game.<init>(Game.java:51)
+		
 		assertEquals(0, result);
 	}
 
@@ -152,7 +138,7 @@ public class GameTest {
 	
 
 	@Test
-	public void testGetCityFromName_2()
+	public void testGetCityFromName()
 		throws Exception {
 		Game fixture = game;
 		fixture.setFinalTurn(false);
@@ -160,77 +146,70 @@ public class GameTest {
 
 		City result = fixture.getCityFromName(name);
 
-		// An unexpected exception was thrown in user code while executing this test:
-		//    java.lang.ArrayIndexOutOfBoundsException: 0
-		//       at com.server.model.gamelogic.Game.initializeObjects(Game.java:68)
-		//       at com.server.model.gamelogic.Game.<init>(Game.java:51)
+		
 		assertNotNull(result);
 	}
-
+	
+	@Test
+	public void testGetCityFromNameReturnsNull(){
+		Game fixture = game;
+		fixture.setFinalTurn(false);
+		String name = "Otranto";
+		City result = fixture.getCityFromName(name);
+		assertNull(result);
+	}
 	
 
 	@Test
-	public void testGetGraphMap_1()
+	public void testGetGraphMap()
 		throws Exception {
 		Game fixture = game;
 		fixture.setFinalTurn(false);
 
 		GraphMap result = fixture.getGraphMap();
 
-		// An unexpected exception was thrown in user code while executing this test:
-		//    java.lang.ArrayIndexOutOfBoundsException: 0
-		//       at com.server.model.gamelogic.Game.initializeObjects(Game.java:68)
-		//       at com.server.model.gamelogic.Game.<init>(Game.java:51)
+		
 		assertNotNull(result);
 	}
 
 	@Test
-	public void testGetMap_1()
+	public void testGetMap()
 		throws Exception {
 		Game fixture = game;
 		fixture.setFinalTurn(false);
 
 		Map result = fixture.getMap();
 
-		// An unexpected exception was thrown in user code while executing this test:
-		//    java.lang.ArrayIndexOutOfBoundsException: 0
-		//       at com.server.model.gamelogic.Game.initializeObjects(Game.java:68)
-		//       at com.server.model.gamelogic.Game.<init>(Game.java:51)
+		
 		assertNotNull(result);
 	}
 
 	@Test
-	public void testGetMarket_1()
+	public void testGetMarket()
 		throws Exception {
 		Game fixture = game;
 		fixture.setFinalTurn(false);
 
 		Market result = fixture.getMarket();
 
-		// An unexpected exception was thrown in user code while executing this test:
-		//    java.lang.ArrayIndexOutOfBoundsException: 0
-		//       at com.server.model.gamelogic.Game.initializeObjects(Game.java:68)
-		//       at com.server.model.gamelogic.Game.<init>(Game.java:51)
+		
 		assertNotNull(result);
 	}
 
 	@Test
-	public void testGetPlayers_1()
+	public void testGetPlayers()
 		throws Exception {
 		Game fixture = game;
 		fixture.setFinalTurn(false);
 
 		ArrayList<Player> result = fixture.getPlayers();
 
-		// An unexpected exception was thrown in user code while executing this test:
-		//    java.lang.ArrayIndexOutOfBoundsException: 0
-		//       at com.server.model.gamelogic.Game.initializeObjects(Game.java:68)
-		//       at com.server.model.gamelogic.Game.<init>(Game.java:51)
+		
 		assertNotNull(result);
 	}
 	
 	@Test
-	public void testGetThatPlayer_1()
+	public void testGetThatPlayer()
 		throws Exception {
 		Game fixture = game;
 		fixture.setFinalTurn(false);
@@ -238,72 +217,35 @@ public class GameTest {
 
 		Player result = fixture.getThatPlayer(id);
 
-		// An unexpected exception was thrown in user code while executing this test:
-		//    java.lang.ArrayIndexOutOfBoundsException: 0
-		//       at com.server.model.gamelogic.Game.initializeObjects(Game.java:68)
-		//       at com.server.model.gamelogic.Game.<init>(Game.java:51)
+		
 		assertNotNull(result);
 	}
 
 	@Test
-	public void testIsFinalTurn_1()
+	public void testIsFinalTurnReturnTrue()
 		throws Exception {
 		Game fixture = game;
 		fixture.setFinalTurn(true);
 
 		boolean result = fixture.isFinalTurn();
 
-		// An unexpected exception was thrown in user code while executing this test:
-		//    java.lang.ArrayIndexOutOfBoundsException: 0
-		//       at com.server.model.gamelogic.Game.initializeObjects(Game.java:68)
-		//       at com.server.model.gamelogic.Game.<init>(Game.java:51)
+		
 		assertTrue(result);
 	}
 
 	@Test
-	public void testIsFinalTurn_2()
+	public void testIsFinalTurnReturnFalse()
 		throws Exception {
 		Game fixture = game;
 		fixture.setFinalTurn(false);
 
 		boolean result = fixture.isFinalTurn();
 
-		// An unexpected exception was thrown in user code while executing this test:
-		//    java.lang.ArrayIndexOutOfBoundsException: 0
-		//       at com.server.model.gamelogic.Game.initializeObjects(Game.java:68)
-		//       at com.server.model.gamelogic.Game.<init>(Game.java:51)
+		
 		assertFalse(result);
 	}
 
-//	@Test
-//	public void testSetActualPlayer_1()
-//		throws Exception {
-//		Game fixture = new Game(1, true, "", new String[] {});
-//		fixture.setFinalTurn(true);
-//		int index = 1;
-//
-//		fixture.setActualPlayer(index);
-//
-//		// An unexpected exception was thrown in user code while executing this test:
-//		//    java.lang.ArrayIndexOutOfBoundsException: 0
-//		//       at com.server.model.gamelogic.Game.initializeObjects(Game.java:68)
-//		//       at com.server.model.gamelogic.Game.<init>(Game.java:51)
-//	}
-//
-//	@Test
-//	public void testSetFinalTurn_1()
-//		throws Exception {
-//		Game fixture = new Game(1, true, "", new String[] {});
-//		fixture.setFinalTurn(true);
-//		boolean finalTurn = true;
-//
-//		fixture.setFinalTurn(finalTurn);
-//
-//		// An unexpected exception was thrown in user code while executing this test:
-//		//    java.lang.ArrayIndexOutOfBoundsException: 0
-//		//       at com.server.model.gamelogic.Game.initializeObjects(Game.java:68)
-//		//       at com.server.model.gamelogic.Game.<init>(Game.java:51)
-//	}
+
 
 	@Test
 	public void testToDto_1()
@@ -313,27 +255,11 @@ public class GameTest {
 
 		GameDTO result = fixture.toDto();
 
-		// An unexpected exception was thrown in user code while executing this test:
-		//    java.lang.ArrayIndexOutOfBoundsException: 0
-		//       at com.server.model.gamelogic.Game.initializeObjects(Game.java:68)
-		//       at com.server.model.gamelogic.Game.<init>(Game.java:51)
-		assertTrue(result instanceof GameDTO);
+		
+		assertTrue(result.isFinalTurn());
 	}
 
-	@Test
-	public void testToDto_2()
-		throws Exception {
-		Game fixture = game;
-		fixture.setFinalTurn(true);
-
-		GameDTO result = fixture.toDto();
-
-		// An unexpected exception was thrown in user code while executing this test:
-		//    java.lang.ArrayIndexOutOfBoundsException: 0
-		//       at com.server.model.gamelogic.Game.initializeObjects(Game.java:68)
-		//       at com.server.model.gamelogic.Game.<init>(Game.java:51)
-		assertNotNull(result);
-	}
+	
 
 	
 

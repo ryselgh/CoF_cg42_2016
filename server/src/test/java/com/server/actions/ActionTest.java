@@ -15,16 +15,17 @@ public class ActionTest {
 	@Before
 	public void setUp()
 		throws Exception {
+		//sets for create the game
 		players = new String[3];
 		players[0] = "1";
 		players[1] = "2";
 		players[2] = "3";
 		
-		game = new Game (3,"default1","default1", players);
+		game = new Game (3,true,null, players);
 	}
 
 	@Test
-	public void testExecute_1()
+	public void testExecute()
 		throws Exception {
 		Action fixture = new Action();
 
@@ -34,7 +35,7 @@ public class ActionTest {
 	}
 
 	@Test
-	public void testIsValid_1()
+	public void testIsValid()
 		throws Exception {
 		Action fixture = new Action();
 
@@ -42,18 +43,20 @@ public class ActionTest {
 
 		assertTrue(result);
 	}
+	
+	
 
 
 
 
 	@Test
-	public void testSetterFromDTO_1()
+	public void testSetterFromDTO()
 		throws Exception {
 		Action fixture = new Action();
 		ActionDTO actDTO = new ActionDTO();
 		
 		fixture.setterFromDTO(actDTO, game.getActualPlayer(), game);
-
+		assertTrue(fixture instanceof Action);
 	
 	}
 

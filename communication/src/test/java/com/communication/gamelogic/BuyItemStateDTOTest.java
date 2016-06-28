@@ -12,6 +12,8 @@ public class BuyItemStateDTOTest {
 	public void setUp()
 		throws Exception {
 		
+		//all you need to test the methods
+		
 		sADTO = new SpeedActionDTO();
 		sADTO.setActionCounter(1);
 		sADTO.setGame(gameDTO);
@@ -26,14 +28,16 @@ public class BuyItemStateDTOTest {
 	
 	
 	@Test
-	public void testBuyItemStateDTO_1()
+	public void testBuyItemStateDTO()
 		throws Exception {
 		BuyItemStateDTO result = new BuyItemStateDTO();
 		assertNotNull(result);
 	}
+	
+	// getters and setters are tested together
 
 	@Test
-	public void testGetGame_1()
+	public void testGetGame()
 		throws Exception {
 		BuyItemStateDTO fixture = new BuyItemStateDTO();
 		fixture.setGame(gameDTO);
@@ -44,6 +48,7 @@ public class BuyItemStateDTOTest {
 		assertEquals(null, result.getMap());
 		assertEquals(null, result.getMarket());
 		assertEquals(false, result.isFinalTurn());
+		assertEquals(false, result.isDefaultMap());
 		assertEquals(mADTO, result.getMainAction());
 		assertEquals(null, result.getPlayers());
 		assertEquals(0, result.getPlayersQty());
