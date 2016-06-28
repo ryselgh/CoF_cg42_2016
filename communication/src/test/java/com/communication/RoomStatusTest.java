@@ -27,7 +27,7 @@ public class RoomStatusTest {
 	public void testRoomStatus()
 		throws Exception {
 		
-		RoomStatus result = new RoomStatus(rn, an, minpl, maxpl, players, true);
+		RoomStatus result = new RoomStatus(rn, an, minpl, maxpl, players, "Default map1.xml",0);
 
 		assertNotNull(result);
 		
@@ -39,7 +39,7 @@ public class RoomStatusTest {
 	@Test
 	public void testGetAdminName()
 		throws Exception {
-		RoomStatus fixture = new RoomStatus(rn, an, minpl, maxpl, players, true);
+		RoomStatus fixture = new RoomStatus(rn, an, minpl, maxpl, players, "Default map1.xml",0);
 
 		String result = fixture.getAdminName();
 
@@ -49,7 +49,7 @@ public class RoomStatusTest {
 	@Test
 	public void testGetMaxPlayers()
 		throws Exception {
-		RoomStatus fixture = new RoomStatus(rn, an, minpl, maxpl, players, true);
+		RoomStatus fixture = new RoomStatus(rn, an, minpl, maxpl, players, "Default map1.xml",0);
 
 		int result = fixture.getMaxPlayers();
 
@@ -59,7 +59,7 @@ public class RoomStatusTest {
 	@Test
 	public void testGetMinPlayers()
 		throws Exception {
-		RoomStatus fixture = new RoomStatus(rn, an, minpl, maxpl, players, true);
+		RoomStatus fixture = new RoomStatus(rn, an, minpl, maxpl, players, "Default map1.xml",0);
 
 		int result = fixture.getMinPlayers();
 
@@ -69,7 +69,7 @@ public class RoomStatusTest {
 	@Test
 	public void testGetPlayers()
 		throws Exception {
-		RoomStatus fixture = new RoomStatus(rn, an, minpl, maxpl, players, true);
+		RoomStatus fixture = new RoomStatus(rn, an, minpl, maxpl, players, "Default map1.xml",0);
 
 		ArrayList<String> result = fixture.getPlayers();
 
@@ -80,30 +80,10 @@ public class RoomStatusTest {
 	@Test
 	public void testGetRoomName()
 		throws Exception {
-		RoomStatus fixture = new RoomStatus(rn, an, minpl, maxpl, players,true);
+		RoomStatus fixture = new RoomStatus(rn, an, minpl, maxpl, players, "Default map1.xml",0);
 		String result = fixture.getRoomName();
 
 		assertEquals("SecretChamber", result);
-	}
-
-	@Test
-	public void testIsDefaultMapReturnsTrue()
-		throws Exception {
-		RoomStatus fixture = new RoomStatus(rn, an, minpl, maxpl, players, true);
-
-		boolean result = fixture.isDefaultMap();
-
-		assertEquals(true, result);
-	}
-
-	@Test
-	public void testIsDefaultMapReturnsFalse()
-		throws Exception {
-		RoomStatus fixture = new RoomStatus(rn, an, minpl, maxpl, players, false);
-
-		boolean result = fixture.isDefaultMap();
-
-		assertEquals(false, result);
 	}
 
 	

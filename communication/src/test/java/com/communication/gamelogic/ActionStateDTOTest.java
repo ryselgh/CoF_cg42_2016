@@ -29,7 +29,6 @@ public class ActionStateDTOTest {
 		player = new ArrayList<PlayerDTO>(Arrays.asList(players));
 		gameDTO = new GameDTO();
 		gameDTO.setActualPlayer(players[0]);
-		gameDTO.setDefaultMap(true);
 		gameDTO.setFinalTurn(false);
 		gameDTO.setMainAction(null);
 		gameDTO.setMarket(null);

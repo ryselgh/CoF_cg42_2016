@@ -48,7 +48,6 @@ public class BuyItemStateDTOTest {
 		assertEquals(null, result.getMap());
 		assertEquals(null, result.getMarket());
 		assertEquals(false, result.isFinalTurn());
-		assertEquals(false, result.isDefaultMap());
 		assertEquals(mADTO, result.getMainAction());
 		assertEquals(null, result.getPlayers());
 		assertEquals(0, result.getPlayersQty());

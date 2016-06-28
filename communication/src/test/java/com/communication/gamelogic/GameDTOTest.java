@@ -248,7 +248,6 @@ public class GameDTOTest {
 		fixture.setPlayers(player);
 		fixture.setMap(new MapDTO());
 		fixture.setSpeedAction(sADTO);
-		fixture.setDefaultMap(true);
 		
 		
 	}
@@ -390,28 +389,6 @@ public class GameDTOTest {
 		assertNotNull(result);
 		assertEquals(1, result.getActionCounter());
 		assertEquals(fixture, result.getGame());
-	}
-
-	@Test
-	public void testIsDefaultMapReturnsTrue()
-		throws Exception {
-		
-		fixture.setDefaultMap(true);
-
-		boolean result = fixture.isDefaultMap();
-
-		assertEquals(true, result);
-	}
-
-	@Test
-	public void testIsDefaultMapReturnsFalse()
-		throws Exception {
-		
-		fixture.setDefaultMap(false);
-
-		boolean result = fixture.isDefaultMap();
-
-		assertEquals(false, result);
 	}
 
 	@Test

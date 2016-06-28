@@ -176,7 +176,7 @@ public class Room {
 	 */
 	public void setMap(String map){//non lo metto nel costruttore perchè va passata serializzata, credo
 		this.rawMap = map;
-		if(map.substring(0, "default".length()).equals("default"))
+		if(map.substring(0, "default".length()).toLowerCase().equals("default"))
 			this.mapName = map;
 		else
 			this.mapName = "custom";
