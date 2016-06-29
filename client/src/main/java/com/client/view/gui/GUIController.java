@@ -4,12 +4,16 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Random;
 
+import com.client.controller.ClientController;
 import com.communication.board.BonusDTO;
 import com.communication.board.BonusTokenDTO;
 import com.communication.decks.PermitsCardDTO;
 
+import javafx.application.Platform;
 import javafx.animation.FadeTransition;
 import javafx.animation.Interpolator;
 import javafx.animation.RotateTransition;
@@ -52,7 +56,7 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-public class GUIController {
+public class GUIController extends Observable implements Observer{
 	
 	private FXMLLoader loader;
 	
@@ -197,7 +201,16 @@ public class GUIController {
 	private ArrayList<ImageView> councilors;
 	private String kingPreviousLoc = null;
 	
+	//istanza del ClientController, a cui passa tipoConnessione e userName
+	private ClientController clientController;
 	
+	//istanza dell'username da gettare
+	private String userName=null;
+	
+	
+	public void setClientController(ClientController c){
+		this.clientController=c;
+	}
 	
 	public void updateLoader(FXMLLoader loader){
 		this.loader = loader;
@@ -211,11 +224,26 @@ public class GUIController {
 		connectionChoice.setValue("Socket");
 	}
 	
+	private void sendConnection(){
+		Platform.runLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+	}
 	public void launchMM(ActionEvent e) throws Exception{
-		// if(connectionChoice.getValue().toString()=="Socket")
-			// SET CONNECTION: Socket
-		// else
-			// SET CONNECTION: RMI
+		if(connectionChoice.getValue().toString().equals("Socket")){
+			this.setChanged();
+			this.notifyObservers("CONNECTION_SOCKET");
+		}
+		else{
+			this.setChanged();
+			this.notifyObservers("CONNECTION_RMI");
+		}
+		
 		//Launch client
 		Stage launcher = (Stage) btnLaunch.getScene().getWindow();
 		Stage primaryStage = new Stage();
@@ -368,6 +396,21 @@ public class GUIController {
 	}
 	
 	public void submit() throws IOException{
+		this.userName = txtNickname.getText();
+		this.setChanged();
+		this.notifyObservers("USERNAME_" + userName);
+	}
+	
+	public String getUserName(){
+		if(this.userName!=null){
+			String ret = this.userName;
+			this.userName=null;
+			return ret;
+		}
+		return null;
+			
+	}
+	public void goToLobby(){
 		animateLobby();
 	}
 
@@ -1579,6 +1622,21 @@ public void invertAnimateRoom(){
     			tt.play();
 			}
 		});
+	}
+
+	@Override
+	public void update(Observable arg0, Object arg1) {
+		if(arg0 instanceof ClientController){
+			if(arg1 instanceof String){
+				String[] info = ((String) arg1).split("_");
+				if(info[0]!="GUI"){return;}
+				if(info[1].equals("LOGINSUCCESS"))
+					this.animateLobby();
+				
+				
+			}
+		}
+		
 	}
 	
 }

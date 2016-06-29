@@ -5,6 +5,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Observable;
+import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -15,7 +16,7 @@ import com.communication.CommunicationObject;
 /**
  * The Class SocketConnection.
  */
-public class SocketConnection extends Observable{
+public class SocketConnection extends Observable implements Observer, Runnable{
 
 	/** The socket. */
 	private Socket socket = null;
@@ -47,13 +48,15 @@ public class SocketConnection extends Observable{
 
 	/**
 	 * Run. sets up socket and streams
-	 *
-	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
-	public void run() throws IOException{
-			socket = new Socket(IP_ADDRESS, PORT);
-			outputStream = new ObjectOutputStream(socket.getOutputStream());
-			inputStream = new ObjectInputStream(socket.getInputStream());
+	public void run(){
+			try {
+				socket = new Socket(IP_ADDRESS, PORT);
+				outputStream = new ObjectOutputStream(socket.getOutputStream());
+				inputStream = new ObjectInputStream(socket.getInputStream());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 	}
 
 	/**
@@ -91,5 +94,20 @@ public class SocketConnection extends Observable{
 		} catch (IOException e) {
 			logger.log(Level.SEVERE, "Failed to send", e);
 		}
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		if(o instanceof ClientController){
+			if(arg instanceof String){
+				String[] info = ((String) arg).split("_");
+				if(!info[0].equals("SOCKETCONNECTION")){return;}
+				if(info[1].equals("STARTLISTEN"))
+					this.startListen();
+				
+				
+			}
+		}
+		
 	}
 }

@@ -38,7 +38,7 @@ import com.communication.gamelogic.GameDTO;
 /**
  * The Class ClientController.
  */
-public class ClientController extends Observable implements Observer, RMIClientControllerRemote{
+public class ClientController extends Observable implements Observer, RMIClientControllerRemote, Runnable{
 
 	private InterfaceMiddleware view;
 	
@@ -91,6 +91,8 @@ public class ClientController extends Observable implements Observer, RMIClientC
 	private int CLIENT_PORT;
 	
 	private boolean abortFlag=false;
+	
+	private boolean isGUI;
 	/**
 	 * Instantiates a new client controller. Creates the cli object and starts a new console listener thread
 	 *
@@ -101,8 +103,18 @@ public class ClientController extends Observable implements Observer, RMIClientC
 		this.cliQueue = new ArrayBlockingQueue<String>(50);
 		this.view = new InterfaceMiddleware(this, isGUI,this.cliQueue, guiController);
 		this.RMI = RMI;
+		this.isGUI = isGUI;
 	}
 
+	public void setConnection(boolean isRMI){//metodo usato dalla gui, se si usa la cli la connessione viene passata nel costruttore e viene chiamato subito run()
+		this.RMI = isRMI;
+		try {
+			this.start();
+		} catch (IOException | NotBoundException | AlreadyBoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	
 	public void setConsoleListener(ConsoleListener consoleListener) {
 		this.consoleListener = consoleListener;
@@ -119,26 +131,22 @@ public class ClientController extends Observable implements Observer, RMIClientC
 	 * @throws AlreadyBoundException
 	 *             the already bound exception
 	 */
-	public void run() throws IOException, NotBoundException, AlreadyBoundException {
+	public void start() throws IOException, NotBoundException, AlreadyBoundException {
 		if (!RMI) {
 			connection = new SocketConnection();
-			try {
-				connection.run();
-				connection.addObserver(this);
-			} catch (IOException e) {
-				view.printMsg("Failed to connect to server");
-				return;
-			}
+			connection.addObserver(this);
+			this.addObserver(connection);
+			Thread sockConnThread = new Thread(connection);
+			sockConnThread.start();
 			view.printMsg("Connected to the server");
-			connection.startListen();
+			this.setChanged();
+			this.notifyObservers("SOCKETCONNECTION_STARTLISTEN");
 		} else {// se è RMI parte subito l'identificazione
-			registry = LocateRegistry.getRegistry(SERVERRMI_HOST, SERVERRMI_PORT);
-			lobbyRemote = (RMILobbyRemote) registry.lookup("lobby");
 			int resp = 0;
 			String nick = "";
 			do {
 				nick = view.getUsername();
-				resp = lobbyRemote.RMIlogIn(nick);
+				resp = RMISetupAndLogin(nick);
 				switch (resp) {
 				case 1:
 					view.printMsg("Illegal characters");
@@ -151,19 +159,28 @@ public class ClientController extends Observable implements Observer, RMIClientC
 					break;
 				}
 			} while (resp != 0);
-			view.printMsg("Logged in successfully");
-			this.userName = nick;
-			int startPort = 1098;
-			registry = createRegistry(startPort);
-			RMIClientControllerRemote contrRemote = (RMIClientControllerRemote) UnicastRemoteObject.exportObject(this,
-					0);
-			registry.bind(nick + "CONTROLLER", contrRemote);
-			;
-			lobbyRemote.RMIsubscribe(nick, CLIENT_PORT);
-			consoleListener.addObserver(this);
 		}
 	}
 
+	private int RMISetupAndLogin(String nick) throws RemoteException, NotBoundException, AlreadyBoundException{
+		registry = LocateRegistry.getRegistry(SERVERRMI_HOST, SERVERRMI_PORT);
+		lobbyRemote = (RMILobbyRemote) registry.lookup("lobby");
+		int resp = lobbyRemote.RMIlogIn(nick);
+		if(resp !=0)
+			return resp;
+		view.printMsg("Logged in successfully");
+		this.userName = nick;
+		int startPort = 1098;
+		registry = createRegistry(startPort);
+		RMIClientControllerRemote contrRemote = (RMIClientControllerRemote) UnicastRemoteObject.exportObject(this, 0);
+		registry.bind(nick + "CONTROLLER", contrRemote);
+		lobbyRemote.RMIsubscribe(nick, CLIENT_PORT);
+		if(isGUI)
+			view.GUIGoToLobby();
+		else
+			consoleListener.addObserver(this);
+		return 0;
+	}
 	/**
 	 * Creates the registry. This method is used to find an available port, if the game is used locally. The global instance CLIENT_PORT is updated with the used one
 	 *
@@ -211,12 +228,28 @@ public class ClientController extends Observable implements Observer, RMIClientC
 	
 	
 	
-	/**
-	 * Gets the user name.
-	 *
-	 * @return the user name
-	 */
-	
+	private void RMIGUILogin(String nick){
+		int resp=-1;
+		try {
+			resp = RMISetupAndLogin(nick);
+		} catch (RemoteException | NotBoundException | AlreadyBoundException e) {
+			e.printStackTrace();
+		}
+		switch (resp) {
+		case 1:
+			view.printMsg("Illegal characters");
+			break;
+		case 2:
+			view.printMsg("Nickname size must be >5 and <13");
+			break;
+		case 3:
+			view.printMsg("Nickname already used");
+			break;
+		case 0:
+			this.setChanged();
+			this.notifyObservers("GUI_LOGINSUCCESS");
+		}
+	}
 	
 	/* (non-Javadoc)
 	 * @see java.util.Observer#update(java.util.Observable, java.lang.Object)
@@ -224,6 +257,29 @@ public class ClientController extends Observable implements Observer, RMIClientC
 	 */
 	@Override
 	public void update(Observable o, Object change){
+		if(o instanceof GUIController){
+			String[] info = ((String) change).split("_");
+			if(info[0].equals("USERNAME")){
+				if(this.RMI)
+					this.RMIGUILogin(info[1]);
+				else
+					connection.sendToServer("INSERTNICKNAME",info[1]);//sono sicuro che il server sia già in attesa
+				
+				}
+			else if(info[0].equals("CONNECTION")){
+				if(info[1].equals("RMI"))
+					this.RMI = true;
+				else{
+					try {
+						this.start();
+					} catch (IOException | NotBoundException | AlreadyBoundException e) {
+						e.printStackTrace();
+					}
+					this.RMI=false;
+				}
+			}
+			return;
+		}
 		if(o instanceof ConsoleListener){
 			String inStr = this.cliQueue.poll();
 			if(inStr==null)
@@ -286,6 +342,7 @@ public class ClientController extends Observable implements Observer, RMIClientC
 			case "TIMEOUT":
 				if(this.userName.equals((String) obj)){
 					this.abortFlag = true;
+					this.setChanged();
 					this.notifyObservers("ABORT");//lo passo alla view
 					currentActState.setAbortFlag(true);//per passarlo allo stato
 					this.cliQueue.add("ABORT");//per passarlo alla cli
@@ -299,12 +356,19 @@ public class ClientController extends Observable implements Observer, RMIClientC
 				view.updateLobby(lobbyStatus);
 				break;
 			case "INSERTNICKNAME":
-				this.tmpUserName= view.getUsername();
-				connection.sendToServer("INSERTNICKNAME",this.tmpUserName);
+				if(!isGUI){
+					this.tmpUserName= view.getUsername();
+					connection.sendToServer("INSERTNICKNAME",this.tmpUserName);
+				}
 				break;
 			case "INSERTNICKNAMEACK":
 				this.userName = this.tmpUserName;
-				consoleListener.addObserver(this);
+				if(isGUI){
+					this.setChanged();
+					this.notifyObservers("GUI_LOGINSUCCESS");
+				}
+				else
+					consoleListener.addObserver(this);
 				break;
 			case "INSERTNICKNAMENACK":
 				view.printMsg(((String) obj)+ "\n");
@@ -389,6 +453,7 @@ public class ClientController extends Observable implements Observer, RMIClientC
 
 			case "AvailableActions":
 				this.abortFlag = false;
+				this.setChanged();
 				this.notifyObservers("RESETABORT");
 				availableActions = (boolean[]) obj;
 				this.availableActions= availableActions;//non date ascolto al warning, serve per il case "ActionNotValid"
@@ -507,6 +572,7 @@ public class ClientController extends Observable implements Observer, RMIClientC
 	
 	public void RMIAbort(){
 		this.abortFlag = true;
+		this.setChanged();
 		this.notifyObservers("ABORT");//lo passo alla view
 		if(currentActState != null)
 			currentActState.setAbortFlag(true);//per passarlo all'eventuale stato di select action
@@ -570,6 +636,11 @@ public class ClientController extends Observable implements Observer, RMIClientC
 	public String RMIToBuy(){
 		String onSaleUID = view.toBuy(game);
 		return onSaleUID;
+	}
+
+	@Override
+	public void run() {
+		
 	}
 	
 	

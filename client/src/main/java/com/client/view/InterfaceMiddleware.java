@@ -42,6 +42,8 @@ public class InterfaceMiddleware extends Observable implements Observer{
 	public InterfaceMiddleware(ClientController controller, boolean isGui, ArrayBlockingQueue<String> cliQueue, GUIController guiController) {
 		this.controller = controller;
 		this.cliQueue=cliQueue;
+		this.isGUI = isGui;
+		this.gui = guiController;
 		
 		if (!isGUI)
 			initializeCli();
@@ -79,7 +81,7 @@ public class InterfaceMiddleware extends Observable implements Observer{
 		consoleThread.start();
 	}
 
-	private void CLIupdateLobby(LobbyStatus lobbyStatus) {
+	private void CLIupdateLobby(LobbyStatus lobbyStatus) {//fai un setnickname
 		cli.printMsg("\n\n");
 		this.CLIprintLobbyCommand();
 		cli.printMsg("\n");
@@ -517,11 +519,25 @@ public class InterfaceMiddleware extends Observable implements Observer{
 	
 	public String getUsername() {
 		if (isGUI) {
-			return null;
+			String uName = null;
+			do{ 
+				uName=gui.getUserName(); 
+				try {
+					Thread.sleep(100);
+				} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}}
+			while(uName==null);
+			return uName;
+			
 		} else
 			return this.CLIgetUserName();
 	}
 
+	public void GUIGoToLobby(){
+		gui.goToLobby();
+	}
 	@Override
 	public void update(Observable o, Object arg) {
 		if(arg instanceof String){

@@ -3,8 +3,10 @@ package com.client.controller;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintStream;
 import java.rmi.AlreadyBoundException;
 import java.rmi.NotBoundException;
+import java.util.Scanner;
 
 import com.client.view.gui.GUIController;
 
@@ -18,13 +20,33 @@ public class MainClient extends Application{
 	
 	private static GUIController guiController;
 
+	private static boolean isGui;
+	private static boolean RMI=false;
 	public static void main(String[] args) throws IOException, NotBoundException, AlreadyBoundException {
-		if(askInterface())
+		isGui = askInterface();
+		if(isGui){
 			launch(args);
-//		ClientController controller = new ClientController(true, askInterface(), guiController);
-//		controller.run();
+		}
+		else
+			RMI=isRMI();
+		
 	}
 	
+	
+	private static boolean isRMI(){
+		Scanner in = new Scanner(System.in);
+		System.out.print("\nSelect connection:\n1-Socket\n2-RMI\n");
+		String input;
+		while(true){
+			input = in.nextLine();
+			if(input.equals("1"))
+				return false;
+			else if(input.equals("2"))
+				return true;
+			else
+				System.out.print("\nWrong input, retry.\n");
+		}
+	}
 	private static boolean askInterface() throws IOException{
 		System.out.println("### Council of Four ###\n\nWelcome, select the interface:\n1-GUI\n2-CLI\n");
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -39,7 +61,7 @@ public class MainClient extends Application{
 	}
 
 	@Override
-	public void start(Stage primaryStage) {
+	public void start(Stage primaryStage){
 		
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/client/view/gui/SelectConnection.fxml"));
@@ -52,7 +74,16 @@ public class MainClient extends Application{
 		    primaryStage.setResizable(false);
 			primaryStage.show();
 			guiController.initializeSC();
-		} catch (IOException e) {
+			ClientController controller = new ClientController(RMI, isGui, guiController);//se l'utente seleziona GUI il controller riceve RMI=false di default, ma lui lo sa e non lo caga finchè la gui non gli passa il vero valore
+			controller.addObserver(guiController);
+			guiController.addObserver(controller);
+			if(!isGui)
+				controller.start();
+			else{
+				guiController.setClientController(controller);
+			}
+			
+		} catch (IOException | NotBoundException | AlreadyBoundException e) {
 			e.printStackTrace();
 			return;
 		}
