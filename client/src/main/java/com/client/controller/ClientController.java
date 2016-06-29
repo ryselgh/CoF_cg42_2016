@@ -19,6 +19,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 
 
 import com.client.view.InterfaceMiddleware;
+import com.client.view.gui.GUIController;
 import com.communication.CommunicationObject;
 import com.communication.ItemOnSale;
 import com.communication.LobbyStatus;
@@ -94,12 +95,12 @@ public class ClientController extends Observable implements Observer, RMIClientC
 	 * Instantiates a new client controller. Creates the cli object and starts a new console listener thread
 	 *
 	 * @param RMI the rmi
+	 * @param guiController 
 	 */
-	public ClientController(boolean RMI, boolean isGUI){
+	public ClientController(boolean RMI, boolean isGUI, GUIController guiController){
 		this.cliQueue = new ArrayBlockingQueue<String>(50);
-		this.view = new InterfaceMiddleware(this, isGUI,this.cliQueue);
+		this.view = new InterfaceMiddleware(this, isGUI,this.cliQueue, guiController);
 		this.RMI = RMI;
-		
 	}
 
 	

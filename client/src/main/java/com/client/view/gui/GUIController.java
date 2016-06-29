@@ -2,11 +2,9 @@ package com.client.view.gui;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
-import java.util.ResourceBundle;
 
 import com.communication.board.BonusDTO;
 import com.communication.board.BonusTokenDTO;
@@ -17,7 +15,6 @@ import javafx.animation.Interpolator;
 import javafx.animation.RotateTransition;
 import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
-import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -25,14 +22,13 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.ImageCursor;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.PerspectiveCamera;
 import javafx.scene.Scene;
-
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
@@ -40,25 +36,100 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
-
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.SVGPath;
 import javafx.scene.shape.StrokeType;
-
 import javafx.scene.transform.Rotate;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-public class GameWindow extends Application implements javafx.fxml.Initializable{
+public class GUIController {
+	
+	private FXMLLoader loader;
+	
+	/*SelectConnection fields*///TODO
+	private ObservableList<String> connectionList = FXCollections.observableArrayList("Socket","RMI");
 	
 	@FXML
-	private ImageView map;
+	private ChoiceBox<String> connectionChoice;
+	@FXML
+	private Button btnLaunch;
+	
+	/*MainMenu (Lobby) fields*///TODO
+	private MediaPlayer mediaPlayer = null;
+	@FXML
+	private ImageView mainTitle;
+	@FXML
+	private ImageView mainScreen;
+	@FXML
+	private Button btnNickname;
+	@FXML
+	private Label lblNickname;
+	@FXML
+	private Label lblTimer;
+	@FXML
+	private TextField txtNickname;
+	@FXML
+	private TextField txtPlayersInLobby;
+	@FXML
+	private Button btnNewRoom;
+	@FXML
+	private Button btnJoinRoom;
+	@FXML
+	private Button btnLeaveRoom;
+	@FXML
+	private Button btnStartGame;
+	@FXML
+	private ImageView lobbyMask;
+	@FXML
+	private ImageView formNewRoom;
+	@FXML
+	private TextField txtRoomName;
+	@FXML
+	private TextField txtTimer;
+	@FXML
+	private ChoiceBox<String> choiceMinPl;
+	private ObservableList<String> minList = FXCollections.observableArrayList("2","3","4","5","6","7","8");
+	@FXML
+	private ChoiceBox<String> choiceMaxPl;
+	private ObservableList<String> maxList = FXCollections.observableArrayList("2","3","4","5","6","7","8");
+	@FXML
+	private ChoiceBox<String> choiceMapLobby;
+	private ObservableList<String> mapListLobby = FXCollections.observableArrayList("Default","Map2","Map3","Map4","Map5","Map6","Map7","Map8");
+	@FXML
+	private Button btnCreateNewRoom;
+	@FXML
+	private Button btnCancelNewRoom;
+	@FXML
+	private Label lblRoomName;
+	@FXML
+	private Label lblClients;
+	@FXML
+	private Label lblAdmin;
+	@FXML
+	private Label lblMinPl;
+	@FXML
+	private Label lblMaxPl;
+	@FXML
+	private Label lblMap;
+	@FXML
+	private ImageView roomMask;
+	@FXML
+	private Group groupRoom1, groupRoom2, groupRoom3, groupRoom4, groupRoom5, groupRoom6, groupRoom7, groupRoom8;
+	@FXML
+	private Label lblRoomName1, lblRoomName2, lblRoomName3, lblRoomName4, lblRoomName5, lblRoomName6, lblRoomName7, lblRoomName8, lblPlMin1, lblPlMin2, lblPlMin3, lblPlMin4, lblPlMin5, lblPlMin6, lblPlMin7, lblPlMin8, lblPlMax1, lblPlMax2, lblPlMax3, lblPlMax4, lblPlMax5, lblPlMax6, lblPlMax7, lblPlMax8, lblMap1, lblMap2, lblMap3, lblMap4, lblMap5, lblMap6, lblMap7, lblMap8, lblPlayers1, lblPlayers2, lblPlayers3, lblPlayers4, lblPlayers5, lblPlayers6, lblPlayers7, lblPlayers8, lblStatus1, lblStatus2, lblStatus3, lblStatus4, lblStatus5, lblStatus6, lblStatus7, lblStatus8;
+
+	
+	/*GameWindow fields*///TODO
 	
 	//TEST AREA
 	@FXML
@@ -75,6 +146,9 @@ public class GameWindow extends Application implements javafx.fxml.Initializable
 	private ToggleButton btnToggleShift, btnToggleSatisfy;
 	//TEST AREA
 	
+	
+	@FXML
+	private ImageView map;
 	@FXML
 	private ImageView imgMsg;
 	@FXML
@@ -123,10 +197,116 @@ public class GameWindow extends Application implements javafx.fxml.Initializable
 	private ArrayList<ImageView> councilors;
 	private String kingPreviousLoc = null;
 	
-	@Override
-	public void start(Stage stage) {
+	
+	
+	public void updateLoader(FXMLLoader loader){
+		this.loader = loader;
+	}
+	
+	
+	/*SelectConnection methods*///TODO
+	
+	public void initializeSC(){
+		connectionChoice.setItems(connectionList);
+		connectionChoice.setValue("Socket");
+	}
+	
+	public void launchMM(ActionEvent e) throws Exception{
+		// if(connectionChoice.getValue().toString()=="Socket")
+			// SET CONNECTION: Socket
+		// else
+			// SET CONNECTION: RMI
+		//Launch client
+		Stage launcher = (Stage) btnLaunch.getScene().getWindow();
+		Stage primaryStage = new Stage();
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("MainMenu.fxml"));
+		loader.setController(this);
+		Parent root = loader.load();
+		Scene scene = new Scene(root);
+		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+		String cursorPath = getClass().getResource("img/cof-cursor.png").toString();
+		Image image = new Image(cursorPath);
+		scene.setCursor(new ImageCursor(image));
+		primaryStage.setScene(scene);
+		primaryStage.setTitle("Council of Four");
+	    primaryStage.setResizable(false);
+	    primaryStage.setMaxHeight(795);
+	    primaryStage.setMaxWidth(1024);
+		initializeMM();
+		primaryStage.show();
+		launcher.close();
+		
+	}
+	
+	
+	
+	/*MainMenu methods*///TODO
+	
+	public void initializeMM(){
+		Label txtSubmit = new Label("Submit");
+		txtSubmit.setStyle("-fx-font-size: 10pt; -fx-font-family: \"PerryGothic\"; -fx-text-fill: #A11212; -fx-effect: dropshadow(three-pass-box, rgba(209,181,82,0.9), 2, 0.8, 0, 0);");
+		btnNickname.setGraphic(txtSubmit);
+		
+		Label txtNewRoom = new Label("New Room");
+		txtNewRoom.setStyle("-fx-font-size: 10pt; -fx-font-family: \"PerryGothic\"; -fx-text-fill: #A11212; -fx-effect: dropshadow(three-pass-box, rgba(209,181,82,0.9), 2, 0.8, 0, 0);");
+		btnNewRoom.setGraphic(txtNewRoom);
+		
+		Label txtJoinRoom = new Label("Join Room");
+		txtJoinRoom.setStyle("-fx-font-size: 10pt; -fx-font-family: \"PerryGothic\"; -fx-text-fill: #A11212; -fx-effect: dropshadow(three-pass-box, rgba(209,181,82,0.9), 2, 0.8, 0, 0);");
+		btnJoinRoom.setGraphic(txtJoinRoom);
+		
+		Label txtLeaveRoom = new Label("Leave Room");
+		txtLeaveRoom.setStyle("-fx-font-size: 10pt; -fx-font-family: \"PerryGothic\"; -fx-text-fill: #A11212; -fx-effect: dropshadow(three-pass-box, rgba(209,181,82,0.9), 2, 0.8, 0, 0);");
+		btnLeaveRoom.setGraphic(txtLeaveRoom);
+		
+		Label txtStartGame = new Label("Start Game");
+		txtStartGame.setStyle("-fx-font-size: 10pt; -fx-font-family: \"PerryGothic\"; -fx-text-fill: #A11212; -fx-effect: dropshadow(three-pass-box, rgba(209,181,82,0.9), 2, 0.8, 0, 0);");
+		btnStartGame.setGraphic(txtStartGame);
+		
+		Label txtCreate = new Label("Create");
+		txtCreate.setStyle("-fx-font-size: 10pt; -fx-font-family: \"PerryGothic\"; -fx-text-fill: #A11212; -fx-effect: dropshadow(three-pass-box, rgba(209,181,82,0.9), 2, 0.8, 0, 0);");
+		btnCreateNewRoom.setGraphic(txtCreate);
+		
+		Label txtCancel = new Label("Cancel");
+		txtCancel.setStyle("-fx-font-size: 10pt; -fx-font-family: \"PerryGothic\"; -fx-text-fill: #A11212; -fx-effect: dropshadow(three-pass-box, rgba(209,181,82,0.9), 2, 0.8, 0, 0);");
+		btnCancelNewRoom.setGraphic(txtCancel);
+
+		//Nickname selection
+		btnNickname.setDisable(true);
+		btnNickname.setLayoutY(769);
+		txtNickname.setLayoutX(1025);
+		lblNickname.setLayoutX(-400);
+		
+		//Lobby
+		btnLeaveRoom.setDisable(true);
+		btnStartGame.setDisable(true);
+		btnNewRoom.setLayoutX(1025);
+		btnJoinRoom.setLayoutX(1025);
+		btnLeaveRoom.setLayoutX(1025);
+		btnStartGame.setLayoutX(1025);
+		
+		//New Room form
+		choiceMinPl.setItems(minList);
+		choiceMinPl.setDisable(true);
+		choiceMaxPl.setItems(maxList);
+		choiceMaxPl.setDisable(true);
+		choiceMapLobby.setItems(mapListLobby);
+		choiceMapLobby.setDisable(true);
+		btnCreateNewRoom.setDisable(true);
+		btnCancelNewRoom.setDisable(true);
+		txtRoomName.setDisable(true);
+		
+		playMainSoundtrack();
+		animateNickname();
+
+	}
+	
+	public void launchGW() throws Exception{
 		try {
+			Stage launcher = (Stage) mainTitle.getScene().getWindow();
+			Stage stage = new Stage();
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("GameWindow.fxml"));
+			loader.setController(this);
 			Region contentRootRegion = (Region) loader.load();
 		    double origW = contentRootRegion.getPrefWidth();
 		    double origH = contentRootRegion.getPrefHeight();
@@ -151,20 +331,435 @@ public class GameWindow extends Application implements javafx.fxml.Initializable
 		    stage.setFullScreen(true);
 		    stage.setFullScreenExitHint("");
 		    stage.setResizable(false);
+		    launcher.close();
+		    switchPlaylist();
+		    initializeGW();
 		    stage.show();
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (IOException ex) {
+			ex.printStackTrace();
 			return;
 		}
 	}
-
-	public static void main(String[] args) {
-		launch(args);
+	
+	private void switchPlaylist(){
+		mediaPlayer.stop();
+		Media sound = new Media(getClass().getResource("mp3/Battle1.mp3").toString());
+		mediaPlayer = new MediaPlayer(sound);
+		mediaPlayer.play();
+		mediaPlayer.setOnEndOfMedia(new Runnable() {
+            @Override public void run() {
+            	Media sound = new Media(getClass().getResource("mp3/Battle2.mp3").toString());
+        		mediaPlayer = new MediaPlayer(sound);
+        		mediaPlayer.play();
+        		mediaPlayer.setOnEndOfMedia(new Runnable() {
+		            @Override public void run() {
+		            	Media sound = new Media(getClass().getResource("mp3/Battle3.mp3").toString());
+		        		mediaPlayer = new MediaPlayer(sound);
+		        		mediaPlayer.play();
+		        		mediaPlayer.setOnEndOfMedia(new Runnable() {
+				            @Override public void run() {
+				            	switchPlaylist();
+				            }
+				        });
+		            }
+		        });
+            }
+        });
+	}
+	
+	public void submit() throws IOException{
+		animateLobby();
 	}
 
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-	    try {
+	public void checkNickname(KeyEvent event){
+		if(!txtNickname.getText().matches("[A-Za-z0-9]*") || txtNickname.getText().length()<5 || txtNickname.getText().length()>13){
+			btnNickname.setDisable(true);
+		}else{
+			btnNickname.setDisable(false);
+		}
+	}
+	
+	public void checkCreateRoom(){
+		if((!txtRoomName.getText().matches("[A-Za-z0-9]*") || txtRoomName.getText().length()<5 || txtRoomName.getText().length()>13) ||
+			choiceMinPl.getValue() == null || choiceMaxPl.getValue() == null || choiceMapLobby.getValue() == null ||
+			Integer.parseInt(choiceMaxPl.getValue())<Integer.parseInt(choiceMinPl.getValue()) || formNewRoom.getOpacity() == 0.0){
+			btnCreateNewRoom.setDisable(true);
+		}else{
+			btnCreateNewRoom.setDisable(false);
+			btnCreateNewRoom.setOpacity(1.0);
+		}
+	}
+	
+	public void newRoomForm(){
+		if(formNewRoom.getOpacity() == 0.0){
+			animateNewRoomForm();
+			btnCreateNewRoom.setDisable(true);
+			btnCancelNewRoom.setDisable(false);
+			txtRoomName.setDisable(false);
+			choiceMinPl.setDisable(false);
+			choiceMaxPl.setDisable(false);
+			choiceMapLobby.setDisable(false);
+		}
+	}
+	
+	public void createNewRoom() {
+		animateRoom();
+		invertAnimateNewRoomForm();
+		btnNewRoom.setDisable(true);
+		btnJoinRoom.setDisable(true);
+		btnLeaveRoom.setDisable(false);
+		btnStartGame.setDisable(false);
+	}
+	
+	public void joinRoom(){
+		animateRoom();
+		if(formNewRoom.getOpacity() == 1.0)
+			invertAnimateNewRoomForm();
+		btnNewRoom.setDisable(true);
+		btnJoinRoom.setDisable(true);
+		btnLeaveRoom.setDisable(false);
+		btnStartGame.setDisable(false);
+	}
+	
+	public void cancelNewRoom() {
+		if(formNewRoom.getOpacity() == 1.0){
+			invertAnimateNewRoomForm();
+			btnCreateNewRoom.setDisable(true);
+			btnCancelNewRoom.setDisable(true);
+			txtRoomName.setDisable(true);
+			choiceMinPl.setDisable(true);
+			choiceMaxPl.setDisable(true);
+			choiceMapLobby.setDisable(true);
+		}
+	}
+	
+	public void leaveRoom(){
+		invertAnimateRoom();
+		btnNewRoom.setDisable(false);
+		btnJoinRoom.setDisable(false);
+		btnLeaveRoom.setDisable(true);
+		btnStartGame.setDisable(true);
+	}
+	
+	public void startGame(){
+		try {
+			launchGW();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void playMainSoundtrack(){
+		Media sound = new Media(getClass().getResource("mp3/MainTheme.mp3").toString());
+		mediaPlayer = new MediaPlayer(sound);
+		mediaPlayer.play();
+		mediaPlayer.setOnEndOfMedia(new Runnable() {
+            @Override public void run() {
+            	Media sound = new Media(getClass().getResource("mp3/MainContinues.mp3").toString());
+        		mediaPlayer = new MediaPlayer(sound);
+        		mediaPlayer.play();
+            }
+        });
+	}
+	
+	public void animateLobby(){
+		
+		TranslateTransition awayTitle = new TranslateTransition(Duration.millis(500), mainTitle);
+		awayTitle.setByY(-300);
+		awayTitle.play();
+		
+		TranslateTransition awayLblNickname = new TranslateTransition(Duration.millis(500), lblNickname);
+		awayLblNickname.setByY(300);
+		awayLblNickname.setDelay(Duration.millis(200));
+		awayLblNickname.play();
+		
+		TranslateTransition awayTxtNickname = new TranslateTransition(Duration.millis(500), txtNickname);
+		awayTxtNickname.setByY(300);
+		awayTxtNickname.setDelay(Duration.millis(100));
+		awayTxtNickname.play();
+		
+		TranslateTransition awayBtnNickname = new TranslateTransition(Duration.millis(500), btnNickname);
+		awayBtnNickname.setByY(300);
+		awayBtnNickname.play();
+		
+		FadeTransition ft = new FadeTransition(Duration.millis(1000), lobbyMask);
+		ft.setFromValue(0.0);
+		ft.setToValue(1.0);
+		
+		TranslateTransition tt = new TranslateTransition(Duration.millis(500), btnNewRoom);
+		tt.setByX(-222);
+		
+		TranslateTransition tt2 = new TranslateTransition(Duration.millis(500), btnJoinRoom);
+		tt2.setByX(-222);
+		tt2.setDelay(Duration.millis(100));
+		
+		TranslateTransition tt3 = new TranslateTransition(Duration.millis(500), btnLeaveRoom);
+		tt3.setByX(-222);
+		tt3.setDelay(Duration.millis(200));
+		
+		TranslateTransition tt4 = new TranslateTransition(Duration.millis(500), btnStartGame);
+		tt4.setByX(-222);
+		tt4.setDelay(Duration.millis(300));
+		
+		awayBtnNickname.setOnFinished(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				ft.play();
+				tt.play();
+				tt2.play();
+				tt3.play();
+				tt4.play();
+			}
+		});
+	}
+
+	public void animateNickname(){
+
+		FadeTransition ft = new FadeTransition(Duration.millis(3500), mainScreen);
+		ft.setFromValue(1.0);
+		ft.setToValue(0.4);
+		ft.setCycleCount(2);
+		ft.setAutoReverse(true);
+		ft.play();
+
+		ScaleTransition st = new ScaleTransition(Duration.millis(3000), mainTitle);
+		st.setByX(800);
+		st.setByY(700);
+		st.play();
+
+		TranslateTransition tt = new TranslateTransition(Duration.millis(1300), mainTitle);
+		tt.setByY(-230);
+		tt.setAutoReverse(true);
+
+		ScaleTransition st2 = new ScaleTransition(Duration.millis(1300), mainTitle);
+		st2.setByX(-200);
+		st2.setByY(-200);
+
+		TranslateTransition tt2 = new TranslateTransition(Duration.millis(800), lblNickname);
+		tt2.setToX(742);
+		tt2.setAutoReverse(true);
+
+		TranslateTransition tt3 = new TranslateTransition(Duration.millis(800), txtNickname);
+		tt3.setToX(-627);
+		tt3.setAutoReverse(true);
+
+		TranslateTransition tt4 = new TranslateTransition(Duration.millis(800), btnNickname);
+		tt4.setByY(-130);
+		tt4.setAutoReverse(true);
+
+		ft.setOnFinished(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				tt.play();
+				st2.play();
+				st2.setOnFinished(new EventHandler<ActionEvent>() {
+					@Override
+					public void handle(ActionEvent event) {
+						tt2.play();
+						tt3.play();
+						tt4.play();
+					}
+				});
+			}
+		});
+	}
+	
+	private void animateNewRoomForm() {
+		
+		FadeTransition ft = new FadeTransition(Duration.millis(1000), formNewRoom);
+		ft.setFromValue(0.0);
+		ft.setToValue(1.0);
+		ft.play();
+		
+		FadeTransition ft2 = new FadeTransition(Duration.millis(1000), btnCreateNewRoom);
+		ft2.setFromValue(0.0);
+		ft2.setToValue(0.5);
+		ft2.play();
+		
+		FadeTransition ft3 = new FadeTransition(Duration.millis(1000), btnCancelNewRoom);
+		ft3.setFromValue(0.0);
+		ft3.setToValue(1.0);
+		ft3.play();
+		
+		FadeTransition ft4 = new FadeTransition(Duration.millis(1000), choiceMinPl);
+		ft4.setFromValue(0.0);
+		ft4.setToValue(1.0);
+		ft4.play();
+		
+		FadeTransition ft5 = new FadeTransition(Duration.millis(1000), choiceMaxPl);
+		ft5.setFromValue(0.0);
+		ft5.setToValue(1.0);
+		ft5.play();
+		
+		FadeTransition ft6 = new FadeTransition(Duration.millis(1000), choiceMapLobby);
+		ft6.setFromValue(0.0);
+		ft6.setToValue(1.0);
+		ft6.play();
+		
+		FadeTransition ft7 = new FadeTransition(Duration.millis(1000), txtRoomName);
+		ft7.setFromValue(0.0);
+		ft7.setToValue(1.0);
+		ft7.play();
+		
+		FadeTransition ft8 = new FadeTransition(Duration.millis(1000), txtTimer);
+		ft8.setFromValue(0.0);
+		ft8.setToValue(1.0);
+		ft8.play();
+		
+	}
+	
+	private void invertAnimateNewRoomForm() {
+		
+		FadeTransition ft = new FadeTransition(Duration.millis(1000), formNewRoom);
+		ft.setFromValue(1.0);
+		ft.setToValue(0.0);
+		ft.play();
+		
+		FadeTransition ft2 = new FadeTransition(Duration.millis(1000), btnCreateNewRoom);
+		ft2.setFromValue(btnCreateNewRoom.getOpacity());
+		ft2.setToValue(0.0);
+		ft2.play();
+		
+		FadeTransition ft3 = new FadeTransition(Duration.millis(1000), btnCancelNewRoom);
+		ft3.setFromValue(1.0);
+		ft3.setToValue(0.0);
+		ft3.play();
+		
+		FadeTransition ft4 = new FadeTransition(Duration.millis(1000), choiceMinPl);
+		ft4.setFromValue(1.0);
+		ft4.setToValue(0.0);
+		ft4.play();
+		
+		FadeTransition ft5 = new FadeTransition(Duration.millis(1000), choiceMaxPl);
+		ft5.setFromValue(1.0);
+		ft5.setToValue(0.0);
+		ft5.play();
+		
+		FadeTransition ft6 = new FadeTransition(Duration.millis(1000), choiceMapLobby);
+		ft6.setFromValue(1.0);
+		ft6.setToValue(0.0);
+		ft6.play();
+		
+		FadeTransition ft7 = new FadeTransition(Duration.millis(1000), txtRoomName);
+		ft7.setFromValue(1.0);
+		ft7.setToValue(0.0);
+		ft7.play();
+		
+		FadeTransition ft8 = new FadeTransition(Duration.millis(1000), txtTimer);
+		ft8.setFromValue(1.0);
+		ft8.setToValue(0.0);
+		ft8.play();
+		
+	}
+	
+	public void animateRoom(){
+		
+		FadeTransition awayLobby = new FadeTransition(Duration.millis(1000), lobbyMask);
+		awayLobby.setFromValue(1.0);
+		awayLobby.setToValue(0.0);
+		awayLobby.play();
+		
+		FadeTransition ft = new FadeTransition(Duration.millis(1000), roomMask);
+		ft.setFromValue(0.0);
+		ft.setToValue(1.0);
+		ft.play();
+		
+		FadeTransition ft2 = new FadeTransition(Duration.millis(1000), lblRoomName);
+		ft2.setFromValue(0.0);
+		ft2.setToValue(1.0);
+		ft2.play();
+		
+		FadeTransition ft3 = new FadeTransition(Duration.millis(1000), lblClients);
+		ft3.setFromValue(0.0);
+		ft3.setToValue(1.0);
+		ft3.play();
+		
+		FadeTransition ft4 = new FadeTransition(Duration.millis(1000), lblAdmin);
+		ft4.setFromValue(0.0);
+		ft4.setToValue(1.0);
+		ft4.play();
+		
+		FadeTransition ft5 = new FadeTransition(Duration.millis(1000), lblMinPl);
+		ft5.setFromValue(0.0);
+		ft5.setToValue(1.0);
+		ft5.play();
+		
+		FadeTransition ft6 = new FadeTransition(Duration.millis(1000), lblMaxPl);
+		ft6.setFromValue(0.0);
+		ft6.setToValue(1.0);
+		ft6.play();
+		
+		FadeTransition ft7 = new FadeTransition(Duration.millis(1000), lblMap);
+		ft7.setFromValue(0.0);
+		ft7.setToValue(1.0);
+		ft7.play();
+		
+		FadeTransition ft8 = new FadeTransition(Duration.millis(1000), lblTimer);
+		ft8.setFromValue(0.0);
+		ft8.setToValue(1.0);
+		ft8.play();
+	}
+	
+	
+public void invertAnimateRoom(){
+		
+		FadeTransition returnLobby = new FadeTransition(Duration.millis(1000), lobbyMask);
+		returnLobby.setFromValue(0.0);
+		returnLobby.setToValue(1.0);
+		returnLobby.play();
+		
+		FadeTransition awayRoom = new FadeTransition(Duration.millis(1000), roomMask);
+		awayRoom.setFromValue(1.0);
+		awayRoom.setToValue(0.0);
+		awayRoom.play();
+		
+		FadeTransition ft2 = new FadeTransition(Duration.millis(1000), lblRoomName);
+		ft2.setFromValue(1.0);
+		ft2.setToValue(0.0);
+		ft2.play();
+		
+		FadeTransition ft3 = new FadeTransition(Duration.millis(1000), lblClients);
+		ft3.setFromValue(1.0);
+		ft3.setToValue(0.0);
+		ft3.play();
+		
+		FadeTransition ft4 = new FadeTransition(Duration.millis(1000), lblAdmin);
+		ft4.setFromValue(1.0);
+		ft4.setToValue(0.0);
+		ft4.play();
+		
+		FadeTransition ft5 = new FadeTransition(Duration.millis(1000), lblMinPl);
+		ft5.setFromValue(1.0);
+		ft5.setToValue(0.0);
+		ft5.play();
+		
+		FadeTransition ft6 = new FadeTransition(Duration.millis(1000), lblMaxPl);
+		ft6.setFromValue(1.0);
+		ft6.setToValue(0.0);
+		ft6.play();
+		
+		FadeTransition ft7 = new FadeTransition(Duration.millis(1000), lblMap);
+		ft7.setFromValue(1.0);
+		ft7.setToValue(0.0);
+		ft7.play();
+		
+		FadeTransition ft8 = new FadeTransition(Duration.millis(1000), lblTimer);
+		ft8.setFromValue(1.0);
+		ft8.setToValue(0.0);
+		ft8.play();
+	}
+	
+
+
+
+
+
+	/*GameWindow methods*///TODO
+	
+	public void initializeGW(){
+		try {
 	    	emporiums = new SVGPath[15][8];
 	    	for(int i=0; i<15; i++){
 	    		for(int j=0; j<8; j++){
@@ -985,5 +1580,5 @@ public class GameWindow extends Application implements javafx.fxml.Initializable
 			}
 		});
 	}
-    
+	
 }

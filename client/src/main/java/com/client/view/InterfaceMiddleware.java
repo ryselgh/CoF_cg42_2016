@@ -7,7 +7,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 
 import com.client.controller.ClientController;
 import com.client.controller.ConsoleListener;
-
+import com.client.view.gui.GUIController;
 import com.communication.ItemOnSale;
 import com.communication.LobbyStatus;
 import com.communication.RoomStatus;
@@ -31,6 +31,7 @@ public class InterfaceMiddleware extends Observable implements Observer{
 	private boolean isGUI;// true gui false cli
 	private ClientController controller;
 	private ClientCLI cli;
+	private GUIController gui;
 	private ConsoleListener consoleListener;
 	private Thread consoleThread;
 	private boolean abortFlag;
@@ -38,7 +39,7 @@ public class InterfaceMiddleware extends Observable implements Observer{
 	/** The input queue. */
 	private ArrayBlockingQueue<String> cliQueue;
 
-	public InterfaceMiddleware(ClientController controller, boolean isGui, ArrayBlockingQueue<String> cliQueue) {
+	public InterfaceMiddleware(ClientController controller, boolean isGui, ArrayBlockingQueue<String> cliQueue, GUIController guiController) {
 		this.controller = controller;
 		this.cliQueue=cliQueue;
 		
