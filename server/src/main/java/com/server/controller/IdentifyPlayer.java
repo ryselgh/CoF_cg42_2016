@@ -91,7 +91,7 @@ public class IdentifyPlayer extends Observable implements Runnable  {
 	 * @return whats wrong in the chosen nickname. "" if it's ok
 	 */
 	private String isCorrect(String name){
-		if(name.contains("[^abcdefghilmnopqrstuvzjkywxABCDEFGHILMNOPQRSTUVZJKYWX012345679]"))//regex equivalente a tutti i caratteri a parte le lettere
+		if(name.contains("[^abcdefghilmnopqrstuvzjkywxABCDEFGHILMNOPQRSTUVZJKYWX012345679]"))//only letters are valid
 			return "Illegal characters";
 		if(name.length()<5 || name.length()>13)
 			return "Nickname size must be >5 and <13";

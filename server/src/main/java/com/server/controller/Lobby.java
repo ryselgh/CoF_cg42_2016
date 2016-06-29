@@ -18,8 +18,8 @@ import com.communication.RMIClientControllerRemote;
 import com.communication.RMILobbyRemote;
 import com.communication.RoomStatus;
 import com.communication.values.RoomState;
-// TODO: Auto-generated Javadoc
-//comandi: newRoom(roomName,maxplayers, minplayers),   joinRoom(roomName)   startgame(roomName)--->requires admin
+
+//commands: newRoom(roomName,maxplayers, minplayers),   joinRoom(roomName)   startgame(roomName)--->requires admin
 //         getRoomList()--->obj ad hoc     leaveRoom(roomName)    1-setMap_mapname-->2-send serialized xml---->requires admin 
 
 /**
@@ -237,8 +237,8 @@ public class Lobby extends Observable implements Runnable, Observer, RMILobbyRem
 		}
 	}
 	
-	/* (non-Javadoc)
-	 * @see java.util.Observer#update(java.util.Observable, java.lang.Object)
+	/*
+	 * update method
 	 */
 	@Override
 	public void update(Observable arg0, Object arg1) {

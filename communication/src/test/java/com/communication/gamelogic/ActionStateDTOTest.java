@@ -30,9 +30,7 @@ public class ActionStateDTOTest {
 		gameDTO = new GameDTO();
 		gameDTO.setActualPlayer(players[0]);
 		gameDTO.setFinalTurn(false);
-		gameDTO.setMainAction(null);
 		gameDTO.setMarket(null);
-		gameDTO.setSpeedAction(null);
 		gameDTO.setPlayers(player);
 		gameDTO.setPlayersQty(3);
 	}

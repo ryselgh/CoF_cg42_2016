@@ -7,10 +7,8 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
 	ItemOnSaleDTOTest.class,
-	MainActionDTOTest.class,
 	ActionStateDTOTest.class,
 	GameDTOTest.class,
-	SpeedActionDTOTest.class,
 	PlayerDTOTest.class,
 	SellItemStateDTOTest.class,
 	BuyItemStateDTOTest.class,

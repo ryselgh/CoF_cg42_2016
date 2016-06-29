@@ -2,7 +2,7 @@ package com.server.controller;
 
 import java.util.Observable;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class InputTimer.
  */
@@ -29,9 +29,8 @@ public class InputTimer extends Observable implements Runnable{
 		this.progressiveCounter = pC;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Runnable#run()
-	 * just sleep then notify
+	/* 
+	 * run method
 	 */
 	@Override
 	public void run() {

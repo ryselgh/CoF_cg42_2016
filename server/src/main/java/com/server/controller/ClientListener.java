@@ -32,7 +32,7 @@ public class ClientListener extends Observable implements Runnable{
 	/**
 	 * Instantiates a new client listener.
 	 *
-	 * @param is the is
+	 * @param is the inputStream
 	 */
 	public ClientListener(ObjectInputStream is){
 		this.inputStream = is;

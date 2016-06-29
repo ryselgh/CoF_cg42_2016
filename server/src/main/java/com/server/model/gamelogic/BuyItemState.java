@@ -49,8 +49,7 @@ public class BuyItemState implements State{
 		return "BuyItemState";
 	}
 	
-	/* (non-Javadoc)
-	 * @see com.server.model.gamelogic.State#doAction(com.server.model.gamelogic.Context)
+	/* 
 	 * set's up local variables and executes the action
 	 */
 	@Override

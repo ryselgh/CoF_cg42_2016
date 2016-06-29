@@ -50,15 +50,16 @@ public class SellItemState implements State{
 	 */
 	public SellItemState(){}
 	
-	/* (non-Javadoc)
-	 * @see com.server.model.gamelogic.State#getStateID()
+	/**
+	 * gets stateID
+	 * 
+	 * @return a string "sellitemstate"
 	 */
 	public String getStateID(){
 		return "SellItemState";
 	}
 	
-	/* (non-Javadoc)
-	 * @see com.server.model.gamelogic.State#doAction(com.server.model.gamelogic.Context)
+	/* 
 	 * set's up local variables and executes the action
 	 */
 	@Override

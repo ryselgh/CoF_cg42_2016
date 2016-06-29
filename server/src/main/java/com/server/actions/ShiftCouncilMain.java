@@ -10,7 +10,7 @@ import com.server.model.board.Councilor;
 import com.server.model.gamelogic.Game;
 import com.server.model.gamelogic.Player;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class ShiftCouncilMain.
  */
@@ -79,7 +79,7 @@ public class ShiftCouncilMain extends Action{
 		return new ActionReturn(true,"",null);
 	}
 	
-	/*
+	/**
 	 * Setter from dto.
 	 * 
 	 * @param DTO the DTOactionShitCouncilDTO

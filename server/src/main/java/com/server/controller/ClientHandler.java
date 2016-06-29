@@ -68,8 +68,8 @@ public class ClientHandler extends Observable implements Observer, Runnable{
 		this.lobby=l;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Runnable#run()
+	/* 
+	 * run method
 	 */
 	@Override
 	public void run() {
@@ -143,8 +143,8 @@ public class ClientHandler extends Observable implements Observer, Runnable{
 		return action;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.util.Observer#update(java.util.Observable, java.lang.Object)
+	/*
+	 * update method
 	 */
 	@Override
 	public void update(Observable o, Object arg) {//arg è nella forma TargetUserName_messaggio

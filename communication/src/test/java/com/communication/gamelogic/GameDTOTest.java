@@ -32,8 +32,6 @@ public class GameDTOTest {
 	GameDTO fixture;
 	PlayerDTO[] players;
 	ArrayList<PlayerDTO> player;
-	SpeedActionDTO sADTO;
-	MainActionDTO mADTO;
 	PlayerDTO player1;
 	PlayerDTO player2;
 	PlayerDTO player3;
@@ -232,22 +230,12 @@ public class GameDTOTest {
 		
 		player = new ArrayList<PlayerDTO>(Arrays.asList(players));
 		fixture = new GameDTO();
-		sADTO = new SpeedActionDTO();
-		sADTO.setActionCounter(1);
-		sADTO.setGame(fixture);
-		mADTO = new MainActionDTO();
-		mADTO.setActionCounter(1);
-		mADTO.setGame(fixture);
-		
-		
 		fixture.setActualPlayer(players[0]);
-		fixture.setMainAction(mADTO);
 		fixture.setMarket(new MarketDTO());
 		fixture.setPlayersQty(3);
 		fixture.setFinalTurn(true);
 		fixture.setPlayers(player);
 		fixture.setMap(new MapDTO());
-		fixture.setSpeedAction(sADTO);
 		fixture.setMapName("Default map1.xml");
 		fixture.setMarketCurrentPlayer("1");
 		
@@ -310,16 +298,7 @@ public class GameDTOTest {
 		assertEquals(6, result);
 	}
 
-	@Test
-	public void testGetMainAction()
-		throws Exception {
-		
-		MainActionDTO result = fixture.getMainAction();
-
-		assertNotNull(result);
-		assertEquals(1, result.getActionCounter());
-		assertEquals(fixture, result.getGame());
-	}
+	
 
 	@Test
 	public void testGetMap()
@@ -380,17 +359,7 @@ public class GameDTOTest {
 		assertEquals(3, result);
 	}
 
-	@Test
-	public void testGetSpeedAction()
-		throws Exception {
-		
-
-		SpeedActionDTO result = fixture.getSpeedAction();
-
-		assertNotNull(result);
-		assertEquals(1, result.getActionCounter());
-		assertEquals(fixture, result.getGame());
-	}
+	
 
 	@Test
 	public void testIsFinalTurnReturnsTrue()

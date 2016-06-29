@@ -29,8 +29,6 @@ public class Pawn
 	 * the construcor of the pawn
 	 * @param p the p
 	 * @param hexColor the hex color
-	 * @generated 
-	 * @ordered 
 	 */
 	
 	public Pawn(Player p, String hexColor) {
@@ -42,8 +40,6 @@ public class Pawn
 	/**
 	 *
 	 * @return the player
-	 * @generated 
-	 * @ordered 
 	 */
 	
 	public Player getPlayer() {

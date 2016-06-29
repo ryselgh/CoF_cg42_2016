@@ -22,10 +22,11 @@ public class Action {
 	
 	/**
 	 * Checks if is valid.
+	 * It's always True because some Actions don't need this check
 	 *
 	 * @return true, if is valid
 	 */
-	public boolean isValid(){return true;};//alcune non hanno bisogno di verifica quindi true di default
+	public boolean isValid(){return true;};
 	
 	/**
 	 * Sets the game.

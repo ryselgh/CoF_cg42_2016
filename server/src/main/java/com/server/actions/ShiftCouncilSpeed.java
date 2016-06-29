@@ -8,7 +8,7 @@ import com.server.model.board.Councilor;
 import com.server.model.gamelogic.Game;
 import com.server.model.gamelogic.Player;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class ShiftCouncilSpeed.
  */

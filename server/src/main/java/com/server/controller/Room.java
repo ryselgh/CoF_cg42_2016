@@ -6,7 +6,8 @@ import java.util.ArrayList;
 
 import com.communication.values.RoomState;
 
-// TODO: Auto-generated Javadoc
+
+
 /**
  * The Class Room.
  */
@@ -42,6 +43,7 @@ public class Room {
 	/** The thread instance of the game handler. */
 	private Thread threadGameHandler;
 	
+	/** The timer delay. */
 	private int timerDelay;
 	
 	/**
@@ -52,6 +54,7 @@ public class Room {
 	 * @param maxPlayers the max players
 	 * @param minPlayers the min players
 	 * @param lobby the lobby instance
+	 * @param timerDelay the timer delay
 	 */
 	public Room(String name, ClientHandler adm, int maxPlayers, int minPlayers, Lobby lobby, int timerDelay){
 		this.timerDelay = timerDelay;
@@ -184,10 +187,20 @@ public class Room {
 	
 	
 
+	/**
+	 * Gets the map name.
+	 *
+	 * @return the map name
+	 */
 	public String getMapName() {
 		return mapName;
 	}
 
+	/**
+	 * Sets the map name.
+	 *
+	 * @param mapName the new map name
+	 */
 	public void setMapName(String mapName) {
 		this.mapName = mapName;
 	}
@@ -251,10 +264,20 @@ public class Room {
 		return gameHandler;
 	}
 
+	/**
+	 * Gets the timer delay.
+	 *
+	 * @return the timer delay
+	 */
 	public int getTimerDelay() {
 		return timerDelay;
 	}
 
+	/**
+	 * Sets the timer delay.
+	 *
+	 * @param timerDelay the new timer delay
+	 */
 	public void setTimerDelay(int timerDelay) {
 		this.timerDelay = timerDelay;
 	}

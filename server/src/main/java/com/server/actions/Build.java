@@ -30,7 +30,7 @@ public class Build extends Action{
 	private ArrayList<String> errors;
 	
 	/** The disable. */
-	private boolean disable = false;//anche se questa funzione non da luogo ad errori che la disabilitano
+	private boolean disable = false;//in this method there are no errors that set disable true
 	
 	/**
 	 * Instantiates a new builds the.
@@ -44,8 +44,9 @@ public class Build extends Action{
 		errors = new ArrayList<String>();
 	}
 	
-	/* (non-Javadoc)
-	 * @see com.server.actions.Action#setGame(com.server.model.gamelogic.Game)
+	/**
+	 * sets the game
+	 * @param game the game to set
 	 */
 	public void setGame(Game game){
 		this.game = game;

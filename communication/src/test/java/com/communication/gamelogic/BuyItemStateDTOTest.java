@@ -5,8 +5,7 @@ import static org.junit.Assert.*;
 
 public class BuyItemStateDTOTest {
 	GameDTO gameDTO;
-	SpeedActionDTO sADTO;
-	MainActionDTO mADTO;
+	
 	
 	@Before
 	public void setUp()
@@ -14,15 +13,7 @@ public class BuyItemStateDTOTest {
 		
 		//all you need to test the methods
 		
-		sADTO = new SpeedActionDTO();
-		sADTO.setActionCounter(1);
-		sADTO.setGame(gameDTO);
-		mADTO = new MainActionDTO();
-		mADTO.setActionCounter(1);
-		mADTO.setGame(gameDTO);
-		gameDTO = new GameDTO();
-		gameDTO.setSpeedAction(sADTO);
-		gameDTO.setMainAction(mADTO);
+	gameDTO = new GameDTO();
 		
 	}
 	
@@ -48,10 +39,8 @@ public class BuyItemStateDTOTest {
 		assertEquals(null, result.getMap());
 		assertEquals(null, result.getMarket());
 		assertEquals(false, result.isFinalTurn());
-		assertEquals(mADTO, result.getMainAction());
 		assertEquals(null, result.getPlayers());
 		assertEquals(0, result.getPlayersQty());
-		assertEquals(sADTO, result.getSpeedAction());
 		assertEquals(null, result.getActualPlayer());
 	}
 

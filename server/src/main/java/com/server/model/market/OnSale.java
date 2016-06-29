@@ -3,14 +3,33 @@ package com.server.model.market ;
 
 import com.server.model.gamelogic.Player;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class OnSale.
+ */
 public class OnSale{
 
+	/** The seller. */
 	private Player seller;	
+	
+	/** The obj. */
 	protected static Object obj;
+	
+	/** The price. */
 	private int price;
+	
+	/** The uid. */
 	private String UID;
 
 
+	/**
+	 * Instantiates a new on sale.
+	 *
+	 * @param p the player
+	 * @param o the object
+	 * @param pr the price
+	 * @param UID the uid
+	 */
 	public OnSale(Player p, Object o, int pr, String UID) {
 		this.seller = p;
 		this.obj = o;
@@ -18,13 +37,31 @@ public class OnSale{
 		this.UID = UID;
 	}
 
+	/**
+	 * Instantiates a new on sale.
+	 */
 	public OnSale(){};
 
 	
+	/**
+	 * Obtain.
+	 *
+	 * @param buyer the buyer
+	 */
 	public void obtain(Player buyer){};
 	
+	/**
+	 * Gets the price.
+	 *
+	 * @return the price
+	 */
 	public int getPrice(){return 0;};
 	
+	/**
+	 * Prints the details.
+	 *
+	 * @return the string
+	 */
 	public String printDetails(){return "";};
 	
 	/*public boolean equalsDTO(OnSaleDTO osDTO){
@@ -64,6 +101,11 @@ public class OnSale{
 		return osDTO;
 	}*/
 	
+	/**
+	 * Gets the uid.
+	 *
+	 * @return the uid
+	 */
 	public String getUID(){ return this.UID;}
 
 }

@@ -33,26 +33,69 @@ import com.communication.values.RegionName;
 
 import java.io.IOException;
 
+
+/**
+ * The Class Map.
+ */
 public class Map {
 
+	/** The Constant EMPORIUMQTY. */
 	private static final int EMPORIUMQTY = 10;
+	
+	/** The Constant ASSISTQTY. */
 	private static final int ASSISTQTY = 50;
+	
+	/** The players. */
 	private Player[] players;
+	
+	/** The regions. */
 	private Region[] regions;//0 sea    1 hill     2 mountain
+	
+	/** The color groups. */
 	private ColorGroup[] colorGroups;
+	
+	/** The councilors. */
 	private ArrayList <Councilor> councilors;
+	
+	/** The balcony. */
 	private Balcony[] balcony;
+	
+	/** The assistants. */
 	private ArrayList<Assistant> assistants;
+	
+	/** The emporiums. */
 	private Emporium[] emporiums;
+	
+	/** The pawn. */
 	private Pawn[] pawn;
+	
+	/** The nobility track. */
 	private NobilityTrack nobilityTrack;
+	
+	/** The city. */
 	private City[] city;
+	
+	/** The politics deck. */
 	private PoliticsDeck politicsDeck;
+	
+	/** The king bonus. */
 	private ArrayList<Bonus> kingBonus;
+	
+	/** The permits deck. */
 	private PermitsDeck[] permitsDeck;
+	
+	/** The king. */
 	private King king;
+	
+	/** The logger. */
 	private Logger logger;
 	
+	/**
+	 * To dto.
+	 *
+	 * @param plsDTO the pls dto
+	 * @return the map dto
+	 */
 	public MapDTO toDTO(ArrayList<PlayerDTO> plsDTO){
 		MapDTO mapDTO = new MapDTO();
 		
@@ -120,10 +163,13 @@ public class Map {
 		
 		
 	}
+	
 	/**
-	 * @throws SAXException 
-	 * @throws IOException 
-	 * @throws ParserConfigurationException
+	 * Instantiates a new map.
+	 *
+	 * @param p the p
+	 * @param mapName the map name
+	 * @param rawMap the raw map
 	 */
 	
 	
@@ -137,6 +183,16 @@ public class Map {
 		}
 	}
 
+	/**
+	 * Import map.
+	 *
+	 * @param file the file
+	 * @param mapName the map name
+	 * @return the int
+	 * @throws ParserConfigurationException the parser configuration exception
+	 * @throws SAXException the SAX exception
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public int importMap(String file, String mapName) throws ParserConfigurationException, SAXException, IOException{
 		Importer reader = new Importer(file,mapName, this, players);
 		reader.startImport();
@@ -148,7 +204,7 @@ public class Map {
 		for(int i=0;i<colorGroups.length;i++)
 			if(bonusColori[i]!=null)
 				colorGroups[i].setBonus(new BonusCard(bonusColori[i]));	
-		setCity(reader.getCity()); //in questo metodo Importer accede al metodo Map.inserisciCittà per inserire le città (alla creazione) nelle regioni e nei cologroup, le cui istanze sono qui su Map perchè create non in questo metodo
+		setCity(reader.getCity()); //in this method Importer uses the  method Map.insertCity to insert the cities (at the creation) in regions and cologroups, wich istance are here (on Map) but they aren't created in this method 
 		setKing(reader.getKing());
 		nobilityTrack = reader.getNobilityTrack();
 		kingBonus = reader.getKingBonus();
@@ -163,10 +219,8 @@ public class Map {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
+	 * 
+	 *initialize map objects
 	 */
 
 	public void initializeMapObjects() {
@@ -180,7 +234,7 @@ public class Map {
 		}
 		Collections.shuffle(councilors);    	
 
-		//balconi
+		//balconies
 		balcony = new Balcony[4];
 		for (int i=0;i< balcony.length;i++) {
 			ArrayList <Councilor> toRet = new ArrayList <Councilor>();
@@ -194,27 +248,27 @@ public class Map {
 			balcony[i]=new Balcony(retArr);
 		}
 
-		//empori
+		//emporiums
 		emporiums = new Emporium[players.length * EMPORIUMQTY];
 		for (int i=0;i<players.length;i++) {
 			for(int k=0;k<10;k++)
 				emporiums[i*10 + k] = new Emporium(players[i]);
 		}
-		//BISOGNA PASSARLI A CIASCUN GIOCATORE -> Ci pensa Game.java usando il metodo getPlayerEmporiums
+		//Game.java using  getPlayerEmporiums method gives 10 emporiums to each player
 
-		//assistenti
+		//assistants
 		int assistNo=ASSISTQTY;
 		assistants = new ArrayList<Assistant>(assistNo);
 		for(int i=0;i<assistNo;i++)
 			assistants.add(new Assistant());
 
-		//regioni
+		//regions
 		regions = new Region[3];
 		regions[0]= new Region(RegionName.SEA);
 		regions[1]= new Region(RegionName.HILL);
 		regions[2]= new Region(RegionName.MOUNTAIN);
 
-		//color group
+		//color groups
 		colorGroups = new ColorGroup[5];
 		colorGroups[0]= new ColorGroup(CityColor.BLUE);
 		colorGroups[1]= new ColorGroup(CityColor.RED);
@@ -222,11 +276,19 @@ public class Map {
 		colorGroups[3]= new ColorGroup(CityColor.YELLOW);
 		colorGroups[4]= new ColorGroup(CityColor.PURPLE);
 		
-		//deck carte politica
+		//Politics deck 
 		politicsDeck = new PoliticsDeck();
 
 	}
 
+	/**
+	 * Insert city.
+	 *
+	 * @param c the city
+	 * @param regione the regione
+	 * @param color the color
+	 * @return the int
+	 */
 	public int insertCity(City c, String regione, String color)
 	{
 		if (regione.toLowerCase().equals("sea"))
@@ -236,7 +298,7 @@ public class Map {
 		else if (regione.toLowerCase().equals("mountain"))
 			regions[2].addCity(c);
 		else
-			return -1;//lancia errore
+			return -1;//throw error
 
 		switch (color.toLowerCase()) {
 		case "blue":  colorGroups[0].addCity(c);
@@ -249,23 +311,36 @@ public class Map {
 		break;
 		case "yellow":  colorGroups[4].addCity(c);
 		break;
-		default: return -2;//lancia errore
+		default: return -2;//throw error
 		}
 		return 1;
 	}
 	
+	/**
+	 * Gets the region.
+	 *
+	 * @param index the index
+	 * @return the region
+	 */
 	public Region getRegion(int index)
 	{
 		return regions[index];
 	}
 	
+	/**
+	 * Gets the color group.
+	 *
+	 * @param index the index
+	 * @return the color group
+	 */
 	public ColorGroup getColorGroup(int index)
 	{
 		return colorGroups[index];
 	}
 
 	/**
-	 * 
+	 * Gets the player emporiums.
+	 *
 	 * @param index the index that indicates which player is asking for emporiums
 	 * @return an ArrayList of 10 emporiums
 	 */
@@ -279,17 +354,30 @@ public class Map {
 		return emporiums;
 	}
 
+	/**
+	 * Gets the politics deck.
+	 *
+	 * @return the politics deck
+	 */
 	public PoliticsDeck getPoliticsDeck() {
 		return politicsDeck;
 	}
 
 	/**
+	 * Gets the assistants pool.
+	 *
 	 * @return an ArrayList of assistants
 	 */
 	public ArrayList<Assistant> getAssistantsPool() {
 		return assistants;
 	}
 
+	/**
+	 * Gets the assistant.
+	 *
+	 * @param qty the qty
+	 * @return the assistant
+	 */
 	public ArrayList<Assistant> getAssistant(int qty) {
 		ArrayList<Assistant> assistantsToGive = new ArrayList<Assistant>(qty);
 		for(int i=0;i<qty;i++){
@@ -299,6 +387,12 @@ public class Map {
 		return assistantsToGive;
 	}
 	
+	/**
+	 * Gets the permits deck.
+	 *
+	 * @param index the index
+	 * @return the permits deck
+	 */
 	public PermitsDeck getPermitsDeck(int index)
 	{
 		return permitsDeck[index];
@@ -312,6 +406,11 @@ public class Map {
 		return false;
 	}*/
 	
+	/**
+	 * Gets the available colors.
+	 *
+	 * @return the available colors
+	 */
 	public ArrayList<CouncilorColor> getAvailableColors()
 	{
 		ArrayList<CouncilorColor> availables = new ArrayList<CouncilorColor>();
@@ -320,8 +419,10 @@ public class Map {
 				availables.add(c.getCouncilorColor());
 		return availables;
 	}
+	
 	/**
-	 * Get a balcony from map
+	 * Get a balcony from map.
+	 *
 	 * @param selection 0: sea balcony, 1: hill balcony, 2: mountain balcony, 3: king balcony
 	 * @return the selected balcony
 	 */
@@ -330,6 +431,8 @@ public class Map {
 	}
 
 	/**
+	 * Gets the king.
+	 *
 	 * @return the king
 	 */
 	public King getKing() {
@@ -337,6 +440,8 @@ public class Map {
 	}
 
 	/**
+	 * Sets the king.
+	 *
 	 * @param king the king to set
 	 */
 	private void setKing(King king) {
@@ -344,6 +449,8 @@ public class Map {
 	}
 
 	/**
+	 * Gets the nobility track.
+	 *
 	 * @return the pawn
 	 */
 
@@ -358,6 +465,8 @@ public class Map {
 	}
 
 	/**
+	 * Sets the nobility track.
+	 *
 	 * @param nobilityTrack the nobilityTrack to set
 	 */
 	public void setNobilityTrack(NobilityTrack nobilityTrack) {
@@ -365,6 +474,8 @@ public class Map {
 	}
 
 	/**
+	 * Gets the king bonus.
+	 *
 	 * @return the kingBonus
 	 */
 	public ArrayList<Bonus> getKingBonus() {
@@ -372,6 +483,8 @@ public class Map {
 	}
 
 	/**
+	 * Sets the king bonus.
+	 *
 	 * @param kingBonus the kingBonus to set
 	 */
 	public void setKingBonus(ArrayList<Bonus> kingBonus) {
@@ -379,6 +492,8 @@ public class Map {
 	}
 
 	/**
+	 * Gets the city.
+	 *
 	 * @return the city
 	 */
 	public City[] getCity() {
@@ -386,6 +501,8 @@ public class Map {
 	}
 
 	/**
+	 * Sets the city.
+	 *
 	 * @param city the city to set
 	 */
 	public void setCity(City[] city) {
@@ -393,12 +510,20 @@ public class Map {
 	}
 
 	/**
+	 * Gets the councilors pool.
+	 *
 	 * @return the councilors
 	 */
 	public ArrayList<Councilor> getCouncilorsPool() {
 		return councilors;
 	}
 	
+	/**
+	 * Gets the councilor.
+	 *
+	 * @param col the col
+	 * @return the councilor
+	 */
 	public Councilor getCouncilor(CouncilorColor col)
 	{
 		for(Councilor c : councilors)

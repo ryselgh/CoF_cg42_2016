@@ -25,7 +25,7 @@ import com.server.model.gamelogic.Game;
 import com.server.model.gamelogic.SellItemState;
 import com.server.model.gamelogic.State;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class GameHandler.
  */
@@ -37,8 +37,6 @@ public class GameHandler extends Observable implements Runnable, Observer{
 	/** The game. */
 	private Game game;
 	
-	/** The raw map. */
-	private String rawMap;
 	
 	/** The context. */
 	private Context context;

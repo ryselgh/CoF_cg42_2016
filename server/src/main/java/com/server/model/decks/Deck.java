@@ -10,7 +10,7 @@ import java.util.Collections;
 /**
  * The Class Deck.
  */
-public abstract class Deck implements Iterator
+public abstract class Deck 
 {
 	
 	
@@ -39,23 +39,7 @@ public abstract class Deck implements Iterator
 	
 	
 
-	/* (non-Javadoc)
-	 * @see java.util.Iterator#hasNext()
-	 */
-	@Override
-	public boolean hasNext() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	/* (non-Javadoc)
-	 * @see java.util.Iterator#next()
-	 */
-	@Override
-	public Object next() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 	
 }
 

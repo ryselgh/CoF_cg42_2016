@@ -50,8 +50,8 @@ public class SocketAcceptor implements Runnable {
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Runnable#run()
+	/* 
+	 * run method
 	 */
 	@Override
 	public void run() {

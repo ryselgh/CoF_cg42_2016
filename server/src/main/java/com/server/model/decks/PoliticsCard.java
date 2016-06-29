@@ -6,7 +6,7 @@ import com.server.model.gamelogic.Player;
 
 
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class PoliticsCard.
  */
