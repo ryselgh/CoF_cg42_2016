@@ -266,6 +266,10 @@ public class ClientController extends Observable implements Observer, RMIClientC
 		}
 	}
 	
+	public void GUISendCommand(String cmd){
+		connection.sendToServer(cmd,null);
+	}
+	
 	/* (non-Javadoc)
 	 * @see java.util.Observer#update(java.util.Observable, java.lang.Object)
 	 * handles every input from other threads. Some of the RMI logic is in separate methods to make it callable from remote

@@ -530,6 +530,7 @@ public class InterfaceMiddleware extends Observable implements Observer{
 	}
 	@Override
 	public void update(Observable o, Object arg) {
+		if(o instanceof ClientController){
 		if(arg instanceof String){
 			if(((String) arg).equals("ABORT"))
 				this.abortFlag=true;
@@ -537,6 +538,14 @@ public class InterfaceMiddleware extends Observable implements Observer{
 				this.abortFlag=false;
 		}
 		
+		}
+		else if(o instanceof GUIController){
+			if(arg instanceof String){
+				String[] info = ((String) arg).split("_",2);
+				if(info[0].equals("LOBBYCMD"))
+					this.controller.GUISendCommand(info[1]);;
+			}
+		}
 	}
 
 }
