@@ -142,6 +142,11 @@ public class Lobby extends Observable implements Runnable, Observer, RMILobbyRem
 			sendToClient(sender, "lobby_msg-" + "Map successfully changed");
 			break;
 		case "\\NEWROOM":
+			r = findRoomByClient(sender);
+			if(r!=null){
+				sendToClient(sender, "lobby_msg-" + "Leave the room first");
+				return 0;
+			}
 			if(ret.length!=4){
 				sendToClient(sender, "lobby_msg-" + "Wrong input format");
 				break;
@@ -179,6 +184,10 @@ public class Lobby extends Observable implements Runnable, Observer, RMILobbyRem
 			return retg;
 		case "\\LEAVEROOM":
 			r = findRoomByClient(sender);
+			if(r==null){
+				sendToClient(sender, "lobby_msg-" + "You are in the lobby");
+				return 0;
+			}
 			this.clients.add(sender);
 			if(r.getPlayers().size()==1){
 				this.rooms.remove(r);
