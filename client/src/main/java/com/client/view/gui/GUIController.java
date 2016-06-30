@@ -136,7 +136,10 @@ public class GUIController extends Observable implements Observer{
 	@FXML
 	private Label lblRoomName1, lblRoomName2, lblRoomName3, lblRoomName4, lblRoomName5, lblRoomName6, lblRoomName7, lblRoomName8, lblPlMin1, lblPlMin2, lblPlMin3, lblPlMin4, lblPlMin5, lblPlMin6, lblPlMin7, lblPlMin8, lblPlMax1, lblPlMax2, lblPlMax3, lblPlMax4, lblPlMax5, lblPlMax6, lblPlMax7, lblPlMax8, lblMap1, lblMap2, lblMap3, lblMap4, lblMap5, lblMap6, lblMap7, lblMap8, lblPlayers1, lblPlayers2, lblPlayers3, lblPlayers4, lblPlayers5, lblPlayers6, lblPlayers7, lblPlayers8, lblStatus1, lblStatus2, lblStatus3, lblStatus4, lblStatus5, lblStatus6, lblStatus7, lblStatus8, lblErrorsLobby;
 	private boolean isInLobby = true;
-
+	private boolean isInRoom = false;
+	
+	
+	
 	/*GameWindow fields*///TODO
 
 	//TEST AREA
@@ -326,6 +329,7 @@ public class GUIController extends Observable implements Observer{
 		choiceMapLobby.setDisable(true);
 		btnCreateNewRoom.setDisable(true);
 		btnCancelNewRoom.setDisable(true);
+		btnJoinRoom.setDisable(true);
 		txtRoomName.setDisable(true);
 
 		playMainSoundtrack();
@@ -488,6 +492,9 @@ public class GUIController extends Observable implements Observer{
 		btnJoinRoom.setDisable(true);
 		btnLeaveRoom.setDisable(false);
 		btnStartGame.setDisable(false);
+		if(selectedRoom.equals(groupRoom1)){
+			lblRoomName.setText(lblRoomName1.getText());
+		}
 	}
 
 	public void cancelNewRoom() {
@@ -505,7 +512,6 @@ public class GUIController extends Observable implements Observer{
 	public void leaveRoom(){
 		invertAnimateRoom();
 		btnNewRoom.setDisable(false);
-		btnJoinRoom.setDisable(false);
 		btnLeaveRoom.setDisable(true);
 		btnStartGame.setDisable(true);
 	}
@@ -998,12 +1004,15 @@ public class GUIController extends Observable implements Observer{
 			if(selectedRoom == null){
 				highlightObject(room,true);
 				selectedRoom = room;
+				btnJoinRoom.setDisable(false);
 			}else if(!selectedRoom.equals(room)){
 				highlightObject(room,true);
 				highlightObject(selectedRoom,true);
 				selectedRoom = room;
+				btnJoinRoom.setDisable(false);
 			}else if(selectedRoom.equals(room)){
 				highlightObject(room,false);
+				btnJoinRoom.setDisable(true);
 				selectedRoom = null;
 			}
 		}
