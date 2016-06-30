@@ -22,7 +22,7 @@
             <Image backgroundLoading="true" url="@img/mainTitle.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="lobbyMask" fitHeight="768.0" fitWidth="1024.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="lobbyMask" fitHeight="768.0" fitWidth="1024.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@img/lobbyMask.png" />
          </image>
@@ -373,5 +373,10 @@
             <Font name="Segoe UI" size="24.0" />
          </font>
       </Label>
+      <TextArea fx:id="txtPlayersInLobby" editable="false" layoutX="784.0" layoutY="70.0" opacity="0.45" prefHeight="223.0" prefWidth="222.0" stylesheets="@application.css">
+         <font>
+            <Font name="Segoe UI" size="16.0" />
+         </font>
+      </TextArea>
    </children>
 </AnchorPane>

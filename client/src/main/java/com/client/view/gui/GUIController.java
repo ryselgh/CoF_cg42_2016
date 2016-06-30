@@ -39,6 +39,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
@@ -86,7 +87,7 @@ public class GUIController extends Observable implements Observer{
 	@FXML
 	private TextField txtNickname;
 	@FXML
-	private TextField txtPlayersInLobby;
+	private TextArea txtPlayersInLobby;
 	@FXML
 	private Button btnNewRoom;
 	@FXML
