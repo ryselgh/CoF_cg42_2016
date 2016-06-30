@@ -15,7 +15,8 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.concurrent.ArrayBlockingQueue;
-
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 
 import com.client.view.InterfaceMiddleware;
@@ -93,6 +94,8 @@ public class ClientController extends Observable implements Observer, RMIClientC
 	private boolean abortFlag=false;
 	
 	private boolean isGUI;
+	
+	private GUIController guiController;
 	/**
 	 * Instantiates a new client controller. Creates the cli object and starts a new console listener thread
 	 *
@@ -104,6 +107,7 @@ public class ClientController extends Observable implements Observer, RMIClientC
 		this.view = new InterfaceMiddleware(this, isGUI,this.cliQueue, guiController);
 		this.RMI = RMI;
 		this.isGUI = isGUI;
+		this.guiController = guiController;
 	}
 
 	public void setConnection(boolean isRMI){//metodo usato dalla gui, se si usa la cli la connessione viene passata nel costruttore e viene chiamato subito run()
@@ -116,6 +120,9 @@ public class ClientController extends Observable implements Observer, RMIClientC
 		}
 	}
 	
+	public void setGuiController(GUIController guiController){
+		this.guiController= guiController;
+	}
 	public void setConsoleListener(ConsoleListener consoleListener) {
 		this.consoleListener = consoleListener;
 	}
@@ -136,11 +143,19 @@ public class ClientController extends Observable implements Observer, RMIClientC
 			connection = new SocketConnection();
 			connection.addObserver(this);
 			this.addObserver(connection);
+			
+			
 			Thread sockConnThread = new Thread(connection);
 			sockConnThread.start();
+			
+			//ExecutorService executor = Executors.newFixedThreadPool(1);
+	        //executor.execute(connection);
+	            
 			view.printMsg("Connected to the server");
+			this.guiController.deleteObserver(this);
 			this.setChanged();
 			this.notifyObservers("SOCKETCONNECTION_STARTLISTEN");
+			this.guiController.addObserver(this);
 		} else {// se è RMI parte subito l'identificazione
 			int resp = 0;
 			String nick = "";
@@ -270,12 +285,12 @@ public class ClientController extends Observable implements Observer, RMIClientC
 				if(info[1].equals("RMI"))
 					this.RMI = true;
 				else{
+					this.RMI=false;
 					try {
 						this.start();
 					} catch (IOException | NotBoundException | AlreadyBoundException e) {
 						e.printStackTrace();
 					}
-					this.RMI=false;
 				}
 			}
 			return;

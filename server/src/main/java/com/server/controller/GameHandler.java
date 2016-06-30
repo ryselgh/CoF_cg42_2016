@@ -165,11 +165,6 @@ public class GameHandler extends Observable implements Runnable, Observer{
 	 * @param context the context
 	 */
 	public void changeState(Context context){
-		try {
-			updateClientGame();
-		} catch (RemoteException e) {
-			e.printStackTrace();
-		}
 		progressiveCounter++;
 		ClientHandler client = context.getClienthandler();
 		
@@ -208,6 +203,11 @@ public class GameHandler extends Observable implements Runnable, Observer{
 				changeState(context);
 				return;
 			}
+			try {
+				updateClientGame();
+			} catch (RemoteException e) {
+				e.printStackTrace();
+			}
 			newState.doAction(context);//avvio lo stato
 		}
 		else{//non è l'ultimo del giro
@@ -236,6 +236,11 @@ public class GameHandler extends Observable implements Runnable, Observer{
 			if(!nextPl.isActive()){//se il giocatore è disconnesso skippa il turno
 				changeState(context);
 				return;
+			}
+			try {
+				updateClientGame();
+			} catch (RemoteException e) {
+				e.printStackTrace();
 			}
 			context.getState().doAction(context);//avvio lo stato
 		}

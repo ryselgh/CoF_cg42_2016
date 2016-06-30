@@ -19,17 +19,25 @@ import javafx.stage.Stage;
 public class MainClient extends Application{
 	
 	private static GUIController guiController;
-
+	private static ClientController controller;
 	private static boolean isGui;
 	private static boolean RMI=false;
 	public static void main(String[] args) throws IOException, NotBoundException, AlreadyBoundException {
 		isGui = askInterface();
 		if(isGui){
-			launch(args);
+			new Thread(new Runnable() {
+			      @Override
+			      public void run() {
+			        Application.launch(MainClient.class);
+			      }
+			    }).start();
 		}
-		else
+		else{
 			RMI=isRMI();
-		
+		}
+		controller = new ClientController(RMI, isGui, guiController);//se l'utente seleziona GUI il controller riceve RMI=false di default, ma lui lo sa e non lo caga finchè la gui non gli passa il vero valore
+		if(!isGui)
+			controller.start();
 	}
 	
 	
@@ -74,16 +82,12 @@ public class MainClient extends Application{
 		    primaryStage.setResizable(false);
 			primaryStage.show();
 			guiController.initializeSC();
-			ClientController controller = new ClientController(RMI, isGui, guiController);//se l'utente seleziona GUI il controller riceve RMI=false di default, ma lui lo sa e non lo caga finchè la gui non gli passa il vero valore
+
 			controller.addObserver(guiController);
 			guiController.addObserver(controller);
-			if(!isGui)
-				controller.start();
-			else{
-				guiController.setClientController(controller);
-			}
+			controller.setGuiController(guiController);
 			
-		} catch (IOException | NotBoundException | AlreadyBoundException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 			return;
 		}

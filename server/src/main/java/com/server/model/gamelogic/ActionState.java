@@ -95,7 +95,7 @@ public class ActionState implements State {
 		LocalDateTime dateTime1= LocalDateTime.parse(start, formatter);
 		LocalDateTime dateTime2= LocalDateTime.parse(current, formatter);
 		long diffInSeconds = java.time.Duration.between(dateTime1, dateTime2).toMillis();
-		if(diffInSeconds>gamehandler.getTimerDelay()){
+		if(gamehandler.getTimerDelay()>0 && diffInSeconds>gamehandler.getTimerDelay()){
 			gamehandler.RMIAbortTurn();
 			return true;
 		}

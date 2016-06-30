@@ -49,15 +49,7 @@ public class SocketConnection extends Observable implements Observer, Runnable{
 	/**
 	 * Run. sets up socket and streams
 	 */
-	public void run(){
-			try {
-				socket = new Socket(IP_ADDRESS, PORT);
-				outputStream = new ObjectOutputStream(socket.getOutputStream());
-				inputStream = new ObjectInputStream(socket.getInputStream());
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-	}
+	
 
 	/**
 	 * Start listen. listening loop
@@ -98,6 +90,15 @@ public class SocketConnection extends Observable implements Observer, Runnable{
 
 	@Override
 	public void update(Observable o, Object arg) {
+		if(this.socket==null){
+			try {
+				socket = new Socket(IP_ADDRESS, PORT);
+				outputStream = new ObjectOutputStream(socket.getOutputStream());
+				inputStream = new ObjectInputStream(socket.getInputStream());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 		if(o instanceof ClientController){
 			if(arg instanceof String){
 				String[] info = ((String) arg).split("_");
@@ -108,6 +109,11 @@ public class SocketConnection extends Observable implements Observer, Runnable{
 				
 			}
 		}
+		
+	}
+
+	@Override
+	public void run() {
 		
 	}
 }
