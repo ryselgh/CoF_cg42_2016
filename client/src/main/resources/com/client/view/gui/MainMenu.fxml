@@ -17,294 +17,298 @@
             <Image backgroundLoading="true" url="@img/mainScreen.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="mainTitle" fitHeight="1.0" fitWidth="1.0" layoutX="512.0" layoutY="384.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="mainTitle" fitHeight="1.0" fitWidth="1.0" layoutX="512.0" layoutY="397.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image backgroundLoading="true" url="@img/mainTitle.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="lobbyMask" fitHeight="768.0" fitWidth="1024.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@img/lobbyMask.png" />
-         </image>
-      </ImageView>
-      <Group fx:id="groupRoom1" opacity="0.0">
+      <Group fx:id="lobbyGroup" opacity="0.0">
          <children>
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#7a7a7a89" height="70.0" layoutX="12.0" layoutY="64.0" stroke="BLACK" strokeType="INSIDE" width="755.0" />
-            <Label fx:id="lblPlayers1" layoutX="504.0" layoutY="83.0" text="2/8" textFill="WHITE">
-               <font>
-                  <Font name="Segoe UI" size="27.0" />
-               </font>
-            </Label>
-            <Label fx:id="lblPlMin1" layoutX="223.0" layoutY="83.0" text="2" textFill="WHITE">
-               <font>
-                  <Font name="Segoe UI" size="27.0" />
-               </font>
-            </Label>
-            <Label fx:id="lblMap1" layoutX="363.0" layoutY="83.0" text="Map2" textFill="WHITE">
-               <font>
-                  <Font name="Segoe UI" size="27.0" />
-               </font>
-            </Label>
-            <Label fx:id="lblStatus1" layoutX="629.0" layoutY="83.0" text="In game" textFill="WHITE">
-               <font>
-                  <Font name="Segoe UI" size="27.0" />
-               </font>
-            </Label>
-            <Label fx:id="lblRoomName1" layoutX="26.0" layoutY="83.0" text="RoomName1" textFill="WHITE">
-               <font>
-                  <Font name="Segoe UI" size="27.0" />
-               </font>
-            </Label>
-            <Label fx:id="lblPlMax1" layoutX="295.0" layoutY="83.0" text="8" textFill="WHITE">
-               <font>
-                  <Font name="Segoe UI" size="27.0" />
-               </font>
-            </Label>
-         </children>
-      </Group>
-      <Group fx:id="groupRoom2" layoutY="70.0" opacity="0.0">
-         <children>
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#7a7a7a89" height="70.0" layoutX="12.0" layoutY="65.0" stroke="BLACK" strokeType="INSIDE" width="755.0" />
-            <Label fx:id="lblPlayers2" layoutX="504.0" layoutY="84.0" text="2/8" textFill="WHITE">
-               <font>
-                  <Font name="Segoe UI" size="27.0" />
-               </font>
-            </Label>
-            <Label fx:id="lblPlMin2" layoutX="223.0" layoutY="84.0" text="2" textFill="WHITE">
-               <font>
-                  <Font name="Segoe UI" size="27.0" />
-               </font>
-            </Label>
-            <Label fx:id="lblMap2" layoutX="363.0" layoutY="84.0" text="Map2" textFill="WHITE">
-               <font>
-                  <Font name="Segoe UI" size="27.0" />
-               </font>
-            </Label>
-            <Label fx:id="lblStatus2" layoutX="629.0" layoutY="84.0" text="In game" textFill="WHITE">
-               <font>
-                  <Font name="Segoe UI" size="27.0" />
-               </font>
-            </Label>
-            <Label fx:id="lblRoomName2" layoutX="26.0" layoutY="84.0" text="RoomName2" textFill="WHITE">
-               <font>
-                  <Font name="Segoe UI" size="27.0" />
-               </font>
-            </Label>
-            <Label fx:id="lblPlMax2" layoutX="295.0" layoutY="84.0" text="8" textFill="WHITE">
-               <font>
-                  <Font name="Segoe UI" size="27.0" />
-               </font>
-            </Label>
-         </children>
-      </Group>
-      <Group fx:id="groupRoom3" layoutY="142.0" opacity="0.0">
-         <children>
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#7a7a7a89" height="70.0" layoutX="12.0" layoutY="64.0" stroke="BLACK" strokeType="INSIDE" width="755.0" />
-            <Label fx:id="lblPlayers3" layoutX="504.0" layoutY="83.0" text="2/8" textFill="WHITE">
-               <font>
-                  <Font name="Segoe UI" size="27.0" />
-               </font>
-            </Label>
-            <Label fx:id="lblPlMin3" layoutX="223.0" layoutY="83.0" text="2" textFill="WHITE">
-               <font>
-                  <Font name="Segoe UI" size="27.0" />
-               </font>
-            </Label>
-            <Label fx:id="lblMap3" layoutX="363.0" layoutY="83.0" text="Map2" textFill="WHITE">
-               <font>
-                  <Font name="Segoe UI" size="27.0" />
-               </font>
-            </Label>
-            <Label fx:id="lblStatus3" layoutX="629.0" layoutY="83.0" text="In game" textFill="WHITE">
-               <font>
-                  <Font name="Segoe UI" size="27.0" />
-               </font>
-            </Label>
-            <Label fx:id="lblRoomName3" layoutX="26.0" layoutY="83.0" text="RoomName3" textFill="WHITE">
-               <font>
-                  <Font name="Segoe UI" size="27.0" />
-               </font>
-            </Label>
-            <Label fx:id="lblPlMax3" layoutX="295.0" layoutY="83.0" text="8" textFill="WHITE">
-               <font>
-                  <Font name="Segoe UI" size="27.0" />
-               </font>
-            </Label>
-         </children>
-      </Group>
-      <Group fx:id="groupRoom4" layoutY="212.0" opacity="0.0">
-         <children>
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#7a7a7a89" height="70.0" layoutX="12.0" layoutY="65.0" stroke="BLACK" strokeType="INSIDE" width="755.0" />
-            <Label fx:id="lblPlayers4" layoutX="504.0" layoutY="84.0" text="2/8" textFill="WHITE">
-               <font>
-                  <Font name="Segoe UI" size="27.0" />
-               </font>
-            </Label>
-            <Label fx:id="lblPlMin4" layoutX="223.0" layoutY="84.0" text="2" textFill="WHITE">
-               <font>
-                  <Font name="Segoe UI" size="27.0" />
-               </font>
-            </Label>
-            <Label fx:id="lblMap4" layoutX="363.0" layoutY="84.0" text="Map2" textFill="WHITE">
-               <font>
-                  <Font name="Segoe UI" size="27.0" />
-               </font>
-            </Label>
-            <Label fx:id="lblStatus4" layoutX="629.0" layoutY="84.0" text="In game" textFill="WHITE">
-               <font>
-                  <Font name="Segoe UI" size="27.0" />
-               </font>
-            </Label>
-            <Label fx:id="lblRoomName4" layoutX="26.0" layoutY="84.0" text="RoomName4" textFill="WHITE">
-               <font>
-                  <Font name="Segoe UI" size="27.0" />
-               </font>
-            </Label>
-            <Label fx:id="lblPlMax4" layoutX="295.0" layoutY="84.0" text="8" textFill="WHITE">
-               <font>
-                  <Font name="Segoe UI" size="27.0" />
-               </font>
-            </Label>
-         </children>
-      </Group>
-      <Group fx:id="groupRoom5" layoutY="284.0" opacity="0.0">
-         <children>
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#7a7a7a89" height="70.0" layoutX="12.0" layoutY="64.0" stroke="BLACK" strokeType="INSIDE" width="755.0" />
-            <Label fx:id="lblPlayers5" layoutX="504.0" layoutY="83.0" text="2/8" textFill="WHITE">
-               <font>
-                  <Font name="Segoe UI" size="27.0" />
-               </font>
-            </Label>
-            <Label fx:id="lblPlMin5" layoutX="223.0" layoutY="83.0" text="2" textFill="WHITE">
-               <font>
-                  <Font name="Segoe UI" size="27.0" />
-               </font>
-            </Label>
-            <Label fx:id="lblMap5" layoutX="363.0" layoutY="83.0" text="Map2" textFill="WHITE">
-               <font>
-                  <Font name="Segoe UI" size="27.0" />
-               </font>
-            </Label>
-            <Label fx:id="lblStatus5" layoutX="629.0" layoutY="83.0" text="In game" textFill="WHITE">
-               <font>
-                  <Font name="Segoe UI" size="27.0" />
-               </font>
-            </Label>
-            <Label fx:id="lblRoomName5" layoutX="26.0" layoutY="83.0" text="RoomName5" textFill="WHITE">
-               <font>
-                  <Font name="Segoe UI" size="27.0" />
-               </font>
-            </Label>
-            <Label fx:id="lblPlMax5" layoutX="295.0" layoutY="83.0" text="8" textFill="WHITE">
-               <font>
-                  <Font name="Segoe UI" size="27.0" />
-               </font>
-            </Label>
-         </children>
-      </Group>
-      <Group fx:id="groupRoom6" layoutY="354.0" opacity="0.0">
-         <children>
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#7a7a7a89" height="70.0" layoutX="12.0" layoutY="65.0" stroke="BLACK" strokeType="INSIDE" width="755.0" />
-            <Label fx:id="lblPlayers6" layoutX="504.0" layoutY="84.0" text="2/8" textFill="WHITE">
-               <font>
-                  <Font name="Segoe UI" size="27.0" />
-               </font>
-            </Label>
-            <Label fx:id="lblPlMin6" layoutX="223.0" layoutY="84.0" text="2" textFill="WHITE">
-               <font>
-                  <Font name="Segoe UI" size="27.0" />
-               </font>
-            </Label>
-            <Label fx:id="lblMap6" layoutX="363.0" layoutY="84.0" text="Map2" textFill="WHITE">
-               <font>
-                  <Font name="Segoe UI" size="27.0" />
-               </font>
-            </Label>
-            <Label fx:id="lblStatus6" layoutX="629.0" layoutY="84.0" text="In game" textFill="WHITE">
-               <font>
-                  <Font name="Segoe UI" size="27.0" />
-               </font>
-            </Label>
-            <Label fx:id="lblRoomName6" layoutX="26.0" layoutY="84.0" text="RoomName6" textFill="WHITE">
-               <font>
-                  <Font name="Segoe UI" size="27.0" />
-               </font>
-            </Label>
-            <Label fx:id="lblPlMax6" layoutX="295.0" layoutY="84.0" text="8" textFill="WHITE">
-               <font>
-                  <Font name="Segoe UI" size="27.0" />
-               </font>
-            </Label>
-         </children>
-      </Group>
-      <Group fx:id="groupRoom7" layoutY="426.0" opacity="0.0">
-         <children>
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#7a7a7a89" height="70.0" layoutX="12.0" layoutY="64.0" stroke="BLACK" strokeType="INSIDE" width="755.0" />
-            <Label fx:id="lblPlayer7" layoutX="504.0" layoutY="83.0" text="2/8" textFill="WHITE">
-               <font>
-                  <Font name="Segoe UI" size="27.0" />
-               </font>
-            </Label>
-            <Label fx:id="lblPlMin7" layoutX="223.0" layoutY="83.0" text="2" textFill="WHITE">
-               <font>
-                  <Font name="Segoe UI" size="27.0" />
-               </font>
-            </Label>
-            <Label fx:id="lblMap7" layoutX="363.0" layoutY="83.0" text="Map2" textFill="WHITE">
-               <font>
-                  <Font name="Segoe UI" size="27.0" />
-               </font>
-            </Label>
-            <Label fx:id="lblStatus7" layoutX="629.0" layoutY="83.0" text="In game" textFill="WHITE">
-               <font>
-                  <Font name="Segoe UI" size="27.0" />
-               </font>
-            </Label>
-            <Label fx:id="lblRoomName7" layoutX="26.0" layoutY="83.0" text="RoomName7" textFill="WHITE">
-               <font>
-                  <Font name="Segoe UI" size="27.0" />
-               </font>
-            </Label>
-            <Label fx:id="lblPlMax7" layoutX="295.0" layoutY="83.0" text="8" textFill="WHITE">
-               <font>
-                  <Font name="Segoe UI" size="27.0" />
-               </font>
-            </Label>
-         </children>
-      </Group>
-      <Group fx:id="groupRoom8" layoutY="496.0" opacity="0.0">
-         <children>
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#7a7a7a89" height="70.0" layoutX="12.0" layoutY="65.0" stroke="BLACK" strokeType="INSIDE" width="755.0" />
-            <Label fx:id="lblPlayers8" layoutX="504.0" layoutY="84.0" text="2/8" textFill="WHITE">
-               <font>
-                  <Font name="Segoe UI" size="27.0" />
-               </font>
-            </Label>
-            <Label fx:id="lblPlMin8" layoutX="223.0" layoutY="84.0" text="2" textFill="WHITE">
-               <font>
-                  <Font name="Segoe UI" size="27.0" />
-               </font>
-            </Label>
-            <Label fx:id="lblMap8" layoutX="363.0" layoutY="84.0" text="Map2" textFill="WHITE">
-               <font>
-                  <Font name="Segoe UI" size="27.0" />
-               </font>
-            </Label>
-            <Label fx:id="lblStatus8" layoutX="629.0" layoutY="84.0" text="In game" textFill="WHITE">
-               <font>
-                  <Font name="Segoe UI" size="27.0" />
-               </font>
-            </Label>
-            <Label fx:id="lblRoomName8" layoutX="26.0" layoutY="84.0" text="RoomName8" textFill="WHITE">
-               <font>
-                  <Font name="Segoe UI" size="27.0" />
-               </font>
-            </Label>
-            <Label fx:id="lblPlMax8" layoutX="295.0" layoutY="84.0" text="8" textFill="WHITE">
-               <font>
-                  <Font name="Segoe UI" size="27.0" />
-               </font>
-            </Label>
+            <ImageView fx:id="lobbyMask" fitHeight="768.0" fitWidth="1024.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@img/lobbyMask.png" />
+               </image>
+            </ImageView>
+            <Group fx:id="groupRoom1" opacity="0.0">
+               <children>
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#7a7a7a89" height="70.0" layoutX="12.0" layoutY="64.0" stroke="BLACK" strokeType="INSIDE" width="755.0" />
+                  <Label fx:id="lblPlayers1" layoutX="504.0" layoutY="83.0" text="2/8" textFill="WHITE">
+                     <font>
+                        <Font name="Segoe UI" size="27.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblPlMin1" layoutX="223.0" layoutY="83.0" text="2" textFill="WHITE">
+                     <font>
+                        <Font name="Segoe UI" size="27.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblMap1" layoutX="355.0" layoutY="83.0" text="Map2" textFill="WHITE">
+                     <font>
+                        <Font name="Segoe UI" size="27.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblStatus1" layoutX="629.0" layoutY="89.0" text="WAITING_PLAYERS" textFill="WHITE">
+                     <font>
+                        <Font name="Segoe UI" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblRoomName1" layoutX="26.0" layoutY="83.0" text="RoomName1" textFill="WHITE">
+                     <font>
+                        <Font name="Segoe UI" size="27.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblPlMax1" layoutX="295.0" layoutY="83.0" text="8" textFill="WHITE">
+                     <font>
+                        <Font name="Segoe UI" size="27.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Group>
+            <Group fx:id="groupRoom8" layoutY="496.0" opacity="0.0">
+               <children>
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#7a7a7a89" height="70.0" layoutX="12.0" layoutY="65.0" stroke="BLACK" strokeType="INSIDE" width="755.0" />
+                  <Label fx:id="lblPlayers8" layoutX="504.0" layoutY="84.0" text="2/8" textFill="WHITE">
+                     <font>
+                        <Font name="Segoe UI" size="27.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblPlMin8" layoutX="223.0" layoutY="84.0" text="2" textFill="WHITE">
+                     <font>
+                        <Font name="Segoe UI" size="27.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblMap8" layoutX="355.0" layoutY="84.0" text="Map2" textFill="WHITE">
+                     <font>
+                        <Font name="Segoe UI" size="27.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblStatus8" layoutX="629.0" layoutY="90.0" text="In game" textFill="WHITE">
+                     <font>
+                        <Font name="Segoe UI" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblRoomName8" layoutX="26.0" layoutY="84.0" text="RoomName8" textFill="WHITE">
+                     <font>
+                        <Font name="Segoe UI" size="27.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblPlMax8" layoutX="295.0" layoutY="84.0" text="8" textFill="WHITE">
+                     <font>
+                        <Font name="Segoe UI" size="27.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Group>
+            <Group fx:id="groupRoom3" layoutY="142.0" opacity="0.0">
+               <children>
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#7a7a7a89" height="70.0" layoutX="12.0" layoutY="64.0" stroke="BLACK" strokeType="INSIDE" width="755.0" />
+                  <Label fx:id="lblPlayers3" layoutX="504.0" layoutY="83.0" text="2/8" textFill="WHITE">
+                     <font>
+                        <Font name="Segoe UI" size="27.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblPlMin3" layoutX="223.0" layoutY="83.0" text="2" textFill="WHITE">
+                     <font>
+                        <Font name="Segoe UI" size="27.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblMap3" layoutX="355.0" layoutY="83.0" text="Map2" textFill="WHITE">
+                     <font>
+                        <Font name="Segoe UI" size="27.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblStatus3" layoutX="629.0" layoutY="89.0" text="In game" textFill="WHITE">
+                     <font>
+                        <Font name="Segoe UI" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblRoomName3" layoutX="26.0" layoutY="83.0" text="RoomName3" textFill="WHITE">
+                     <font>
+                        <Font name="Segoe UI" size="27.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblPlMax3" layoutX="295.0" layoutY="83.0" text="8" textFill="WHITE">
+                     <font>
+                        <Font name="Segoe UI" size="27.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Group>
+            <Group fx:id="groupRoom2" layoutY="70.0" opacity="0.0">
+               <children>
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#7a7a7a89" height="70.0" layoutX="12.0" layoutY="65.0" stroke="BLACK" strokeType="INSIDE" width="755.0" />
+                  <Label fx:id="lblPlayers2" layoutX="504.0" layoutY="84.0" text="2/8" textFill="WHITE">
+                     <font>
+                        <Font name="Segoe UI" size="27.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblPlMin2" layoutX="223.0" layoutY="84.0" text="2" textFill="WHITE">
+                     <font>
+                        <Font name="Segoe UI" size="27.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblMap2" layoutX="355.0" layoutY="84.0" text="Map2" textFill="WHITE">
+                     <font>
+                        <Font name="Segoe UI" size="27.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblStatus2" layoutX="629.0" layoutY="90.0" text="In game" textFill="WHITE">
+                     <font>
+                        <Font name="Segoe UI" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblRoomName2" layoutX="26.0" layoutY="84.0" text="RoomName2" textFill="WHITE">
+                     <font>
+                        <Font name="Segoe UI" size="27.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblPlMax2" layoutX="295.0" layoutY="84.0" text="8" textFill="WHITE">
+                     <font>
+                        <Font name="Segoe UI" size="27.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Group>
+            <Group fx:id="groupRoom4" layoutY="212.0" opacity="0.0">
+               <children>
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#7a7a7a89" height="70.0" layoutX="12.0" layoutY="65.0" stroke="BLACK" strokeType="INSIDE" width="755.0" />
+                  <Label fx:id="lblPlayers4" layoutX="504.0" layoutY="84.0" text="2/8" textFill="WHITE">
+                     <font>
+                        <Font name="Segoe UI" size="27.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblPlMin4" layoutX="223.0" layoutY="84.0" text="2" textFill="WHITE">
+                     <font>
+                        <Font name="Segoe UI" size="27.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblMap4" layoutX="355.0" layoutY="84.0" text="Map2" textFill="WHITE">
+                     <font>
+                        <Font name="Segoe UI" size="27.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblStatus4" layoutX="629.0" layoutY="90.0" text="In game" textFill="WHITE">
+                     <font>
+                        <Font name="Segoe UI" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblRoomName4" layoutX="26.0" layoutY="84.0" text="RoomName4" textFill="WHITE">
+                     <font>
+                        <Font name="Segoe UI" size="27.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblPlMax4" layoutX="295.0" layoutY="84.0" text="8" textFill="WHITE">
+                     <font>
+                        <Font name="Segoe UI" size="27.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Group>
+            <Group fx:id="groupRoom7" layoutY="426.0" opacity="0.0">
+               <children>
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#7a7a7a89" height="70.0" layoutX="12.0" layoutY="64.0" stroke="BLACK" strokeType="INSIDE" width="755.0" />
+                  <Label fx:id="lblPlayer7" layoutX="504.0" layoutY="83.0" text="2/8" textFill="WHITE">
+                     <font>
+                        <Font name="Segoe UI" size="27.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblPlMin7" layoutX="223.0" layoutY="83.0" text="2" textFill="WHITE">
+                     <font>
+                        <Font name="Segoe UI" size="27.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblMap7" layoutX="355.0" layoutY="83.0" text="Map2" textFill="WHITE">
+                     <font>
+                        <Font name="Segoe UI" size="27.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblStatus7" layoutX="629.0" layoutY="89.0" text="In game" textFill="WHITE">
+                     <font>
+                        <Font name="Segoe UI" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblRoomName7" layoutX="26.0" layoutY="83.0" text="RoomName7" textFill="WHITE">
+                     <font>
+                        <Font name="Segoe UI" size="27.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblPlMax7" layoutX="295.0" layoutY="83.0" text="8" textFill="WHITE">
+                     <font>
+                        <Font name="Segoe UI" size="27.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Group>
+            <Group fx:id="groupRoom6" layoutY="354.0" opacity="0.0">
+               <children>
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#7a7a7a89" height="70.0" layoutX="12.0" layoutY="65.0" stroke="BLACK" strokeType="INSIDE" width="755.0" />
+                  <Label fx:id="lblPlayers6" layoutX="504.0" layoutY="84.0" text="2/8" textFill="WHITE">
+                     <font>
+                        <Font name="Segoe UI" size="27.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblPlMin6" layoutX="223.0" layoutY="84.0" text="2" textFill="WHITE">
+                     <font>
+                        <Font name="Segoe UI" size="27.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblMap6" layoutX="355.0" layoutY="84.0" text="Map2" textFill="WHITE">
+                     <font>
+                        <Font name="Segoe UI" size="27.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblStatus6" layoutX="629.0" layoutY="90.0" text="In game" textFill="WHITE">
+                     <font>
+                        <Font name="Segoe UI" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblRoomName6" layoutX="26.0" layoutY="84.0" text="RoomName6" textFill="WHITE">
+                     <font>
+                        <Font name="Segoe UI" size="27.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblPlMax6" layoutX="295.0" layoutY="84.0" text="8" textFill="WHITE">
+                     <font>
+                        <Font name="Segoe UI" size="27.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Group>
+            <Group fx:id="groupRoom5" layoutY="284.0" opacity="0.0">
+               <children>
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#7a7a7a89" height="70.0" layoutX="12.0" layoutY="64.0" stroke="BLACK" strokeType="INSIDE" width="755.0" />
+                  <Label fx:id="lblPlayers5" layoutX="504.0" layoutY="83.0" text="2/8" textFill="WHITE">
+                     <font>
+                        <Font name="Segoe UI" size="27.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblPlMin5" layoutX="223.0" layoutY="83.0" text="2" textFill="WHITE">
+                     <font>
+                        <Font name="Segoe UI" size="27.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblMap5" layoutX="355.0" layoutY="83.0" text="Map2" textFill="WHITE">
+                     <font>
+                        <Font name="Segoe UI" size="27.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblStatus5" layoutX="629.0" layoutY="89.0" text="In game" textFill="WHITE">
+                     <font>
+                        <Font name="Segoe UI" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblRoomName5" layoutX="26.0" layoutY="83.0" text="RoomName5" textFill="WHITE">
+                     <font>
+                        <Font name="Segoe UI" size="27.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblPlMax5" layoutX="295.0" layoutY="83.0" text="8" textFill="WHITE">
+                     <font>
+                        <Font name="Segoe UI" size="27.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Group>
          </children>
       </Group>
       <ImageView fx:id="roomMask" fitHeight="779.0" fitWidth="1024.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
@@ -312,6 +316,11 @@
             <Image url="@img/roomMask.png" />
          </image>
       </ImageView>
+      <Label fx:id="txtPlayersInLobby" alignment="TOP_LEFT" layoutX="788.0" layoutY="73.0" prefHeight="221.0" prefWidth="216.0" textFill="WHITE">
+         <font>
+            <Font name="Segoe UI" size="20.0" />
+         </font>
+      </Label>
       <TextField fx:id="txtNickname" alignment="CENTER" layoutX="397.0" layoutY="579.0" onAction="#checkNickname" onInputMethodTextChanged="#checkNickname" onKeyPressed="#checkNickname" onKeyReleased="#checkNickname" onKeyTyped="#checkNickname" prefHeight="38.0" prefWidth="232.0">
          <font>
             <Font size="20.0" />
@@ -373,10 +382,5 @@
             <Font name="Segoe UI" size="24.0" />
          </font>
       </Label>
-      <TextArea fx:id="txtPlayersInLobby" editable="false" layoutX="784.0" layoutY="70.0" opacity="0.45" prefHeight="223.0" prefWidth="222.0" stylesheets="@application.css">
-         <font>
-            <Font name="Segoe UI" size="16.0" />
-         </font>
-      </TextArea>
    </children>
 </AnchorPane>

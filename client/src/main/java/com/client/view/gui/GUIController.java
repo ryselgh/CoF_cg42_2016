@@ -87,7 +87,7 @@ public class GUIController extends Observable implements Observer{
 	@FXML
 	private TextField txtNickname;
 	@FXML
-	private TextArea txtPlayersInLobby;
+	private Label txtPlayersInLobby;
 	@FXML
 	private Button btnNewRoom;
 	@FXML
@@ -132,7 +132,7 @@ public class GUIController extends Observable implements Observer{
 	@FXML
 	private ImageView roomMask;
 	@FXML
-	private Group groupRoom1, groupRoom2, groupRoom3, groupRoom4, groupRoom5, groupRoom6, groupRoom7, groupRoom8;
+	private Group groupRoom1, groupRoom2, groupRoom3, groupRoom4, groupRoom5, groupRoom6, groupRoom7, groupRoom8, lobbyGroup;
 	@FXML
 	private Label lblRoomName1, lblRoomName2, lblRoomName3, lblRoomName4, lblRoomName5, lblRoomName6, lblRoomName7, lblRoomName8, lblPlMin1, lblPlMin2, lblPlMin3, lblPlMin4, lblPlMin5, lblPlMin6, lblPlMin7, lblPlMin8, lblPlMax1, lblPlMax2, lblPlMax3, lblPlMax4, lblPlMax5, lblPlMax6, lblPlMax7, lblPlMax8, lblMap1, lblMap2, lblMap3, lblMap4, lblMap5, lblMap6, lblMap7, lblMap8, lblPlayers1, lblPlayers2, lblPlayers3, lblPlayers4, lblPlayers5, lblPlayers6, lblPlayers7, lblPlayers8, lblStatus1, lblStatus2, lblStatus3, lblStatus4, lblStatus5, lblStatus6, lblStatus7, lblStatus8;
 
@@ -529,7 +529,7 @@ public class GUIController extends Observable implements Observer{
 		awayBtnNickname.setByY(300);
 		awayBtnNickname.play();
 
-		FadeTransition ft = new FadeTransition(Duration.millis(1000), lobbyMask);
+		FadeTransition ft = new FadeTransition(Duration.millis(1000), lobbyGroup);
 		ft.setFromValue(0.0);
 		ft.setToValue(1.0);
 
@@ -703,7 +703,7 @@ public class GUIController extends Observable implements Observer{
 
 	public void animateRoom(){
 
-		FadeTransition awayLobby = new FadeTransition(Duration.millis(1000), lobbyMask);
+		FadeTransition awayLobby = new FadeTransition(Duration.millis(1000), lobbyGroup);
 		awayLobby.setFromValue(1.0);
 		awayLobby.setToValue(0.0);
 		awayLobby.play();
@@ -752,7 +752,7 @@ public class GUIController extends Observable implements Observer{
 
 	public void invertAnimateRoom(){
 
-		FadeTransition returnLobby = new FadeTransition(Duration.millis(1000), lobbyMask);
+		FadeTransition returnLobby = new FadeTransition(Duration.millis(1000), lobbyGroup);
 		returnLobby.setFromValue(0.0);
 		returnLobby.setToValue(1.0);
 		returnLobby.play();
@@ -799,89 +799,120 @@ public class GUIController extends Observable implements Observer{
 	}
 
 	public void updateLobby(LobbyStatus ls){
-		ArrayList<String> freeClients = ls.getFreeClients();
-		ArrayList<RoomStatus> rooms = ls.getRooms();
-		for(String c: freeClients){
-			txtPlayersInLobby.appendText(c+"\n");
-		}
-		int i = 0;
-		for(RoomStatus r: rooms){
-			i++;
-			switch(i){
-			case 1:
-				groupRoom1.setOpacity(1.0);
-				lblRoomName1.setText(r.getRoomName());
-				lblMap1.setText(r.getMapName());
-				lblPlMax1.setText(Integer.toString(r.getMaxPlayers()));
-				lblPlMin1.setText(Integer.toString(r.getMinPlayers()));
-				lblPlayers1.setText(Integer.toString(r.getPlayers().size())+"/"+Integer.toString(r.getMaxPlayers()));
-				lblStatus1.setText(r.getRoomStatus().toString());
-				break;
-			case 2:
-				groupRoom2.setOpacity(1.0);
-				lblRoomName2.setText(r.getRoomName());
-				lblMap2.setText(r.getMapName());
-				lblPlMax2.setText(Integer.toString(r.getMaxPlayers()));
-				lblPlMin2.setText(Integer.toString(r.getMinPlayers()));
-				lblPlayers2.setText(Integer.toString(r.getPlayers().size())+"/"+Integer.toString(r.getMaxPlayers()));
-				lblStatus2.setText(r.getRoomStatus().toString());
-				break;
-			case 3:
-				groupRoom3.setOpacity(1.0);
-				lblRoomName3.setText(r.getRoomName());
-				lblMap3.setText(r.getMapName());
-				lblPlMax3.setText(Integer.toString(r.getMaxPlayers()));
-				lblPlMin3.setText(Integer.toString(r.getMinPlayers()));
-				lblPlayers3.setText(Integer.toString(r.getPlayers().size())+"/"+Integer.toString(r.getMaxPlayers()));
-				lblStatus3.setText(r.getRoomStatus().toString());
-				break;
-			case 4:
-				groupRoom4.setOpacity(1.0);
-				lblRoomName4.setText(r.getRoomName());
-				lblMap4.setText(r.getMapName());
-				lblPlMax4.setText(Integer.toString(r.getMaxPlayers()));
-				lblPlMin4.setText(Integer.toString(r.getMinPlayers()));
-				lblPlayers4.setText(Integer.toString(r.getPlayers().size())+"/"+Integer.toString(r.getMaxPlayers()));
-				lblStatus4.setText(r.getRoomStatus().toString());
-				break;
-			case 5:
-				groupRoom5.setOpacity(1.0);
-				lblRoomName5.setText(r.getRoomName());
-				lblMap5.setText(r.getMapName());
-				lblPlMax5.setText(Integer.toString(r.getMaxPlayers()));
-				lblPlMin5.setText(Integer.toString(r.getMinPlayers()));
-				lblPlayers5.setText(Integer.toString(r.getPlayers().size())+"/"+Integer.toString(r.getMaxPlayers()));
-				lblStatus5.setText(r.getRoomStatus().toString());
-				break;
-			case 6:
-				groupRoom6.setOpacity(1.0);
-				lblRoomName6.setText(r.getRoomName());
-				lblMap6.setText(r.getMapName());
-				lblPlMax6.setText(Integer.toString(r.getMaxPlayers()));
-				lblPlMin6.setText(Integer.toString(r.getMinPlayers()));
-				lblPlayers6.setText(Integer.toString(r.getPlayers().size())+"/"+Integer.toString(r.getMaxPlayers()));
-				lblStatus6.setText(r.getRoomStatus().toString());
-				break;
-			case 7:
-				groupRoom7.setOpacity(1.0);
-				lblRoomName7.setText(r.getRoomName());
-				lblMap7.setText(r.getMapName());
-				lblPlMax7.setText(Integer.toString(r.getMaxPlayers()));
-				lblPlMin7.setText(Integer.toString(r.getMinPlayers()));
-				lblPlayers7.setText(Integer.toString(r.getPlayers().size())+"/"+Integer.toString(r.getMaxPlayers()));
-				lblStatus7.setText(r.getRoomStatus().toString());
-				break;
-			case 8:
-				groupRoom8.setOpacity(1.0);
-				lblRoomName8.setText(r.getRoomName());
-				lblMap8.setText(r.getMapName());
-				lblPlMax8.setText(Integer.toString(r.getMaxPlayers()));
-				lblPlMin8.setText(Integer.toString(r.getMinPlayers()));
-				lblPlayers8.setText(Integer.toString(r.getPlayers().size())+"/"+Integer.toString(r.getMaxPlayers()));
-				lblStatus8.setText(r.getRoomStatus().toString());
-				break;
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				ArrayList<String> freeClients = ls.getFreeClients();
+				ArrayList<RoomStatus> rooms = ls.getRooms();
+				txtPlayersInLobby.setText("");
+				for(String c: freeClients){
+					txtPlayersInLobby.setText(txtPlayersInLobby.getText()+c+"\n");
+				}
+				int i = 0;
+				for(RoomStatus r: rooms){
+					i++;
+					switch(i){
+					case 1:
+						FadeTransition ft = new FadeTransition(Duration.millis(1000));
+						ft.setToValue(1.0);
+						ft.setNode(groupRoom1);
+						ft.play();
+						lblRoomName1.setText(r.getRoomName());
+						lblMap1.setText(r.getMapName());
+						lblPlMax1.setText(Integer.toString(r.getMaxPlayers()));
+						lblPlMin1.setText(Integer.toString(r.getMinPlayers()));
+						lblPlayers1.setText(Integer.toString(r.getPlayers().size())+"/"+Integer.toString(r.getMaxPlayers()));
+						lblStatus1.setText(r.getRoomStatus().toString());
+						break;
+					case 2:
+						FadeTransition ft2 = new FadeTransition(Duration.millis(1000));
+						ft2.setToValue(1.0);
+						ft2.setNode(groupRoom2);
+						ft2.play();
+						lblRoomName2.setText(r.getRoomName());
+						lblMap2.setText(r.getMapName());
+						lblPlMax2.setText(Integer.toString(r.getMaxPlayers()));
+						lblPlMin2.setText(Integer.toString(r.getMinPlayers()));
+						lblPlayers2.setText(Integer.toString(r.getPlayers().size())+"/"+Integer.toString(r.getMaxPlayers()));
+						lblStatus2.setText(r.getRoomStatus().toString());
+						break;
+					case 3:
+						FadeTransition ft3 = new FadeTransition(Duration.millis(1000));
+						ft3.setToValue(1.0);
+						ft3.setNode(groupRoom3);
+						ft3.play();
+						lblRoomName3.setText(r.getRoomName());
+						lblMap3.setText(r.getMapName());
+						lblPlMax3.setText(Integer.toString(r.getMaxPlayers()));
+						lblPlMin3.setText(Integer.toString(r.getMinPlayers()));
+						lblPlayers3.setText(Integer.toString(r.getPlayers().size())+"/"+Integer.toString(r.getMaxPlayers()));
+						lblStatus3.setText(r.getRoomStatus().toString());
+						break;
+					case 4:
+						FadeTransition ft4 = new FadeTransition(Duration.millis(1000));
+						ft4.setToValue(1.0);
+						ft4.setNode(groupRoom4);
+						ft4.play();
+						lblRoomName4.setText(r.getRoomName());
+						lblMap4.setText(r.getMapName());
+						lblPlMax4.setText(Integer.toString(r.getMaxPlayers()));
+						lblPlMin4.setText(Integer.toString(r.getMinPlayers()));
+						lblPlayers4.setText(Integer.toString(r.getPlayers().size())+"/"+Integer.toString(r.getMaxPlayers()));
+						lblStatus4.setText(r.getRoomStatus().toString());
+						break;
+					case 5:
+						FadeTransition ft5 = new FadeTransition(Duration.millis(1000));
+						ft5.setToValue(1.0);
+						ft5.setNode(groupRoom5);
+						ft5.play();
+						lblRoomName5.setText(r.getRoomName());
+						lblMap5.setText(r.getMapName());
+						lblPlMax5.setText(Integer.toString(r.getMaxPlayers()));
+						lblPlMin5.setText(Integer.toString(r.getMinPlayers()));
+						lblPlayers5.setText(Integer.toString(r.getPlayers().size())+"/"+Integer.toString(r.getMaxPlayers()));
+						lblStatus5.setText(r.getRoomStatus().toString());
+						break;
+					case 6:
+						FadeTransition ft6 = new FadeTransition(Duration.millis(1000));
+						ft6.setToValue(1.0);
+						ft6.setNode(groupRoom6);
+						ft6.play();
+						lblRoomName6.setText(r.getRoomName());
+						lblMap6.setText(r.getMapName());
+						lblPlMax6.setText(Integer.toString(r.getMaxPlayers()));
+						lblPlMin6.setText(Integer.toString(r.getMinPlayers()));
+						lblPlayers6.setText(Integer.toString(r.getPlayers().size())+"/"+Integer.toString(r.getMaxPlayers()));
+						lblStatus6.setText(r.getRoomStatus().toString());
+						break;
+					case 7:
+						FadeTransition ft7 = new FadeTransition(Duration.millis(1000));
+						ft7.setToValue(1.0);
+						ft7.setNode(groupRoom7);
+						ft7.play();
+						lblRoomName7.setText(r.getRoomName());
+						lblMap7.setText(r.getMapName());
+						lblPlMax7.setText(Integer.toString(r.getMaxPlayers()));
+						lblPlMin7.setText(Integer.toString(r.getMinPlayers()));
+						lblPlayers7.setText(Integer.toString(r.getPlayers().size())+"/"+Integer.toString(r.getMaxPlayers()));
+						lblStatus7.setText(r.getRoomStatus().toString());
+						break;
+					case 8:
+						FadeTransition ft8 = new FadeTransition(Duration.millis(1000));
+						ft8.setToValue(1.0);
+						ft8.setNode(groupRoom8);
+						ft8.play();
+						lblRoomName8.setText(r.getRoomName());
+						lblMap8.setText(r.getMapName());
+						lblPlMax8.setText(Integer.toString(r.getMaxPlayers()));
+						lblPlMin8.setText(Integer.toString(r.getMinPlayers()));
+						lblPlayers8.setText(Integer.toString(r.getPlayers().size())+"/"+Integer.toString(r.getMaxPlayers()));
+						lblStatus8.setText(r.getRoomStatus().toString());
+						break;
+					}
+				}
 			}
-		}
+		});
+		
 	}
 
 	public void updateActualRoom(RoomStatus rs){
