@@ -279,18 +279,23 @@ public class ClientController extends Observable implements Observer, RMIClientC
 					this.RMIGUILogin(info[1]);
 				else
 					connection.sendToServer("INSERTNICKNAME",info[1]);//sono sicuro che il server sia già in attesa
-				
 				}
 			else if(info[0].equals("CONNECTION")){
 				if(info[1].equals("RMI"))
 					this.RMI = true;
 				else{
 					this.RMI=false;
-					try {
-						this.start();
-					} catch (IOException | NotBoundException | AlreadyBoundException e) {
-						e.printStackTrace();
-					}
+					ClientController a = this;
+					new Thread(new Runnable() {
+						@Override
+						public void run() {
+							try {
+								a.start();
+							} catch (IOException | NotBoundException | AlreadyBoundException e) {
+								e.printStackTrace();
+							}
+						}
+					}).start();
 				}
 			}
 			return;
