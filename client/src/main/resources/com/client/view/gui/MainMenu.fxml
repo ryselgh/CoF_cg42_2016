@@ -335,52 +335,60 @@
       <Button fx:id="btnJoinRoom" layoutX="803.0" layoutY="470.0" mnemonicParsing="false" onAction="#joinRoom" prefHeight="38.0" prefWidth="188.0" stylesheets="@application.css" />
       <Button fx:id="btnLeaveRoom" layoutX="803.0" layoutY="570.0" mnemonicParsing="false" onAction="#leaveRoom" prefHeight="38.0" prefWidth="188.0" stylesheets="@application.css" />
       <Button fx:id="btnStartGame" layoutX="803.0" layoutY="670.0" mnemonicParsing="false" onAction="#startGame" prefHeight="38.0" prefWidth="188.0" stylesheets="@application.css" />
-      <Label fx:id="lblRoomName" layoutX="280.0" layoutY="151.0" opacity="0.0" text="lblRoomName" textFill="#d8e1e1">
-         <font>
-            <Font name="Segoe UI" size="24.0" />
-         </font>
-      </Label>
-      <Label fx:id="lblClients" layoutX="280.0" layoutY="238.0" opacity="0.0" text="lblClients" textFill="#d8e1e1">
-         <font>
-            <Font name="Segoe UI" size="24.0" />
-         </font>
-      </Label>
-      <Label fx:id="lblAdmin" layoutX="280.0" layoutY="324.0" opacity="0.0" text="lblAdmin" textFill="#d8e1e1">
-         <font>
-            <Font name="Segoe UI" size="24.0" />
-         </font>
-      </Label>
-      <Label fx:id="lblMaxPl" layoutX="281.0" layoutY="498.0" opacity="0.0" text="lblMaxPl" textFill="#d8e1e1">
-         <font>
-            <Font name="Segoe UI" size="24.0" />
-         </font>
-      </Label>
-      <Label fx:id="lblMinPl" layoutX="281.0" layoutY="411.0" opacity="0.0" text="lblMinPl" textFill="#d8e1e1">
-         <font>
-            <Font name="Segoe UI" size="24.0" />
-         </font>
-      </Label>
-      <Label fx:id="lblMap" layoutX="281.0" layoutY="584.0" opacity="0.0" text="lblMap" textFill="#d8e1e1">
-         <font>
-            <Font name="Segoe UI" size="24.0" />
-         </font>
-      </Label>
-      <ImageView fx:id="formNewRoom" fitHeight="345.0" fitWidth="456.0" layoutX="196.0" layoutY="258.0" onMouseMoved="#checkCreateRoom" opacity="0.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@img/NewRoomForm.png" />
-         </image>
-      </ImageView>
-      <TextField fx:id="txtRoomName" layoutX="388.0" layoutY="343.0" onAction="#checkCreateRoom" onInputMethodTextChanged="#checkCreateRoom" onKeyPressed="#checkCreateRoom" onKeyReleased="#checkCreateRoom" onKeyTyped="#checkCreateRoom" opacity="0.0" prefHeight="25.0" prefWidth="188.0" />
-      <ChoiceBox fx:id="choiceMinPl" layoutX="388.0" layoutY="378.0" onMouseMoved="#checkCreateRoom" opacity="0.0" prefHeight="25.0" prefWidth="56.0" />
-      <ChoiceBox fx:id="choiceMaxPl" layoutX="388.0" layoutY="412.0" onMouseMoved="#checkCreateRoom" opacity="0.0" prefHeight="25.0" prefWidth="56.0" />
-      <ChoiceBox fx:id="choiceMapLobby" layoutX="388.0" layoutY="446.0" onMouseClicked="#checkCreateRoom" onMouseMoved="#checkCreateRoom" opacity="0.0" prefHeight="25.0" prefWidth="118.0" />
-      <Button fx:id="btnCreateNewRoom" layoutX="223.0" layoutY="531.0" mnemonicParsing="false" onAction="#createNewRoom" opacity="0.0" prefHeight="38.0" prefWidth="188.0" stylesheets="@application.css" />
-      <Button fx:id="btnCancelNewRoom" layoutX="441.0" layoutY="531.0" mnemonicParsing="false" onAction="#cancelNewRoom" opacity="0.0" prefHeight="38.0" prefWidth="188.0" stylesheets="@application.css" />
-      <TextField fx:id="txtTimer" layoutX="388.0" layoutY="480.0" opacity="0.0" prefHeight="25.0" prefWidth="64.0" promptText="(seconds)" />
-      <Label fx:id="lblTimer" layoutX="280.0" layoutY="670.0" opacity="0.0" text="Disabled" textFill="#d8e1e1">
-         <font>
-            <Font name="Segoe UI" size="24.0" />
-         </font>
-      </Label>
+      <Group fx:id="roomTxtGroup">
+         <children>
+            <Label fx:id="lblMaxPl" layoutX="281.0" layoutY="498.0" opacity="0.0" text="lblMaxPl" textFill="#d8e1e1">
+               <font>
+                  <Font name="Segoe UI" size="24.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblAdmin" layoutX="280.0" layoutY="324.0" opacity="0.0" text="lblAdmin" textFill="#d8e1e1">
+               <font>
+                  <Font name="Segoe UI" size="24.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblRoomName" layoutX="280.0" layoutY="151.0" opacity="0.0" text="lblRoomName" textFill="#d8e1e1">
+               <font>
+                  <Font name="Segoe UI" size="24.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblMap" layoutX="281.0" layoutY="584.0" opacity="0.0" text="lblMap" textFill="#d8e1e1">
+               <font>
+                  <Font name="Segoe UI" size="24.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblMinPl" layoutX="281.0" layoutY="411.0" opacity="0.0" text="lblMinPl" textFill="#d8e1e1">
+               <font>
+                  <Font name="Segoe UI" size="24.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblClients" layoutX="280.0" layoutY="238.0" opacity="0.0" text="lblClients" textFill="#d8e1e1">
+               <font>
+                  <Font name="Segoe UI" size="24.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblTimer" layoutX="280.0" layoutY="670.0" opacity="0.0" text="Disabled" textFill="#d8e1e1">
+               <font>
+                  <Font name="Segoe UI" size="24.0" />
+               </font>
+            </Label>
+         </children>
+      </Group>
+      <Group fx:id="newFormGroup">
+         <children>
+            <ImageView fx:id="formNewRoom" fitHeight="345.0" fitWidth="456.0" layoutX="196.0" layoutY="258.0" onMouseMoved="#checkCreateRoom" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@img/NewRoomForm.png" />
+               </image>
+            </ImageView>
+            <ChoiceBox fx:id="choiceMaxPl" layoutX="388.0" layoutY="412.0" onMouseMoved="#checkCreateRoom" opacity="0.0" prefHeight="25.0" prefWidth="56.0" />
+            <Button fx:id="btnCreateNewRoom" layoutX="223.0" layoutY="531.0" mnemonicParsing="false" onAction="#createNewRoom" opacity="0.0" prefHeight="38.0" prefWidth="188.0" stylesheets="@application.css" />
+            <TextField fx:id="txtTimer" layoutX="388.0" layoutY="480.0" opacity="0.0" prefHeight="25.0" prefWidth="64.0" promptText="(seconds)" />
+            <ChoiceBox fx:id="choiceMinPl" layoutX="388.0" layoutY="378.0" onMouseMoved="#checkCreateRoom" opacity="0.0" prefHeight="25.0" prefWidth="56.0" />
+            <Button fx:id="btnCancelNewRoom" layoutX="441.0" layoutY="531.0" mnemonicParsing="false" onAction="#cancelNewRoom" opacity="0.0" prefHeight="38.0" prefWidth="188.0" stylesheets="@application.css" />
+            <TextField fx:id="txtRoomName" layoutX="388.0" layoutY="343.0" onAction="#checkCreateRoom" onInputMethodTextChanged="#checkCreateRoom" onKeyPressed="#checkCreateRoom" onKeyReleased="#checkCreateRoom" onKeyTyped="#checkCreateRoom" opacity="0.0" prefHeight="25.0" prefWidth="188.0" />
+            <ChoiceBox fx:id="choiceMapLobby" layoutX="388.0" layoutY="446.0" onMouseClicked="#checkCreateRoom" onMouseMoved="#checkCreateRoom" opacity="0.0" prefHeight="25.0" prefWidth="118.0" />
+         </children>
+      </Group>
    </children>
 </AnchorPane>

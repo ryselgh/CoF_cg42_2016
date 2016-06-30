@@ -132,7 +132,7 @@ public class GUIController extends Observable implements Observer{
 	@FXML
 	private ImageView roomMask;
 	@FXML
-	private Group groupRoom1, groupRoom2, groupRoom3, groupRoom4, groupRoom5, groupRoom6, groupRoom7, groupRoom8, lobbyGroup;
+	private Group groupRoom1, groupRoom2, groupRoom3, groupRoom4, groupRoom5, groupRoom6, groupRoom7, groupRoom8, lobbyGroup, selectedRoom, newFormGroup, roomTxtGroup;
 	@FXML
 	private Label lblRoomName1, lblRoomName2, lblRoomName3, lblRoomName4, lblRoomName5, lblRoomName6, lblRoomName7, lblRoomName8, lblPlMin1, lblPlMin2, lblPlMin3, lblPlMin4, lblPlMin5, lblPlMin6, lblPlMin7, lblPlMin8, lblPlMax1, lblPlMax2, lblPlMax3, lblPlMax4, lblPlMax5, lblPlMax6, lblPlMax7, lblPlMax8, lblMap1, lblMap2, lblMap3, lblMap4, lblMap5, lblMap6, lblMap7, lblMap8, lblPlayers1, lblPlayers2, lblPlayers3, lblPlayers4, lblPlayers5, lblPlayers6, lblPlayers7, lblPlayers8, lblStatus1, lblStatus2, lblStatus3, lblStatus4, lblStatus5, lblStatus6, lblStatus7, lblStatus8;
 
@@ -330,7 +330,19 @@ public class GUIController extends Observable implements Observer{
 
 		playMainSoundtrack();
 		animateNickname();
-
+		
+		roomMask.toBack();
+		newFormGroup.toBack();
+		roomTxtGroup.toBack();
+		
+		groupRoom1.addEventHandler(MouseEvent.MOUSE_CLICKED, new SelectRoomEvent());
+		groupRoom2.addEventHandler(MouseEvent.MOUSE_CLICKED, new SelectRoomEvent());
+		groupRoom3.addEventHandler(MouseEvent.MOUSE_CLICKED, new SelectRoomEvent());
+		groupRoom4.addEventHandler(MouseEvent.MOUSE_CLICKED, new SelectRoomEvent());
+		groupRoom5.addEventHandler(MouseEvent.MOUSE_CLICKED, new SelectRoomEvent());
+		groupRoom6.addEventHandler(MouseEvent.MOUSE_CLICKED, new SelectRoomEvent());
+		groupRoom7.addEventHandler(MouseEvent.MOUSE_CLICKED, new SelectRoomEvent());
+		groupRoom8.addEventHandler(MouseEvent.MOUSE_CLICKED, new SelectRoomEvent());
 	}
 
 	public void launchGW() throws Exception{
@@ -614,6 +626,8 @@ public class GUIController extends Observable implements Observer{
 	}
 
 	private void animateNewRoomForm() {
+		
+		newFormGroup.toFront();
 
 		FadeTransition ft = new FadeTransition(Duration.millis(1000), formNewRoom);
 		ft.setFromValue(0.0);
@@ -658,6 +672,8 @@ public class GUIController extends Observable implements Observer{
 	}
 
 	private void invertAnimateNewRoomForm() {
+		
+		newFormGroup.toBack();
 
 		FadeTransition ft = new FadeTransition(Duration.millis(1000), formNewRoom);
 		ft.setFromValue(1.0);
@@ -702,6 +718,15 @@ public class GUIController extends Observable implements Observer{
 	}
 
 	public void animateRoom(){
+		
+		roomMask.toFront();
+		lobbyGroup.toFront();
+		btnCancelNewRoom.toFront();
+		btnNewRoom.toFront();
+		btnLeaveRoom.toFront();
+		btnJoinRoom.toFront();
+		btnStartGame.toFront();
+		roomTxtGroup.toFront();
 
 		FadeTransition awayLobby = new FadeTransition(Duration.millis(1000), lobbyGroup);
 		awayLobby.setFromValue(1.0);
@@ -751,6 +776,9 @@ public class GUIController extends Observable implements Observer{
 
 
 	public void invertAnimateRoom(){
+
+		roomMask.toBack();
+		roomTxtGroup.toBack();
 
 		FadeTransition returnLobby = new FadeTransition(Duration.millis(1000), lobbyGroup);
 		returnLobby.setFromValue(0.0);
@@ -805,6 +833,33 @@ public class GUIController extends Observable implements Observer{
 				ArrayList<String> freeClients = ls.getFreeClients();
 				ArrayList<RoomStatus> rooms = ls.getRooms();
 				txtPlayersInLobby.setText("");
+				for(int i = rooms.size();i<=8;i++)
+					switch(i){
+						case 1:
+							groupRoom1.setOpacity(0.0);
+							break;
+						case 2:
+							groupRoom2.setOpacity(0.0);
+							break;
+						case 3:
+							groupRoom3.setOpacity(0.0);
+							break;
+						case 4:
+							groupRoom4.setOpacity(0.0);
+							break;
+						case 5:
+							groupRoom5.setOpacity(0.0);
+							break;
+						case 6:
+							groupRoom6.setOpacity(0.0);
+							break;
+						case 7:
+							groupRoom7.setOpacity(0.0);
+							break;
+						case 8:
+							groupRoom8.setOpacity(0.0);
+							break;
+					}
 				for(String c: freeClients){
 					txtPlayersInLobby.setText(txtPlayersInLobby.getText()+c+"\n");
 				}
@@ -924,6 +979,24 @@ public class GUIController extends Observable implements Observer{
 		lblAdmin.setText(rs.getAdminName());
 		if(rs.getTimerDelay()!=0)
 			lblTimer.setText(Integer.toString(rs.getTimerDelay())+" sec");
+	}
+	
+	private class SelectRoomEvent implements EventHandler<Event>{
+		@Override
+		public void handle(Event e) {
+			Group room = ((Group)(e.getSource()));
+			if(selectedRoom == null){
+				highlightObject(room,true);
+				selectedRoom = room;
+			}else if(!selectedRoom.equals(room)){
+				highlightObject(room,true);
+				highlightObject(selectedRoom,true);
+				selectedRoom = room;
+			}else if(selectedRoom.equals(room)){
+				highlightObject(room,false);
+				selectedRoom = null;
+			}
+		}
 	}
 	
 	
@@ -1371,7 +1444,7 @@ public class GUIController extends Observable implements Observer{
 		dropCouncilor(councToDragWhite);
 	}
 
-	private void highlightObject(ImageView obj, boolean set){
+	private void highlightObject(Node obj, boolean set){
 		if(set)
 			obj.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(255,255,255,0.9), 5, 0.64, 0, 0);");
 		else
