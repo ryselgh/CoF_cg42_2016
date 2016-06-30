@@ -519,18 +519,7 @@ public class InterfaceMiddleware extends Observable implements Observer{
 	
 	public String getUsername() {
 		if (isGUI) {
-			String uName = null;
-			do{ 
-				uName=gui.getUserName(); 
-				try {
-					Thread.sleep(100);
-				} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}}
-			while(uName==null);
-			return uName;
-			
+			return null;
 		} else
 			return this.CLIgetUserName();
 	}

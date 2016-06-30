@@ -1629,7 +1629,7 @@ public void invertAnimateRoom(){
 		if(arg0 instanceof ClientController){
 			if(arg1 instanceof String){
 				String[] info = ((String) arg1).split("_");
-				if(info[0]!="GUI"){return;}
+				if(!info[0].equals("GUI")){return;}
 				if(info[1].equals("LOGINSUCCESS"))
 					this.animateLobby();
 				

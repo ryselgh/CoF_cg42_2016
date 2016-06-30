@@ -152,10 +152,8 @@ public class ClientController extends Observable implements Observer, RMIClientC
 	        //executor.execute(connection);
 	            
 			view.printMsg("Connected to the server");
-			this.guiController.deleteObserver(this);
 			this.setChanged();
 			this.notifyObservers("SOCKETCONNECTION_STARTLISTEN");
-			this.guiController.addObserver(this);
 		} else {// se è RMI parte subito l'identificazione
 			int resp = 0;
 			String nick = "";
@@ -296,6 +294,7 @@ public class ClientController extends Observable implements Observer, RMIClientC
 							}
 						}
 					}).start();
+					
 				}
 			}
 			return;
