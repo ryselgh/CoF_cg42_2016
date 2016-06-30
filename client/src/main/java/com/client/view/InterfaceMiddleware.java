@@ -400,7 +400,8 @@ public class InterfaceMiddleware extends Observable implements Observer{
 
 	public void updateLobby(LobbyStatus lobbyStatus) {
 		if (isGUI) {
-
+			this.setChanged();
+			this.notifyObservers(lobbyStatus);
 		} else
 			this.CLIupdateLobby(lobbyStatus);
 	}

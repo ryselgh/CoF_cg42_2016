@@ -122,6 +122,8 @@ public class ClientController extends Observable implements Observer, RMIClientC
 	
 	public void setGuiController(GUIController guiController){
 		this.guiController= guiController;
+		this.guiController.addObserver(view);
+		this.view.addObserver(guiController);
 	}
 	public void setConsoleListener(ConsoleListener consoleListener) {
 		this.consoleListener = consoleListener;

@@ -9,6 +9,7 @@ import java.util.Observer;
 import java.util.Random;
 
 import com.client.controller.ClientController;
+import com.client.view.InterfaceMiddleware;
 import com.communication.LobbyStatus;
 import com.communication.RoomStatus;
 import com.communication.board.BonusDTO;
@@ -1729,8 +1730,13 @@ public class GUIController extends Observable implements Observer{
 				if(!info[0].equals("GUI")){return;}
 				if(info[1].equals("LOGINSUCCESS"))
 					this.animateLobby();
-
-
+				
+			}
+			
+		}
+		else if(arg0 instanceof InterfaceMiddleware){
+			if(arg1 instanceof LobbyStatus){
+				this.updateLobby((LobbyStatus) arg1);
 			}
 		}
 

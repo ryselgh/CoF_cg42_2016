@@ -348,7 +348,7 @@ public class Lobby extends Observable implements Runnable, Observer, RMILobbyRem
 			for(ClientHandler ch : r.getPlayers())
 				roomPlayers.add(ch.getUserName());
 			rooms.add(new RoomStatus(r.getName(),r.getAdmin().getUserName(),
-										r.getMinPlayers(),r.getMaxPlayers(), roomPlayers, r.getMapName(), r.getTimerDelay()));}
+										r.getMinPlayers(),r.getMaxPlayers(), roomPlayers, r.getMapName(), r.getTimerDelay(), r.getState()));}
 		return new LobbyStatus(freeClients,rooms);
 	}
 	
