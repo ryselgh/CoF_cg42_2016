@@ -3,6 +3,8 @@ package com.communication;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import com.communication.values.RoomState;
+
 public class RoomStatus implements Serializable{
 	/**
 	 * 
@@ -13,8 +15,9 @@ public class RoomStatus implements Serializable{
 	private ArrayList<String> players;
 	private String mapName;
 	private int timerDelay;
+	private RoomState state;
 	
-	public RoomStatus(String rn,String an, int minpl, int maxpl, ArrayList<String> players, String mapName,int timerDelay){
+	public RoomStatus(String rn,String an, int minpl, int maxpl, ArrayList<String> players, String mapName,int timerDelay, RoomState state){
 		this.players = players;
 		this.roomName = rn;
 		this.adminName = an;
@@ -22,6 +25,7 @@ public class RoomStatus implements Serializable{
 		this.maxPlayers = maxpl;
 		this.mapName = mapName;
 		this.timerDelay = timerDelay;
+		this.state = state;
 	}
 
 	public int getMinPlayers() {
@@ -52,6 +56,8 @@ public class RoomStatus implements Serializable{
 		return timerDelay;
 	}
 	
-	
+	public RoomState getRoomStatus(){
+		return state;
+	}
 	
 }

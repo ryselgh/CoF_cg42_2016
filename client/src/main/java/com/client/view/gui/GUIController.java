@@ -9,6 +9,8 @@ import java.util.Observer;
 import java.util.Random;
 
 import com.client.controller.ClientController;
+import com.communication.LobbyStatus;
+import com.communication.RoomStatus;
 import com.communication.board.BonusDTO;
 import com.communication.board.BonusTokenDTO;
 import com.communication.decks.PermitsCardDTO;
@@ -57,17 +59,17 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class GUIController extends Observable implements Observer{
-	
+
 	private FXMLLoader loader;
-	
+
 	/*SelectConnection fields*///TODO
 	private ObservableList<String> connectionList = FXCollections.observableArrayList("Socket","RMI");
-	
+
 	@FXML
 	private ChoiceBox<String> connectionChoice;
 	@FXML
 	private Button btnLaunch;
-	
+
 	/*MainMenu (Lobby) fields*///TODO
 	private MediaPlayer mediaPlayer = null;
 	@FXML
@@ -132,9 +134,9 @@ public class GUIController extends Observable implements Observer{
 	@FXML
 	private Label lblRoomName1, lblRoomName2, lblRoomName3, lblRoomName4, lblRoomName5, lblRoomName6, lblRoomName7, lblRoomName8, lblPlMin1, lblPlMin2, lblPlMin3, lblPlMin4, lblPlMin5, lblPlMin6, lblPlMin7, lblPlMin8, lblPlMax1, lblPlMax2, lblPlMax3, lblPlMax4, lblPlMax5, lblPlMax6, lblPlMax7, lblPlMax8, lblMap1, lblMap2, lblMap3, lblMap4, lblMap5, lblMap6, lblMap7, lblMap8, lblPlayers1, lblPlayers2, lblPlayers3, lblPlayers4, lblPlayers5, lblPlayers6, lblPlayers7, lblPlayers8, lblStatus1, lblStatus2, lblStatus3, lblStatus4, lblStatus5, lblStatus6, lblStatus7, lblStatus8;
 
-	
+
 	/*GameWindow fields*///TODO
-	
+
 	//TEST AREA
 	@FXML
 	private Button testButton, btnSetMap, btnPlaceEmporium, btnPrint;
@@ -149,8 +151,8 @@ public class GUIController extends Observable implements Observer{
 	@FXML
 	private ToggleButton btnToggleShift, btnToggleSatisfy;
 	//TEST AREA
-	
-	
+
+
 	@FXML
 	private ImageView map;
 	@FXML
@@ -200,37 +202,37 @@ public class GUIController extends Observable implements Observer{
 	private ArrayList<ImageView> selectedCards;
 	private ArrayList<ImageView> councilors;
 	private String kingPreviousLoc = null;
-	
+
 	//istanza del ClientController, a cui passa tipoConnessione e userName
 	private ClientController clientController;
-	
+
 	//istanza dell'username da gettare
 	private String userName=null;
-	
-	
+
+
 	public void setClientController(ClientController c){
 		this.clientController=c;
 	}
-	
+
 	public void updateLoader(FXMLLoader loader){
 		this.loader = loader;
 	}
-	
-	
+
+
 	/*SelectConnection methods*///TODO
-	
+
 	public void initializeSC(){
 		connectionChoice.setItems(connectionList);
 		connectionChoice.setValue("Socket");
 	}
-	
+
 	private void sendConnection(){
 		Platform.runLater(new Runnable() {
-			
+
 			@Override
 			public void run() {
 				// TODO Auto-generated method stub
-				
+
 			}
 		});
 	}
@@ -243,7 +245,7 @@ public class GUIController extends Observable implements Observer{
 			this.setChanged();
 			this.notifyObservers("CONNECTION_RMI");
 		}
-		
+
 		//Launch client
 		Stage launcher = (Stage) btnLaunch.getScene().getWindow();
 		Stage primaryStage = new Stage();
@@ -257,44 +259,44 @@ public class GUIController extends Observable implements Observer{
 		scene.setCursor(new ImageCursor(image));
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("Council of Four");
-	    primaryStage.setResizable(false);
-	    primaryStage.setMaxHeight(795);
-	    primaryStage.setMaxWidth(1024);
+		primaryStage.setResizable(false);
+		primaryStage.setMaxHeight(795);
+		primaryStage.setMaxWidth(1024);
 		initializeMM();
 		primaryStage.show();
 		launcher.close();
-		
+
 	}
-	
-	
-	
+
+
+
 	/*MainMenu methods*///TODO
-	
+
 	public void initializeMM(){
 		Label txtSubmit = new Label("Submit");
 		txtSubmit.setStyle("-fx-font-size: 10pt; -fx-font-family: \"PerryGothic\"; -fx-text-fill: #A11212; -fx-effect: dropshadow(three-pass-box, rgba(209,181,82,0.9), 2, 0.8, 0, 0);");
 		btnNickname.setGraphic(txtSubmit);
-		
+
 		Label txtNewRoom = new Label("New Room");
 		txtNewRoom.setStyle("-fx-font-size: 10pt; -fx-font-family: \"PerryGothic\"; -fx-text-fill: #A11212; -fx-effect: dropshadow(three-pass-box, rgba(209,181,82,0.9), 2, 0.8, 0, 0);");
 		btnNewRoom.setGraphic(txtNewRoom);
-		
+
 		Label txtJoinRoom = new Label("Join Room");
 		txtJoinRoom.setStyle("-fx-font-size: 10pt; -fx-font-family: \"PerryGothic\"; -fx-text-fill: #A11212; -fx-effect: dropshadow(three-pass-box, rgba(209,181,82,0.9), 2, 0.8, 0, 0);");
 		btnJoinRoom.setGraphic(txtJoinRoom);
-		
+
 		Label txtLeaveRoom = new Label("Leave Room");
 		txtLeaveRoom.setStyle("-fx-font-size: 10pt; -fx-font-family: \"PerryGothic\"; -fx-text-fill: #A11212; -fx-effect: dropshadow(three-pass-box, rgba(209,181,82,0.9), 2, 0.8, 0, 0);");
 		btnLeaveRoom.setGraphic(txtLeaveRoom);
-		
+
 		Label txtStartGame = new Label("Start Game");
 		txtStartGame.setStyle("-fx-font-size: 10pt; -fx-font-family: \"PerryGothic\"; -fx-text-fill: #A11212; -fx-effect: dropshadow(three-pass-box, rgba(209,181,82,0.9), 2, 0.8, 0, 0);");
 		btnStartGame.setGraphic(txtStartGame);
-		
+
 		Label txtCreate = new Label("Create");
 		txtCreate.setStyle("-fx-font-size: 10pt; -fx-font-family: \"PerryGothic\"; -fx-text-fill: #A11212; -fx-effect: dropshadow(three-pass-box, rgba(209,181,82,0.9), 2, 0.8, 0, 0);");
 		btnCreateNewRoom.setGraphic(txtCreate);
-		
+
 		Label txtCancel = new Label("Cancel");
 		txtCancel.setStyle("-fx-font-size: 10pt; -fx-font-family: \"PerryGothic\"; -fx-text-fill: #A11212; -fx-effect: dropshadow(three-pass-box, rgba(209,181,82,0.9), 2, 0.8, 0, 0);");
 		btnCancelNewRoom.setGraphic(txtCancel);
@@ -304,7 +306,7 @@ public class GUIController extends Observable implements Observer{
 		btnNickname.setLayoutY(769);
 		txtNickname.setLayoutX(1025);
 		lblNickname.setLayoutX(-400);
-		
+
 		//Lobby
 		btnLeaveRoom.setDisable(true);
 		btnStartGame.setDisable(true);
@@ -312,7 +314,7 @@ public class GUIController extends Observable implements Observer{
 		btnJoinRoom.setLayoutX(1025);
 		btnLeaveRoom.setLayoutX(1025);
 		btnStartGame.setLayoutX(1025);
-		
+
 		//New Room form
 		choiceMinPl.setItems(minList);
 		choiceMinPl.setDisable(true);
@@ -323,12 +325,12 @@ public class GUIController extends Observable implements Observer{
 		btnCreateNewRoom.setDisable(true);
 		btnCancelNewRoom.setDisable(true);
 		txtRoomName.setDisable(true);
-		
+
 		playMainSoundtrack();
 		animateNickname();
 
 	}
-	
+
 	public void launchGW() throws Exception{
 		try {
 			Stage launcher = (Stage) mainTitle.getScene().getWindow();
@@ -336,71 +338,71 @@ public class GUIController extends Observable implements Observer{
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("GameWindow.fxml"));
 			loader.setController(this);
 			Region contentRootRegion = (Region) loader.load();
-		    double origW = contentRootRegion.getPrefWidth();
-		    double origH = contentRootRegion.getPrefHeight();
-		    Group group = new Group(contentRootRegion);
-		    StackPane rootPane = new StackPane();
-		    rootPane.getChildren().add(group);
-		    stage.setTitle( "Council of Four" );
-		    Scene scene = new Scene(rootPane, origW, origH);
-		    group.scaleXProperty().bind( scene.widthProperty().divide(origW));
-		    group.scaleYProperty().bind( scene.heightProperty().divide(origH));
+			double origW = contentRootRegion.getPrefWidth();
+			double origH = contentRootRegion.getPrefHeight();
+			Group group = new Group(contentRootRegion);
+			StackPane rootPane = new StackPane();
+			rootPane.getChildren().add(group);
+			stage.setTitle( "Council of Four" );
+			Scene scene = new Scene(rootPane, origW, origH);
+			group.scaleXProperty().bind( scene.widthProperty().divide(origW));
+			group.scaleYProperty().bind( scene.heightProperty().divide(origH));
 			String cursorPath = getClass().getResource("img/cof-cursor.png").toString();
 			Image image = new Image(cursorPath);
 			scene.setCursor(new ImageCursor(image));
-	        scene.setCamera(new PerspectiveCamera());
-		    stage.setScene(scene);
-		    Screen screen = Screen.getPrimary();
-		    Rectangle2D bounds = screen.getVisualBounds();
-		    stage.setX(bounds.getMaxX()/16);
-		    stage.setY(bounds.getMaxY()/16);
-		    stage.setWidth(bounds.getWidth()/1.2);
-		    stage.setHeight(bounds.getHeight()/1.2);
-		    stage.setFullScreen(true);
-		    stage.setFullScreenExitHint("");
-		    stage.setResizable(false);
-		    launcher.close();
-		    switchPlaylist();
-		    initializeGW();
-		    stage.show();
+			scene.setCamera(new PerspectiveCamera());
+			stage.setScene(scene);
+			Screen screen = Screen.getPrimary();
+			Rectangle2D bounds = screen.getVisualBounds();
+			stage.setX(bounds.getMaxX()/16);
+			stage.setY(bounds.getMaxY()/16);
+			stage.setWidth(bounds.getWidth()/1.2);
+			stage.setHeight(bounds.getHeight()/1.2);
+			stage.setFullScreen(true);
+			stage.setFullScreenExitHint("");
+			stage.setResizable(false);
+			launcher.close();
+			switchPlaylist();
+			initializeGW();
+			stage.show();
 		} catch (IOException ex) {
 			ex.printStackTrace();
 			return;
 		}
 	}
-	
+
 	private void switchPlaylist(){
 		mediaPlayer.stop();
 		Media sound = new Media(getClass().getResource("mp3/Battle1.mp3").toString());
 		mediaPlayer = new MediaPlayer(sound);
 		mediaPlayer.play();
 		mediaPlayer.setOnEndOfMedia(new Runnable() {
-            @Override public void run() {
-            	Media sound = new Media(getClass().getResource("mp3/Battle2.mp3").toString());
-        		mediaPlayer = new MediaPlayer(sound);
-        		mediaPlayer.play();
-        		mediaPlayer.setOnEndOfMedia(new Runnable() {
-		            @Override public void run() {
-		            	Media sound = new Media(getClass().getResource("mp3/Battle3.mp3").toString());
-		        		mediaPlayer = new MediaPlayer(sound);
-		        		mediaPlayer.play();
-		        		mediaPlayer.setOnEndOfMedia(new Runnable() {
-				            @Override public void run() {
-				            	switchPlaylist();
-				            }
-				        });
-		            }
-		        });
-            }
-        });
+			@Override public void run() {
+				Media sound = new Media(getClass().getResource("mp3/Battle2.mp3").toString());
+				mediaPlayer = new MediaPlayer(sound);
+				mediaPlayer.play();
+				mediaPlayer.setOnEndOfMedia(new Runnable() {
+					@Override public void run() {
+						Media sound = new Media(getClass().getResource("mp3/Battle3.mp3").toString());
+						mediaPlayer = new MediaPlayer(sound);
+						mediaPlayer.play();
+						mediaPlayer.setOnEndOfMedia(new Runnable() {
+							@Override public void run() {
+								switchPlaylist();
+							}
+						});
+					}
+				});
+			}
+		});
 	}
-	
+
 	public void submit() throws IOException{
 		this.userName = txtNickname.getText();
 		this.setChanged();
 		this.notifyObservers("USERNAME_" + userName);
 	}
-	
+
 	public String getUserName(){
 		if(this.userName!=null){
 			String ret = this.userName;
@@ -408,7 +410,7 @@ public class GUIController extends Observable implements Observer{
 			return ret;
 		}
 		return null;
-			
+
 	}
 	public void goToLobby(){
 		animateLobby();
@@ -421,18 +423,18 @@ public class GUIController extends Observable implements Observer{
 			btnNickname.setDisable(false);
 		}
 	}
-	
+
 	public void checkCreateRoom(){
 		if((!txtRoomName.getText().matches("[A-Za-z0-9]*") || txtRoomName.getText().length()<5 || txtRoomName.getText().length()>13) ||
-			choiceMinPl.getValue() == null || choiceMaxPl.getValue() == null || choiceMapLobby.getValue() == null ||
-			Integer.parseInt(choiceMaxPl.getValue())<Integer.parseInt(choiceMinPl.getValue()) || formNewRoom.getOpacity() == 0.0){
+				choiceMinPl.getValue() == null || choiceMaxPl.getValue() == null || choiceMapLobby.getValue() == null ||
+				Integer.parseInt(choiceMaxPl.getValue())<Integer.parseInt(choiceMinPl.getValue()) || formNewRoom.getOpacity() == 0.0){
 			btnCreateNewRoom.setDisable(true);
 		}else{
 			btnCreateNewRoom.setDisable(false);
 			btnCreateNewRoom.setOpacity(1.0);
 		}
 	}
-	
+
 	public void newRoomForm(){
 		if(formNewRoom.getOpacity() == 0.0){
 			animateNewRoomForm();
@@ -444,7 +446,7 @@ public class GUIController extends Observable implements Observer{
 			choiceMapLobby.setDisable(false);
 		}
 	}
-	
+
 	public void createNewRoom() {
 		animateRoom();
 		invertAnimateNewRoomForm();
@@ -453,7 +455,7 @@ public class GUIController extends Observable implements Observer{
 		btnLeaveRoom.setDisable(false);
 		btnStartGame.setDisable(false);
 	}
-	
+
 	public void joinRoom(){
 		animateRoom();
 		if(formNewRoom.getOpacity() == 1.0)
@@ -463,7 +465,7 @@ public class GUIController extends Observable implements Observer{
 		btnLeaveRoom.setDisable(false);
 		btnStartGame.setDisable(false);
 	}
-	
+
 	public void cancelNewRoom() {
 		if(formNewRoom.getOpacity() == 1.0){
 			invertAnimateNewRoomForm();
@@ -475,7 +477,7 @@ public class GUIController extends Observable implements Observer{
 			choiceMapLobby.setDisable(true);
 		}
 	}
-	
+
 	public void leaveRoom(){
 		invertAnimateRoom();
 		btnNewRoom.setDisable(false);
@@ -483,7 +485,7 @@ public class GUIController extends Observable implements Observer{
 		btnLeaveRoom.setDisable(true);
 		btnStartGame.setDisable(true);
 	}
-	
+
 	public void startGame(){
 		try {
 			launchGW();
@@ -497,53 +499,53 @@ public class GUIController extends Observable implements Observer{
 		mediaPlayer = new MediaPlayer(sound);
 		mediaPlayer.play();
 		mediaPlayer.setOnEndOfMedia(new Runnable() {
-            @Override public void run() {
-            	Media sound = new Media(getClass().getResource("mp3/MainContinues.mp3").toString());
-        		mediaPlayer = new MediaPlayer(sound);
-        		mediaPlayer.play();
-            }
-        });
+			@Override public void run() {
+				Media sound = new Media(getClass().getResource("mp3/MainContinues.mp3").toString());
+				mediaPlayer = new MediaPlayer(sound);
+				mediaPlayer.play();
+			}
+		});
 	}
-	
+
 	public void animateLobby(){
-		
+
 		TranslateTransition awayTitle = new TranslateTransition(Duration.millis(500), mainTitle);
 		awayTitle.setByY(-300);
 		awayTitle.play();
-		
+
 		TranslateTransition awayLblNickname = new TranslateTransition(Duration.millis(500), lblNickname);
 		awayLblNickname.setByY(300);
 		awayLblNickname.setDelay(Duration.millis(200));
 		awayLblNickname.play();
-		
+
 		TranslateTransition awayTxtNickname = new TranslateTransition(Duration.millis(500), txtNickname);
 		awayTxtNickname.setByY(300);
 		awayTxtNickname.setDelay(Duration.millis(100));
 		awayTxtNickname.play();
-		
+
 		TranslateTransition awayBtnNickname = new TranslateTransition(Duration.millis(500), btnNickname);
 		awayBtnNickname.setByY(300);
 		awayBtnNickname.play();
-		
+
 		FadeTransition ft = new FadeTransition(Duration.millis(1000), lobbyMask);
 		ft.setFromValue(0.0);
 		ft.setToValue(1.0);
-		
+
 		TranslateTransition tt = new TranslateTransition(Duration.millis(500), btnNewRoom);
 		tt.setByX(-222);
-		
+
 		TranslateTransition tt2 = new TranslateTransition(Duration.millis(500), btnJoinRoom);
 		tt2.setByX(-222);
 		tt2.setDelay(Duration.millis(100));
-		
+
 		TranslateTransition tt3 = new TranslateTransition(Duration.millis(500), btnLeaveRoom);
 		tt3.setByX(-222);
 		tt3.setDelay(Duration.millis(200));
-		
+
 		TranslateTransition tt4 = new TranslateTransition(Duration.millis(500), btnStartGame);
 		tt4.setByX(-222);
 		tt4.setDelay(Duration.millis(300));
-		
+
 		awayBtnNickname.setOnFinished(new EventHandler<ActionEvent>() {
 
 			@Override
@@ -608,236 +610,331 @@ public class GUIController extends Observable implements Observer{
 			}
 		});
 	}
-	
+
 	private void animateNewRoomForm() {
-		
+
 		FadeTransition ft = new FadeTransition(Duration.millis(1000), formNewRoom);
 		ft.setFromValue(0.0);
 		ft.setToValue(1.0);
 		ft.play();
-		
+
 		FadeTransition ft2 = new FadeTransition(Duration.millis(1000), btnCreateNewRoom);
 		ft2.setFromValue(0.0);
 		ft2.setToValue(0.5);
 		ft2.play();
-		
+
 		FadeTransition ft3 = new FadeTransition(Duration.millis(1000), btnCancelNewRoom);
 		ft3.setFromValue(0.0);
 		ft3.setToValue(1.0);
 		ft3.play();
-		
+
 		FadeTransition ft4 = new FadeTransition(Duration.millis(1000), choiceMinPl);
 		ft4.setFromValue(0.0);
 		ft4.setToValue(1.0);
 		ft4.play();
-		
+
 		FadeTransition ft5 = new FadeTransition(Duration.millis(1000), choiceMaxPl);
 		ft5.setFromValue(0.0);
 		ft5.setToValue(1.0);
 		ft5.play();
-		
+
 		FadeTransition ft6 = new FadeTransition(Duration.millis(1000), choiceMapLobby);
 		ft6.setFromValue(0.0);
 		ft6.setToValue(1.0);
 		ft6.play();
-		
+
 		FadeTransition ft7 = new FadeTransition(Duration.millis(1000), txtRoomName);
 		ft7.setFromValue(0.0);
 		ft7.setToValue(1.0);
 		ft7.play();
-		
+
 		FadeTransition ft8 = new FadeTransition(Duration.millis(1000), txtTimer);
 		ft8.setFromValue(0.0);
 		ft8.setToValue(1.0);
 		ft8.play();
-		
+
 	}
-	
+
 	private void invertAnimateNewRoomForm() {
-		
+
 		FadeTransition ft = new FadeTransition(Duration.millis(1000), formNewRoom);
 		ft.setFromValue(1.0);
 		ft.setToValue(0.0);
 		ft.play();
-		
+
 		FadeTransition ft2 = new FadeTransition(Duration.millis(1000), btnCreateNewRoom);
 		ft2.setFromValue(btnCreateNewRoom.getOpacity());
 		ft2.setToValue(0.0);
 		ft2.play();
-		
+
 		FadeTransition ft3 = new FadeTransition(Duration.millis(1000), btnCancelNewRoom);
 		ft3.setFromValue(1.0);
 		ft3.setToValue(0.0);
 		ft3.play();
-		
+
 		FadeTransition ft4 = new FadeTransition(Duration.millis(1000), choiceMinPl);
 		ft4.setFromValue(1.0);
 		ft4.setToValue(0.0);
 		ft4.play();
-		
+
 		FadeTransition ft5 = new FadeTransition(Duration.millis(1000), choiceMaxPl);
 		ft5.setFromValue(1.0);
 		ft5.setToValue(0.0);
 		ft5.play();
-		
+
 		FadeTransition ft6 = new FadeTransition(Duration.millis(1000), choiceMapLobby);
 		ft6.setFromValue(1.0);
 		ft6.setToValue(0.0);
 		ft6.play();
-		
+
 		FadeTransition ft7 = new FadeTransition(Duration.millis(1000), txtRoomName);
 		ft7.setFromValue(1.0);
 		ft7.setToValue(0.0);
 		ft7.play();
-		
+
 		FadeTransition ft8 = new FadeTransition(Duration.millis(1000), txtTimer);
 		ft8.setFromValue(1.0);
 		ft8.setToValue(0.0);
 		ft8.play();
-		
+
 	}
-	
+
 	public void animateRoom(){
-		
+
 		FadeTransition awayLobby = new FadeTransition(Duration.millis(1000), lobbyMask);
 		awayLobby.setFromValue(1.0);
 		awayLobby.setToValue(0.0);
 		awayLobby.play();
-		
+
 		FadeTransition ft = new FadeTransition(Duration.millis(1000), roomMask);
 		ft.setFromValue(0.0);
 		ft.setToValue(1.0);
 		ft.play();
-		
+
 		FadeTransition ft2 = new FadeTransition(Duration.millis(1000), lblRoomName);
 		ft2.setFromValue(0.0);
 		ft2.setToValue(1.0);
 		ft2.play();
-		
+
 		FadeTransition ft3 = new FadeTransition(Duration.millis(1000), lblClients);
 		ft3.setFromValue(0.0);
 		ft3.setToValue(1.0);
 		ft3.play();
-		
+
 		FadeTransition ft4 = new FadeTransition(Duration.millis(1000), lblAdmin);
 		ft4.setFromValue(0.0);
 		ft4.setToValue(1.0);
 		ft4.play();
-		
+
 		FadeTransition ft5 = new FadeTransition(Duration.millis(1000), lblMinPl);
 		ft5.setFromValue(0.0);
 		ft5.setToValue(1.0);
 		ft5.play();
-		
+
 		FadeTransition ft6 = new FadeTransition(Duration.millis(1000), lblMaxPl);
 		ft6.setFromValue(0.0);
 		ft6.setToValue(1.0);
 		ft6.play();
-		
+
 		FadeTransition ft7 = new FadeTransition(Duration.millis(1000), lblMap);
 		ft7.setFromValue(0.0);
 		ft7.setToValue(1.0);
 		ft7.play();
-		
+
 		FadeTransition ft8 = new FadeTransition(Duration.millis(1000), lblTimer);
 		ft8.setFromValue(0.0);
 		ft8.setToValue(1.0);
 		ft8.play();
 	}
-	
-	
-public void invertAnimateRoom(){
-		
+
+
+	public void invertAnimateRoom(){
+
 		FadeTransition returnLobby = new FadeTransition(Duration.millis(1000), lobbyMask);
 		returnLobby.setFromValue(0.0);
 		returnLobby.setToValue(1.0);
 		returnLobby.play();
-		
+
 		FadeTransition awayRoom = new FadeTransition(Duration.millis(1000), roomMask);
 		awayRoom.setFromValue(1.0);
 		awayRoom.setToValue(0.0);
 		awayRoom.play();
-		
+
 		FadeTransition ft2 = new FadeTransition(Duration.millis(1000), lblRoomName);
 		ft2.setFromValue(1.0);
 		ft2.setToValue(0.0);
 		ft2.play();
-		
+
 		FadeTransition ft3 = new FadeTransition(Duration.millis(1000), lblClients);
 		ft3.setFromValue(1.0);
 		ft3.setToValue(0.0);
 		ft3.play();
-		
+
 		FadeTransition ft4 = new FadeTransition(Duration.millis(1000), lblAdmin);
 		ft4.setFromValue(1.0);
 		ft4.setToValue(0.0);
 		ft4.play();
-		
+
 		FadeTransition ft5 = new FadeTransition(Duration.millis(1000), lblMinPl);
 		ft5.setFromValue(1.0);
 		ft5.setToValue(0.0);
 		ft5.play();
-		
+
 		FadeTransition ft6 = new FadeTransition(Duration.millis(1000), lblMaxPl);
 		ft6.setFromValue(1.0);
 		ft6.setToValue(0.0);
 		ft6.play();
-		
+
 		FadeTransition ft7 = new FadeTransition(Duration.millis(1000), lblMap);
 		ft7.setFromValue(1.0);
 		ft7.setToValue(0.0);
 		ft7.play();
-		
+
 		FadeTransition ft8 = new FadeTransition(Duration.millis(1000), lblTimer);
 		ft8.setFromValue(1.0);
 		ft8.setToValue(0.0);
 		ft8.play();
 	}
+
+	public void updateLobby(LobbyStatus ls){
+		ArrayList<String> freeClients = ls.getFreeClients();
+		ArrayList<RoomStatus> rooms = ls.getRooms();
+		for(String c: freeClients){
+			txtPlayersInLobby.appendText(c+"\n");
+		}
+		int i = 0;
+		for(RoomStatus r: rooms){
+			i++;
+			switch(i){
+			case 1:
+				groupRoom1.setOpacity(1.0);
+				lblRoomName1.setText(r.getRoomName());
+				lblMap1.setText(r.getMapName());
+				lblPlMax1.setText(Integer.toString(r.getMaxPlayers()));
+				lblPlMin1.setText(Integer.toString(r.getMinPlayers()));
+				lblPlayers1.setText(Integer.toString(r.getPlayers().size())+"/"+Integer.toString(r.getMaxPlayers()));
+				lblStatus1.setText(r.getRoomStatus().toString());
+				break;
+			case 2:
+				groupRoom2.setOpacity(1.0);
+				lblRoomName2.setText(r.getRoomName());
+				lblMap2.setText(r.getMapName());
+				lblPlMax2.setText(Integer.toString(r.getMaxPlayers()));
+				lblPlMin2.setText(Integer.toString(r.getMinPlayers()));
+				lblPlayers2.setText(Integer.toString(r.getPlayers().size())+"/"+Integer.toString(r.getMaxPlayers()));
+				lblStatus2.setText(r.getRoomStatus().toString());
+				break;
+			case 3:
+				groupRoom3.setOpacity(1.0);
+				lblRoomName3.setText(r.getRoomName());
+				lblMap3.setText(r.getMapName());
+				lblPlMax3.setText(Integer.toString(r.getMaxPlayers()));
+				lblPlMin3.setText(Integer.toString(r.getMinPlayers()));
+				lblPlayers3.setText(Integer.toString(r.getPlayers().size())+"/"+Integer.toString(r.getMaxPlayers()));
+				lblStatus3.setText(r.getRoomStatus().toString());
+				break;
+			case 4:
+				groupRoom4.setOpacity(1.0);
+				lblRoomName4.setText(r.getRoomName());
+				lblMap4.setText(r.getMapName());
+				lblPlMax4.setText(Integer.toString(r.getMaxPlayers()));
+				lblPlMin4.setText(Integer.toString(r.getMinPlayers()));
+				lblPlayers4.setText(Integer.toString(r.getPlayers().size())+"/"+Integer.toString(r.getMaxPlayers()));
+				lblStatus4.setText(r.getRoomStatus().toString());
+				break;
+			case 5:
+				groupRoom5.setOpacity(1.0);
+				lblRoomName5.setText(r.getRoomName());
+				lblMap5.setText(r.getMapName());
+				lblPlMax5.setText(Integer.toString(r.getMaxPlayers()));
+				lblPlMin5.setText(Integer.toString(r.getMinPlayers()));
+				lblPlayers5.setText(Integer.toString(r.getPlayers().size())+"/"+Integer.toString(r.getMaxPlayers()));
+				lblStatus5.setText(r.getRoomStatus().toString());
+				break;
+			case 6:
+				groupRoom6.setOpacity(1.0);
+				lblRoomName6.setText(r.getRoomName());
+				lblMap6.setText(r.getMapName());
+				lblPlMax6.setText(Integer.toString(r.getMaxPlayers()));
+				lblPlMin6.setText(Integer.toString(r.getMinPlayers()));
+				lblPlayers6.setText(Integer.toString(r.getPlayers().size())+"/"+Integer.toString(r.getMaxPlayers()));
+				lblStatus6.setText(r.getRoomStatus().toString());
+				break;
+			case 7:
+				groupRoom7.setOpacity(1.0);
+				lblRoomName7.setText(r.getRoomName());
+				lblMap7.setText(r.getMapName());
+				lblPlMax7.setText(Integer.toString(r.getMaxPlayers()));
+				lblPlMin7.setText(Integer.toString(r.getMinPlayers()));
+				lblPlayers7.setText(Integer.toString(r.getPlayers().size())+"/"+Integer.toString(r.getMaxPlayers()));
+				lblStatus7.setText(r.getRoomStatus().toString());
+				break;
+			case 8:
+				groupRoom8.setOpacity(1.0);
+				lblRoomName8.setText(r.getRoomName());
+				lblMap8.setText(r.getMapName());
+				lblPlMax8.setText(Integer.toString(r.getMaxPlayers()));
+				lblPlMin8.setText(Integer.toString(r.getMinPlayers()));
+				lblPlayers8.setText(Integer.toString(r.getPlayers().size())+"/"+Integer.toString(r.getMaxPlayers()));
+				lblStatus8.setText(r.getRoomStatus().toString());
+				break;
+			}
+		}
+	}
+
+	public void updateActualRoom(RoomStatus rs){
+		lblRoomName.setText(rs.getRoomName());
+		lblMap.setText(rs.getMapName());
+		lblMaxPl.setText(Integer.toString(rs.getMaxPlayers()));
+		lblMinPl.setText(Integer.toString(rs.getMinPlayers()));
+		lblClients.setText(Integer.toString(rs.getPlayers().size())+"/"+Integer.toString(rs.getMaxPlayers()));
+		lblAdmin.setText(rs.getAdminName());
+		if(rs.getTimerDelay()!=0)
+			lblTimer.setText(Integer.toString(rs.getTimerDelay())+" sec");
+	}
 	
-
-
-
-
+	
+	
 
 	/*GameWindow methods*///TODO
-	
+
 	public void initializeGW(){
 		try {
-	    	emporiums = new SVGPath[15][8];
-	    	for(int i=0; i<15; i++){
-	    		for(int j=0; j<8; j++){
-	    			String start = "emp";
-	    			String letter = Character.toString((char)('A'+i));
-	    			String slot = Integer.toString(j+1);
-	    			Field field = this.getClass().getDeclaredField(start+letter+slot);
+			emporiums = new SVGPath[15][8];
+			for(int i=0; i<15; i++){
+				for(int j=0; j<8; j++){
+					String start = "emp";
+					String letter = Character.toString((char)('A'+i));
+					String slot = Integer.toString(j+1);
+					Field field = this.getClass().getDeclaredField(start+letter+slot);
 					emporiums[i][j] = (SVGPath) field.get(this);
 					emporiums[i][j].setOpacity(0.0);
 					emporiums[i][j].setStrokeType(StrokeType.OUTSIDE);
 					emporiums[i][j].setStroke(Color.BLACK);
-	    		}
-	    	}
-	    	councilors = new ArrayList<ImageView>();
-	    	for(int j=0; j<16; j++){
-	    		String start = "counc";
-	    		String region = null;
-	    		String num = Integer.toString(j%4+1);
-	    		switch(j/4){
-	    			case 0:
-	    				region = "Sea";
-	    				break;
-	    			case 1:
-	    				region = "Hill";
-	    				break;
-	    			case 2:
-	    				region = "Mount";
-	    				break;
-	    			case 3:
-	    				region = "King";
-	    				break;
-	    		}
-    			Field field = this.getClass().getDeclaredField(start+region+num);
-    			councilors.add((ImageView) field.get(this));
-	    	}
+				}
+			}
+			councilors = new ArrayList<ImageView>();
+			for(int j=0; j<16; j++){
+				String start = "counc";
+				String region = null;
+				String num = Integer.toString(j%4+1);
+				switch(j/4){
+				case 0:
+					region = "Sea";
+					break;
+				case 1:
+					region = "Hill";
+					break;
+				case 2:
+					region = "Mount";
+					break;
+				case 3:
+					region = "King";
+					break;
+				}
+				Field field = this.getClass().getDeclaredField(start+region+num);
+				councilors.add((ImageView) field.get(this));
+			}
 		} catch (NoSuchFieldException e) {
 			e.printStackTrace();
 		} catch (SecurityException e) {
@@ -848,23 +945,23 @@ public void invertAnimateRoom(){
 			e.printStackTrace();
 		}
 		//TEST AREA
-	    selectTest.setItems(testList);
-	    choiceMap.setItems(mapList);
-	    String[] councImgPaths = {"img/board/counc-black.png","img/board/counc-orange.png","img/board/counc-blue.png","img/board/counc-pink.png","img/board/counc-purple.png","img/board/counc-white.png"};
-    	for(ImageView c: councilors){
-    		int rnd = new Random().nextInt(councImgPaths.length);
-    		c.setImage(new Image(getClass().getResourceAsStream(councImgPaths[rnd])));
-    	}
-	    //TEST AREA
-	    
-	    actionsGroup.setTranslateX(306);
-	    trickActions.setTranslateX(-306);
-	    msgGroup.setLayoutX(0.0);
-	    msgGroup.setLayoutY(0.0);
-	    handArray = new ArrayList<ImageView>();
-	    selectedCards = new ArrayList<ImageView>();
+		selectTest.setItems(testList);
+		choiceMap.setItems(mapList);
+		String[] councImgPaths = {"img/board/counc-black.png","img/board/counc-orange.png","img/board/counc-blue.png","img/board/counc-pink.png","img/board/counc-purple.png","img/board/counc-white.png"};
+		for(ImageView c: councilors){
+			int rnd = new Random().nextInt(councImgPaths.length);
+			c.setImage(new Image(getClass().getResourceAsStream(councImgPaths[rnd])));
+		}
+		//TEST AREA
+
+		actionsGroup.setTranslateX(306);
+		trickActions.setTranslateX(-306);
+		msgGroup.setLayoutX(0.0);
+		msgGroup.setLayoutY(0.0);
+		handArray = new ArrayList<ImageView>();
+		selectedCards = new ArrayList<ImageView>();
 	}
-	
+
 	public void printMsgTest(){
 		long msgTime = 1500;
 		String msg = txtMsg.getText();
@@ -893,7 +990,7 @@ public void invertAnimateRoom(){
 			}
 		});
 	}
-	
+
 	public void printMsg(String message){
 		long msgTime = 1500;
 		String msg = message;
@@ -922,704 +1019,704 @@ public void invertAnimateRoom(){
 			}
 		});
 	}
-	
-    public void testAction(){
-    	String choice = selectTest.getValue();
-    	switch(choice){
-    		case "flipDownCardAnimation()":
-    			flipDownCardAnimation(seaSlot1,"img/board/perm-back-sea.png");
-    			break;
-    		case "flipUpCardAnimation()":
-    			flipUpCardAnimation(seaSlot1,"img/board/abc-ass2.png");
-    			break;
-    		case "setupTokens()":
-    			setupTokens();
-    			break;
-    		case "draw(1)":
-    			draw(1);
-    			break;
-    		case "draw(5)":
-    			draw(5);
-    			break;
-    		case "flipMap()":
-    			flipMap();
-    			break;
-    		case "moveKing(Arkon)":
-    			moveKing("Arkon");
-    			break;
-    		case "moveKing(Castrum)":
-    			moveKing("Castrum");
-    			break;
-    		case "moveKing(Hellar)":
-    			moveKing("Hellar");
-    			break;
-    	}
-    }
+
+	public void testAction(){
+		String choice = selectTest.getValue();
+		switch(choice){
+		case "flipDownCardAnimation()":
+			flipDownCardAnimation(seaSlot1,"img/board/perm-back-sea.png");
+			break;
+		case "flipUpCardAnimation()":
+			flipUpCardAnimation(seaSlot1,"img/board/abc-ass2.png");
+			break;
+		case "setupTokens()":
+			setupTokens();
+			break;
+		case "draw(1)":
+			draw(1);
+			break;
+		case "draw(5)":
+			draw(5);
+			break;
+		case "flipMap()":
+			flipMap();
+			break;
+		case "moveKing(Arkon)":
+			moveKing("Arkon");
+			break;
+		case "moveKing(Castrum)":
+			moveKing("Castrum");
+			break;
+		case "moveKing(Hellar)":
+			moveKing("Hellar");
+			break;
+		}
+	}
 
 	public void toggleActions(){
-    	if(btnToggleActions.isSelected()){
-	    	TranslateTransition tt = new TranslateTransition(Duration.millis(500),actionsGroup);
-	    	tt.setByX(-356);
-	    	tt.play();
-	    	TranslateTransition tt2 = new TranslateTransition(Duration.millis(500),trickActions);
-	    	tt2.setByX(356);
-	    	tt2.play();
-    	}else if(!btnToggleActions.isSelected()){
-	    	TranslateTransition tt = new TranslateTransition(Duration.millis(500),actionsGroup);
-	    	tt.setByX(356);
-	    	tt.play();
-	    	TranslateTransition tt2 = new TranslateTransition(Duration.millis(500),trickActions);
-	    	tt2.setByX(-356);
-	    	tt2.play();
-    	}
-    }
-    
-    public void setMap(){
-    	String choice = choiceMap.getValue();
-    	switch(choice){
-    		case "Default":
-    			map.setImage(new Image(getClass().getResourceAsStream("img/maps/default_map.png")));
-    			break;
-    		case "Map2":
-    			map.setImage(new Image(getClass().getResourceAsStream("img/maps/map2.png")));
-    			break;
-    		case "Map3":
-    			map.setImage(new Image(getClass().getResourceAsStream("img/maps/map3.png")));
-    			break;
-    		case "Map4":
-    			map.setImage(new Image(getClass().getResourceAsStream("img/maps/map4.png")));
-    			break;
-    		case "Map5":
-    			map.setImage(new Image(getClass().getResourceAsStream("img/maps/map5.png")));
-    			break;
-    		case "Map6":
-    			map.setImage(new Image(getClass().getResourceAsStream("img/maps/map6.png")));
-    			break;
-    		case "Map7":
-    			map.setImage(new Image(getClass().getResourceAsStream("img/maps/map7.png")));
-    			break;
-    		case "Map8":
-    			map.setImage(new Image(getClass().getResourceAsStream("img/maps/map8.png")));
-    			break;
-    	}
-    }
-    
-    private String parseTokenImg(BonusTokenDTO token){
-    	ArrayList<BonusDTO> bonuses = new ArrayList<BonusDTO>(Arrays.asList(token.getBonus()));
-    	String imgName = "tok-";
-    	for(BonusDTO b: bonuses)
-    		switch(b.getType().toString().toLowerCase()){
-	    		case "card":
-	    			imgName+="card";
-	    			imgName+=Integer.toString(b.getQnt());
-	    			break;
-	    		case "point":
-	    			imgName+="point";
-	    			imgName+=Integer.toString(b.getQnt());
-	    			break;
-	    		case "coin":
-	    			imgName+="coin";
-	    			imgName+=Integer.toString(b.getQnt());
-	    			break;
-	    		case "assistant":
-	    			imgName+="ass";
-	    			imgName+=Integer.toString(b.getQnt());
-	    			break;
-	    		case "nobility":
-	    			imgName+="nob";
-	    			imgName+=Integer.toString(b.getQnt());
-	    			break;
-	    		case "mainaction":
-	    			imgName+="main";
-	    			imgName+=Integer.toString(b.getQnt());
-	    			break;
-    		}
-    	imgName+=".png";
-    	return imgName;
-    }
-    
-    private String parsePermitImg(PermitsCardDTO permit){
-    	String[] letters = permit.getCityLetter();
-    	ArrayList<BonusDTO> bonuses = new ArrayList<BonusDTO>(Arrays.asList(permit.getBonuses()));
-    	String imgName = "";
-    	for(String l: letters)
-    		imgName+=l;
-    	imgName+="-";
-    	for(BonusDTO b: bonuses)
-    		switch(b.getType().toString().toLowerCase()){
-	    		case "card":
-	    			imgName+="card";
-	    			imgName+=Integer.toString(b.getQnt());
-	    			break;
-	    		case "point":
-	    			imgName+="point";
-	    			imgName+=Integer.toString(b.getQnt());
-	    			break;
-	    		case "coin":
-	    			imgName+="coin";
-	    			imgName+=Integer.toString(b.getQnt());
-	    			break;
-	    		case "assistant":
-	    			imgName+="ass";
-	    			imgName+=Integer.toString(b.getQnt());
-	    			break;
-	    		case "nobility":
-	    			imgName+="nob";
-	    			imgName+=Integer.toString(b.getQnt());
-	    			break;
-	    		case "mainaction":
-	    			imgName+="main";
-	    			imgName+=Integer.toString(b.getQnt());
-	    			break;
-    		}
-    	imgName+=".png";
-    	return imgName;
-    }
-    
-    public void placeEmporium(){
-    	//Ex. loc = A1 (City A, slot 1), col = #A1B2C3 | This will be changed to EmporiumDTO
-    	String loc = txtCitySlot.getText();
-    	String col = txtHexColor.getText();
-    	int city = loc.charAt(0)-65;
-    	int slot = Integer.parseInt(Character.toString(loc.charAt(1))) - 1;
-    	emporiums[city][slot].setFill(Color.web(col));
-    	emporiums[city][slot].setOpacity(1.0);
-    }
-    
-    private void setupTokens(){ //Per ora è fake, c'è già il parser dei nomi delle immagini comunque
-    	String[] tokens = {"tok-ass1.png","tok-ass1card1.png","tok-ass1coin1.png","tok-ass2.png","tok-card1.png","tok-card1point1.png",
-    			"tok-coin1.png","tok-coin2.png","tok-coin3.png","","tok-nob1.png","tok-nob1.png","tok-point1.png","tok-point2.png","tok-point3.png"};
-    	ImageView[] tokenImgs = new ImageView[15];
-    	tokenImgs[0] = tokA; tokenImgs[1] = tokB; tokenImgs[2] = tokC; tokenImgs[3] = tokD; tokenImgs[4] = tokE; tokenImgs[5] = tokF; 
-    	tokenImgs[6] = tokG; tokenImgs[7] = tokH; tokenImgs[8] = tokI; tokenImgs[9] = tokJ; tokenImgs[10] = tokK; tokenImgs[11] = tokL; 
-    	tokenImgs[12] = tokM; tokenImgs[13] = tokN; tokenImgs[14] = tokO;
-    	int i=0;
-    	for(ImageView tok: tokenImgs){
-    		if(i!=9) //king temp solution
-    			flipUpCardAnimation(tok,"img/board/"+tokens[i]);
-    		i++;
-    	}
-    	tokenImgs[9].setOpacity(0.0);
-    	tokenImgs[9].toBack();
-    }
-	
-    private void flipDownCardAnimation(Node card, String backPath) {
-        RotateTransition rotator = new RotateTransition(Duration.millis(500), card);
-        rotator.setAxis(Rotate.Y_AXIS);
-        rotator.setFromAngle(0);
-        rotator.setToAngle(90);
-        rotator.setInterpolator(Interpolator.LINEAR);
-        rotator.play();
-        rotator.setOnFinished(new EventHandler<ActionEvent>() {
+		if(btnToggleActions.isSelected()){
+			TranslateTransition tt = new TranslateTransition(Duration.millis(500),actionsGroup);
+			tt.setByX(-356);
+			tt.play();
+			TranslateTransition tt2 = new TranslateTransition(Duration.millis(500),trickActions);
+			tt2.setByX(356);
+			tt2.play();
+		}else if(!btnToggleActions.isSelected()){
+			TranslateTransition tt = new TranslateTransition(Duration.millis(500),actionsGroup);
+			tt.setByX(356);
+			tt.play();
+			TranslateTransition tt2 = new TranslateTransition(Duration.millis(500),trickActions);
+			tt2.setByX(-356);
+			tt2.play();
+		}
+	}
+
+	public void setMap(){
+		String choice = choiceMap.getValue();
+		switch(choice){
+		case "Default":
+			map.setImage(new Image(getClass().getResourceAsStream("img/maps/default_map.png")));
+			break;
+		case "Map2":
+			map.setImage(new Image(getClass().getResourceAsStream("img/maps/map2.png")));
+			break;
+		case "Map3":
+			map.setImage(new Image(getClass().getResourceAsStream("img/maps/map3.png")));
+			break;
+		case "Map4":
+			map.setImage(new Image(getClass().getResourceAsStream("img/maps/map4.png")));
+			break;
+		case "Map5":
+			map.setImage(new Image(getClass().getResourceAsStream("img/maps/map5.png")));
+			break;
+		case "Map6":
+			map.setImage(new Image(getClass().getResourceAsStream("img/maps/map6.png")));
+			break;
+		case "Map7":
+			map.setImage(new Image(getClass().getResourceAsStream("img/maps/map7.png")));
+			break;
+		case "Map8":
+			map.setImage(new Image(getClass().getResourceAsStream("img/maps/map8.png")));
+			break;
+		}
+	}
+
+	private String parseTokenImg(BonusTokenDTO token){
+		ArrayList<BonusDTO> bonuses = new ArrayList<BonusDTO>(Arrays.asList(token.getBonus()));
+		String imgName = "tok-";
+		for(BonusDTO b: bonuses)
+			switch(b.getType().toString().toLowerCase()){
+			case "card":
+				imgName+="card";
+				imgName+=Integer.toString(b.getQnt());
+				break;
+			case "point":
+				imgName+="point";
+				imgName+=Integer.toString(b.getQnt());
+				break;
+			case "coin":
+				imgName+="coin";
+				imgName+=Integer.toString(b.getQnt());
+				break;
+			case "assistant":
+				imgName+="ass";
+				imgName+=Integer.toString(b.getQnt());
+				break;
+			case "nobility":
+				imgName+="nob";
+				imgName+=Integer.toString(b.getQnt());
+				break;
+			case "mainaction":
+				imgName+="main";
+				imgName+=Integer.toString(b.getQnt());
+				break;
+			}
+		imgName+=".png";
+		return imgName;
+	}
+
+	private String parsePermitImg(PermitsCardDTO permit){
+		String[] letters = permit.getCityLetter();
+		ArrayList<BonusDTO> bonuses = new ArrayList<BonusDTO>(Arrays.asList(permit.getBonuses()));
+		String imgName = "";
+		for(String l: letters)
+			imgName+=l;
+		imgName+="-";
+		for(BonusDTO b: bonuses)
+			switch(b.getType().toString().toLowerCase()){
+			case "card":
+				imgName+="card";
+				imgName+=Integer.toString(b.getQnt());
+				break;
+			case "point":
+				imgName+="point";
+				imgName+=Integer.toString(b.getQnt());
+				break;
+			case "coin":
+				imgName+="coin";
+				imgName+=Integer.toString(b.getQnt());
+				break;
+			case "assistant":
+				imgName+="ass";
+				imgName+=Integer.toString(b.getQnt());
+				break;
+			case "nobility":
+				imgName+="nob";
+				imgName+=Integer.toString(b.getQnt());
+				break;
+			case "mainaction":
+				imgName+="main";
+				imgName+=Integer.toString(b.getQnt());
+				break;
+			}
+		imgName+=".png";
+		return imgName;
+	}
+
+	public void placeEmporium(){
+		//Ex. loc = A1 (City A, slot 1), col = #A1B2C3 | This will be changed to EmporiumDTO
+		String loc = txtCitySlot.getText();
+		String col = txtHexColor.getText();
+		int city = loc.charAt(0)-65;
+		int slot = Integer.parseInt(Character.toString(loc.charAt(1))) - 1;
+		emporiums[city][slot].setFill(Color.web(col));
+		emporiums[city][slot].setOpacity(1.0);
+	}
+
+	private void setupTokens(){ //Per ora è fake, c'è già il parser dei nomi delle immagini comunque
+		String[] tokens = {"tok-ass1.png","tok-ass1card1.png","tok-ass1coin1.png","tok-ass2.png","tok-card1.png","tok-card1point1.png",
+				"tok-coin1.png","tok-coin2.png","tok-coin3.png","","tok-nob1.png","tok-nob1.png","tok-point1.png","tok-point2.png","tok-point3.png"};
+		ImageView[] tokenImgs = new ImageView[15];
+		tokenImgs[0] = tokA; tokenImgs[1] = tokB; tokenImgs[2] = tokC; tokenImgs[3] = tokD; tokenImgs[4] = tokE; tokenImgs[5] = tokF; 
+		tokenImgs[6] = tokG; tokenImgs[7] = tokH; tokenImgs[8] = tokI; tokenImgs[9] = tokJ; tokenImgs[10] = tokK; tokenImgs[11] = tokL; 
+		tokenImgs[12] = tokM; tokenImgs[13] = tokN; tokenImgs[14] = tokO;
+		int i=0;
+		for(ImageView tok: tokenImgs){
+			if(i!=9) //king temp solution
+				flipUpCardAnimation(tok,"img/board/"+tokens[i]);
+			i++;
+		}
+		tokenImgs[9].setOpacity(0.0);
+		tokenImgs[9].toBack();
+	}
+
+	private void flipDownCardAnimation(Node card, String backPath) {
+		RotateTransition rotator = new RotateTransition(Duration.millis(500), card);
+		rotator.setAxis(Rotate.Y_AXIS);
+		rotator.setFromAngle(0);
+		rotator.setToAngle(90);
+		rotator.setInterpolator(Interpolator.LINEAR);
+		rotator.play();
+		rotator.setOnFinished(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent event) {
 				ImageView innerCard = (ImageView) card;
 				innerCard.setImage(new Image(getClass().getResourceAsStream(backPath)));
 				RotateTransition rotator = new RotateTransition(Duration.millis(500), innerCard);
-		        rotator.setAxis(Rotate.Y_AXIS);
-		        rotator.setFromAngle(90);
-		        rotator.setToAngle(0);
-		        rotator.setInterpolator(Interpolator.LINEAR);
-		        rotator.play();
+				rotator.setAxis(Rotate.Y_AXIS);
+				rotator.setFromAngle(90);
+				rotator.setToAngle(0);
+				rotator.setInterpolator(Interpolator.LINEAR);
+				rotator.play();
 			}
 		});
-    }
-    
-    private void flipUpCardAnimation(Node card, String upPath) {
-        RotateTransition rotator = new RotateTransition(Duration.millis(500), card);
-        rotator.setAxis(Rotate.Y_AXIS);
-        rotator.setFromAngle(0);
-        rotator.setToAngle(90);
-        rotator.setInterpolator(Interpolator.LINEAR);
-        rotator.play();
-        rotator.setOnFinished(new EventHandler<ActionEvent>() {
+	}
+
+	private void flipUpCardAnimation(Node card, String upPath) {
+		RotateTransition rotator = new RotateTransition(Duration.millis(500), card);
+		rotator.setAxis(Rotate.Y_AXIS);
+		rotator.setFromAngle(0);
+		rotator.setToAngle(90);
+		rotator.setInterpolator(Interpolator.LINEAR);
+		rotator.play();
+		rotator.setOnFinished(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent event) {
 				ImageView innerCard = (ImageView) card;
 				innerCard.setImage(new Image(getClass().getResourceAsStream(upPath)));
 				RotateTransition rotator = new RotateTransition(Duration.millis(500), innerCard);
-		        rotator.setAxis(Rotate.Y_AXIS);
-		        rotator.setFromAngle(90);
-		        rotator.setToAngle(0);
-		        rotator.setInterpolator(Interpolator.LINEAR);
-		        rotator.play();
+				rotator.setAxis(Rotate.Y_AXIS);
+				rotator.setFromAngle(90);
+				rotator.setToAngle(0);
+				rotator.setInterpolator(Interpolator.LINEAR);
+				rotator.play();
 			}
 		});
-    }
-    
-    public void toggleShift(){
-    	if(!enableShift)
-    		enableShift = true;
-    	else
-    		enableShift = false;
-    }
-    
-    public void toggleSatisfy(){
-    	if(!enableSatisfy){
-    		enableSatisfy = true;
-    		expandHand();
-    	}else{
-    		enableSatisfy = false;
-    		retractHand();
-    	}
-    }
-    
-    private void dragCouncilor(ImageView councilor){
-    	if(enableShift){
-    		councilor.getScene().setCursor(new ImageCursor(councilor.getImage()));
-    		balconyHighlight(true);
-    		isAskingForShift = true;
-    	}
-    }
-    
-    private void dropCouncilor(ImageView councilor){
-    	councilor.getScene().setCursor(new ImageCursor(new Image(getClass().getResourceAsStream("img/cof-cursor.png"))));
-    	balconyHighlight(false);
-    	isAskingForShift = true;
-    	councToShift = councilor.getImage();
-    	map.setOnMouseEntered(new EventHandler<Event>() {
+	}
+
+	public void toggleShift(){
+		if(!enableShift)
+			enableShift = true;
+		else
+			enableShift = false;
+	}
+
+	public void toggleSatisfy(){
+		if(!enableSatisfy){
+			enableSatisfy = true;
+			expandHand();
+		}else{
+			enableSatisfy = false;
+			retractHand();
+		}
+	}
+
+	private void dragCouncilor(ImageView councilor){
+		if(enableShift){
+			councilor.getScene().setCursor(new ImageCursor(councilor.getImage()));
+			balconyHighlight(true);
+			isAskingForShift = true;
+		}
+	}
+
+	private void dropCouncilor(ImageView councilor){
+		councilor.getScene().setCursor(new ImageCursor(new Image(getClass().getResourceAsStream("img/cof-cursor.png"))));
+		balconyHighlight(false);
+		isAskingForShift = true;
+		councToShift = councilor.getImage();
+		map.setOnMouseEntered(new EventHandler<Event>() {
 			@Override
 			public void handle(Event event) {
-		    	isAskingForShift = false;
+				isAskingForShift = false;
 			}
 		});
-    	rightPane.setOnMouseEntered(new EventHandler<Event>() {
+		rightPane.setOnMouseEntered(new EventHandler<Event>() {
 			@Override
 			public void handle(Event event) {
-		    	isAskingForShift = false;
+				isAskingForShift = false;
 			}
 		});
-    }
-    
-    public void dragBlack(){
-    	dragCouncilor(councToDragBlack);
-    }
-    
-    public void dragBlackDone(){
-    	dropCouncilor(councToDragBlack);
-    }
-    
-    public void dragBlue(){
-    	dragCouncilor(councToDragBlue);
-    }
-    
-    public void dragBlueDone(){
-    	dropCouncilor(councToDragBlue);
-    }
-    
-    public void dragOrange(){
-    	dragCouncilor(councToDragOrange);
-    }
-    
-    public void dragOrangeDone(){
-    	dropCouncilor(councToDragOrange);
-    }
-    
-    public void dragPink(){
-    	dragCouncilor(councToDragPink);
-    }
-    
-    public void dragPinkDone(){
-    	dropCouncilor(councToDragPink);
-    }
-    
-    public void dragPurple(){
-    	dragCouncilor(councToDragPurple);
-    }
-    
-    public void dragPurpleDone(){
-    	dropCouncilor(councToDragPurple);
-    }
-    
-    public void dragWhite(){
-    	dragCouncilor(councToDragWhite);
-    }
-    
-    public void dragWhiteDone(){
-    	dropCouncilor(councToDragWhite);
-    }
-    
-    private void highlightObject(ImageView obj, boolean set){
-    	if(set)
-    		obj.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(255,255,255,0.9), 5, 0.64, 0, 0);");
-    	else
-    		obj.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(255,255,255,0), 5, 0.64, 0, 0);");
-    }
-    
-    private void balconyHighlight(boolean set){
-    		highlightObject(seaBalcony,set);
-    		highlightObject(hillBalcony,set);
-    		highlightObject(mountainBalcony,set);
-    		highlightObject(kingBalcony,set);
-    }
-    
-    public void seaBalconyActionRequest(){
-    	if(isAskingForShift){
+	}
+
+	public void dragBlack(){
+		dragCouncilor(councToDragBlack);
+	}
+
+	public void dragBlackDone(){
+		dropCouncilor(councToDragBlack);
+	}
+
+	public void dragBlue(){
+		dragCouncilor(councToDragBlue);
+	}
+
+	public void dragBlueDone(){
+		dropCouncilor(councToDragBlue);
+	}
+
+	public void dragOrange(){
+		dragCouncilor(councToDragOrange);
+	}
+
+	public void dragOrangeDone(){
+		dropCouncilor(councToDragOrange);
+	}
+
+	public void dragPink(){
+		dragCouncilor(councToDragPink);
+	}
+
+	public void dragPinkDone(){
+		dropCouncilor(councToDragPink);
+	}
+
+	public void dragPurple(){
+		dragCouncilor(councToDragPurple);
+	}
+
+	public void dragPurpleDone(){
+		dropCouncilor(councToDragPurple);
+	}
+
+	public void dragWhite(){
+		dragCouncilor(councToDragWhite);
+	}
+
+	public void dragWhiteDone(){
+		dropCouncilor(councToDragWhite);
+	}
+
+	private void highlightObject(ImageView obj, boolean set){
+		if(set)
+			obj.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(255,255,255,0.9), 5, 0.64, 0, 0);");
+		else
+			obj.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(255,255,255,0), 5, 0.64, 0, 0);");
+	}
+
+	private void balconyHighlight(boolean set){
+		highlightObject(seaBalcony,set);
+		highlightObject(hillBalcony,set);
+		highlightObject(mountainBalcony,set);
+		highlightObject(kingBalcony,set);
+	}
+
+	public void seaBalconyActionRequest(){
+		if(isAskingForShift){
 			councSea4.setImage(councSea3.getImage());
 			councSea3.setImage(councSea2.getImage());
 			councSea2.setImage(councSea1.getImage());
 			councSea1.setImage(councToShift);
 			isAskingForShift = false;
-    	}
-    	if(isAskingForSatisfy){
-        	for(ImageView card: selectedCards){
-            	toGarbage(card);
-        	}
-        	printMsg("Ok!");
-    	}
-    }
-    
-    public void hillBalconyActionRequest(){
-    	if(isAskingForShift){
+		}
+		if(isAskingForSatisfy){
+			for(ImageView card: selectedCards){
+				toGarbage(card);
+			}
+			printMsg("Ok!");
+		}
+	}
+
+	public void hillBalconyActionRequest(){
+		if(isAskingForShift){
 			councHill4.setImage(councHill3.getImage());
 			councHill3.setImage(councHill2.getImage());
 			councHill2.setImage(councHill1.getImage());
 			councHill1.setImage(councToShift);
 			isAskingForShift = false;
-    	}
-    	if(isAskingForSatisfy){
-    		for(ImageView card: selectedCards){
-            	toGarbage(card);
-        	}
-        	printMsg("Ok!");
-    	}
-    }
-    
-    public void mountainBalconyActionRequest(){
-    	if(isAskingForShift){
+		}
+		if(isAskingForSatisfy){
+			for(ImageView card: selectedCards){
+				toGarbage(card);
+			}
+			printMsg("Ok!");
+		}
+	}
+
+	public void mountainBalconyActionRequest(){
+		if(isAskingForShift){
 			councMount4.setImage(councMount3.getImage());
 			councMount3.setImage(councMount2.getImage());
 			councMount2.setImage(councMount1.getImage());
 			councMount1.setImage(councToShift);
 			isAskingForShift = false;
-    	}
-    	if(isAskingForSatisfy){
-    		for(ImageView card: selectedCards){
-            	toGarbage(card);
-        	}
-        	printMsg("Ok!");
-    	}
-    }
-    
-    public void kingBalconyActionRequest(){
-    	if(isAskingForShift){
+		}
+		if(isAskingForSatisfy){
+			for(ImageView card: selectedCards){
+				toGarbage(card);
+			}
+			printMsg("Ok!");
+		}
+	}
+
+	public void kingBalconyActionRequest(){
+		if(isAskingForShift){
 			councKing4.setImage(councKing3.getImage());
 			councKing3.setImage(councKing2.getImage());
 			councKing2.setImage(councKing1.getImage());
 			councKing1.setImage(councToShift);
 			isAskingForShift = false;
-    	}
-    	if(isAskingForSatisfy){
-    		for(ImageView card: selectedCards){
-            	toGarbage(card);
-        	}
-        	printMsg("Ok!");
-    	}
-    }
-    
-    private void draw(int qnt){
-    	String[] cardsImgPaths = {"img/board/pol-black.png","img/board/pol-orange.png","img/board/pol-blue.png","img/board/pol-pink.png","img/board/pol-purple.png","img/board/pol-white.png","img/board/pol-jolly.png"};
-    	int rnd = new Random().nextInt(cardsImgPaths.length); //DA RIMUOVERE! Solo a scopo di testing
-    	drawnPlaceHolder.setImage(new Image(getClass().getResourceAsStream(cardsImgPaths[rnd])));
-    	FadeTransition ft = new FadeTransition(Duration.millis(150),drawnPlaceHolder);
-    	ft.setToValue(1.0);
-    	ft.play();
-    	TranslateTransition tt = new TranslateTransition(Duration.millis(250),drawnPlaceHolder);
-    	tt.setFromX(0);
-    	tt.setFromY(0);
-    	tt.setToX(220-handArray.size()*10);
-    	tt.setToY(280);
-    	drawnPlaceHolder.toFront();
-    	tt.play();
-    	tt.setOnFinished(new EventHandler<ActionEvent>() {
+		}
+		if(isAskingForSatisfy){
+			for(ImageView card: selectedCards){
+				toGarbage(card);
+			}
+			printMsg("Ok!");
+		}
+	}
+
+	private void draw(int qnt){
+		String[] cardsImgPaths = {"img/board/pol-black.png","img/board/pol-orange.png","img/board/pol-blue.png","img/board/pol-pink.png","img/board/pol-purple.png","img/board/pol-white.png","img/board/pol-jolly.png"};
+		int rnd = new Random().nextInt(cardsImgPaths.length); //DA RIMUOVERE! Solo a scopo di testing
+		drawnPlaceHolder.setImage(new Image(getClass().getResourceAsStream(cardsImgPaths[rnd])));
+		FadeTransition ft = new FadeTransition(Duration.millis(150),drawnPlaceHolder);
+		ft.setToValue(1.0);
+		ft.play();
+		TranslateTransition tt = new TranslateTransition(Duration.millis(250),drawnPlaceHolder);
+		tt.setFromX(0);
+		tt.setFromY(0);
+		tt.setToX(220-handArray.size()*10);
+		tt.setToY(280);
+		drawnPlaceHolder.toFront();
+		tt.play();
+		tt.setOnFinished(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-		    	drawnPlaceHolder.setOpacity(0.0);
-		    	handArray.add(new ImageView(new Image(getClass().getResourceAsStream(cardsImgPaths[rnd]))));
-		    	ImageView drawnCard = handArray.get(handArray.size()-1);
-		    	handPane.getChildren().add(drawnCard);
-		    	drawnCard.setPreserveRatio(true);
-		    	drawnCard.setFitHeight(150);
-		    	drawnCard.setTranslateX(10*(handArray.size()-1));
-		    	drawnCard.addEventHandler(MouseEvent.MOUSE_CLICKED, new SelectCardEvent());
-		    	if(qnt>1)
-		    		draw(qnt-1);
+				drawnPlaceHolder.setOpacity(0.0);
+				handArray.add(new ImageView(new Image(getClass().getResourceAsStream(cardsImgPaths[rnd]))));
+				ImageView drawnCard = handArray.get(handArray.size()-1);
+				handPane.getChildren().add(drawnCard);
+				drawnCard.setPreserveRatio(true);
+				drawnCard.setFitHeight(150);
+				drawnCard.setTranslateX(10*(handArray.size()-1));
+				drawnCard.addEventHandler(MouseEvent.MOUSE_CLICKED, new SelectCardEvent());
+				if(qnt>1)
+					draw(qnt-1);
 			}
 		});
 	}
-    
-    public void expandHand(){
-    	if(!expanded){
-	    	for(int i=1; i<handArray.size();i++){
-	    		ImageView card = handArray.get(i);
-	    		TranslateTransition tt = new TranslateTransition(Duration.millis(500),card);
-	    		tt.setFromX(10*i);
-	    		tt.setByX(15*i);
-	    		tt.play();
-	    		tt.setOnFinished(new EventHandler<ActionEvent>() {
+
+	public void expandHand(){
+		if(!expanded){
+			for(int i=1; i<handArray.size();i++){
+				ImageView card = handArray.get(i);
+				TranslateTransition tt = new TranslateTransition(Duration.millis(500),card);
+				tt.setFromX(10*i);
+				tt.setByX(15*i);
+				tt.play();
+				tt.setOnFinished(new EventHandler<ActionEvent>() {
 					@Override
 					public void handle(ActionEvent event) {
-							expanded = true;
+						expanded = true;
 					}
 				});
-	    	}
-    	}
-    }
-    
-    public void retractHand(){
-    	if(expanded && !enableSatisfy){
-	    	for(int i=1; i<handArray.size();i++){
-	    		ImageView card = handArray.get(i);
-	    		TranslateTransition tt = new TranslateTransition(Duration.millis(500),card);
-	    		tt.setFromX(25*i);
-	    		tt.setByX(-15*i);
-	    		tt.play();
-	    		tt.setOnFinished(new EventHandler<ActionEvent>() {
+			}
+		}
+	}
+
+	public void retractHand(){
+		if(expanded && !enableSatisfy){
+			for(int i=1; i<handArray.size();i++){
+				ImageView card = handArray.get(i);
+				TranslateTransition tt = new TranslateTransition(Duration.millis(500),card);
+				tt.setFromX(25*i);
+				tt.setByX(-15*i);
+				tt.play();
+				tt.setOnFinished(new EventHandler<ActionEvent>() {
 					@Override
 					public void handle(ActionEvent event) {
-				    	expanded = false;
+						expanded = false;
 					}
 				});
-	    	}
-    	}
-    }
-    
-    private class SelectCardEvent implements EventHandler<Event>{
-        @Override
-        public void handle(Event e) {
-        	ImageView card = ((ImageView)(e.getSource()));
-        	if(enableSatisfy){
-        		if(!selectedCards.contains(card) && selectedCards.size()<4){
-	        		highlightObject(card,true);
-	        		card.setTranslateY(-10);
-	        		selectedCards.add(card);
-        		}else if(selectedCards.contains(card)){
-        			highlightObject(card,false);
-	        		card.setTranslateY(0);
-	        		selectedCards.remove(card);
-        		}
-        	}
-        }
-    }
-    
-    public void startDrag(){
-    	if(enableSatisfy && selectedCards.size()>0)
-    		dragCards(selectedCards);
-    }
-    
+			}
+		}
+	}
+
+	private class SelectCardEvent implements EventHandler<Event>{
+		@Override
+		public void handle(Event e) {
+			ImageView card = ((ImageView)(e.getSource()));
+			if(enableSatisfy){
+				if(!selectedCards.contains(card) && selectedCards.size()<4){
+					highlightObject(card,true);
+					card.setTranslateY(-10);
+					selectedCards.add(card);
+				}else if(selectedCards.contains(card)){
+					highlightObject(card,false);
+					card.setTranslateY(0);
+					selectedCards.remove(card);
+				}
+			}
+		}
+	}
+
+	public void startDrag(){
+		if(enableSatisfy && selectedCards.size()>0)
+			dragCards(selectedCards);
+	}
+
 	private void dragCards(ArrayList<ImageView> selectedCards){
-    	handPane.getScene().setCursor(new ImageCursor(new Image(getClass().getResourceAsStream("img/drag-cards-cursor.png"))));
-    	balconyHighlight(true);
-    	isAskingForSatisfy = true;
-    }
-    
-    public void dropCards(){
-    	if(enableSatisfy){
-	    	handPane.getScene().setCursor(new ImageCursor(new Image(getClass().getResourceAsStream("img/cof-cursor.png"))));
-	    	balconyHighlight(false);
-	    	isAskingForSatisfy = true;
-	    	map.setOnMouseEntered(new EventHandler<Event>() {
+		handPane.getScene().setCursor(new ImageCursor(new Image(getClass().getResourceAsStream("img/drag-cards-cursor.png"))));
+		balconyHighlight(true);
+		isAskingForSatisfy = true;
+	}
+
+	public void dropCards(){
+		if(enableSatisfy){
+			handPane.getScene().setCursor(new ImageCursor(new Image(getClass().getResourceAsStream("img/cof-cursor.png"))));
+			balconyHighlight(false);
+			isAskingForSatisfy = true;
+			map.setOnMouseEntered(new EventHandler<Event>() {
 				@Override
 				public void handle(Event event) {
-			    	isAskingForSatisfy = false;
+					isAskingForSatisfy = false;
 				}
 			});
-	    	rightPane.setOnMouseEntered(new EventHandler<Event>() {
+			rightPane.setOnMouseEntered(new EventHandler<Event>() {
 				@Override
 				public void handle(Event event) {
-			    	isAskingForSatisfy = false;
+					isAskingForSatisfy = false;
 				}
 			});
-    	}
-    }
-    
-    private void toGarbage(ImageView cardToRemove){
-    	TranslateTransition tt = new TranslateTransition(Duration.millis(250),cardToRemove);
-    	tt.setToX(90);
-    	tt.setToY(-300);
-    	tt.play();
-    	tt.setOnFinished(new EventHandler<ActionEvent>() {
+		}
+	}
+
+	private void toGarbage(ImageView cardToRemove){
+		TranslateTransition tt = new TranslateTransition(Duration.millis(250),cardToRemove);
+		tt.setToX(90);
+		tt.setToY(-300);
+		tt.play();
+		tt.setOnFinished(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-	    		garbagePlaceHolder.setOpacity(1.0);
-	    		garbagePlaceHolder.setImage(cardToRemove.getImage());
-	    		handPane.getChildren().remove(cardToRemove);
-	    		handArray.remove(cardToRemove);
-	    		selectedCards.remove(cardToRemove);
+				garbagePlaceHolder.setOpacity(1.0);
+				garbagePlaceHolder.setImage(cardToRemove.getImage());
+				handPane.getChildren().remove(cardToRemove);
+				handArray.remove(cardToRemove);
+				selectedCards.remove(cardToRemove);
 			}
 		});
-    }
-    
-    private void flipMap(){
-    	RotateTransition rotator = new RotateTransition(Duration.millis(1000), boardGroup);
-        rotator.setAxis(Rotate.Y_AXIS);
-        if(!switchedMap){
-	        rotator.setFromAngle(0);
-	        rotator.setToAngle(85);
-        }else{
-        	rotator.setFromAngle(180);
-            rotator.setToAngle(265);
-        }
-        rotator.setInterpolator(Interpolator.LINEAR);
-        rotator.play();
-        rotator.setOnFinished(new EventHandler<ActionEvent>() {
+	}
+
+	private void flipMap(){
+		RotateTransition rotator = new RotateTransition(Duration.millis(1000), boardGroup);
+		rotator.setAxis(Rotate.Y_AXIS);
+		if(!switchedMap){
+			rotator.setFromAngle(0);
+			rotator.setToAngle(85);
+		}else{
+			rotator.setFromAngle(180);
+			rotator.setToAngle(265);
+		}
+		rotator.setInterpolator(Interpolator.LINEAR);
+		rotator.play();
+		rotator.setOnFinished(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				switchMap();
 				RotateTransition rotator2 = new RotateTransition(Duration.millis(1000), boardGroup);
-		        rotator2.setAxis(Rotate.Y_AXIS);
-		        if(switchedMap){
-			        rotator2.setFromAngle(85);
-			        rotator2.setToAngle(180);
-		        }else{
-			        rotator2.setFromAngle(265);
-			        rotator2.setToAngle(360);
-		        }
-		        rotator2.setInterpolator(Interpolator.LINEAR);
-		        rotator2.play();
-		        rotator2.setOnFinished(new EventHandler<ActionEvent>() {
+				rotator2.setAxis(Rotate.Y_AXIS);
+				if(switchedMap){
+					rotator2.setFromAngle(85);
+					rotator2.setToAngle(180);
+				}else{
+					rotator2.setFromAngle(265);
+					rotator2.setToAngle(360);
+				}
+				rotator2.setInterpolator(Interpolator.LINEAR);
+				rotator2.play();
+				rotator2.setOnFinished(new EventHandler<ActionEvent>() {
 					@Override
 					public void handle(ActionEvent event) {
 						//if(switchedMap)
-							//printMsg("It's market\ntime!");
+						//printMsg("It's market\ntime!");
 					}
 				});
 			}
 		});
-    }
-    
-    private void switchMap(){
-    	if(switchedMap){
-    		mapGroup.toFront();
-    		switchedMap = false;
-    	}else{
-    		marketGroup.toFront();
-    		RotateTransition rt = new RotateTransition(Duration.millis(1), marketGroup);
-    		rt.setAxis(Rotate.Y_AXIS);
-    		rt.setFromAngle(0);
-    		rt.setToAngle(180);
-    		rt.play();
-    		switchedMap = true;
-    	}
-    }
-    
-    private void startMarket(){
-    	
-    }
-    
-    private void moveKing(String cityName) {
-    	if(kingPreviousLoc == null)
-    		kingPreviousLoc = cityName;
-    	String cityLetter = Character.toString(kingPreviousLoc.charAt(0));
+	}
+
+	private void switchMap(){
+		if(switchedMap){
+			mapGroup.toFront();
+			switchedMap = false;
+		}else{
+			marketGroup.toFront();
+			RotateTransition rt = new RotateTransition(Duration.millis(1), marketGroup);
+			rt.setAxis(Rotate.Y_AXIS);
+			rt.setFromAngle(0);
+			rt.setToAngle(180);
+			rt.play();
+			switchedMap = true;
+		}
+	}
+
+	private void startMarket(){
+
+	}
+
+	private void moveKing(String cityName) {
+		if(kingPreviousLoc == null)
+			kingPreviousLoc = cityName;
+		String cityLetter = Character.toString(kingPreviousLoc.charAt(0));
 		kingPreviousLoc = cityName;
-    	FadeTransition tt = new FadeTransition(Duration.millis(300));
+		FadeTransition tt = new FadeTransition(Duration.millis(300));
 		tt.setFromValue(1.0);
 		tt.setToValue(0.0);
-    	switch(cityLetter){
-    		case "A":
-    			tt.setNode(kingA);
-    			break;
-    		case "B":
-    			tt.setNode(kingB);
-    			break;
-    		case "C":
-    			tt.setNode(kingC);
-    			break;
-    		case "D":
-    			tt.setNode(kingD);
-    			break;
-    		case "E":
-    			tt.setNode(kingE);
-    			break;
-    		case "F":
-    			tt.setNode(kingF);
-    			break;
-    		case "G":
-    			tt.setNode(kingG);
-    			break;
-    		case "H":
-    			tt.setNode(kingH);
-    			break;
-    		case "I":
-    			tt.setNode(kingI);
-    			break;
-    		case "J":
-    			tt.setNode(kingJ);
-    			break;
-    		case "K":
-    			tt.setNode(kingK);
-    			break;
-    		case "L":
-    			tt.setNode(kingL);
-    			break;
-    		case "M":
-    			tt.setNode(kingM);
-    			break;
-    		case "N":
-    			tt.setNode(kingN);
-    			break;
-    		case "O":
-    			tt.setNode(kingO);
-    			break;
-    	}
+		switch(cityLetter){
+		case "A":
+			tt.setNode(kingA);
+			break;
+		case "B":
+			tt.setNode(kingB);
+			break;
+		case "C":
+			tt.setNode(kingC);
+			break;
+		case "D":
+			tt.setNode(kingD);
+			break;
+		case "E":
+			tt.setNode(kingE);
+			break;
+		case "F":
+			tt.setNode(kingF);
+			break;
+		case "G":
+			tt.setNode(kingG);
+			break;
+		case "H":
+			tt.setNode(kingH);
+			break;
+		case "I":
+			tt.setNode(kingI);
+			break;
+		case "J":
+			tt.setNode(kingJ);
+			break;
+		case "K":
+			tt.setNode(kingK);
+			break;
+		case "L":
+			tt.setNode(kingL);
+			break;
+		case "M":
+			tt.setNode(kingM);
+			break;
+		case "N":
+			tt.setNode(kingN);
+			break;
+		case "O":
+			tt.setNode(kingO);
+			break;
+		}
 		tt.play();
-    	tt.setOnFinished(new EventHandler<ActionEvent>() {
+		tt.setOnFinished(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-		    	String cityLetter = Character.toString(cityName.charAt(0));
+				String cityLetter = Character.toString(cityName.charAt(0));
 				FadeTransition tt = new FadeTransition(Duration.millis(300));
-    			tt.setFromValue(0.0);
-    			tt.setToValue(1.0);
-		    	switch(cityLetter){
-			    	case "A":
-		    			tt.setNode(kingA);
-		    			break;
-		    		case "B":
-		    			tt.setNode(kingB);
-		    			break;
-		    		case "C":
-		    			tt.setNode(kingC);
-		    			break;
-		    		case "D":
-		    			tt.setNode(kingD);
-		    			break;
-		    		case "E":
-		    			tt.setNode(kingE);
-		    			break;
-		    		case "F":
-		    			tt.setNode(kingF);
-		    			break;
-		    		case "G":
-		    			tt.setNode(kingG);
-		    			break;
-		    		case "H":
-		    			tt.setNode(kingH);
-		    			break;
-		    		case "I":
-		    			tt.setNode(kingI);
-		    			break;
-		    		case "J":
-		    			tt.setNode(kingJ);
-		    			break;
-		    		case "K":
-		    			tt.setNode(kingK);
-		    			break;
-		    		case "L":
-		    			tt.setNode(kingL);
-		    			break;
-		    		case "M":
-		    			tt.setNode(kingM);
-		    			break;
-		    		case "N":
-		    			tt.setNode(kingN);
-		    			break;
-		    		case "O":
-		    			tt.setNode(kingO);
-		    			break;
-		    	}
-    			tt.play();
+				tt.setFromValue(0.0);
+				tt.setToValue(1.0);
+				switch(cityLetter){
+				case "A":
+					tt.setNode(kingA);
+					break;
+				case "B":
+					tt.setNode(kingB);
+					break;
+				case "C":
+					tt.setNode(kingC);
+					break;
+				case "D":
+					tt.setNode(kingD);
+					break;
+				case "E":
+					tt.setNode(kingE);
+					break;
+				case "F":
+					tt.setNode(kingF);
+					break;
+				case "G":
+					tt.setNode(kingG);
+					break;
+				case "H":
+					tt.setNode(kingH);
+					break;
+				case "I":
+					tt.setNode(kingI);
+					break;
+				case "J":
+					tt.setNode(kingJ);
+					break;
+				case "K":
+					tt.setNode(kingK);
+					break;
+				case "L":
+					tt.setNode(kingL);
+					break;
+				case "M":
+					tt.setNode(kingM);
+					break;
+				case "N":
+					tt.setNode(kingN);
+					break;
+				case "O":
+					tt.setNode(kingO);
+					break;
+				}
+				tt.play();
 			}
 		});
 	}
@@ -1632,11 +1729,11 @@ public void invertAnimateRoom(){
 				if(!info[0].equals("GUI")){return;}
 				if(info[1].equals("LOGINSUCCESS"))
 					this.animateLobby();
-				
-				
+
+
 			}
 		}
-		
+
 	}
-	
+
 }
