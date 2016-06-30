@@ -131,6 +131,10 @@ public class Lobby extends Observable implements Runnable, Observer, RMILobbyRem
 			r.setTimerDelay(sec * 1000);
 			break;
 		case "\\SETMAP":
+			if(this.clients.contains(sender)){
+				sendToClient(sender, "lobby_msg-" + "You are in lobby");
+				return 0;
+			}
 			r = findRoomByClient(sender);
 			if(!sender.isEquals(r.getAdmin()))
 				return 9;
