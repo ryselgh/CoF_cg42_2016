@@ -39,11 +39,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -134,8 +134,8 @@ public class GUIController extends Observable implements Observer{
 	@FXML
 	private Group groupRoom1, groupRoom2, groupRoom3, groupRoom4, groupRoom5, groupRoom6, groupRoom7, groupRoom8, lobbyGroup, selectedRoom, newFormGroup, roomTxtGroup;
 	@FXML
-	private Label lblRoomName1, lblRoomName2, lblRoomName3, lblRoomName4, lblRoomName5, lblRoomName6, lblRoomName7, lblRoomName8, lblPlMin1, lblPlMin2, lblPlMin3, lblPlMin4, lblPlMin5, lblPlMin6, lblPlMin7, lblPlMin8, lblPlMax1, lblPlMax2, lblPlMax3, lblPlMax4, lblPlMax5, lblPlMax6, lblPlMax7, lblPlMax8, lblMap1, lblMap2, lblMap3, lblMap4, lblMap5, lblMap6, lblMap7, lblMap8, lblPlayers1, lblPlayers2, lblPlayers3, lblPlayers4, lblPlayers5, lblPlayers6, lblPlayers7, lblPlayers8, lblStatus1, lblStatus2, lblStatus3, lblStatus4, lblStatus5, lblStatus6, lblStatus7, lblStatus8;
-
+	private Label lblRoomName1, lblRoomName2, lblRoomName3, lblRoomName4, lblRoomName5, lblRoomName6, lblRoomName7, lblRoomName8, lblPlMin1, lblPlMin2, lblPlMin3, lblPlMin4, lblPlMin5, lblPlMin6, lblPlMin7, lblPlMin8, lblPlMax1, lblPlMax2, lblPlMax3, lblPlMax4, lblPlMax5, lblPlMax6, lblPlMax7, lblPlMax8, lblMap1, lblMap2, lblMap3, lblMap4, lblMap5, lblMap6, lblMap7, lblMap8, lblPlayers1, lblPlayers2, lblPlayers3, lblPlayers4, lblPlayers5, lblPlayers6, lblPlayers7, lblPlayers8, lblStatus1, lblStatus2, lblStatus3, lblStatus4, lblStatus5, lblStatus6, lblStatus7, lblStatus8, lblErrorsLobby;
+	private boolean isInLobby = true;
 
 	/*GameWindow fields*///TODO
 
@@ -343,9 +343,19 @@ public class GUIController extends Observable implements Observer{
 		groupRoom6.addEventHandler(MouseEvent.MOUSE_CLICKED, new SelectRoomEvent());
 		groupRoom7.addEventHandler(MouseEvent.MOUSE_CLICKED, new SelectRoomEvent());
 		groupRoom8.addEventHandler(MouseEvent.MOUSE_CLICKED, new SelectRoomEvent());
+		txtNickname.setOnKeyReleased(event -> {
+			if (event.getCode().equals(KeyCode.ENTER)){
+				try {
+					this.submit();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
 	}
 
 	public void launchGW() throws Exception{
+		isInLobby = false;
 		try {
 			Stage launcher = (Stage) mainTitle.getScene().getWindow();
 			Stage stage = new Stage();
@@ -1100,30 +1110,47 @@ public class GUIController extends Observable implements Observer{
 	public void printMsg(String message){
 		long msgTime = 1500;
 		String msg = message;
-		int msgSize = ((1000+msg.length())/4)/(msg.length()+3) + 10;
-		ScaleTransition st = new ScaleTransition(Duration.millis(1000), msgGroup);
-		msgGroup.setOpacity(1.0);
-		lblMsg.setText(msg);
-		lblMsg.setStyle("-fx-font-size: "+Integer.toString(msgSize)+"pt; -fx-font-family: \"PerryGothic\"; -fx-text-fill: #A11212; -fx-effect: dropshadow(three-pass-box, rgba(209,181,82,0.9), 5, 0.8, 0, 0);");
-		st.setFromX(0.0);
-		st.setFromY(0.0);
-		st.setToX(1.0);
-		st.setToY(1.0);
-		st.play();
-		st.setOnFinished(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent event) {
-				try {
-					Thread.sleep(msgTime);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
+		if(!isInLobby){
+			int msgSize = ((1000+msg.length())/4)/(msg.length()+3) + 10;
+			ScaleTransition st = new ScaleTransition(Duration.millis(1000), msgGroup);
+			msgGroup.setOpacity(1.0);
+			lblMsg.setText(msg);
+			lblMsg.setStyle("-fx-font-size: "+Integer.toString(msgSize)+"pt; -fx-font-family: \"PerryGothic\"; -fx-text-fill: #A11212; -fx-effect: dropshadow(three-pass-box, rgba(209,181,82,0.9), 5, 0.8, 0, 0);");
+			st.setFromX(0.0);
+			st.setFromY(0.0);
+			st.setToX(1.0);
+			st.setToY(1.0);
+			st.play();
+			st.setOnFinished(new EventHandler<ActionEvent>() {
+	
+				@Override
+				public void handle(ActionEvent event) {
+					try {
+						Thread.sleep(msgTime);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					FadeTransition ft = new FadeTransition(Duration.millis(500), msgGroup);
+					ft.setToValue(0.0);
+					ft.play();
 				}
-				FadeTransition ft = new FadeTransition(Duration.millis(500), msgGroup);
-				ft.setToValue(0.0);
-				ft.play();
-			}
-		});
+			});
+		}else{
+			lblErrorsLobby.setText(msg);
+			FadeTransition ft1 = new FadeTransition(Duration.millis(msgTime),lblErrorsLobby);
+			ft1.setFromValue(1.0);
+			ft1.setToValue(1.0);
+			ft1.play();
+			ft1.setOnFinished(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent event) {
+					FadeTransition ft1 = new FadeTransition(Duration.millis(msgTime/2),lblErrorsLobby);
+					ft1.setFromValue(1.0);
+					ft1.setToValue(0.0);
+					ft1.play();
+				}
+			});
+		}
 	}
 
 	public void testAction(){

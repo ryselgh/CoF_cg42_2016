@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.effect.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.shape.*?>
 <?import java.net.*?>
@@ -390,5 +391,14 @@
             <ChoiceBox fx:id="choiceMapLobby" layoutX="388.0" layoutY="446.0" onMouseClicked="#checkCreateRoom" onMouseMoved="#checkCreateRoom" opacity="0.0" prefHeight="25.0" prefWidth="118.0" />
          </children>
       </Group>
+      <Group pickOnBounds="true" />
+      <Label fx:id="lblErrorsLobby" alignment="TOP_CENTER" layoutX="313.0" layoutY="689.0" prefHeight="70.0" prefWidth="399.0" textAlignment="CENTER" textFill="#c30000">
+         <font>
+            <Font name="Segoe UI Bold" size="18.0" />
+         </font>
+         <effect>
+            <DropShadow blurType="ONE_PASS_BOX" color="#fffa98" />
+         </effect>
+      </Label>
    </children>
 </AnchorPane>
