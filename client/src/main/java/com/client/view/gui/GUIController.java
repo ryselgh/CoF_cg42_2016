@@ -138,6 +138,7 @@ public class GUIController extends Observable implements Observer{
 	private Label lblRoomName1, lblRoomName2, lblRoomName3, lblRoomName4, lblRoomName5, lblRoomName6, lblRoomName7, lblRoomName8, lblPlMin1, lblPlMin2, lblPlMin3, lblPlMin4, lblPlMin5, lblPlMin6, lblPlMin7, lblPlMin8, lblPlMax1, lblPlMax2, lblPlMax3, lblPlMax4, lblPlMax5, lblPlMax6, lblPlMax7, lblPlMax8, lblMap1, lblMap2, lblMap3, lblMap4, lblMap5, lblMap6, lblMap7, lblMap8, lblPlayers1, lblPlayers2, lblPlayers3, lblPlayers4, lblPlayers5, lblPlayers6, lblPlayers7, lblPlayers8, lblStatus1, lblStatus2, lblStatus3, lblStatus4, lblStatus5, lblStatus6, lblStatus7, lblStatus8, lblErrorsLobby;
 	private boolean isInLobby = false;
 	private boolean isInRoom = false;
+	private String lobbyCommand;
 	
 	
 	
@@ -467,6 +468,7 @@ public class GUIController extends Observable implements Observer{
 	}
 
 	public void newRoomForm(){
+		lobbyCommand = "";
 		if(formNewRoom.getOpacity() == 0.0){
 			animateNewRoomForm();
 			btnCreateNewRoom.setDisable(true);
@@ -479,6 +481,10 @@ public class GUIController extends Observable implements Observer{
 	}
 
 	public void createNewRoom() {
+		lobbyCommand = "\\NEWROOM_"+txtRoomName.getText()+"_"+choiceMaxPl.getValue()+"_"+choiceMinPl.getValue();
+		this.setChanged();
+		this.notifyObservers("LOBBYCMD_"+lobbyCommand);
+		lobbyCommand = "";
 		animateRoom();
 		invertAnimateNewRoomForm();
 		btnNewRoom.setDisable(true);
@@ -501,6 +507,7 @@ public class GUIController extends Observable implements Observer{
 	}
 
 	public void cancelNewRoom() {
+		lobbyCommand = "";
 		if(formNewRoom.getOpacity() == 1.0){
 			invertAnimateNewRoomForm();
 			btnCreateNewRoom.setDisable(true);
