@@ -24,7 +24,7 @@ public class ShiftCouncilMainTest {
 		players[0] = "1";
 		players[1] = "2";
 		players[2] = "3";
-		game = new Game(3,"Default map1.xml",null,players);
+		game = new Game(3,"Default1",null,players);
 	}
 
 	@Test
@@ -82,7 +82,7 @@ public class ShiftCouncilMainTest {
 			ShiftCouncilMain fixture = new ShiftCouncilMain(1, game.getMap().getCouncilorsPool().get(0));
 			fixture.setGame(game);
 	
-			ActionReturn result = fixture.execute();
+			
 	
 			
 			assertEquals(game.getMap().getCouncilorsPool().size(),8);

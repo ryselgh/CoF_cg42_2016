@@ -133,7 +133,6 @@ public class BuyItemState implements State{
 	 */
 	private OnSale DTOtoObj(String UID){
 		for(OnSale os : game.getMarket().getObjectsOnSale()){
-			String tmpUID = os.getUID();//porcoddio va bene questa, poi pulisco
 			if(os instanceof AssistantOnSale){
 				AssistantOnSale assOS = (AssistantOnSale) os;
 				String assUID = assOS.getUID();

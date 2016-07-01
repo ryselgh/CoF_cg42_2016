@@ -142,7 +142,7 @@ public class PermitsCardTest {
 		
 		
 		
-		PermitsCard pc2 = fixture.fromDTO(pcDTO, p);
+		PermitsCard pc2 = PermitsCard.fromDTO(pcDTO, p);
 		assertEquals(pc2,fixture);
 	
 	}
@@ -161,7 +161,7 @@ public class PermitsCardTest {
 		
 		PermitsCard pc = new PermitsCard(b, l);
 		
-		assertNull(pc.fromDTO(pcDTO, p));
+		assertNull(PermitsCard.fromDTO(pcDTO, p));
 	
 	}
 

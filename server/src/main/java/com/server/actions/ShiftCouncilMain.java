@@ -25,8 +25,6 @@ public class ShiftCouncilMain extends Action{
 	/** The errors. */
 	private ArrayList<String> errors;
 	
-	/** The disable. */
-	private boolean disable = false;
 	
 	/**
 	 * Instantiates a new shift council main.

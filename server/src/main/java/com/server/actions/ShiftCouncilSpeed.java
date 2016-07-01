@@ -23,8 +23,7 @@ public class ShiftCouncilSpeed extends Action{
 	/** The errors. */
 	private ArrayList<String> errors;
 	
-	/** The disable. */
-	private boolean disable = false;
+
 	
 	/**
 	 * Instantiates a new shift council speed.

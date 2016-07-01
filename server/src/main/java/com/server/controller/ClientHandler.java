@@ -113,7 +113,6 @@ public class ClientHandler extends Observable implements Observer, Runnable{
 			lobby.disconnectFromGame(this);
 		    return;
 		}}
-		else{String br = "breakpointami e correggi";}
 	}
 	
 	/**

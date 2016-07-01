@@ -29,8 +29,6 @@ public class Build extends Action{
 	/** The errors. */
 	private ArrayList<String> errors;
 	
-	/** The disable. */
-	private boolean disable = false;//in this method there are no errors that set disable true
 	
 	/**
 	 * Instantiates a new builds the.

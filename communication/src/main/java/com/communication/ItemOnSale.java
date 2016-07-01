@@ -6,7 +6,12 @@ package com.communication;
 /**
  * The Class ItemOnSale.
  */
-public class ItemOnSale implements SellableSer{/** The price. */
+public class ItemOnSale implements SellableSer{/**
+	 * 
+	 */
+	private static final long serialVersionUID = 507204036033312702L;
+
+/** The price. */
 //used for client-server communication
 	private int price;
 	

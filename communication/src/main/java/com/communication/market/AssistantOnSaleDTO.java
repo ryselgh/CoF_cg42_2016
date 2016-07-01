@@ -12,6 +12,11 @@ import com.communication.gamelogic.PlayerDTO;
 public class AssistantOnSaleDTO extends OnSaleDTO implements Serializable{
 
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4458860367625926332L;
+
 	/** The assistant(DTO). */
 	private AssistantDTO assistant;
 	

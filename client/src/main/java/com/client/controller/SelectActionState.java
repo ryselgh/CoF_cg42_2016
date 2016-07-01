@@ -78,8 +78,6 @@ public class SelectActionState implements Runnable{
 	 * @return the action instance
 	 */
 	public ActionDTO getActionInstance(int selectedAction) {//visibilità a package perchè lo uso nella lobby con RMI
-		ArrayList<PoliticsCardDTO> polCards = new ArrayList<PoliticsCardDTO>();
-		PoliticsCardDTO[] cardsRet;
 		switch(selectedAction){
 		case 3:
 			BuildDTO build = view.CompileBuildAction(game);

@@ -52,9 +52,6 @@ public class BonusTokenTest {
 	public void testTheDTOConversion(){
 		
 		BonusToken fixture = new BonusToken(bonus);
-
-		Bonus[] result = fixture.getBonus();
-		
 		BonusTokenDTO btDTO = fixture.toDTO();
 		
 		assertTrue(btDTO instanceof BonusTokenDTO);

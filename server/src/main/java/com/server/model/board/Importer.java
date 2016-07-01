@@ -94,7 +94,7 @@ public class Importer {
 		this.mapInst = m;
 		if(!mapName.equals("custom")){
 			String mapNo = mapName.substring("default".length(), mapName.length());
-			this.location = "Default map1.xml";
+			this.location = "Default map"+mapNo+".xml";
 			File inputFile = new File(location);
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder dBuilder;

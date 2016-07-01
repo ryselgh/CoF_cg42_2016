@@ -37,8 +37,7 @@ public class SatisfyKing extends Action {
     /** The errors. */
     private ArrayList<String> errors;
     
-    /** The disable. */
-    private boolean disable;
+   
     
   /**
    * Instantiates a new satisfy king.

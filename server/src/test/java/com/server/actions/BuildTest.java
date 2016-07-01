@@ -49,7 +49,7 @@ public class BuildTest {
 		players[0] = "1";
 		players[1] = "2";
 		players[2] = "3";
-		game = new Game(3, "Default map1.xml", null, players);
+		game = new Game(3, "Default1", null, players);
 	}
 
 	@Test

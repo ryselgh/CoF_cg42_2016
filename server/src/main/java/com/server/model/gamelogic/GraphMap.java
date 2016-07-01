@@ -95,7 +95,7 @@ public class GraphMap {
 	 * @return the int
 	 */
 	public int shortestPathCost(City arrivalCity){
-		List<DefaultEdge> path = shortestPath.findPathBetween(g, map.getKing().getLocation().getName(), arrivalCity.getName());
+		List<DefaultEdge> path = DijkstraShortestPath.findPathBetween(g, map.getKing().getLocation().getName(), arrivalCity.getName());
 		return path.size()*2;
 	}
 

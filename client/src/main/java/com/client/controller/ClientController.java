@@ -54,8 +54,6 @@ public class ClientController extends Observable implements Observer, RMIClientC
 	/** The console listener. */
 	private ConsoleListener consoleListener;
 	
-	/** The console thread. */
-	private Thread consoleThread;
 	
 	/** The in game. */
 	private boolean inGame = false;

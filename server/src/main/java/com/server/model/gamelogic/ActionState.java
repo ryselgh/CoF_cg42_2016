@@ -355,7 +355,6 @@ public class ActionState implements State {
 	private void collectBonus(Bonus b)// NOTA: AGISCE SUL GIOCATORE CHE STA
 	// GIOCANDO IL TURNO
 	{
-		BonusToken[] btTmp;
 		try {
 		switch (b.getType()) {
 		case CARD:
