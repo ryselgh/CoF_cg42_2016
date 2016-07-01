@@ -113,6 +113,7 @@ public class InterfaceMiddleware extends Observable implements Observer{
 				cli.printMsg("Minimum players: " + rs.getMinPlayers());
 				cli.printMsg("Maximum players: " + rs.getMaxPlayers());
 				cli.printMsg("Map: " + rs.getMapName());
+				cli.printMsg("Status: " + rs.getRoomStatus());
 				String sec = "";
 				if (rs.getTimerDelay() == 0)
 					sec = "disabled";
@@ -415,7 +416,7 @@ public class InterfaceMiddleware extends Observable implements Observer{
 
 	public void printMsg(String msg) {
 		if (isGUI) {
-
+			this.gui.printMsg(msg);
 		} else
 			this.CLIprintMsg(msg);
 	}
@@ -428,7 +429,8 @@ public class InterfaceMiddleware extends Observable implements Observer{
 	}
 
 	public void startTurn(PoliticsCardDTO polcDTO) {
-		if (isGUI) {
+		if (isGUI){
+			
 
 		} else
 			this.CLIStartTurn(polcDTO);

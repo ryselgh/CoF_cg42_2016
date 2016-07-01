@@ -71,6 +71,7 @@ public class GUIController extends Observable implements Observer{
 	private ChoiceBox<String> connectionChoice;
 	@FXML
 	private Button btnLaunch;
+	private boolean isConnecting = true;
 
 	/*MainMenu (Lobby) fields*///TODO
 	private MediaPlayer mediaPlayer = null;
@@ -135,7 +136,7 @@ public class GUIController extends Observable implements Observer{
 	private Group groupRoom1, groupRoom2, groupRoom3, groupRoom4, groupRoom5, groupRoom6, groupRoom7, groupRoom8, lobbyGroup, selectedRoom, newFormGroup, roomTxtGroup;
 	@FXML
 	private Label lblRoomName1, lblRoomName2, lblRoomName3, lblRoomName4, lblRoomName5, lblRoomName6, lblRoomName7, lblRoomName8, lblPlMin1, lblPlMin2, lblPlMin3, lblPlMin4, lblPlMin5, lblPlMin6, lblPlMin7, lblPlMin8, lblPlMax1, lblPlMax2, lblPlMax3, lblPlMax4, lblPlMax5, lblPlMax6, lblPlMax7, lblPlMax8, lblMap1, lblMap2, lblMap3, lblMap4, lblMap5, lblMap6, lblMap7, lblMap8, lblPlayers1, lblPlayers2, lblPlayers3, lblPlayers4, lblPlayers5, lblPlayers6, lblPlayers7, lblPlayers8, lblStatus1, lblStatus2, lblStatus3, lblStatus4, lblStatus5, lblStatus6, lblStatus7, lblStatus8, lblErrorsLobby;
-	private boolean isInLobby = true;
+	private boolean isInLobby = false;
 	private boolean isInRoom = false;
 	
 	
@@ -319,6 +320,8 @@ public class GUIController extends Observable implements Observer{
 		btnJoinRoom.setLayoutX(1025);
 		btnLeaveRoom.setLayoutX(1025);
 		btnStartGame.setLayoutX(1025);
+		isConnecting = false;
+		isInLobby = true;
 
 		//New Room form
 		choiceMinPl.setItems(minList);
@@ -1119,44 +1122,55 @@ public class GUIController extends Observable implements Observer{
 	public void printMsg(String message){
 		long msgTime = 1500;
 		String msg = message;
-		if(!isInLobby){
-			int msgSize = ((1000+msg.length())/4)/(msg.length()+3) + 10;
-			ScaleTransition st = new ScaleTransition(Duration.millis(1000), msgGroup);
-			msgGroup.setOpacity(1.0);
-			lblMsg.setText(msg);
-			lblMsg.setStyle("-fx-font-size: "+Integer.toString(msgSize)+"pt; -fx-font-family: \"PerryGothic\"; -fx-text-fill: #A11212; -fx-effect: dropshadow(three-pass-box, rgba(209,181,82,0.9), 5, 0.8, 0, 0);");
-			st.setFromX(0.0);
-			st.setFromY(0.0);
-			st.setToX(1.0);
-			st.setToY(1.0);
-			st.play();
-			st.setOnFinished(new EventHandler<ActionEvent>() {
-	
+		if(!isInLobby && !isConnecting){
+			Platform.runLater(new Runnable() {
 				@Override
-				public void handle(ActionEvent event) {
-					try {
-						Thread.sleep(msgTime);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-					FadeTransition ft = new FadeTransition(Duration.millis(500), msgGroup);
-					ft.setToValue(0.0);
-					ft.play();
+				public void run() {
+					int msgSize = ((1000+msg.length())/4)/(msg.length()+3) + 10;
+					ScaleTransition st = new ScaleTransition(Duration.millis(1000), msgGroup);
+					msgGroup.setOpacity(1.0);
+					lblMsg.setText(msg);
+					lblMsg.setStyle("-fx-font-size: "+Integer.toString(msgSize)+"pt; -fx-font-family: \"PerryGothic\"; -fx-text-fill: #A11212; -fx-effect: dropshadow(three-pass-box, rgba(209,181,82,0.9), 5, 0.8, 0, 0);");
+					st.setFromX(0.0);
+					st.setFromY(0.0);
+					st.setToX(1.0);
+					st.setToY(1.0);
+					st.play();
+					st.setOnFinished(new EventHandler<ActionEvent>() {
+			
+						@Override
+						public void handle(ActionEvent event) {
+							try {
+								Thread.sleep(msgTime);
+							} catch (InterruptedException e) {
+								e.printStackTrace();
+							}
+							FadeTransition ft = new FadeTransition(Duration.millis(500), msgGroup);
+							ft.setToValue(0.0);
+							ft.play();
+						}
+					});
 				}
 			});
-		}else{
-			lblErrorsLobby.setText(msg);
-			FadeTransition ft1 = new FadeTransition(Duration.millis(msgTime),lblErrorsLobby);
-			ft1.setFromValue(1.0);
-			ft1.setToValue(1.0);
-			ft1.play();
-			ft1.setOnFinished(new EventHandler<ActionEvent>() {
+		}else if(isInLobby && !isConnecting){
+			Platform.runLater(new Runnable() {
+				
 				@Override
-				public void handle(ActionEvent event) {
-					FadeTransition ft1 = new FadeTransition(Duration.millis(msgTime/2),lblErrorsLobby);
+				public void run() {
+					lblErrorsLobby.setText(msg);
+					FadeTransition ft1 = new FadeTransition(Duration.millis(msgTime),lblErrorsLobby);
 					ft1.setFromValue(1.0);
-					ft1.setToValue(0.0);
+					ft1.setToValue(1.0);
 					ft1.play();
+					ft1.setOnFinished(new EventHandler<ActionEvent>() {
+						@Override
+						public void handle(ActionEvent event) {
+							FadeTransition ft1 = new FadeTransition(Duration.millis(msgTime/2),lblErrorsLobby);
+							ft1.setFromValue(1.0);
+							ft1.setToValue(0.0);
+							ft1.play();
+						}
+					});
 				}
 			});
 		}

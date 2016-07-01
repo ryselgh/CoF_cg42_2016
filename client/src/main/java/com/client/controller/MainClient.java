@@ -34,10 +34,9 @@ public class MainClient extends Application{
 		}
 		else{
 			RMI=isRMI();
-		}
-		controller = new ClientController(RMI, isGui, guiController);//se l'utente seleziona GUI il controller riceve RMI=false di default, ma lui lo sa e non lo caga finchè la gui non gli passa il vero valore
-		if(!isGui)
+			controller = new ClientController(RMI, isGui, guiController);//se l'utente seleziona GUI il controller riceve RMI=false di default, ma lui lo sa e non lo caga finchè la gui non gli passa il vero valore
 			controller.start();
+		}
 	}
 	
 	
@@ -82,10 +81,9 @@ public class MainClient extends Application{
 		    primaryStage.setResizable(false);
 			primaryStage.show();
 			guiController.initializeSC();
-
-			controller.addObserver(guiController);
-			guiController.addObserver(controller);
-			controller.setGuiController(guiController);
+			
+			Launcher l = new Launcher(new ClientController(RMI, isGui, guiController), guiController);
+			
 			
 		} catch (IOException e) {
 			e.printStackTrace();

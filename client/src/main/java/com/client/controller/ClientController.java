@@ -300,7 +300,7 @@ public class ClientController extends Observable implements Observer, RMIClientC
 							}
 						}
 					}).start();
-					
+					view.startTurn(null);
 				}
 			}
 			return;
