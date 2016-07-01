@@ -84,7 +84,7 @@ public class GUIController extends Observable implements Observer{
 	@FXML
 	private Label lblNickname;
 	@FXML
-	private Label lblTimer;
+	private ChoiceBox<String> lblTimer;
 	@FXML
 	private TextField txtNickname;
 	@FXML
@@ -104,20 +104,21 @@ public class GUIController extends Observable implements Observer{
 	@FXML
 	private TextField txtRoomName;
 	@FXML
-	private TextField txtTimer;
-	@FXML
 	private ChoiceBox<String> choiceMinPl;
 	private ObservableList<String> minList = FXCollections.observableArrayList("2","3","4","5","6","7","8");
 	@FXML
 	private ChoiceBox<String> choiceMaxPl;
 	private ObservableList<String> maxList = FXCollections.observableArrayList("2","3","4","5","6","7","8");
-	@FXML
-	private ChoiceBox<String> choiceMapLobby;
-	private ObservableList<String> mapListLobby = FXCollections.observableArrayList("Default","Map2","Map3","Map4","Map5","Map6","Map7","Map8");
+	private ObservableList<String> mapListLobby = FXCollections.observableArrayList("default1","default2","default3","default4","default5","default6","default7","default8");
+	private ObservableList<String> timerList = FXCollections.observableArrayList("Disabled","30 sec","1 min","2 min","5 min","10 min");
 	@FXML
 	private Button btnCreateNewRoom;
 	@FXML
 	private Button btnCancelNewRoom;
+	@FXML
+	private Button btnSetMap;
+	@FXML
+	private Button btnSetTimer;
 	@FXML
 	private Label lblRoomName;
 	@FXML
@@ -129,7 +130,7 @@ public class GUIController extends Observable implements Observer{
 	@FXML
 	private Label lblMaxPl;
 	@FXML
-	private Label lblMap;
+	private ChoiceBox<String> lblMap;
 	@FXML
 	private ImageView roomMask;
 	@FXML
@@ -139,6 +140,7 @@ public class GUIController extends Observable implements Observer{
 	private boolean isInLobby = false;
 	private boolean isInRoom = false;
 	private String lobbyCommand;
+	private String myNickname;
 	
 	
 	
@@ -146,7 +148,7 @@ public class GUIController extends Observable implements Observer{
 
 	//TEST AREA
 	@FXML
-	private Button testButton, btnSetMap, btnPlaceEmporium, btnPrint;
+	private Button testButton, btnSetMapTest, btnPlaceEmporium, btnPrint;
 	@FXML
 	private TextField txtCitySlot, txtHexColor, txtMsg;
 	@FXML
@@ -329,8 +331,16 @@ public class GUIController extends Observable implements Observer{
 		choiceMinPl.setDisable(true);
 		choiceMaxPl.setItems(maxList);
 		choiceMaxPl.setDisable(true);
-		choiceMapLobby.setItems(mapListLobby);
-		choiceMapLobby.setDisable(true);
+		lblMap.setItems(mapListLobby);
+		lblTimer.setItems(timerList);
+		lblMap.setDisable(true);
+		lblTimer.setDisable(true);
+		lblMap.toBack();
+		lblTimer.toBack();
+		btnSetMap.setDisable(true);
+		btnSetTimer.setDisable(true);
+		btnSetMap.toBack();
+		btnSetTimer.toBack();
 		btnCreateNewRoom.setDisable(true);
 		btnCancelNewRoom.setDisable(true);
 		btnJoinRoom.setDisable(true);
@@ -430,6 +440,7 @@ public class GUIController extends Observable implements Observer{
 	}
 
 	public void submit() throws IOException{
+		myNickname = txtNickname.getText();
 		this.userName = txtNickname.getText();
 		this.setChanged();
 		this.notifyObservers("USERNAME_" + userName);
@@ -458,7 +469,7 @@ public class GUIController extends Observable implements Observer{
 
 	public void checkCreateRoom(){
 		if((!txtRoomName.getText().matches("[A-Za-z0-9]*") || txtRoomName.getText().length()<5 || txtRoomName.getText().length()>13) ||
-				choiceMinPl.getValue() == null || choiceMaxPl.getValue() == null || choiceMapLobby.getValue() == null ||
+				choiceMinPl.getValue() == null || choiceMaxPl.getValue() == null ||
 				Integer.parseInt(choiceMaxPl.getValue())<Integer.parseInt(choiceMinPl.getValue()) || formNewRoom.getOpacity() == 0.0){
 			btnCreateNewRoom.setDisable(true);
 		}else{
@@ -476,7 +487,6 @@ public class GUIController extends Observable implements Observer{
 			txtRoomName.setDisable(false);
 			choiceMinPl.setDisable(false);
 			choiceMaxPl.setDisable(false);
-			choiceMapLobby.setDisable(false);
 		}
 	}
 
@@ -485,6 +495,13 @@ public class GUIController extends Observable implements Observer{
 		this.setChanged();
 		this.notifyObservers("LOBBYCMD_"+lobbyCommand);
 		lobbyCommand = "";
+		lblRoomName.setText(txtRoomName.getText());
+		lblMinPl.setText(choiceMaxPl.getValue());
+		lblMaxPl.setText(choiceMinPl.getValue());
+		lblAdmin.setText(myNickname);
+		lblClients.setText(myNickname);
+		lblMap.setValue("default1");
+		lblTimer.setValue("Disabled");
 		animateRoom();
 		invertAnimateNewRoomForm();
 		btnNewRoom.setDisable(true);
@@ -515,7 +532,6 @@ public class GUIController extends Observable implements Observer{
 			txtRoomName.setDisable(true);
 			choiceMinPl.setDisable(true);
 			choiceMaxPl.setDisable(true);
-			choiceMapLobby.setDisable(true);
 		}
 	}
 
@@ -680,20 +696,10 @@ public class GUIController extends Observable implements Observer{
 		ft5.setToValue(1.0);
 		ft5.play();
 
-		FadeTransition ft6 = new FadeTransition(Duration.millis(1000), choiceMapLobby);
-		ft6.setFromValue(0.0);
-		ft6.setToValue(1.0);
-		ft6.play();
-
 		FadeTransition ft7 = new FadeTransition(Duration.millis(1000), txtRoomName);
 		ft7.setFromValue(0.0);
 		ft7.setToValue(1.0);
 		ft7.play();
-
-		FadeTransition ft8 = new FadeTransition(Duration.millis(1000), txtTimer);
-		ft8.setFromValue(0.0);
-		ft8.setToValue(1.0);
-		ft8.play();
 
 	}
 
@@ -726,20 +732,10 @@ public class GUIController extends Observable implements Observer{
 		ft5.setToValue(0.0);
 		ft5.play();
 
-		FadeTransition ft6 = new FadeTransition(Duration.millis(1000), choiceMapLobby);
-		ft6.setFromValue(1.0);
-		ft6.setToValue(0.0);
-		ft6.play();
-
 		FadeTransition ft7 = new FadeTransition(Duration.millis(1000), txtRoomName);
 		ft7.setFromValue(1.0);
 		ft7.setToValue(0.0);
 		ft7.play();
-
-		FadeTransition ft8 = new FadeTransition(Duration.millis(1000), txtTimer);
-		ft8.setFromValue(1.0);
-		ft8.setToValue(0.0);
-		ft8.play();
 
 	}
 
@@ -753,6 +749,14 @@ public class GUIController extends Observable implements Observer{
 		btnJoinRoom.toFront();
 		btnStartGame.toFront();
 		roomTxtGroup.toFront();
+		lblTimer.setDisable(false);
+		lblTimer.toFront();
+		lblMap.setDisable(false);
+		lblMap.toFront();
+		btnSetMap.setDisable(false);
+		btnSetTimer.setDisable(false);
+		btnSetMap.toFront();
+		btnSetMap.toFront();
 
 		FadeTransition awayLobby = new FadeTransition(Duration.millis(1000), lobbyGroup);
 		awayLobby.setFromValue(1.0);
@@ -798,14 +802,32 @@ public class GUIController extends Observable implements Observer{
 		ft8.setFromValue(0.0);
 		ft8.setToValue(1.0);
 		ft8.play();
+		
+		FadeTransition ft9 = new FadeTransition(Duration.millis(1000), btnSetTimer);
+		ft9.setFromValue(0.0);
+		ft9.setToValue(1.0);
+		ft9.play();
+		
+		FadeTransition ft10 = new FadeTransition(Duration.millis(1000), btnSetMap);
+		ft10.setFromValue(0.0);
+		ft10.setToValue(1.0);
+		ft10.play();
 	}
 
 
 	public void invertAnimateRoom(){
-
+		
 		roomMask.toBack();
 		roomTxtGroup.toBack();
-
+		lblTimer.setDisable(true);
+		lblMap.setDisable(true);
+		lblTimer.toBack();
+		lblMap.toBack();
+		btnSetMap.setDisable(true);
+		btnSetTimer.setDisable(true);
+		btnSetMap.toBack();
+		btnSetTimer.toBack();
+		
 		FadeTransition returnLobby = new FadeTransition(Duration.millis(1000), lobbyGroup);
 		returnLobby.setFromValue(0.0);
 		returnLobby.setToValue(1.0);
@@ -850,6 +872,16 @@ public class GUIController extends Observable implements Observer{
 		ft8.setFromValue(1.0);
 		ft8.setToValue(0.0);
 		ft8.play();
+		
+		FadeTransition ft9 = new FadeTransition(Duration.millis(1000), btnSetTimer);
+		ft9.setFromValue(1.0);
+		ft9.setToValue(0.0);
+		ft9.play();
+		
+		FadeTransition ft10 = new FadeTransition(Duration.millis(1000), btnSetMap);
+		ft10.setFromValue(1.0);
+		ft10.setToValue(0.0);
+		ft10.play();
 	}
 
 	public void updateLobby(LobbyStatus ls){
@@ -998,13 +1030,13 @@ public class GUIController extends Observable implements Observer{
 
 	public void updateActualRoom(RoomStatus rs){
 		lblRoomName.setText(rs.getRoomName());
-		lblMap.setText(rs.getMapName());
+		lblMap.setValue(rs.getMapName());
 		lblMaxPl.setText(Integer.toString(rs.getMaxPlayers()));
 		lblMinPl.setText(Integer.toString(rs.getMinPlayers()));
 		lblClients.setText(Integer.toString(rs.getPlayers().size())+"/"+Integer.toString(rs.getMaxPlayers()));
 		lblAdmin.setText(rs.getAdminName());
 		if(rs.getTimerDelay()!=0)
-			lblTimer.setText(Integer.toString(rs.getTimerDelay())+" sec");
+			lblTimer.setValue(Integer.toString(rs.getTimerDelay())+" sec");
 	}
 	
 	private class SelectRoomEvent implements EventHandler<Event>{
@@ -1028,7 +1060,40 @@ public class GUIController extends Observable implements Observer{
 		}
 	}
 	
+	public void setMap(){
+		lobbyCommand = "\\SETMAP_"+lblMap.getValue();
+		this.setChanged();
+		this.notifyObservers("LOBBYCMD_"+lobbyCommand);
+		lobbyCommand = "";
+	}
 	
+	public void setTimer(){
+		lobbyCommand = "\\SETTIMEOUT_";
+		String sec = lblTimer.getValue();
+		switch(sec){
+			case "Disabled":
+				lobbyCommand+="0";
+				break;
+			case "30 sec":
+				lobbyCommand+="30";
+				break;
+			case "1 min":
+				lobbyCommand+="60";
+				break;
+			case "2 min":
+				lobbyCommand+="120";
+				break;
+			case "5 min":
+				lobbyCommand+="300";
+				break;
+			case "10 min":
+				lobbyCommand+="600";
+				break;
+		}
+		this.setChanged();
+		this.notifyObservers("LOBBYCMD_"+lobbyCommand);
+		lobbyCommand = "";
+	}
 	
 
 	/*GameWindow methods*///TODO
@@ -1234,7 +1299,7 @@ public class GUIController extends Observable implements Observer{
 		}
 	}
 
-	public void setMap(){
+	public void setMapTest(){
 		String choice = choiceMap.getValue();
 		switch(choice){
 		case "Default":
