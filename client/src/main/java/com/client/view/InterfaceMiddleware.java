@@ -544,8 +544,15 @@ public class InterfaceMiddleware extends Observable implements Observer{
 		else if(o instanceof GUIController){
 			if(arg instanceof String){
 				String[] info = ((String) arg).split("_",2);
-				if(info[0].equals("LOBBYCMD"))
-					this.controller.GUISendCommand(info[1]);;
+				if(info[0].equals("LOBBYCMD")){
+					String[] split = info[1].split("_");
+					if(split[0].equals("\\SETMAP")){
+						this.controller.changeMap(split[1]);
+					}
+					else
+						this.controller.GUISendCommand(info[1], null);
+				}
+					
 			}
 		}
 	}

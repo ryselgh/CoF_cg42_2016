@@ -266,8 +266,37 @@ public class ClientController extends Observable implements Observer, RMIClientC
 		}
 	}
 	
-	public void GUISendCommand(String cmd){
-		connection.sendToServer(cmd,null);
+	public void GUISendCommand(String cmd, Object obj){
+		connection.sendToServer(cmd,obj);
+	}
+	
+	public void changeMap(String name_url){
+		String newMap = "";
+		if(name_url.substring(0, "default".length()).equals("default")){
+			String mapNo = name_url.substring("default".length(), name_url.length());
+			if(mapNo.contains("[^0123456789]") || Integer.parseInt(mapNo)>8 || Integer.parseInt(mapNo) == 0){
+					view.printMsg("Wrong input format");
+					return;
+			}
+			newMap = "default" + mapNo;
+		}
+		else{
+			try {
+				newMap = readFile(name_url, StandardCharsets.UTF_8);
+			} catch (Exception e) {
+				view.printMsg("Error during map import");
+			}
+		}
+		if(RMI)
+			try {
+				lobbyRemote.RMIlobbyCommand(this.userName, "\\SETMAP", newMap);
+			} catch (RemoteException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		else
+			connection.sendToServer("\\SETMAP", newMap);
+		return;
 	}
 	
 	/* (non-Javadoc)
@@ -311,32 +340,7 @@ public class ClientController extends Observable implements Observer, RMIClientC
 				return;
 			String[] split = inStr.split("_");
 			if(split[0].equals("\\SETMAP")){
-				String newMap = "";
-				if(split[1].substring(0, "default".length()).equals("default")){
-					String mapNo = split[1].substring("default".length(), split[1].length());
-					if(mapNo.contains("[^0123456789]") || Integer.parseInt(mapNo)>8 || Integer.parseInt(mapNo) == 0){
-							view.printMsg("Wrong input format");
-							return;
-					}
-					newMap = "default" + mapNo;
-				}
-				else{
-					try {
-						newMap = readFile(split[1], StandardCharsets.UTF_8);
-					} catch (Exception e) {
-						view.printMsg("Error during map import");
-					}
-				}
-				if(RMI)
-					try {
-						lobbyRemote.RMIlobbyCommand(this.userName, "\\SETMAP", newMap);
-					} catch (RemoteException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				else
-					connection.sendToServer("\\SETMAP", newMap);
-				return;
+				this.changeMap(split[1]);
 			}
 		else{
 			if(RMI)
