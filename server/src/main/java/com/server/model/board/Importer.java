@@ -208,7 +208,9 @@ public class Importer {
 						randomNo = randomNum(0, colorList.getLength() - 1);
 					} while (pawnColors[randomNo] == "");
 					pawn[i] = new Pawn(players[i], pawnColors[randomNo]);
+					players[i].setPawn(pawn[i]);
 					pawnColors[randomNo] = "";
+					
 				}
 				
 				

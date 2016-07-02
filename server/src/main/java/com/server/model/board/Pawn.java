@@ -87,7 +87,6 @@ public class Pawn
 	public PawnDTO toDTO(){
 		PawnDTO pDTO = new PawnDTO();
 		pDTO.setHexColor(this.getColor());
-		pDTO.setP(this.getPlayer().toDTO());
 		pDTO.setPos(this.getPos());
 		return pDTO;
 	}

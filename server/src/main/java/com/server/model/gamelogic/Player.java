@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.communication.board.AssistantDTO;
 import com.communication.board.BonusCardDTO;
 import com.communication.board.EmporiumDTO;
+import com.communication.board.PawnDTO;
 import com.communication.decks.PermitsCardDTO;
 import com.communication.decks.PoliticsCardDTO;
 import com.communication.gamelogic.PlayerDTO;
@@ -140,6 +141,10 @@ public class Player {
 
 	public Pawn getPawn() {
 		return pawn;
+	}
+
+	public void setPawn(Pawn pawn) {
+		this.pawn = pawn;
 	}
 
 	/**
@@ -364,6 +369,9 @@ public class Player {
 		playerDTO.setPermits(permDTO);
 		playerDTO.setPlayerID(playerID);
 		playerDTO.setScore(score);
+		PawnDTO pawnDTO = this.getPawn().toDTO();
+		pawnDTO.setP(playerDTO);
+		playerDTO.setPawn(pawnDTO);
 		return playerDTO;
 	}
 	
