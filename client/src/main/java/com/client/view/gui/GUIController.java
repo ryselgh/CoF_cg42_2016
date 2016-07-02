@@ -2387,9 +2387,10 @@ public class GUIController extends Observable implements Observer{
 						lblMyNobility.setText(Integer.toString(p.getPawn().getPos()));
 						myEmporiumColor.setFill(Color.web(p.getPawn().getHexColor()));
 						i = 0;
-						for(PermitsCardDTO perm: p.getPermits())
-							if(perm.isFaceDown())
-								i++;
+						if(p.getPermits()!=null)
+							for(PermitsCardDTO perm: p.getPermits())
+								if(perm.isFaceDown())
+									i++;
 						lblMyUsedPerms.setText(Integer.toString(i));
 						lblMyPoints.setText(Integer.toString(p.getScore()));
 					}

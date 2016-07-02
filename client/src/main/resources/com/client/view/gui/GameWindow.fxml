@@ -881,7 +881,7 @@
                   <Image url="@img/board/used-perm.png" />
                </image>
             </ImageView>
-            <Label fx:id="lblMyUsedPerm" alignment="CENTER" layoutX="1194.0" layoutY="667.0" prefHeight="24.0" prefWidth="36.0" text="4" textAlignment="CENTER" textFill="WHITE">
+            <Label fx:id="lblMyUsedPerms" alignment="CENTER" layoutX="1194.0" layoutY="667.0" prefHeight="24.0" prefWidth="36.0" text="4" textAlignment="CENTER" textFill="WHITE">
                <effect>
                   <DropShadow blurType="ONE_PASS_BOX" spread="0.85" />
                </effect>
