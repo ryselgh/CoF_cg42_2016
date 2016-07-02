@@ -477,22 +477,22 @@
                               <Image url="@img/board/abc-ass2.png" />
                            </image>
                         </ImageView>
-                        <ImageView fx:id="seaSlot11" fitHeight="72.0" fitWidth="68.0" layoutX="371.0" layoutY="432.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="hillSlot1" fitHeight="72.0" fitWidth="68.0" layoutX="371.0" layoutY="432.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@img/board/fgj-coin2point1.png" />
                            </image>
                         </ImageView>
-                        <ImageView fx:id="seaDeck1" fitHeight="72.0" fitWidth="68.0" layoutX="182.0" layoutY="432.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="seaSlot2" fitHeight="72.0" fitWidth="68.0" layoutX="182.0" layoutY="432.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@img/board/ab-coin3card1.png" />
                            </image>
                         </ImageView>
-                        <ImageView fx:id="seaDeck11" fitHeight="72.0" fitWidth="68.0" layoutX="433.0" layoutY="432.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="hillSlot2" fitHeight="72.0" fitWidth="68.0" layoutX="433.0" layoutY="432.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@img/board/h-ass4.png" />
                            </image>
                         </ImageView>
-                        <ImageView fx:id="seaDeck111" fitHeight="72.0" fitWidth="68.0" layoutX="712.0" layoutY="432.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="mountainSlot2" fitHeight="72.0" fitWidth="68.0" layoutX="712.0" layoutY="432.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@img/board/n-coin7.png" />
                            </image>
@@ -502,17 +502,17 @@
                               <Image url="@img/board/perm-back-sea.png" />
                            </image>
                         </ImageView>
-                        <ImageView fx:id="seaSlot111" fitHeight="72.0" fitWidth="68.0" layoutX="650.0" layoutY="432.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="mountainSlot1" fitHeight="72.0" fitWidth="68.0" layoutX="650.0" layoutY="432.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@img/board/mn-main1.png" />
                            </image>
                         </ImageView>
-                        <ImageView fx:id="seaDeck21" fitHeight="72.0" fitWidth="68.0" layoutX="588.0" layoutY="432.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="mountainDeck" fitHeight="72.0" fitWidth="68.0" layoutX="588.0" layoutY="432.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@img/board/perm-back-mountain.png" />
                            </image>
                         </ImageView>
-                        <ImageView fx:id="seaDeck2" fitHeight="72.0" fitWidth="68.0" layoutX="309.0" layoutY="432.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="hillDeck" fitHeight="72.0" fitWidth="68.0" layoutX="309.0" layoutY="432.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@img/board/perm-back-hill.png" />
                            </image>
