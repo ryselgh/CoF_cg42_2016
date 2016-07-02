@@ -409,7 +409,8 @@ public class InterfaceMiddleware extends Observable implements Observer{
 
 	public void updateGame(GameDTO game) {
 		if (isGUI) {
-
+			this.setChanged();
+			this.notifyObservers(game);
 		} else
 			this.CLIupdateGame(game);
 	}

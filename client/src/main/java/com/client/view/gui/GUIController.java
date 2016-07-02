@@ -14,7 +14,12 @@ import com.communication.LobbyStatus;
 import com.communication.RoomStatus;
 import com.communication.board.BonusDTO;
 import com.communication.board.BonusTokenDTO;
+import com.communication.board.CityDTO;
+import com.communication.board.CouncilorDTO;
+import com.communication.board.EmporiumDTO;
 import com.communication.decks.PermitsCardDTO;
+import com.communication.gamelogic.GameDTO;
+import com.communication.gamelogic.PlayerDTO;
 
 import javafx.application.Platform;
 import javafx.animation.FadeTransition;
@@ -139,6 +144,7 @@ public class GUIController extends Observable implements Observer{
 	private Label lblRoomName1, lblRoomName2, lblRoomName3, lblRoomName4, lblRoomName5, lblRoomName6, lblRoomName7, lblRoomName8, lblPlMin1, lblPlMin2, lblPlMin3, lblPlMin4, lblPlMin5, lblPlMin6, lblPlMin7, lblPlMin8, lblPlMax1, lblPlMax2, lblPlMax3, lblPlMax4, lblPlMax5, lblPlMax6, lblPlMax7, lblPlMax8, lblMap1, lblMap2, lblMap3, lblMap4, lblMap5, lblMap6, lblMap7, lblMap8, lblPlayers1, lblPlayers2, lblPlayers3, lblPlayers4, lblPlayers5, lblPlayers6, lblPlayers7, lblPlayers8, lblStatus1, lblStatus2, lblStatus3, lblStatus4, lblStatus5, lblStatus6, lblStatus7, lblStatus8, lblErrorsLobby;
 	private boolean isInLobby = false;
 	private boolean isInRoom = false;
+	private boolean isInGame = false;
 	private String lobbyCommand;
 	private String myNickname;
 	private String roomAdmin;
@@ -156,9 +162,6 @@ public class GUIController extends Observable implements Observer{
 	private ChoiceBox<String> selectTest;
 	private ObservableList<String> testList = FXCollections.observableArrayList("setupTokens()","draw(1)","draw(5)","flipDownCardAnimation()","flipUpCardAnimation()","flipMap()","moveKing(Arkon)","moveKing(Castrum)","moveKing(Hellar)");
 	@FXML
-	private ChoiceBox<String> choiceMap;
-	private ObservableList<String> mapList = FXCollections.observableArrayList("Default","Map2","Map3","Map4","Map5","Map6","Map7","Map8");
-	@FXML
 	private ToggleButton btnToggleShift, btnToggleSatisfy;
 	//TEST AREA
 
@@ -170,7 +173,7 @@ public class GUIController extends Observable implements Observer{
 	@FXML
 	private Label lblMsg;
 	@FXML
-	private Label lblCouncPoolBlack, lblCouncPoolOrange, lblCouncPoolBlue, lblCouncPoolPink, lblCouncPoolPurple, lblCouncPoolWhite, lblMyEmporiums, lblMyAssistants, lblMyCoins, lblMyNobility, lblMyPoints, lblMyUsedPerms, lblMyMainActions, lblMySpeedActions;
+	private Label lblCouncPoolBlack, lblCouncPoolOrange, lblCouncPoolBlue, lblCouncPoolPink, lblCouncPoolPurple, lblCouncPoolWhite, lblMyEmporiums, lblMyAssistants, lblMyCoins, lblMyNobility, lblMyPoints, lblMyUsedPerms, lblMyMainActions, lblMySpeedActions, lblAssistantsPool, lblActualPlayer;
 	@FXML
 	private ImageView councToDragBlack, councToDragBlue, councToDragOrange, councToDragPink, councToDragPurple, councToDragWhite;
 	@FXML
@@ -184,7 +187,7 @@ public class GUIController extends Observable implements Observer{
 	@FXML
 	private ImageView tokA, tokB, tokC, tokD, tokE, tokF, tokG, tokH, tokJ, tokK, tokI, tokL, tokM, tokN, tokO;
 	@FXML
-	private SVGPath empA1, empA2, empA3, empA4, empA5, empA6, empA7, empA8, empB1, empB2, empB3, empB4, empB5, empB6, empB7, empB8, empC1, empC2, empC3, empC4, empC5, empC6, empC7, empC8, empD1, empD2, empD3, empD4, empD5, empD6, empD7, empD8, empE1, empE2, empE3, empE4, empE5, empE6, empE7, empE8, empF1, empF2, empF3, empF4, empF5, empF6, empF7, empF8, empG1, empG2, empG3, empG4, empG5, empG6, empG7, empG8, empH1, empH2, empH3, empH4, empH5, empH6, empH7, empH8, empI1, empI2, empI3, empI4, empI5, empI6, empI7, empI8, empJ1, empJ2, empJ3, empJ4, empJ5, empJ6, empJ7, empJ8, empK1, empK2, empK3, empK4, empK5, empK6, empK7, empK8, empL1, empL2, empL3, empL4, empL5, empL6, empL7, empL8, empM1, empM2, empM3, empM4, empM5, empM6, empM7, empM8, empN1, empN2, empN3, empN4, empN5, empN6, empN7, empN8, empO1, empO2, empO3, empO4, empO5, empO6, empO7, empO8;
+	private SVGPath empA1, empA2, empA3, empA4, empA5, empA6, empA7, empA8, empB1, empB2, empB3, empB4, empB5, empB6, empB7, empB8, empC1, empC2, empC3, empC4, empC5, empC6, empC7, empC8, empD1, empD2, empD3, empD4, empD5, empD6, empD7, empD8, empE1, empE2, empE3, empE4, empE5, empE6, empE7, empE8, empF1, empF2, empF3, empF4, empF5, empF6, empF7, empF8, empG1, empG2, empG3, empG4, empG5, empG6, empG7, empG8, empH1, empH2, empH3, empH4, empH5, empH6, empH7, empH8, empI1, empI2, empI3, empI4, empI5, empI6, empI7, empI8, empJ1, empJ2, empJ3, empJ4, empJ5, empJ6, empJ7, empJ8, empK1, empK2, empK3, empK4, empK5, empK6, empK7, empK8, empL1, empL2, empL3, empL4, empL5, empL6, empL7, empL8, empM1, empM2, empM3, empM4, empM5, empM6, empM7, empM8, empN1, empN2, empN3, empN4, empN5, empN6, empN7, empN8, empO1, empO2, empO3, empO4, empO5, empO6, empO7, empO8, myEmporiumColor;
 	private SVGPath[][] emporiums;
 	@FXML
 	private Group actionsGroup, msgGroup, boardGroup, marketGroup, mapGroup;
@@ -212,6 +215,7 @@ public class GUIController extends Observable implements Observer{
 	private ArrayList<ImageView> selectedCards;
 	private ArrayList<ImageView> councilors;
 	private String kingPreviousLoc = null;
+	private String chosenMap;
 
 	//istanza del ClientController, a cui passa tipoConnessione e userName
 	private ClientController clientController;
@@ -570,6 +574,7 @@ public class GUIController extends Observable implements Observer{
 	}
 
 	public void startGame(){
+		isInGame = true;
 		lobbyCommand = "\\STARTGAME";
 		this.setChanged();
 		this.notifyObservers("LOBBYCMD_"+lobbyCommand);
@@ -1070,6 +1075,7 @@ public class GUIController extends Observable implements Observer{
 				if(c.equals(myNickname)){
 					myRoom = r;
 					roomAdmin = myRoom.getAdminName();
+					chosenMap = myRoom.getMapName();
 					if(roomAdmin.equals(myNickname))
 						btnStartGame.setDisable(false);
 					else
@@ -1200,7 +1206,6 @@ public class GUIController extends Observable implements Observer{
 		}
 		//TEST AREA
 		selectTest.setItems(testList);
-		choiceMap.setItems(mapList);
 		String[] councImgPaths = {"img/board/counc-black.png","img/board/counc-orange.png","img/board/counc-blue.png","img/board/counc-pink.png","img/board/counc-purple.png","img/board/counc-white.png"};
 		for(ImageView c: councilors){
 			int rnd = new Random().nextInt(councImgPaths.length);
@@ -1353,31 +1358,30 @@ public class GUIController extends Observable implements Observer{
 		}
 	}
 
-	public void setMapTest(){
-		String choice = choiceMap.getValue();
+	public void setMapBoard(String choice){
 		switch(choice){
-		case "Default":
+		case "default1":
 			map.setImage(new Image(getClass().getResourceAsStream("img/maps/default_map.png")));
 			break;
-		case "Map2":
+		case "default2":
 			map.setImage(new Image(getClass().getResourceAsStream("img/maps/map2.png")));
 			break;
-		case "Map3":
+		case "default3":
 			map.setImage(new Image(getClass().getResourceAsStream("img/maps/map3.png")));
 			break;
-		case "Map4":
+		case "default4":
 			map.setImage(new Image(getClass().getResourceAsStream("img/maps/map4.png")));
 			break;
-		case "Map5":
+		case "default5":
 			map.setImage(new Image(getClass().getResourceAsStream("img/maps/map5.png")));
 			break;
-		case "Map6":
+		case "default6":
 			map.setImage(new Image(getClass().getResourceAsStream("img/maps/map6.png")));
 			break;
-		case "Map7":
+		case "default7":
 			map.setImage(new Image(getClass().getResourceAsStream("img/maps/map7.png")));
 			break;
-		case "Map8":
+		case "default8":
 			map.setImage(new Image(getClass().getResourceAsStream("img/maps/map8.png")));
 			break;
 		}
@@ -1455,10 +1459,10 @@ public class GUIController extends Observable implements Observer{
 		return imgName;
 	}
 
-	public void placeEmporium(){
+	public void placeEmporium(String location, String color){
 		//Ex. loc = A1 (City A, slot 1), col = #A1B2C3 | This will be changed to EmporiumDTO
-		String loc = txtCitySlot.getText();
-		String col = txtHexColor.getText();
+		String loc = location;
+		String col = color;
 		int city = loc.charAt(0)-65;
 		int slot = Integer.parseInt(Character.toString(loc.charAt(1))) - 1;
 		emporiums[city][slot].setFill(Color.web(col));
@@ -2002,6 +2006,395 @@ public class GUIController extends Observable implements Observer{
 			}
 		});
 	}
+	
+	public void updateGame(GameDTO game){
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				if(!isInGame){
+					try {
+						launchGW();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					isInGame = true;
+				}
+				//Update map
+				setMapBoard(chosenMap);
+				//Update actual player
+				lblActualPlayer.setText("Turn of: "+game.getActualPlayer().getPlayerID());
+				//Update assistants pool
+				lblAssistantsPool.setText(Integer.toString(game.getMap().getAssistants().size()));
+				int i = 0;
+				for(CouncilorDTO c: game.getMap().getBalcony(0).getCouncilor()){
+					i++;
+					String councCol = c.getColor().toString();
+					switch(councCol){
+						case "BLACK":
+							if(i==1)
+								councSea1.setImage(new Image(getClass().getResourceAsStream("img/board/counc-black.png")));
+							if(i==2)
+								councSea2.setImage(new Image(getClass().getResourceAsStream("img/board/counc-black.png")));
+							if(i==3)
+								councSea3.setImage(new Image(getClass().getResourceAsStream("img/board/counc-black.png")));
+							if(i==4)
+								councSea4.setImage(new Image(getClass().getResourceAsStream("img/board/counc-black.png")));
+							break;
+						case "PURPLE":
+							if(i==1)
+								councSea1.setImage(new Image(getClass().getResourceAsStream("img/board/counc-purple.png")));
+							if(i==2)
+								councSea2.setImage(new Image(getClass().getResourceAsStream("img/board/counc-purple.png")));
+							if(i==3)
+								councSea3.setImage(new Image(getClass().getResourceAsStream("img/board/counc-purple.png")));
+							if(i==4)
+								councSea4.setImage(new Image(getClass().getResourceAsStream("img/board/counc-purple.png")));
+							break;
+						case "WHITE":
+							if(i==1)
+								councSea1.setImage(new Image(getClass().getResourceAsStream("img/board/counc-white.png")));
+							if(i==2)
+								councSea2.setImage(new Image(getClass().getResourceAsStream("img/board/counc-white.png")));
+							if(i==3)
+								councSea3.setImage(new Image(getClass().getResourceAsStream("img/board/counc-white.png")));
+							if(i==4)
+								councSea4.setImage(new Image(getClass().getResourceAsStream("img/board/counc-white.png")));
+							break;
+						case "BLUESKY":
+							if(i==1)
+								councSea1.setImage(new Image(getClass().getResourceAsStream("img/board/counc-blue.png")));
+							if(i==2)
+								councSea2.setImage(new Image(getClass().getResourceAsStream("img/board/counc-blue.png")));
+							if(i==3)
+								councSea3.setImage(new Image(getClass().getResourceAsStream("img/board/counc-blue.png")));
+							if(i==4)
+								councSea4.setImage(new Image(getClass().getResourceAsStream("img/board/counc-blue.png")));
+							break;
+						case "PINK":
+							if(i==1)
+								councSea1.setImage(new Image(getClass().getResourceAsStream("img/board/counc-pink.png")));
+							if(i==2)
+								councSea2.setImage(new Image(getClass().getResourceAsStream("img/board/counc-pink.png")));
+							if(i==3)
+								councSea3.setImage(new Image(getClass().getResourceAsStream("img/board/counc-pink.png")));
+							if(i==4)
+								councSea4.setImage(new Image(getClass().getResourceAsStream("img/board/counc-pink.png")));
+							break;
+						case "ORANGE":
+							if(i==1)
+								councSea1.setImage(new Image(getClass().getResourceAsStream("img/board/counc-orange.png")));
+							if(i==2)
+								councSea2.setImage(new Image(getClass().getResourceAsStream("img/board/counc-orange.png")));
+							if(i==3)
+								councSea3.setImage(new Image(getClass().getResourceAsStream("img/board/counc-orange.png")));
+							if(i==4)
+								councSea4.setImage(new Image(getClass().getResourceAsStream("img/board/counc-orange.png")));
+							break;
+					}
+				}
+				i = 0;
+				for(CouncilorDTO c: game.getMap().getBalcony(1).getCouncilor()){
+					i++;
+					String councCol = c.getColor().toString();
+					switch(councCol){
+						case "BLACK":
+							if(i==1)
+								councHill1.setImage(new Image(getClass().getResourceAsStream("img/board/counc-black.png")));
+							if(i==2)
+								councHill2.setImage(new Image(getClass().getResourceAsStream("img/board/counc-black.png")));
+							if(i==3)
+								councHill3.setImage(new Image(getClass().getResourceAsStream("img/board/counc-black.png")));
+							if(i==4)
+								councHill4.setImage(new Image(getClass().getResourceAsStream("img/board/counc-black.png")));
+							break;
+						case "PURPLE":
+							if(i==1)
+								councHill1.setImage(new Image(getClass().getResourceAsStream("img/board/counc-purple.png")));
+							if(i==2)
+								councHill2.setImage(new Image(getClass().getResourceAsStream("img/board/counc-purple.png")));
+							if(i==3)
+								councHill3.setImage(new Image(getClass().getResourceAsStream("img/board/counc-purple.png")));
+							if(i==4)
+								councHill4.setImage(new Image(getClass().getResourceAsStream("img/board/counc-purple.png")));
+							break;
+						case "WHITE":
+							if(i==1)
+								councHill1.setImage(new Image(getClass().getResourceAsStream("img/board/counc-white.png")));
+							if(i==2)
+								councHill2.setImage(new Image(getClass().getResourceAsStream("img/board/counc-white.png")));
+							if(i==3)
+								councHill3.setImage(new Image(getClass().getResourceAsStream("img/board/counc-white.png")));
+							if(i==4)
+								councHill4.setImage(new Image(getClass().getResourceAsStream("img/board/counc-white.png")));
+							break;
+						case "BLUESKY":
+							if(i==1)
+								councHill1.setImage(new Image(getClass().getResourceAsStream("img/board/counc-blue.png")));
+							if(i==2)
+								councHill2.setImage(new Image(getClass().getResourceAsStream("img/board/counc-blue.png")));
+							if(i==3)
+								councHill3.setImage(new Image(getClass().getResourceAsStream("img/board/counc-blue.png")));
+							if(i==4)
+								councHill4.setImage(new Image(getClass().getResourceAsStream("img/board/counc-blue.png")));
+							break;
+						case "PINK":
+							if(i==1)
+								councHill1.setImage(new Image(getClass().getResourceAsStream("img/board/counc-pink.png")));
+							if(i==2)
+								councHill2.setImage(new Image(getClass().getResourceAsStream("img/board/counc-pink.png")));
+							if(i==3)
+								councHill3.setImage(new Image(getClass().getResourceAsStream("img/board/counc-pink.png")));
+							if(i==4)
+								councHill4.setImage(new Image(getClass().getResourceAsStream("img/board/counc-pink.png")));
+							break;
+						case "ORANGE":
+							if(i==1)
+								councHill1.setImage(new Image(getClass().getResourceAsStream("img/board/counc-orange.png")));
+							if(i==2)
+								councHill2.setImage(new Image(getClass().getResourceAsStream("img/board/counc-orange.png")));
+							if(i==3)
+								councHill3.setImage(new Image(getClass().getResourceAsStream("img/board/counc-orange.png")));
+							if(i==4)
+								councHill4.setImage(new Image(getClass().getResourceAsStream("img/board/counc-orange.png")));
+							break;
+					}
+				}
+				i = 0;
+				for(CouncilorDTO c: game.getMap().getBalcony(2).getCouncilor()){
+					i++;
+					String councCol = c.getColor().toString();
+					switch(councCol){
+						case "BLACK":
+							if(i==1)
+								councMount1.setImage(new Image(getClass().getResourceAsStream("img/board/counc-black.png")));
+							if(i==2)
+								councMount2.setImage(new Image(getClass().getResourceAsStream("img/board/counc-black.png")));
+							if(i==3)
+								councMount3.setImage(new Image(getClass().getResourceAsStream("img/board/counc-black.png")));
+							if(i==4)
+								councMount4.setImage(new Image(getClass().getResourceAsStream("img/board/counc-black.png")));
+							break;
+						case "PURPLE":
+							if(i==1)
+								councMount1.setImage(new Image(getClass().getResourceAsStream("img/board/counc-purple.png")));
+							if(i==2)
+								councMount2.setImage(new Image(getClass().getResourceAsStream("img/board/counc-purple.png")));
+							if(i==3)
+								councMount3.setImage(new Image(getClass().getResourceAsStream("img/board/counc-purple.png")));
+							if(i==4)
+								councMount4.setImage(new Image(getClass().getResourceAsStream("img/board/counc-purple.png")));
+							break;
+						case "WHITE":
+							if(i==1)
+								councMount1.setImage(new Image(getClass().getResourceAsStream("img/board/counc-white.png")));
+							if(i==2)
+								councMount2.setImage(new Image(getClass().getResourceAsStream("img/board/counc-white.png")));
+							if(i==3)
+								councMount3.setImage(new Image(getClass().getResourceAsStream("img/board/counc-white.png")));
+							if(i==4)
+								councMount4.setImage(new Image(getClass().getResourceAsStream("img/board/counc-white.png")));
+							break;
+						case "BLUESKY":
+							if(i==1)
+								councMount1.setImage(new Image(getClass().getResourceAsStream("img/board/counc-blue.png")));
+							if(i==2)
+								councMount2.setImage(new Image(getClass().getResourceAsStream("img/board/counc-blue.png")));
+							if(i==3)
+								councMount3.setImage(new Image(getClass().getResourceAsStream("img/board/counc-blue.png")));
+							if(i==4)
+								councMount4.setImage(new Image(getClass().getResourceAsStream("img/board/counc-blue.png")));
+							break;
+						case "PINK":
+							if(i==1)
+								councMount1.setImage(new Image(getClass().getResourceAsStream("img/board/counc-pink.png")));
+							if(i==2)
+								councMount2.setImage(new Image(getClass().getResourceAsStream("img/board/counc-pink.png")));
+							if(i==3)
+								councMount3.setImage(new Image(getClass().getResourceAsStream("img/board/counc-pink.png")));
+							if(i==4)
+								councMount4.setImage(new Image(getClass().getResourceAsStream("img/board/counc-pink.png")));
+							break;
+						case "ORANGE":
+							if(i==1)
+								councMount1.setImage(new Image(getClass().getResourceAsStream("img/board/counc-orange.png")));
+							if(i==2)
+								councMount2.setImage(new Image(getClass().getResourceAsStream("img/board/counc-orange.png")));
+							if(i==3)
+								councMount3.setImage(new Image(getClass().getResourceAsStream("img/board/counc-orange.png")));
+							if(i==4)
+								councMount4.setImage(new Image(getClass().getResourceAsStream("img/board/counc-orange.png")));
+							break;
+					}
+				}
+				i = 0;
+				for(CouncilorDTO c: game.getMap().getBalcony(3).getCouncilor()){
+					i++;
+					String councCol = c.getColor().toString();
+					switch(councCol){
+						case "BLACK":
+							if(i==1)
+								councKing1.setImage(new Image(getClass().getResourceAsStream("img/board/counc-black.png")));
+							if(i==2)
+								councKing2.setImage(new Image(getClass().getResourceAsStream("img/board/counc-black.png")));
+							if(i==3)
+								councKing3.setImage(new Image(getClass().getResourceAsStream("img/board/counc-black.png")));
+							if(i==4)
+								councKing4.setImage(new Image(getClass().getResourceAsStream("img/board/counc-black.png")));
+							break;
+						case "PURPLE":
+							if(i==1)
+								councKing1.setImage(new Image(getClass().getResourceAsStream("img/board/counc-purple.png")));
+							if(i==2)
+								councKing2.setImage(new Image(getClass().getResourceAsStream("img/board/counc-purple.png")));
+							if(i==3)
+								councKing3.setImage(new Image(getClass().getResourceAsStream("img/board/counc-purple.png")));
+							if(i==4)
+								councKing4.setImage(new Image(getClass().getResourceAsStream("img/board/counc-purple.png")));
+							break;
+						case "WHITE":
+							if(i==1)
+								councKing1.setImage(new Image(getClass().getResourceAsStream("img/board/counc-white.png")));
+							if(i==2)
+								councKing2.setImage(new Image(getClass().getResourceAsStream("img/board/counc-white.png")));
+							if(i==3)
+								councKing3.setImage(new Image(getClass().getResourceAsStream("img/board/counc-white.png")));
+							if(i==4)
+								councKing4.setImage(new Image(getClass().getResourceAsStream("img/board/counc-white.png")));
+							break;
+						case "BLUESKY":
+							if(i==1)
+								councKing1.setImage(new Image(getClass().getResourceAsStream("img/board/counc-blue.png")));
+							if(i==2)
+								councKing2.setImage(new Image(getClass().getResourceAsStream("img/board/counc-blue.png")));
+							if(i==3)
+								councKing3.setImage(new Image(getClass().getResourceAsStream("img/board/counc-blue.png")));
+							if(i==4)
+								councKing4.setImage(new Image(getClass().getResourceAsStream("img/board/counc-blue.png")));
+							break;
+						case "PINK":
+							if(i==1)
+								councKing1.setImage(new Image(getClass().getResourceAsStream("img/board/counc-pink.png")));
+							if(i==2)
+								councKing2.setImage(new Image(getClass().getResourceAsStream("img/board/counc-pink.png")));
+							if(i==3)
+								councKing3.setImage(new Image(getClass().getResourceAsStream("img/board/counc-pink.png")));
+							if(i==4)
+								councKing4.setImage(new Image(getClass().getResourceAsStream("img/board/counc-pink.png")));
+							break;
+						case "ORANGE":
+							if(i==1)
+								councKing1.setImage(new Image(getClass().getResourceAsStream("img/board/counc-orange.png")));
+							if(i==2)
+								councKing2.setImage(new Image(getClass().getResourceAsStream("img/board/counc-orange.png")));
+							if(i==3)
+								councKing3.setImage(new Image(getClass().getResourceAsStream("img/board/counc-orange.png")));
+							if(i==4)
+								councKing4.setImage(new Image(getClass().getResourceAsStream("img/board/counc-orange.png")));
+							break;
+					}
+				}
+				//Update emporiums
+				for(CityDTO c: game.getMap().getCity()){
+					int j = 0;
+					String loc = c.getName().substring(0, 1);
+					for(EmporiumDTO e: c.getSlot()){
+						j++;
+						if(e!=null){
+							placeEmporium(loc+Integer.toString(j), e.getPlayer().getPawn().getHexColor());
+						}
+					}
+				}
+				//Update councilors pool
+				int countBlack = 0, countPurple = 0, countOrange = 0, countWhite = 0, countPink = 0, countBlue = 0;
+				for(CouncilorDTO c: game.getMap().getCouncilors()){
+					String councCol = c.getColor().toString();
+						switch(councCol){
+							case "BLACK":
+								countBlack++;
+								break;
+							case "PURPLE":
+								countPurple++;
+								break;
+							case "WHITE":
+								countWhite++;
+								break;
+							case "BLUESKY":
+								countBlue++;
+								break;
+							case "PINK":
+								countPink++;
+								break;
+							case "ORANGE":
+								countOrange++;
+								break;
+						}
+				}
+				lblCouncPoolBlack.setText(Integer.toString(countBlack));
+				lblCouncPoolBlue.setText(Integer.toString(countBlue));
+				lblCouncPoolPurple.setText(Integer.toString(countPurple));
+				lblCouncPoolOrange.setText(Integer.toString(countOrange));
+				lblCouncPoolWhite.setText(Integer.toString(countWhite));
+				lblCouncPoolPink.setText(Integer.toString(countPink));
+				//Update king location
+				moveKing(game.getMap().getKing().getLocation().getName());
+				
+				game.getMap().getNobilityTrack(); //aggiorna pedine //TODO
+				game.getMap().getPawn();
+				
+				//Update permits decks
+				seaSlot1.setImage(new Image(getClass().getResourceAsStream(parsePermitImg(game.getMap().getPermitsDeck(0).getSlot(0)))));
+				seaSlot2.setImage(new Image(getClass().getResourceAsStream(parsePermitImg(game.getMap().getPermitsDeck(0).getSlot(1)))));
+				hillSlot1.setImage(new Image(getClass().getResourceAsStream(parsePermitImg(game.getMap().getPermitsDeck(1).getSlot(0)))));
+				hillSlot2.setImage(new Image(getClass().getResourceAsStream(parsePermitImg(game.getMap().getPermitsDeck(1).getSlot(1)))));
+				mountainSlot1.setImage(new Image(getClass().getResourceAsStream(parsePermitImg(game.getMap().getPermitsDeck(2).getSlot(0)))));
+				mountainSlot2.setImage(new Image(getClass().getResourceAsStream(parsePermitImg(game.getMap().getPermitsDeck(2).getSlot(1)))));
+				
+				//Update garbage
+				if(game.getMap().getPoliticsDeck().getGarbage().size()!=0){
+					String garbCol = game.getMap().getPoliticsDeck().getGarbage().get(0).getColor().toString();
+					switch(garbCol){
+					case "BLACK":
+						garbagePlaceHolder.setImage(new Image(getClass().getResourceAsStream("img/board/pol-black.png")));
+						break;
+					case "PURPLE":
+						garbagePlaceHolder.setImage(new Image(getClass().getResourceAsStream("img/board/pol-purple.png")));
+						break;
+					case "WHITE":
+						garbagePlaceHolder.setImage(new Image(getClass().getResourceAsStream("img/board/pol-white.png")));
+						break;
+					case "BLUESKY":
+						garbagePlaceHolder.setImage(new Image(getClass().getResourceAsStream("img/board/pol-blue.png")));
+						break;
+					case "PINK":
+						garbagePlaceHolder.setImage(new Image(getClass().getResourceAsStream("img/board/pol-pink.png")));
+						break;
+					case "ORANGE":
+						garbagePlaceHolder.setImage(new Image(getClass().getResourceAsStream("img/board/pol-orange.png")));
+						break;
+					}
+					garbagePlaceHolder.setOpacity(1.0);
+				}else{
+					garbagePlaceHolder.setOpacity(0.0);
+				}
+				
+				for(PlayerDTO p: game.getPlayers())
+					if(p.getPlayerID().equals(myNickname)){
+						lblMyAssistants.setText(Integer.toString(p.getAvailableAssistants().size()));
+						lblMyEmporiums.setText(Integer.toString(p.getAvailableEmporiums().size()));
+						lblMyCoins.setText(Integer.toString(p.getCoins()));
+						lblMyNobility.setText(Integer.toString(p.getPawn().getPos()));
+						myEmporiumColor.setFill(Color.web(p.getPawn().getHexColor()));
+						i = 0;
+						for(PermitsCardDTO perm: p.getPermits())
+							if(perm.isFaceDown())
+								i++;
+						lblMyUsedPerms.setText(Integer.toString(i));
+						lblMyPoints.setText(Integer.toString(p.getScore()));
+					}
+						
+			}
+		});
+	}
 
 	@Override
 	public void update(Observable arg0, Object arg1) {
@@ -2018,6 +2411,9 @@ public class GUIController extends Observable implements Observer{
 		else if(arg0 instanceof InterfaceMiddleware){
 			if(arg1 instanceof LobbyStatus){
 				this.updateLobby((LobbyStatus) arg1);
+			}
+			if(arg1 instanceof GameDTO){
+				this.updateGame((GameDTO) arg1);
 			}
 		}
 

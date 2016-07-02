@@ -787,19 +787,20 @@
             </Group>
             <Group>
                <children>
-                  <Button fx:id="btnSetMap" layoutX="1205.0" layoutY="11.0" mnemonicParsing="false" onAction="#setMapTest" text="Set map" />
-                  <ChoiceBox fx:id="choiceMap" layoutX="1092.0" layoutY="11.0" prefHeight="25.0" prefWidth="112.0" />
                   <ChoiceBox fx:id="selectTest" layoutX="855.0" layoutY="11.0" prefHeight="25.0" prefWidth="178.0" />
                   <Button fx:id="testButton" layoutX="1034.0" layoutY="11.0" mnemonicParsing="false" onAction="#testAction" text="Test" />
-                  <Button fx:id="btnPlaceEmporium" layoutX="992.0" layoutY="48.0" mnemonicParsing="false" onAction="#placeEmporium" text="Place Emporium" />
-                  <TextField fx:id="txtHexColor" layoutX="901.0" layoutY="48.0" prefHeight="25.0" prefWidth="89.0" promptText="HEX COLOR" />
-                  <TextField fx:id="txtCitySlot" layoutX="855.0" layoutY="48.0" prefHeight="25.0" prefWidth="46.0" promptText="LOC" />
-                  <TextField fx:id="txtMsg" layoutX="1100.0" layoutY="48.0" prefHeight="25.0" prefWidth="120.0" promptText="Message" />
-                  <Button fx:id="btnPrint" layoutX="1221.0" layoutY="48.0" mnemonicParsing="false" onAction="#printMsgTest" text="Print" />
-                  <ToggleButton fx:id="btnToggleShift" layoutX="857.0" layoutY="85.0" mnemonicParsing="false" onAction="#toggleShift" text="Toggle ShiftCouncilor" />
-                  <ToggleButton fx:id="btnToggleSatisfy" layoutX="994.0" layoutY="85.0" mnemonicParsing="false" onAction="#toggleSatisfy" text="Toggle SatisfyCouncil" />
+                  <ToggleButton fx:id="btnToggleShift" layoutX="856.0" layoutY="49.0" mnemonicParsing="false" onAction="#toggleShift" text="Toggle ShiftCouncilor" />
+                  <ToggleButton fx:id="btnToggleSatisfy" layoutX="993.0" layoutY="49.0" mnemonicParsing="false" onAction="#toggleSatisfy" text="Toggle SatisfyCouncil" />
                </children>
             </Group>
+            <Label fx:id="lblActualPlayer" layoutX="855.0" layoutY="118.0" prefHeight="30.0" prefWidth="159.0" text="Turn of: " textFill="WHITE">
+               <font>
+                  <Font name="Segoe UI" size="20.0" />
+               </font>
+               <effect>
+                  <DropShadow />
+               </effect>
+            </Label>
          </children>
       </Group>
       <Group fx:id="msgGroup" opacity="0.0">
@@ -829,7 +830,7 @@
                   <Image url="@img/board/assistant.png" />
                </image>
             </ImageView>
-            <SVGPath content="M703.000,407.083 C703.000,407.083 700.571,406.462 698.515,408.543 C698.450,408.609 689.545,415.842 689.545,415.842 C689.545,415.842 686.877,418.165 685.059,418.762 C683.661,419.221 683.635,423.171 685.059,423.141 C686.053,423.121 686.486,423.080 686.555,423.141 C688.236,424.656 688.050,425.514 688.050,430.440 C688.050,435.367 687.956,442.210 688.050,443.579 C688.143,444.947 687.863,447.867 692.535,447.958 C697.207,448.049 703.000,447.958 703.000,447.958 C703.000,447.958 703.000,407.083 703.000,407.083 ZM703.000,407.083 C703.000,407.083 705.429,406.462 707.485,408.543 C707.550,408.609 716.455,415.842 716.455,415.842 C716.455,415.842 719.123,418.165 720.941,418.762 C722.339,419.221 722.365,423.171 720.941,423.141 C719.947,423.121 719.514,423.080 719.445,423.141 C717.764,424.656 717.950,425.514 717.950,430.440 C717.950,435.367 718.044,442.210 717.950,443.579 C717.857,444.947 718.137,447.867 713.465,447.958 C708.793,448.049 703.000,447.958 703.000,447.958 C703.000,447.958 703.000,407.083 703.000,407.083 Z" layoutX="183.0" layoutY="250.0" />
+            <SVGPath fx:id="myEmporiumColor" content="M703.000,407.083 C703.000,407.083 700.571,406.462 698.515,408.543 C698.450,408.609 689.545,415.842 689.545,415.842 C689.545,415.842 686.877,418.165 685.059,418.762 C683.661,419.221 683.635,423.171 685.059,423.141 C686.053,423.121 686.486,423.080 686.555,423.141 C688.236,424.656 688.050,425.514 688.050,430.440 C688.050,435.367 687.956,442.210 688.050,443.579 C688.143,444.947 687.863,447.867 692.535,447.958 C697.207,448.049 703.000,447.958 703.000,447.958 C703.000,447.958 703.000,407.083 703.000,407.083 ZM703.000,407.083 C703.000,407.083 705.429,406.462 707.485,408.543 C707.550,408.609 716.455,415.842 716.455,415.842 C716.455,415.842 719.123,418.165 720.941,418.762 C722.339,419.221 722.365,423.171 720.941,423.141 C719.947,423.121 719.514,423.080 719.445,423.141 C717.764,424.656 717.950,425.514 717.950,430.440 C717.950,435.367 718.044,442.210 717.950,443.579 C717.857,444.947 718.137,447.867 713.465,447.958 C708.793,448.049 703.000,447.958 703.000,447.958 C703.000,447.958 703.000,407.083 703.000,407.083 Z" layoutX="183.0" layoutY="250.0" />
             <ImageView fitHeight="63.0" fitWidth="41.0" layoutX="1121.0" layoutY="653.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@img/board/point.png" />
