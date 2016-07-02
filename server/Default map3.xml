@@ -55,11 +55,11 @@
 		</TOKEN>
 		<TOKEN>
 			<BONUS>
-				<TYPE>coin</TYPE>
+				<TYPE>assistant</TYPE>
 				<AMM>1</AMM>
 			</BONUS>
 			<BONUS>
-				<TYPE>assistant</TYPE>
+				<TYPE>coin</TYPE>
 				<AMM>1</AMM>
 			</BONUS>
 		</TOKEN>
@@ -101,11 +101,11 @@
 		</TOKEN>
 		<TOKEN>
 			<BONUS>
-				<TYPE>card</TYPE>
+				<TYPE>assistant</TYPE>
 				<AMM>1</AMM>
 			</BONUS>
 			<BONUS>
-				<TYPE>assistant</TYPE>
+				<TYPE>card</TYPE>
 				<AMM>1</AMM>
 			</BONUS>
 		</TOKEN>
