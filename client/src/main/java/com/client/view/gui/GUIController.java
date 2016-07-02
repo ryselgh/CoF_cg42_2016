@@ -141,6 +141,7 @@ public class GUIController extends Observable implements Observer{
 	private boolean isInRoom = false;
 	private String lobbyCommand;
 	private String myNickname;
+	private String roomAdmin;
 	
 	
 	
@@ -511,15 +512,37 @@ public class GUIController extends Observable implements Observer{
 	}
 
 	public void joinRoom(){
-		animateRoom();
-		if(formNewRoom.getOpacity() == 1.0)
-			invertAnimateNewRoomForm();
-		btnNewRoom.setDisable(true);
-		btnJoinRoom.setDisable(true);
-		btnLeaveRoom.setDisable(false);
-		btnStartGame.setDisable(false);
-		if(selectedRoom.equals(groupRoom1)){
-			lblRoomName.setText(lblRoomName1.getText());
+		if(selectedRoom!=null){
+			lobbyCommand = "\\JOINROOM_";
+			if(selectedRoom.equals(groupRoom1))
+				lobbyCommand+=lblRoomName1.getText();
+			else if(selectedRoom.equals(groupRoom2))
+				lobbyCommand+=lblRoomName2.getText();
+			else if(selectedRoom.equals(groupRoom3))
+				lobbyCommand+=lblRoomName3.getText();
+			else if(selectedRoom.equals(groupRoom4))
+				lobbyCommand+=lblRoomName4.getText();
+			else if(selectedRoom.equals(groupRoom5))
+				lobbyCommand+=lblRoomName5.getText();
+			else if(selectedRoom.equals(groupRoom6))
+				lobbyCommand+=lblRoomName6.getText();
+			else if(selectedRoom.equals(groupRoom7))
+				lobbyCommand+=lblRoomName7.getText();
+			else if(selectedRoom.equals(groupRoom8))
+				lobbyCommand+=lblRoomName8.getText();
+			this.setChanged();
+			this.notifyObservers("LOBBYCMD_"+lobbyCommand);
+			lobbyCommand = "";
+			highlightObject(selectedRoom, false);
+			selectedRoom = null;
+			animateRoom();
+			if(formNewRoom.getOpacity() == 1.0)
+				invertAnimateNewRoomForm();
+			btnNewRoom.setDisable(true);
+			btnJoinRoom.setDisable(true);
+			btnLeaveRoom.setDisable(false);
+			if(myNickname.equals(roomAdmin))
+				btnStartGame.setDisable(false);
 		}
 	}
 
@@ -536,6 +559,10 @@ public class GUIController extends Observable implements Observer{
 	}
 
 	public void leaveRoom(){
+		lobbyCommand = "\\LEAVEROOM";
+		this.setChanged();
+		this.notifyObservers("LOBBYCMD_"+lobbyCommand);
+		lobbyCommand = "";
 		invertAnimateRoom();
 		btnNewRoom.setDisable(false);
 		btnLeaveRoom.setDisable(true);
@@ -543,6 +570,10 @@ public class GUIController extends Observable implements Observer{
 	}
 
 	public void startGame(){
+		lobbyCommand = "\\STARTGAME";
+		this.setChanged();
+		this.notifyObservers("LOBBYCMD_"+lobbyCommand);
+		lobbyCommand = "";
 		try {
 			launchGW();
 		} catch (Exception e) {
@@ -670,6 +701,7 @@ public class GUIController extends Observable implements Observer{
 	private void animateNewRoomForm() {
 		
 		newFormGroup.toFront();
+		lblErrorsLobby.toFront();
 
 		FadeTransition ft = new FadeTransition(Duration.millis(1000), formNewRoom);
 		ft.setFromValue(0.0);
@@ -757,6 +789,7 @@ public class GUIController extends Observable implements Observer{
 		btnSetTimer.setDisable(false);
 		btnSetMap.toFront();
 		btnSetMap.toFront();
+		lblErrorsLobby.toFront();
 
 		FadeTransition awayLobby = new FadeTransition(Duration.millis(1000), lobbyGroup);
 		awayLobby.setFromValue(1.0);
@@ -1023,39 +1056,60 @@ public class GUIController extends Observable implements Observer{
 						break;
 					}
 				}
+				updateActualRoom(rooms);
 			}
 		});
 		
 	}
 
-	public void updateActualRoom(RoomStatus rs){
-		lblRoomName.setText(rs.getRoomName());
-		lblMap.setValue(rs.getMapName());
-		lblMaxPl.setText(Integer.toString(rs.getMaxPlayers()));
-		lblMinPl.setText(Integer.toString(rs.getMinPlayers()));
-		lblClients.setText(Integer.toString(rs.getPlayers().size())+"/"+Integer.toString(rs.getMaxPlayers()));
-		lblAdmin.setText(rs.getAdminName());
-		if(rs.getTimerDelay()!=0)
-			lblTimer.setValue(Integer.toString(rs.getTimerDelay())+" sec");
+	public void updateActualRoom(ArrayList<RoomStatus> rooms){
+		RoomStatus myRoom = null;
+		for(RoomStatus r: rooms){
+			ArrayList<String> clients = r.getPlayers();
+			for(String c: clients)
+				if(c.equals(myNickname)){
+					myRoom = r;
+					roomAdmin = myRoom.getAdminName();
+					if(roomAdmin.equals(myNickname))
+						btnStartGame.setDisable(false);
+					else
+						btnStartGame.setDisable(true);
+				}
+		}
+			
+		
+		if (myRoom!=null) {
+			lblRoomName.setText(myRoom.getRoomName());
+			lblMap.setValue(myRoom.getMapName());
+			lblMaxPl.setText(Integer.toString(myRoom.getMaxPlayers()));
+			lblMinPl.setText(Integer.toString(myRoom.getMinPlayers()));
+			lblClients.setText(
+					Integer.toString(myRoom.getPlayers().size()) + "/" + Integer.toString(myRoom.getMaxPlayers()));
+			lblAdmin.setText(myRoom.getAdminName());
+			if (myRoom.getTimerDelay() != 0)
+				lblTimer.setValue(Integer.toString(myRoom.getTimerDelay()) + " sec");
+		}
 	}
 	
 	private class SelectRoomEvent implements EventHandler<Event>{
 		@Override
 		public void handle(Event e) {
-			Group room = ((Group)(e.getSource()));
-			if(selectedRoom == null){
-				highlightObject(room,true);
-				selectedRoom = room;
-				btnJoinRoom.setDisable(false);
-			}else if(!selectedRoom.equals(room)){
-				highlightObject(room,true);
-				highlightObject(selectedRoom,true);
-				selectedRoom = room;
-				btnJoinRoom.setDisable(false);
-			}else if(selectedRoom.equals(room)){
-				highlightObject(room,false);
-				btnJoinRoom.setDisable(true);
-				selectedRoom = null;
+			Group room = ((Group) (e.getSource()));
+			if (room.getOpacity() != 0.0) {
+				if (selectedRoom == null) {
+					highlightObject(room, true);
+					selectedRoom = room;
+					btnJoinRoom.setDisable(false);
+				} else if (!selectedRoom.equals(room)) {
+					highlightObject(room, true);
+					highlightObject(selectedRoom, true);
+					selectedRoom = room;
+					btnJoinRoom.setDisable(false);
+				} else if (selectedRoom.equals(room)) {
+					highlightObject(room, false);
+					btnJoinRoom.setDisable(true);
+					selectedRoom = null;
+				} 
 			}
 		}
 	}
