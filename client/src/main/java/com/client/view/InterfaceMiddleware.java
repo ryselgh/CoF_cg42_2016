@@ -424,6 +424,7 @@ public class InterfaceMiddleware extends Observable implements Observer{
 
 	public int getActionIndex(boolean[] availableActions) {
 		if (isGUI) {
+			//return gui.getActionIndex(availableActions);
 			return 0;
 		} else
 			return this.CLIgetActionIndex(availableActions);
@@ -431,8 +432,8 @@ public class InterfaceMiddleware extends Observable implements Observer{
 
 	public void startTurn(PoliticsCardDTO polcDTO) {
 		if (isGUI){
-			
-
+			this.setChanged();
+			this.notifyObservers(polcDTO);
 		} else
 			this.CLIStartTurn(polcDTO);
 	}

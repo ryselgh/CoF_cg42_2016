@@ -12,12 +12,14 @@ import com.client.controller.ClientController;
 import com.client.view.InterfaceMiddleware;
 import com.communication.LobbyStatus;
 import com.communication.RoomStatus;
+import com.communication.actions.ObtainPermitDTO;
 import com.communication.board.BonusDTO;
 import com.communication.board.BonusTokenDTO;
 import com.communication.board.CityDTO;
 import com.communication.board.CouncilorDTO;
 import com.communication.board.EmporiumDTO;
 import com.communication.decks.PermitsCardDTO;
+import com.communication.decks.PoliticsCardDTO;
 import com.communication.gamelogic.GameDTO;
 import com.communication.gamelogic.PlayerDTO;
 
@@ -218,6 +220,7 @@ public class GUIController extends Observable implements Observer{
 	private ArrayList<ImageView> councilors;
 	private String kingPreviousLoc = null;
 	private String chosenMap;
+	private boolean isFirstCards = true;
 
 	//istanza del ClientController, a cui passa tipoConnessione e userName
 	private ClientController clientController;
@@ -1309,39 +1312,6 @@ public class GUIController extends Observable implements Observer{
 		}
 	}
 
-	public void testAction(){
-		String choice = selectTest.getValue();
-		switch(choice){
-		case "flipDownCardAnimation()":
-			flipDownCardAnimation(seaSlot1,"img/board/perm-back-sea.png");
-			break;
-		case "flipUpCardAnimation()":
-			flipUpCardAnimation(seaSlot1,"img/board/abc-ass2.png");
-			break;
-		case "setupTokens()":
-			setupTokens();
-			break;
-		case "draw(1)":
-			draw(1);
-			break;
-		case "draw(5)":
-			draw(5);
-			break;
-		case "flipMap()":
-			flipMap();
-			break;
-		case "moveKing(Arkon)":
-			moveKing("Arkon");
-			break;
-		case "moveKing(Castrum)":
-			moveKing("Castrum");
-			break;
-		case "moveKing(Hellar)":
-			moveKing("Hellar");
-			break;
-		}
-	}
-
 	public void toggleActions(){
 		if(btnToggleActions.isSelected()){
 			TranslateTransition tt = new TranslateTransition(Duration.millis(500),actionsGroup);
@@ -1649,6 +1619,7 @@ public class GUIController extends Observable implements Observer{
 			isAskingForShift = false;
 		}
 		if(isAskingForSatisfy){
+			ObtainPermitDTO obtainPermAction = new ObtainPermitDTO();
 			for(ImageView card: selectedCards){
 				toGarbage(card);
 			}
@@ -1704,33 +1675,51 @@ public class GUIController extends Observable implements Observer{
 		}
 	}
 
-	private void draw(int qnt){
-		String[] cardsImgPaths = {"img/board/pol-black.png","img/board/pol-orange.png","img/board/pol-blue.png","img/board/pol-pink.png","img/board/pol-purple.png","img/board/pol-white.png","img/board/pol-jolly.png"};
-		int rnd = new Random().nextInt(cardsImgPaths.length); //DA RIMUOVERE! Solo a scopo di testing
-		drawnPlaceHolder.setImage(new Image(getClass().getResourceAsStream(cardsImgPaths[rnd])));
-		FadeTransition ft = new FadeTransition(Duration.millis(150),drawnPlaceHolder);
-		ft.setToValue(1.0);
-		ft.play();
-		TranslateTransition tt = new TranslateTransition(Duration.millis(250),drawnPlaceHolder);
-		tt.setFromX(0);
-		tt.setFromY(0);
-		tt.setToX(220-handArray.size()*10);
-		tt.setToY(280);
-		drawnPlaceHolder.toFront();
-		tt.play();
-		tt.setOnFinished(new EventHandler<ActionEvent>() {
+	private void draw(PoliticsCardDTO card){
+		Platform.runLater(new Runnable() {
 			@Override
-			public void handle(ActionEvent event) {
-				drawnPlaceHolder.setOpacity(0.0);
-				handArray.add(new ImageView(new Image(getClass().getResourceAsStream(cardsImgPaths[rnd]))));
-				ImageView drawnCard = handArray.get(handArray.size()-1);
-				handPane.getChildren().add(drawnCard);
-				drawnCard.setPreserveRatio(true);
-				drawnCard.setFitHeight(150);
-				drawnCard.setTranslateX(10*(handArray.size()-1));
-				drawnCard.addEventHandler(MouseEvent.MOUSE_CLICKED, new SelectCardEvent());
-				if(qnt>1)
-					draw(qnt-1);
+			public void run() {
+				String[] cardsImgPaths = {"img/board/pol-black.png","img/board/pol-orange.png","img/board/pol-blue.png","img/board/pol-pink.png","img/board/pol-purple.png","img/board/pol-white.png","img/board/pol-jolly.png"};
+				String cardCol;
+				if(card.getColor().toString().equals("BLACK"))
+					cardCol = cardsImgPaths[0];
+				else if(card.getColor().toString().equals("ORANGE"))
+					cardCol = cardsImgPaths[1];
+				else if(card.getColor().toString().equals("BLUESKY"))
+					cardCol = cardsImgPaths[2];
+				else if(card.getColor().toString().equals("PINK"))
+					cardCol = cardsImgPaths[3];
+				else if(card.getColor().toString().equals("PURPLE"))
+					cardCol = cardsImgPaths[4];
+				else if(card.getColor().toString().equals("WHITE"))
+					cardCol = cardsImgPaths[5];
+				else if(card.getColor().toString().equals("JOLLY"))
+					cardCol = cardsImgPaths[6];
+				else cardCol = "img/board/pol-back.png";
+				drawnPlaceHolder.setImage(new Image(getClass().getResourceAsStream(cardCol)));
+				FadeTransition ft = new FadeTransition(Duration.millis(150),drawnPlaceHolder);
+				ft.setToValue(1.0);
+				ft.play();
+				TranslateTransition tt = new TranslateTransition(Duration.millis(250),drawnPlaceHolder);
+				tt.setFromX(0);
+				tt.setFromY(0);
+				tt.setToX(220-handArray.size()*10);
+				tt.setToY(280);
+				drawnPlaceHolder.toFront();
+				tt.play();
+				tt.setOnFinished(new EventHandler<ActionEvent>() {
+					@Override
+					public void handle(ActionEvent event) {
+						drawnPlaceHolder.setOpacity(0.0);
+						handArray.add(new ImageView(new Image(getClass().getResourceAsStream(cardCol))));
+						ImageView drawnCard = handArray.get(handArray.size()-1);
+						handPane.getChildren().add(drawnCard);
+						drawnCard.setPreserveRatio(true);
+						drawnCard.setFitHeight(150);
+						drawnCard.setTranslateX(10*(handArray.size()-1));
+						drawnCard.addEventHandler(MouseEvent.MOUSE_CLICKED, new SelectCardEvent());
+					}
+				});
 			}
 		});
 	}
@@ -2393,10 +2382,25 @@ public class GUIController extends Observable implements Observer{
 									i++;
 						lblMyUsedPerms.setText(Integer.toString(i));
 						lblMyPoints.setText(Integer.toString(p.getScore()));
+						if(isFirstCards){
+							for(PoliticsCardDTO pc: p.getHand())
+								draw(pc);
+							isFirstCards = false;
+						}
 					}
 						
 			}
 		});
+	}
+	
+	public int getActionIndex(boolean[] availableActions) {
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				toggleActions();
+			}
+		});
+		return 0;
 	}
 
 	@Override
@@ -2417,6 +2421,9 @@ public class GUIController extends Observable implements Observer{
 			}
 			if(arg1 instanceof GameDTO){
 				this.updateGame((GameDTO) arg1);
+			}
+			if(arg1 instanceof PoliticsCardDTO){
+				this.draw((PoliticsCardDTO) arg1);
 			}
 		}
 

@@ -788,7 +788,7 @@
             <Group>
                <children>
                   <ChoiceBox fx:id="selectTest" layoutX="855.0" layoutY="11.0" prefHeight="25.0" prefWidth="178.0" />
-                  <Button fx:id="testButton" layoutX="1034.0" layoutY="11.0" mnemonicParsing="false" onAction="#testAction" text="Test" />
+                  <Button fx:id="testButton" layoutX="1034.0" layoutY="11.0" mnemonicParsing="false" text="Test" />
                   <ToggleButton fx:id="btnToggleShift" layoutX="856.0" layoutY="49.0" mnemonicParsing="false" onAction="#toggleShift" text="Toggle ShiftCouncilor" />
                   <ToggleButton fx:id="btnToggleSatisfy" layoutX="993.0" layoutY="49.0" mnemonicParsing="false" onAction="#toggleSatisfy" text="Toggle SatisfyCouncil" />
                </children>
