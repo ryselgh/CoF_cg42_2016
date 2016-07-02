@@ -503,13 +503,15 @@ public class ClientController extends Observable implements Observer, RMIClientC
 				actThreadRetry.start();
 				break;
 			case "GAMEDTO":
-				consoleListener.deleteObserver(this);//per stare sicuri, da togliere se verificato che STARTGAME arriva a tutti
+				if(!isGUI)
+					consoleListener.deleteObserver(this);//per stare sicuri, da togliere se verificato che STARTGAME arriva a tutti
 				this.inGame = true;//se il player si riconnette dopo una disconnessione 
 				view.updateGame((GameDTO) obj);
 				this.game = (GameDTO) obj;
 				break;
 			case "STARTGAME":
-				consoleListener.deleteObserver(this);
+				if(!isGUI)
+					consoleListener.deleteObserver(this);
 				this.inGame = true;
 				//consoleListener.deleteObserver(this);//in gioco gli input sono ad invocazione  
 				view.updateGame((GameDTO) obj);
