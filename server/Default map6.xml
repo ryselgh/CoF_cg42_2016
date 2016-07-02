@@ -350,9 +350,9 @@
 				<TYPE>nobility</TYPE>
 				<AMM>1</AMM>
 			</BONUS>
-			<LETTER>e</LETTER>
-			<LETTER>d</LETTER>
 			<LETTER>c</LETTER>
+			<LETTER>d</LETTER>
+			<LETTER>e</LETTER>
 		</CARTA> 
 		<CARTA>
 			<BONUS>
@@ -368,12 +368,12 @@
 		</CARTA>
 		 <CARTA>
 			<BONUS>
-				<TYPE>assistant</TYPE>
-				<AMM>1</AMM>
-			</BONUS>
-			<BONUS>
 				<TYPE>point</TYPE>
 				<AMM>3</AMM>
+			</BONUS>
+			<BONUS>
+				<TYPE>assistant</TYPE>
+				<AMM>1</AMM>
 			</BONUS>
 			<LETTER>d</LETTER>
 			<LETTER>e</LETTER>
@@ -388,36 +388,36 @@
 		</CARTA> 
 		<CARTA>
 			<BONUS>
-				<TYPE>assistant</TYPE>
-				<AMM>1</AMM>
-			</BONUS>
-			<BONUS>
 				<TYPE>point</TYPE>
 				<AMM>3</AMM>
+			</BONUS>
+			<BONUS>
+				<TYPE>assistant</TYPE>
+				<AMM>1</AMM>
 			</BONUS>
 			<LETTER>c</LETTER>
 			<LETTER>d</LETTER>
 		</CARTA> 
 		<CARTA>
 			<BONUS>
-				<TYPE>card</TYPE>
-				<AMM>1</AMM>
-			</BONUS>
-			<BONUS>
 				<TYPE>coin</TYPE>
 				<AMM>3</AMM>
+			</BONUS>
+			<BONUS>
+				<TYPE>card</TYPE>
+				<AMM>1</AMM>
 			</BONUS>
 			<LETTER>a</LETTER>
 			<LETTER>b</LETTER>
 		</CARTA> 
 		<CARTA>
 			<BONUS>
-				<TYPE>assistant</TYPE>
-				<AMM>1</AMM>
-			</BONUS>
-			<BONUS>
 				<TYPE>card</TYPE>
 				<AMM>3</AMM>
+			</BONUS>
+			<BONUS>
+				<TYPE>assistant</TYPE>
+				<AMM>1</AMM>
 			</BONUS>
 			<LETTER>b</LETTER>
 		</CARTA> 
@@ -441,12 +441,12 @@
 		</CARTA> 
 		<CARTA>
 			<BONUS>
-				<TYPE>coin</TYPE>
-				<AMM>3</AMM>
-			</BONUS>
-			<BONUS>
 				<TYPE>point</TYPE>
 				<AMM>4</AMM>
+			</BONUS>
+			<BONUS>
+				<TYPE>coin</TYPE>
+				<AMM>3</AMM>
 			</BONUS>
 			<LETTER>a</LETTER>
 		</CARTA> 
@@ -556,8 +556,8 @@
 				<TYPE>coin</TYPE>
 				<AMM>5</AMM>
 			</BONUS>
-			<LETTER>g</LETTER>
 			<LETTER>f</LETTER>
+			<LETTER>g</LETTER>
 		</CARTA> 
 		<CARTA>
 			<BONUS>
@@ -591,12 +591,12 @@
 		</CARTA>
 		<CARTA>
 			<BONUS>
-				<TYPE>coin</TYPE>
-				<AMM>4</AMM>
-			</BONUS>
-			<BONUS>
 				<TYPE>card</TYPE>
 				<AMM>2</AMM>
+			</BONUS>
+			<BONUS>
+				<TYPE>coin</TYPE>
+				<AMM>4</AMM>
 			</BONUS>
 			<LETTER>f</LETTER>
 		</CARTA> 
@@ -655,11 +655,11 @@
 		</CARTA> 
 		<CARTA>
 			<BONUS>
-				<TYPE>point</TYPE>
+				<TYPE>nobility</TYPE>
 				<AMM>1</AMM>
 			</BONUS>
 			<BONUS>
-				<TYPE>nobility</TYPE>
+				<TYPE>point</TYPE>
 				<AMM>1</AMM>
 			</BONUS>
 			<LETTER>m</LETTER>
@@ -706,12 +706,12 @@
 		</CARTA> 
 		<CARTA>
 			<BONUS>
-				<TYPE>assistant</TYPE>
-				<AMM>2</AMM>
-			</BONUS>
-			<BONUS>
 				<TYPE>card</TYPE>
 				<AMM>1</AMM>
+			</BONUS>
+			<BONUS>
+				<TYPE>assistant</TYPE>
+				<AMM>2</AMM>
 			</BONUS>
 			<LETTER>k</LETTER>
 			<LETTER>l</LETTER>
@@ -730,11 +730,11 @@
 		</CARTA> 
 		<CARTA>
 			<BONUS>
-				<TYPE>card</TYPE>
+				<TYPE>point</TYPE>
 				<AMM>2</AMM>
 			</BONUS>
 			<BONUS>
-				<TYPE>point</TYPE>
+				<TYPE>card</TYPE>
 				<AMM>2</AMM>
 			</BONUS>
 			<LETTER>n</LETTER>
@@ -760,23 +760,23 @@
 		</CARTA>
 		<CARTA>
 			<BONUS>
-				<TYPE>nobility</TYPE>
-				<AMM>1</AMM>
-			</BONUS>
-			<BONUS>
 				<TYPE>card</TYPE>
 				<AMM>3</AMM>
+			</BONUS>
+			<BONUS>
+				<TYPE>nobility</TYPE>
+				<AMM>1</AMM>
 			</BONUS>
 			<LETTER>o</LETTER>
 		</CARTA> 
 		<CARTA>
 			<BONUS>
-				<TYPE>nobility</TYPE>
-				<AMM>1</AMM>
-			</BONUS>
-			<BONUS>
 				<TYPE>point</TYPE>
 				<AMM>5</AMM>
+			</BONUS>
+			<BONUS>
+				<TYPE>nobility</TYPE>
+				<AMM>1</AMM>
 			</BONUS>
 			<LETTER>m</LETTER>
 		</CARTA> 
