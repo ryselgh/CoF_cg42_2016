@@ -405,7 +405,7 @@ public class GUIController extends Observable implements Observer{
 			stage.setY(bounds.getMaxY()/16);
 			stage.setWidth(bounds.getWidth()/1.2);
 			stage.setHeight(bounds.getHeight()/1.2);
-			stage.setFullScreen(true);
+			//stage.setFullScreen(true);
 			stage.setFullScreenExitHint("");
 			stage.setResizable(false);
 			launcher.close();
@@ -2342,12 +2342,12 @@ public class GUIController extends Observable implements Observer{
 				game.getMap().getPawn();
 				
 				//Update permits decks
-				seaSlot1.setImage(new Image(getClass().getResourceAsStream(parsePermitImg(game.getMap().getPermitsDeck(0).getSlot(0)))));
-				seaSlot2.setImage(new Image(getClass().getResourceAsStream(parsePermitImg(game.getMap().getPermitsDeck(0).getSlot(1)))));
-				hillSlot1.setImage(new Image(getClass().getResourceAsStream(parsePermitImg(game.getMap().getPermitsDeck(1).getSlot(0)))));
-				hillSlot2.setImage(new Image(getClass().getResourceAsStream(parsePermitImg(game.getMap().getPermitsDeck(1).getSlot(1)))));
-				mountainSlot1.setImage(new Image(getClass().getResourceAsStream(parsePermitImg(game.getMap().getPermitsDeck(2).getSlot(0)))));
-				mountainSlot2.setImage(new Image(getClass().getResourceAsStream(parsePermitImg(game.getMap().getPermitsDeck(2).getSlot(1)))));
+				seaSlot1.setImage(new Image(getClass().getResourceAsStream("img/board/"+parsePermitImg(game.getMap().getPermitsDeck(0).getSlot(0)))));
+				seaSlot2.setImage(new Image(getClass().getResourceAsStream("img/board/"+parsePermitImg(game.getMap().getPermitsDeck(0).getSlot(1)))));
+				hillSlot1.setImage(new Image(getClass().getResourceAsStream("img/board/"+parsePermitImg(game.getMap().getPermitsDeck(1).getSlot(0)))));
+				hillSlot2.setImage(new Image(getClass().getResourceAsStream("img/board/"+parsePermitImg(game.getMap().getPermitsDeck(1).getSlot(1)))));
+				mountainSlot1.setImage(new Image(getClass().getResourceAsStream("img/board/"+parsePermitImg(game.getMap().getPermitsDeck(2).getSlot(0)))));
+				mountainSlot2.setImage(new Image(getClass().getResourceAsStream("img/board/"+parsePermitImg(game.getMap().getPermitsDeck(2).getSlot(1)))));
 				
 				//Update garbage
 				if(game.getMap().getPoliticsDeck().getGarbage().size()!=0){
