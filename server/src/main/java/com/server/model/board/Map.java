@@ -52,6 +52,7 @@ public class Map {
 	private PermitsDeck[] permitsDeck;
 	private King king;
 	private Logger logger;
+	private String empColor;
 	
 	public MapDTO toDTO(ArrayList<PlayerDTO> plsDTO){
 		MapDTO mapDTO = new MapDTO();
@@ -158,7 +159,7 @@ public class Map {
 		for(int i=0;i<3;i++)
 			permitsDeck[i] = new PermitsDeck(pool[i],i);
 		pawn = reader.getPawn();
-		
+		this.empColor = reader.getEmpColor();
 		return 1;
 	}
 
@@ -370,7 +371,10 @@ public class Map {
 	public ArrayList<Bonus> getKingBonus() {
 		return kingBonus;
 	}
-
+	
+	public String getEmpColor() {
+		return empColor;
+	}
 	/**
 	 * @param kingBonus the kingBonus to set
 	 */

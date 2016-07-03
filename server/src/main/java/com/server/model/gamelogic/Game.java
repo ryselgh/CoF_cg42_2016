@@ -1,14 +1,16 @@
 package com.server.model.gamelogic ;
 
 import java.util.ArrayList;
-
-
+import java.util.Arrays;
+import java.util.List;
 
 import com.communication.gamelogic.GameDTO;
 import com.communication.gamelogic.PlayerDTO;
 import com.server.model.board.City;
-
+import com.server.model.board.Emporium;
 import com.server.model.board.Map;
+import com.server.model.board.Pawn;
+import com.server.model.decks.PermitsCard;
 import com.server.model.market.Market;
 
 // TODO: Auto-generated Javadoc
@@ -95,7 +97,28 @@ public class Game {
 		//Map
 		map = new Map(players.toArray(new Player[players.size()]),mapName,rawMap);
 		graphMap = new GraphMap(map);
-		
+		PermitsCard cardSea = this.getMap().getPermitsDeck(0).getSlot(0,true);
+		PermitsCard cardHill = this.getMap().getPermitsDeck(1).getSlot(0,true);
+		PermitsCard cardMount = this.getMap().getPermitsDeck(2).getSlot(0,true);
+		ArrayList<String> covered = new ArrayList<String>();
+		covered.addAll(Arrays.asList(cardSea.getCityLetter()));
+		covered.addAll(Arrays.asList(cardHill.getCityLetter()));
+		covered.addAll(Arrays.asList(cardHill.getCityLetter()));
+		for(int i=0;i<covered.size();i++){
+			for(int j=i+1;j<covered.size();j++){
+				if(covered.get(i).equals(covered.get(j)))
+						covered.remove(j);
+			}
+		}
+		Player fakePlayer = new Player("_FakePlayer_");
+		Pawn fakePawn = new Pawn(fakePlayer,map.getEmpColor());
+		fakePlayer.setPawn(fakePawn);
+		for(int i=0;i<covered.size();i++){
+			City city = this.getCityFromName(covered.get(i));
+			Emporium emp = new Emporium(fakePlayer);
+			city.setEmporium(emp);
+					
+		}
 		
 		//Player construction
 		for(int i=0; i<playersQty; i++){
@@ -109,6 +132,8 @@ public class Game {
 			for(int j=0;j<INITIALCARDS;j++)
 				players.get(i).addPolitics(map.getPoliticsDeck().draw());
 		}
+		
+	
 		
 	}
 	
@@ -222,9 +247,16 @@ public class Game {
 	 * @return the city from name
 	 */
 	public City getCityFromName(String name){
+		if(name.length()==1){
+			for(City c : this.getMap().getCity())
+				if(c.getName().substring(0, 1).toLowerCase().equals(name.toLowerCase()))
+					return c;
+		}
+		else{
 		for(City c : this.getMap().getCity())
-			if(c.getName().equals(name))
+			if(c.getName().toLowerCase().equals(name.toLowerCase()))
 				return c;
+		}
 		return null;
 	}
 	

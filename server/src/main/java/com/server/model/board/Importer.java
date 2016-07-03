@@ -40,7 +40,7 @@ public class Importer {
 	private PermitsDeck permitsDeck;
 	private Map mapInst;
 	private King k;
-	
+	private String empColor;
 	/**
 	 * 
 	 * @param loc
@@ -212,7 +212,12 @@ public class Importer {
 					pawnColors[randomNo] = "";
 					
 				}
-				
+				if(players.length==2){
+					do {
+						randomNo = randomNum(0, colorList.getLength() - 1);
+					} while (pawnColors[randomNo] == "");
+					this.empColor = pawnColors[randomNo];
+				}
 				
 		// importo nobility track
 		this.nobilityTrackBonus = new Bonus[21][3];// max 3 bonus per casella;
@@ -436,5 +441,9 @@ public class Importer {
 	
 	public King getKing() {
 		return k;
+	}
+	
+	public String getEmpColor(){
+		return this.empColor;
 	}
 }
