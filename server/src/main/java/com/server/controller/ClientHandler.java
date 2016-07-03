@@ -74,19 +74,21 @@ public class ClientHandler extends Observable implements Observer, Runnable{
 	@Override
 	public void run() {
 		startListen();
-		
 	}
 	
 	/**
 	 * Creates a new listener to handle the client communication
 	 */
 	public void startListen(){
-		listener = new ClientListener(inputStream);
+		listener = new ClientListener(inputStream, this);
 		Thread clListThread = new Thread(listener);
 		listener.addObserver(this);
 		clListThread.start();
 	}
 	
+	public void observerGame(GameHandler gh){
+		this.listener.addObserver(gh);
+	}
 	/**
 	 * Gets the user name.
 	 *
@@ -110,7 +112,7 @@ public class ClientHandler extends Observable implements Observer, Runnable{
 			outputStream.writeObject(toSend);
 			outputStream.flush();
 		} catch (Exception e) {
-			lobby.disconnectFromGame(this);
+			lobby.disconnectFromGame(this, null);
 		    return;
 		}}
 		else{String br = "breakpointami e correggi";}
@@ -224,6 +226,8 @@ public class ClientHandler extends Observable implements Observer, Runnable{
 		}
 	}
 	
-	
+	public Socket getSocket(){
+		return this.socket;
+	}
 
 }

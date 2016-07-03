@@ -29,13 +29,15 @@ public class ClientListener extends Observable implements Runnable{
 	/** The logger. */
 	private Logger logger;
 	
+	private ClientHandler clientController;
 	/**
 	 * Instantiates a new client listener.
 	 *
 	 * @param is the is
 	 */
-	public ClientListener(ObjectInputStream is){
+	public ClientListener(ObjectInputStream is, ClientHandler clientController){
 		this.inputStream = is;
+		this.clientController = clientController;
 	}
 	
 	/**
@@ -55,7 +57,7 @@ public class ClientListener extends Observable implements Runnable{
 			} 
 			catch(SocketException e){
 				setChanged();
-			    notifyObservers(new CommunicationObject("DisconnectedFromLobby",null));
+			    notifyObservers(new CommunicationObject("DisconnectedFromLobby",this.clientController));
 			    return;
 			}
 			catch (ClassNotFoundException | IOException e) {

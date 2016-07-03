@@ -1,5 +1,6 @@
 package com.server.model.gamelogic;
 
+import java.net.SocketException;
 import java.rmi.RemoteException;
 
 import com.communication.RMIClientControllerRemote;
@@ -66,8 +67,8 @@ public class BuyItemState implements State{
 		try {
 			execute(null,false);
 		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			this.gamehandler.getLobby().disconnectFromGame(this.context.getClienthandler(), this.gamehandler);
+			this.gamehandler.changeState(this.context);
 		}
 	}
 	

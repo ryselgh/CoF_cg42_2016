@@ -1,5 +1,6 @@
 package com.server.controller;
 
+import java.net.SocketException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,6 +13,7 @@ import java.util.logging.Logger;
 
 import com.communication.CommunicationObject;
 import com.communication.ItemOnSale;
+import com.communication.RMIClientControllerRemote;
 import com.communication.actions.ActionDTO;
 import com.communication.board.BonusTokenDTO;
 import com.communication.decks.PermitsCardDTO;
@@ -96,7 +98,7 @@ public class GameHandler extends Observable implements Runnable, Observer{
 	 */
 	public GameHandler(ArrayList<ClientHandler> pl, String mapName, String map, Lobby lobby, Room room, boolean RMI, ArrayList<RMISubscribed> remoteControllers, int timerDelay){
 		this.timerDelay = timerDelay;
-		this.remoteControllers = remoteControllers;
+		this.remoteControllers = new ArrayList<RMISubscribed>(remoteControllers);
 		this.RMI = RMI;
 		this.players = pl;
 		this.lobby = lobby;
@@ -114,6 +116,7 @@ public class GameHandler extends Observable implements Runnable, Observer{
 				}
 		else
 			for(ClientHandler ch : pl){
+				ch.observerGame(this);
 				ch.addObserver(this);
 				ch.sendToClient("STARTGAME", gameDTO);
 			}
@@ -254,7 +257,7 @@ public class GameHandler extends Observable implements Runnable, Observer{
 	public void updateClientGame() throws RemoteException{
 		GameDTO gameDTO = this.game.toDto();
 		for(ClientHandler ch : this.players){
-			if(RMI)
+			if(RMI && ch.isActive())
 				RMISubscribed.getRemoteController(this.remoteControllers, ch).RMIupdateGame(gameDTO);
 			else
 				ch.sendToClient("GAMEDTO", (Object) gameDTO);
@@ -269,7 +272,7 @@ public class GameHandler extends Observable implements Runnable, Observer{
 	 */
 	public void broadcastAnnounce(String msg, String obj){
 		for(ClientHandler ch : this.players){
-			if(RMI)
+			if(RMI && ch.isActive())
 				try {
 					RMISubscribed.getRemoteController(this.remoteControllers, ch).RMIprintMsg(obj);
 				} catch (RemoteException e) {
@@ -333,6 +336,14 @@ public class GameHandler extends Observable implements Runnable, Observer{
 	 */
 	@Override
 	public synchronized void update(Observable o, Object arg) {//synchronyzed perchè il thread di InputTimer e ClientHandler si potrebbero pestare i piedi
+		if(o instanceof ClientListener){
+			if(((CommunicationObject) arg).getMsg().equals("DisconnectedFromLobby")){
+				ClientHandler ch = (ClientHandler) ((CommunicationObject) arg).getObj();
+				this.getLobby().disconnectFromGame(ch, this);
+				this.changeState(this.context);
+				return;
+			}
+		}
 		if(o instanceof InputTimer){
 			TimeoutInfo infos = (TimeoutInfo) arg;
 			String skipName = infos.getClientName();
@@ -350,6 +361,7 @@ public class GameHandler extends Observable implements Runnable, Observer{
 			else
 				skippedTurn = null;
 		}
+		
 		String[] msg = ((CommunicationObject) arg).getMsg().split("_");
 		Object obj = ((CommunicationObject) arg).getObj();
 		if(msg[0].equals("INPUT")){
@@ -382,9 +394,8 @@ public class GameHandler extends Observable implements Runnable, Observer{
 				
 				}
 				}
-			 catch (RemoteException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			 catch (RemoteException | SocketException e) {
+				 this.getLobby().disconnectFromGame(this.context.getClienthandler(), this);
 			
 				}
 				}
@@ -452,5 +463,26 @@ public class GameHandler extends Observable implements Runnable, Observer{
 			e.printStackTrace();
 		}
 	}
+
+	public Lobby getLobby() {
+		return lobby;
+	}
+
+	public ArrayList<RMISubscribed> getRemoteControllers() {
+		return remoteControllers;
+	}
+	
+	public void replaceController(ClientHandler ch, RMIClientControllerRemote rem){
+		for(RMISubscribed RMIs : this.remoteControllers ){
+			if(RMIs.getCh().getUserName().equals(ch.getUserName()))
+				RMIs.setRemContr(rem);
+		}
+	}
+
+	public Context getContext() {
+		return context;
+	}
+	
+	
 	
 }

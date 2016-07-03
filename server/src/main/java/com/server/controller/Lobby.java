@@ -243,7 +243,11 @@ public class Lobby extends Observable implements Runnable, Observer, RMILobbyRem
 		this.deleteObserver(newInstance);
 		newInstance.deleteObserver(this);
 		newInstance.addObserver(roomGH);
+		newInstance.inGame=true;
 		inactiveClients.remove(newInstance);
+		if(RMI){
+			roomGH.replaceController(newInstance, RMISubscribed.getRemoteController(remoteControllers, newInstance));
+		}
 		room.getGameHandler().broadcastAnnounce("GAMEMESSAGE", "Player " + newInstance.getUserName() + " reconnected to the game");
 		try {
 			roomGH.updateClientGame();
@@ -296,8 +300,10 @@ public class Lobby extends Observable implements Runnable, Observer, RMILobbyRem
 	 *
 	 * @param sender the sender
 	 */
-	public void disconnectFromGame(ClientHandler sender){
-		sender.closeSocket();
+	public void disconnectFromGame(ClientHandler sender, GameHandler gameHandler){
+		if(!RMI)
+			sender.closeSocket();
+		sender.setActive(false);
 		Room room = findPlayerRoom(sender);
 		room.getGameHandler().deleteObserver(sender);
 		removePlayer(sender);
@@ -581,6 +587,7 @@ public class Lobby extends Observable implements Runnable, Observer, RMILobbyRem
 	private void broadcastLobbyStatus(){
 		lobbyStatus = generateLobbyStatus();
 		for(RMISubscribed RMIs : this.remoteControllers)
+			if(!RMIs.getCh().inGame)
 			try {
 				RMIs.getRemContr().RMIupdateLobby(lobbyStatus);
 			} catch (RemoteException e) {

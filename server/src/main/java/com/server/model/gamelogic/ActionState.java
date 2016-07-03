@@ -1,4 +1,5 @@
 package com.server.model.gamelogic;
+import java.net.SocketException;
 import java.rmi.RemoteException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -115,7 +116,7 @@ public class ActionState implements State {
 	 * @param actionDTO the action DTO
 	 * @throws RemoteException the remote exception
 	 */
-	public void execute(ActionDTO actionDTO) throws RemoteException{
+	public void execute(ActionDTO actionDTO) throws RemoteException, SocketException{
 		boolean pass = false;
 		Action action = null;
 		if(RMI){
@@ -179,7 +180,7 @@ public class ActionState implements State {
 			try {
 				gamehandler.updateClientGame();
 				this.execute(null);
-			} catch (RemoteException e) {
+			} catch (RemoteException | SocketException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
@@ -222,16 +223,17 @@ public class ActionState implements State {
 			try {
 				remoteController.RMIStartTurn(draw.toDTO());
 			} catch (RemoteException e) {
-				e.printStackTrace();
+				this.gamehandler.getLobby().disconnectFromGame(this.context.getClienthandler(), this.gamehandler);
+				this.gamehandler.changeState(this.context);
 			}
 		else
 			clienthandler.sendToClient("StartTurn", draw.toDTO());
 		try {
 			gamehandler.updateClientGame();
 			this.execute(null);
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (RemoteException | SocketException e) {
+			this.gamehandler.getLobby().disconnectFromGame(this.context.getClienthandler(), this.gamehandler);
+			this.gamehandler.changeState(this.context);
 		}
 	}
 	
@@ -355,8 +357,6 @@ public class ActionState implements State {
 	private void collectBonus(Bonus b)// NOTA: AGISCE SUL GIOCATORE CHE STA
 	// GIOCANDO IL TURNO
 	{
-		BonusToken[] btTmp;
-		try {
 		switch (b.getType()) {
 		case CARD:
 			for (int i = 0; i < b.getQnt(); i++)
@@ -397,10 +397,6 @@ public class ActionState implements State {
 			break;
 
 		}
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 	
 	/**
@@ -409,13 +405,18 @@ public class ActionState implements State {
 	 * @param chosen the chosen
 	 * @throws RemoteException the remote exception
 	 */
-	public void collectONETOKEN(BonusTokenDTO chosen) throws RemoteException{
+	public void collectONETOKEN(BonusTokenDTO chosen){
 		BonusTokenDTO[] btTmp = getAvailableTokens();
 		if (btTmp.length == 0)
 			clienthandler.sendToClient("You have no available city tokens. Bonus discarded", null);//non è nack perchè non ho chiesto input al client
 		else {
 			if(RMI){
-				chosen = this.remoteController.RMIOneToken(btTmp);
+				try {
+					chosen = this.remoteController.RMIOneToken(btTmp);
+				} catch (RemoteException e) {
+					this.gamehandler.getLobby().disconnectFromGame(this.context.getClienthandler(), this.gamehandler);
+					this.gamehandler.changeState(this.context);
+				}
 			}
 			else{
 				if(chosen==null){
@@ -438,14 +439,19 @@ public class ActionState implements State {
 	 * @param chosen the chosen
 	 * @throws RemoteException the remote exception
 	 */
-	public void collectTWOTOKENS(BonusTokenDTO[] chosen) throws RemoteException{
+	public void collectTWOTOKENS(BonusTokenDTO[] chosen){
 		BonusTokenDTO[] btTmp = getAvailableTokens();
 		BonusToken[] converted;
 		if (btTmp.length == 0)
 			clienthandler.sendToClient("You have no available city tokens. Bonus discarded", null);
 		else {
 			if(RMI){
-				chosen = this.remoteController.RMITwoTokens(btTmp);
+				try {
+					chosen = this.remoteController.RMITwoTokens(btTmp);
+				} catch (RemoteException e) {
+					this.gamehandler.getLobby().disconnectFromGame(this.context.getClienthandler(), this.gamehandler);
+					this.gamehandler.changeState(this.context);
+				}
 			}
 			else
 				if(chosen==null){
@@ -470,10 +476,15 @@ public class ActionState implements State {
 	 * @param chosen the chosen
 	 * @throws RemoteException the remote exception
 	 */
-	public void collectFREECARD(PermitsCardDTO chosen) throws RemoteException{
+	public void collectFREECARD(PermitsCardDTO chosen) {
 		boolean found = false;
 		if(RMI){
-			chosen = this.remoteController.RMIFreeCard();
+			try {
+				chosen = this.remoteController.RMIFreeCard();
+			} catch (RemoteException e) {
+				this.gamehandler.getLobby().disconnectFromGame(this.context.getClienthandler(), this.gamehandler);
+				this.gamehandler.changeState(this.context);
+			}
 			if(timeoutReached(startDate, getTime()))
 				return;
 		}
@@ -492,7 +503,12 @@ public class ActionState implements State {
 				}
 			if(!found){
 				if(RMI){
-					this.remoteController.RMIprintMsg("Invalid input permit. Try again");
+					try {
+						this.remoteController.RMIprintMsg("Invalid input permit. Try again");
+					} catch (RemoteException e) {
+						this.gamehandler.getLobby().disconnectFromGame(this.context.getClienthandler(), this.gamehandler);
+						this.gamehandler.changeState(this.context);
+					}
 					this.collectFREECARD(null);
 					return;
 				}
@@ -514,10 +530,15 @@ public class ActionState implements State {
 	 * @param chosen the chosen
 	 * @throws RemoteException the remote exception
 	 */
-	public void collectBONUSCARD(PermitsCardDTO chosen) throws RemoteException{
+	public void collectBONUSCARD(PermitsCardDTO chosen){
 		ArrayList<PermitsCard> pcOwned = game.getActualPlayer().getPermits();
 		if(RMI){
-			chosen = this.remoteController.RMIBonusCard();
+			try {
+				chosen = this.remoteController.RMIBonusCard();
+			} catch (RemoteException e) {
+				this.gamehandler.getLobby().disconnectFromGame(this.context.getClienthandler(), this.gamehandler);
+				this.gamehandler.changeState(this.context);
+			}
 			if(timeoutReached(startDate, getTime()))
 				return;
 		}
@@ -532,7 +553,12 @@ public class ActionState implements State {
 				temp = pc;
 		if(temp==null){
 			if(RMI){
-				this.remoteController.RMIprintMsg("Invalid input. Try again");
+				try {
+					this.remoteController.RMIprintMsg("Invalid input. Try again");
+				} catch (RemoteException e) {
+					this.gamehandler.getLobby().disconnectFromGame(this.context.getClienthandler(), this.gamehandler);
+					this.gamehandler.changeState(this.context);
+				}
 				this.collectBONUSCARD(null);
 			}
 			else{

@@ -1,5 +1,6 @@
 package com.server.model.gamelogic;
 
+import java.net.SocketException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.UUID;
@@ -74,8 +75,8 @@ public class SellItemState implements State{
 		try {
 			execute(null,false);
 		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			this.gamehandler.getLobby().disconnectFromGame(this.context.getClienthandler(), this.gamehandler);
+			this.gamehandler.changeState(this.context);
 		}
 	}
 	

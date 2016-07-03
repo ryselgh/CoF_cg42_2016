@@ -36,6 +36,10 @@ public class RMISubscribed {
 		return ch;
 	}
 
+	public void setRemContr(RMIClientControllerRemote remContr) {
+		this.remContr = remContr;
+	}
+
 	/**
 	 * Gets the rem contr.
 	 *
