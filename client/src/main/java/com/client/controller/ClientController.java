@@ -510,7 +510,7 @@ public class ClientController extends Observable implements Observer, RMIClientC
 				if(!isGUI)
 					consoleListener.deleteObserver(this);//per stare sicuri, da togliere se verificato che STARTGAME arriva a tutti
 				this.inGame = true;//se il player si riconnette dopo una disconnessione 
-				view.updateGame((GameDTO) obj,getThisPlayer());
+				view.updateGame((GameDTO) obj,getThisPlayer((GameDTO) obj));
 				this.game = (GameDTO) obj;
 				break;
 			case "STARTGAME":
@@ -518,7 +518,7 @@ public class ClientController extends Observable implements Observer, RMIClientC
 					consoleListener.deleteObserver(this);
 				this.inGame = true;
 				//consoleListener.deleteObserver(this);//in gioco gli input sono ad invocazione  
-				view.updateGame((GameDTO) obj,getThisPlayer());
+				view.updateGame((GameDTO) obj,getThisPlayer((GameDTO) obj));
 				this.game = (GameDTO) obj;
 				break;
 			case "ENDGAME":
@@ -535,8 +535,8 @@ public class ClientController extends Observable implements Observer, RMIClientC
 		}
 	}
 
-	private PlayerDTO getThisPlayer(){
-		for(PlayerDTO p:this.game.getPlayers())
+	private PlayerDTO getThisPlayer(GameDTO game){
+		for(PlayerDTO p:game.getPlayers())
 			if(p.getPlayerID().equals(this.userName))
 				return p;
 		return null;
@@ -581,7 +581,7 @@ public class ClientController extends Observable implements Observer, RMIClientC
 	public void RMIupdateGame(GameDTO game){
 		this.consoleListener.deleteObserver(this);
 		this.inGame = true;//se il player si riconnette dopo una disconnessione 
-		view.updateGame(game,getThisPlayer());
+		view.updateGame(game,getThisPlayer(game));
 		this.game = game;
 	}
 	
