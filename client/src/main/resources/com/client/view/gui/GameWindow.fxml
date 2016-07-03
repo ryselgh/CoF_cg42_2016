@@ -929,6 +929,46 @@
                   <Font name="Segoe UI" size="14.0" />
                </font>
             </Label>
+            <ImageView fx:id="main4" fitHeight="49.0" fitWidth="154.0" layoutX="978.0" layoutY="600.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@img/board/action-select.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="main1" fitHeight="49.0" fitWidth="154.0" layoutX="978.0" layoutY="475.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@img/board/action-select.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="main2" fitHeight="49.0" fitWidth="154.0" layoutX="978.0" layoutY="516.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@img/board/action-select.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="main3" fitHeight="49.0" fitWidth="154.0" layoutX="978.0" layoutY="558.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@img/board/action-select.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="speed2" fitHeight="49.0" fitWidth="154.0" layoutX="1124.0" layoutY="516.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@img/board/action-select.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="speed4" fitHeight="49.0" fitWidth="154.0" layoutX="1124.0" layoutY="600.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@img/board/action-select.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="speed1" fitHeight="49.0" fitWidth="154.0" layoutX="1124.0" layoutY="475.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@img/board/action-select.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="speed3" fitHeight="49.0" fitWidth="154.0" layoutX="1124.0" layoutY="558.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@img/board/action-select.png" />
+               </image>
+            </ImageView>
          </children>
       </Group>
    </children>

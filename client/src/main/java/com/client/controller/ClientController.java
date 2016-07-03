@@ -306,33 +306,35 @@ public class ClientController extends Observable implements Observer, RMIClientC
 	@Override
 	public void update(Observable o, Object change){
 		if(o instanceof GUIController){
-			String[] info = ((String) change).split("_");
-			if(info[0].equals("USERNAME")){
-				if(this.RMI)
-					this.RMIGUILogin(info[1]);
-				else
-					connection.sendToServer("INSERTNICKNAME",info[1]);//sono sicuro che il server sia già in attesa
-				}
-			else if(info[0].equals("CONNECTION")){
-				if(info[1].equals("RMI"))
-					this.RMI = true;
-				else{
-					this.RMI=false;
-					ClientController a = this;
-					new Thread(new Runnable() {
-						@Override
-						public void run() {
-							try {
-								a.start();
-							} catch (IOException | NotBoundException | AlreadyBoundException e) {
-								e.printStackTrace();
+			if(change instanceof String){
+				String[] info = ((String) change).split("_");
+				if(info[0].equals("USERNAME")){
+					if(this.RMI)
+						this.RMIGUILogin(info[1]);
+					else
+						connection.sendToServer("INSERTNICKNAME",info[1]);//sono sicuro che il server sia già in attesa
+					}
+				else if(info[0].equals("CONNECTION")){
+					if(info[1].equals("RMI"))
+						this.RMI = true;
+					else{
+						this.RMI=false;
+						ClientController a = this;
+						new Thread(new Runnable() {
+							@Override
+							public void run() {
+								try {
+									a.start();
+								} catch (IOException | NotBoundException | AlreadyBoundException e) {
+									e.printStackTrace();
+								}
 							}
-						}
-					}).start();
-					view.startTurn(null);
+						}).start();
+						view.startTurn(null);
+					}
 				}
+				return;
 			}
-			return;
 		}
 		if(o instanceof ConsoleListener){
 			String inStr = this.cliQueue.poll();
@@ -355,6 +357,7 @@ public class ClientController extends Observable implements Observer, RMIClientC
 			return;
 		}
 		}
+		if(change instanceof CommunicationObject){
 		CommunicationObject in = (CommunicationObject) change;
 		String cmd = in.getMsg();
 		Object obj = in.getObj();
@@ -528,7 +531,7 @@ public class ClientController extends Observable implements Observer, RMIClientC
 				throw new IllegalArgumentException("Command not recognized: " + cmd);
 			}
 		}
-
+		}
 	}
 
 	/**

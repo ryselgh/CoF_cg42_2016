@@ -38,6 +38,11 @@ public class InterfaceMiddleware extends Observable implements Observer{
 
 	/** The input queue. */
 	private ArrayBlockingQueue<String> cliQueue;
+	
+	/** GUI fields */
+	private int selectedAction = -1;
+	private ObtainPermitDTO GUIObtainPermitDTO;
+	private ShiftCouncilMainDTO GUIShiftMainDTO;
 
 	public InterfaceMiddleware(ClientController controller, boolean isGui, ArrayBlockingQueue<String> cliQueue, GUIController guiController) {
 		this.controller = controller;
@@ -396,6 +401,18 @@ public class InterfaceMiddleware extends Observable implements Observer{
 		shiftSpeed.setBalconyIndex(balcIndex);
 		return shiftSpeed;
 	}
+	
+	private void GUISaveObtainPermit(ObtainPermitDTO opDTO){
+		GUIObtainPermitDTO = opDTO;
+	}
+	
+	private void GUISaveShiftMain(ShiftCouncilMainDTO smDTO) {
+		GUIShiftMainDTO = smDTO;
+	}
+	
+	private void GUISaveSelectedAction(int selAction) {
+		selectedAction = selAction;
+	}
 
 	// -----------PUBLIC FUNCS-------------
 
@@ -422,10 +439,13 @@ public class InterfaceMiddleware extends Observable implements Observer{
 			this.CLIprintMsg(msg);
 	}
 
-	public int getActionIndex(boolean[] availableActions) {
+	public synchronized int getActionIndex(boolean[] availableActions) {
 		if (isGUI) {
-			//return gui.getActionIndex(availableActions);
-			return 0;
+			gui.getActionIndex(availableActions);
+			while(selectedAction == -1){}
+			int toReturn = selectedAction;
+			selectedAction = -1;
+			return toReturn;
 		} else
 			return this.CLIgetActionIndex(availableActions);
 	}
@@ -496,7 +516,8 @@ public class InterfaceMiddleware extends Observable implements Observer{
 
 	public ShiftCouncilMainDTO CompileShiftMainAction(GameDTO game) {
 		if (isGUI) {
-			return null;
+			while(GUIShiftMainDTO == null){}
+			return GUIShiftMainDTO;
 		} else
 			return this.CLICompileShiftMainAction(game);
 	}
@@ -508,9 +529,10 @@ public class InterfaceMiddleware extends Observable implements Observer{
 			return this.CLICompileSatisfyKingAction(game);
 	}
 
-	public ObtainPermitDTO CompileObtainAction(GameDTO game) {
+	public synchronized ObtainPermitDTO CompileObtainAction(GameDTO game) {
 		if (isGUI) {
-			return null;
+			while(GUIObtainPermitDTO == null){}
+			return GUIObtainPermitDTO;
 		} else
 			return this.CLICompileObtainAction(game);
 	}
@@ -555,6 +577,15 @@ public class InterfaceMiddleware extends Observable implements Observer{
 						this.controller.GUISendCommand(info[1], null);
 				}
 					
+			}
+			if(arg instanceof Integer){
+				this.GUISaveSelectedAction((int)arg);
+			}
+			if(arg instanceof ObtainPermitDTO){
+				this.GUISaveObtainPermit((ObtainPermitDTO) arg);
+			}
+			if(arg instanceof ShiftCouncilMainDTO){
+				this.GUISaveShiftMain((ShiftCouncilMainDTO) arg);
 			}
 		}
 	}
