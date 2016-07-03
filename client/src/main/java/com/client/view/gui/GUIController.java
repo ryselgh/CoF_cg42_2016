@@ -426,7 +426,7 @@ public class GUIController extends Observable implements Observer{
 			stage.setY(bounds.getMaxY()/16);
 			stage.setWidth(bounds.getWidth()/1.2);
 			stage.setHeight(bounds.getHeight()/1.2);
-			stage.setFullScreen(true);
+			//stage.setFullScreen(true);
 			stage.setFullScreenExitHint("");
 			stage.setResizable(false);
 			launcher.close();

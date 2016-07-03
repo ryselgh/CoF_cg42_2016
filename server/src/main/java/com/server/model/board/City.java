@@ -48,8 +48,12 @@ public class City
 		CityDTO cDTO = new CityDTO();
 		EmporiumDTO[] slotDTO = new EmporiumDTO[this.slot.length];
 		for(int i=0;i<this.slot.length;i++){
-			if(slot[i] != null)
-				slotDTO[i] = this.slot[i].toDTO(slot[i].getPlayer().compareToDTOs(plsDTO));
+			if(slot[i] != null){
+				if(this.slot[i].getPlayer().getID().equals("_FakePlayer_"))
+					slotDTO[i] = this.slot[i].toDTO(null);
+				else
+					slotDTO[i] = this.slot[i].toDTO(slot[i].getPlayer().compareToDTOs(plsDTO));
+			}
 		}
 		cDTO.setSlot(slotDTO);
 		cDTO.setColor(color);

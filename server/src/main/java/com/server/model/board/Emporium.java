@@ -1,6 +1,7 @@
 package com.server.model.board ;
 
 import com.communication.board.EmporiumDTO;
+import com.communication.board.PawnDTO;
 import com.communication.gamelogic.PlayerDTO;
 import com.server.model.gamelogic.Player;
 
@@ -45,6 +46,17 @@ public class Emporium
 	 * @return the emporium dto
 	 */
 	public EmporiumDTO toDTO(PlayerDTO plDTO){
+		if(this.player.getID().equals("_FakePlayer_")){
+			EmporiumDTO eDTO = new EmporiumDTO();
+			PawnDTO pawnDTO = new PawnDTO();
+			pawnDTO.setHexColor(this.getPlayer().getPawn().getColor());
+			PlayerDTO fakePl = new PlayerDTO();
+			fakePl.setPlayerID("_FakePlayer_");
+			fakePl.setPawn(pawnDTO);
+			pawnDTO.setP(fakePl);
+			eDTO.setPlayer(fakePl);
+			return eDTO;
+		}
 		EmporiumDTO eDTO = new EmporiumDTO();
 		eDTO.setPlayer(plDTO);
 		return eDTO;

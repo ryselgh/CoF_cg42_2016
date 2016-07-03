@@ -322,7 +322,7 @@ public class ClientCLI {
 			out.print(game.getMap().getCity()[i].getName()+": {");
 			for(int j=0;j<game.getMap().getCity()[i].getSlot().length;j++){
 				if(game.getMap().getCity()[i].getSlot()[j] != null){
-					if(game.getMap().getCity()[i].getSlot()[j].getPlayer()!=null)
+					if(!game.getMap().getCity()[i].getSlot()[j].getPlayer().getPlayerID().equals("_FakePlayer_"))
 						out.print("["+game.getMap().getCity()[i].getSlot()[j].getPlayer().getPlayerID()+"]");
 					else
 						out.print("[StarterEmporium]");
