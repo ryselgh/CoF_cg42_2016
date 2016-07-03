@@ -865,7 +865,7 @@ public class ClientCLI {
 
 		if (resp.equals(""))
 			return null;
-
+		resp = resp.replaceAll("\\.", " ");
 		resp = resp.replaceAll("[^0-9]+", " ");
 		ArrayList<String> choice = new ArrayList<String>(Arrays.asList(resp.trim().split("[^0-9]+")));
 		if (checkInputCards(choice, hand)) {
