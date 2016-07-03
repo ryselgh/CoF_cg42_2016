@@ -9,6 +9,7 @@ import com.server.model.board.Balcony;
 import com.server.model.board.Bonus;
 import com.server.model.board.City;
 import com.server.model.board.Councilor;
+import com.server.model.board.Emporium;
 import com.server.model.decks.PoliticsCard;
 import com.server.model.gamelogic.Game;
 import com.server.model.gamelogic.Player;
@@ -71,6 +72,11 @@ public class SatisfyKing extends Action {
 		}
 		payCards();
 		game.getMap().getKing().setLocation(destination);
+		for(Emporium e: destination.getEmporium())
+			if(e!=null)
+				game.getActualPlayer().getAvailableAssistants().remove(0);
+		destination.setEmporium(game.getActualPlayer().getAvailableEmporiums().get(0));
+		game.getActualPlayer().getAvailableEmporiums().remove(0);
 		Bonus[] bonusToCollect = getCitiesBonus(destination);
 		return new ActionReturn(true,"",bonusToCollect);
 	}
