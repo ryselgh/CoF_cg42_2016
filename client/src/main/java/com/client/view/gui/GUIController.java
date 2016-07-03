@@ -2475,6 +2475,7 @@ public class GUIController extends Observable implements Observer{
 			}
 			if(action.equals(main3) && main3.getOpacity() == 1.0){
 				toggleShift();
+				disableActions();
 				selectedAction = 2;
 				sendAction(selectedAction);
 			}
