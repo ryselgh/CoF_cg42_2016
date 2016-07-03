@@ -19,7 +19,9 @@ package com.server ;
 
 
 
-public class MainTest{
+public class MainTest{ 
+	
+	
 
 	
 //	private Lobby lobby;
