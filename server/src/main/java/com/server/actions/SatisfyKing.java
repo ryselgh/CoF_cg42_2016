@@ -96,7 +96,7 @@ public class SatisfyKing extends Action {
 		for(PoliticsCard c: politics){
 			found = false;
 			for(int i=0;i<tempHand.size();i++)
-				if(c.equals(tempHand.get(i))){
+				if(isPoliticEquals(c,tempHand.get(i))){
 					tempHand.remove(i);
 					found = true;
 					break;
@@ -106,6 +106,11 @@ public class SatisfyKing extends Action {
 		}
 	}
 	
+	private boolean isPoliticEquals(PoliticsCard p1, PoliticsCard p2){
+		if(p1.getColor().equals(p2.getColor()))
+			return true;
+		return false;
+	}
 	/**
 	 * Checks if is operation valid.
 	 * it counts how many cards match the balcony
@@ -120,14 +125,14 @@ public class SatisfyKing extends Action {
 	    Balcony chosenBalcony = game.getMap().getBalcony(3);
 	    ArrayList<Councilor> tmpBalcony = new ArrayList<Councilor>(Arrays.asList(chosenBalcony.getCouncilors()));
 	    for(PoliticsCard p: politics){
-	      for(Councilor c: tmpBalcony){
-	        if(c.getCouncilorColor().equals(p.getColor()))
-	          {
-	            tmpBalcony.remove(c);
-	            counter++;
-	            break;
-	          }
-	      }
+	    	 for(int i=0;i<tmpBalcony.size();i++){
+	 	        if(tmpBalcony.get(i).getCouncilorColor().equals(p.getColor()))
+	 	          {
+	 	            tmpBalcony.remove(i);
+	 	            counter++;
+	 	            break;
+	 	          }
+	 	      }
 	      if(p.getColor().equals(CouncilorColor.JOLLY)){
 	        counter++;
 	        jollycnt++;

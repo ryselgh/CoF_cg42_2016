@@ -98,10 +98,10 @@ public class ObtainPermit extends Action {
 	    Balcony chosenBalcony = game.getMap().getBalcony(regionIndex);
 	    ArrayList<Councilor> tmpBalcony = new ArrayList<Councilor>(Arrays.asList(chosenBalcony.getCouncilors()));
 	    for(PoliticsCard p: politics){
-	      for(Councilor c: tmpBalcony){
-	        if(c.getCouncilorColor().equals(p.getColor()))
+	      for(int i=0;i<tmpBalcony.size();i++){
+	        if(tmpBalcony.get(i).getCouncilorColor().equals(p.getColor()))
 	          {
-	            tmpBalcony.remove(c);
+	            tmpBalcony.remove(i);
 	            counter++;
 	            break;
 	          }
