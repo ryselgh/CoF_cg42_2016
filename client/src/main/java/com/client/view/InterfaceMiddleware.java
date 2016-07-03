@@ -452,6 +452,8 @@ public class InterfaceMiddleware extends Observable implements Observer{
 
 	public void startTurn(PoliticsCardDTO polcDTO) {
 		if (isGUI){
+			GUIObtainPermitDTO = null;
+			GUIShiftMainDTO = null;
 			this.setChanged();
 			this.notifyObservers(polcDTO);
 		} else

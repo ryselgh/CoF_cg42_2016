@@ -489,7 +489,7 @@ public class ClientController extends Observable implements Observer, RMIClientC
 				this.notifyObservers("RESETABORT");
 				availableActions = (boolean[]) obj;
 				this.availableActions= availableActions;//non date ascolto al warning, serve per il case "ActionNotValid"
-				SelectActionState actState = new SelectActionState(this.game, availableActions, this.view, connection);
+				SelectActionState actState = new SelectActionState(this.game, availableActions, this.view, connection, isGUI);
 				currentActState = actState;
 				Thread actThread = new Thread(actState);
 				actThread.start();
@@ -500,7 +500,7 @@ public class ClientController extends Observable implements Observer, RMIClientC
 
 			case "ActionNotValid":
 				view.printMsg(((String) obj)+ "\n");
-				SelectActionState actStateRetry = new SelectActionState(this.game, this.availableActions, this.view, connection);
+				SelectActionState actStateRetry = new SelectActionState(this.game, this.availableActions, this.view, connection, isGUI);
 				currentActState = actStateRetry;
 				Thread actThreadRetry = new Thread(actStateRetry);
 				actThreadRetry.start();
@@ -592,7 +592,7 @@ public class ClientController extends Observable implements Observer, RMIClientC
 	 */
 	public ActionDTO RMIgetAction(boolean[] availableActions){
 		int selectedAction = view.getActionIndex(availableActions);
-		SelectActionState actState = new SelectActionState(this.game, availableActions, this.view, null);
+		SelectActionState actState = new SelectActionState(this.game, availableActions, this.view, null, isGUI);
 		if(abortFlag)
 			return null;
 		ActionDTO compiledAction = actState.getActionInstance(selectedAction);

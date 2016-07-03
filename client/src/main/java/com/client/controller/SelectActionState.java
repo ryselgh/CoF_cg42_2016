@@ -40,6 +40,8 @@ public class SelectActionState implements Runnable{
 	private boolean abortFlag = false;//per il timer timeout
 	
 	private InterfaceMiddleware view;
+	
+	private boolean isGUI;
 	/**
 	 * Instantiates a new select action state.
 	 *
@@ -49,11 +51,12 @@ public class SelectActionState implements Runnable{
 	 * @param connection the connection
 	 */
 	public SelectActionState(GameDTO game, boolean[] availableActions, 
-			InterfaceMiddleware view, SocketConnection connection){
+			InterfaceMiddleware view, SocketConnection connection, boolean isGUI){
 		this.view = view;
 		this.game = game;
 		this.availableActions = availableActions;
 		this.connection = connection;
+		this.isGUI = isGUI;
 	}
 
 	/* (non-Javadoc)

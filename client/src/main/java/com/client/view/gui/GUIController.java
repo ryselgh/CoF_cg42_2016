@@ -426,7 +426,7 @@ public class GUIController extends Observable implements Observer{
 			stage.setY(bounds.getMaxY()/16);
 			stage.setWidth(bounds.getWidth()/1.2);
 			stage.setHeight(bounds.getHeight()/1.2);
-			//stage.setFullScreen(true);
+			stage.setFullScreen(true);
 			stage.setFullScreenExitHint("");
 			stage.setResizable(false);
 			launcher.close();
@@ -1560,6 +1560,7 @@ public class GUIController extends Observable implements Observer{
 		dragCouncilor(councToDragBlack);
 		CouncilorDTO counc = new CouncilorDTO();
 		counc.setColor(CouncilorColor.BLACK);
+		shiftCouncMainAction = new ShiftCouncilMainDTO();
 		shiftCouncMainAction.setCouncilor(counc);
 	}
 
@@ -1569,6 +1570,10 @@ public class GUIController extends Observable implements Observer{
 
 	public void dragBlue(){
 		dragCouncilor(councToDragBlue);
+		CouncilorDTO counc = new CouncilorDTO();
+		counc.setColor(CouncilorColor.BLUESKY);
+		shiftCouncMainAction = new ShiftCouncilMainDTO();
+		shiftCouncMainAction.setCouncilor(counc);
 	}
 
 	public void dragBlueDone(){
@@ -1577,6 +1582,10 @@ public class GUIController extends Observable implements Observer{
 
 	public void dragOrange(){
 		dragCouncilor(councToDragOrange);
+		CouncilorDTO counc = new CouncilorDTO();
+		counc.setColor(CouncilorColor.ORANGE);
+		shiftCouncMainAction = new ShiftCouncilMainDTO();
+		shiftCouncMainAction.setCouncilor(counc);
 	}
 
 	public void dragOrangeDone(){
@@ -1585,6 +1594,10 @@ public class GUIController extends Observable implements Observer{
 
 	public void dragPink(){
 		dragCouncilor(councToDragPink);
+		CouncilorDTO counc = new CouncilorDTO();
+		counc.setColor(CouncilorColor.PINK);
+		shiftCouncMainAction = new ShiftCouncilMainDTO();
+		shiftCouncMainAction.setCouncilor(counc);
 	}
 
 	public void dragPinkDone(){
@@ -1593,6 +1606,10 @@ public class GUIController extends Observable implements Observer{
 
 	public void dragPurple(){
 		dragCouncilor(councToDragPurple);
+		CouncilorDTO counc = new CouncilorDTO();
+		counc.setColor(CouncilorColor.PURPLE);
+		shiftCouncMainAction = new ShiftCouncilMainDTO();
+		shiftCouncMainAction.setCouncilor(counc);
 	}
 
 	public void dragPurpleDone(){
@@ -1601,6 +1618,10 @@ public class GUIController extends Observable implements Observer{
 
 	public void dragWhite(){
 		dragCouncilor(councToDragWhite);
+		CouncilorDTO counc = new CouncilorDTO();
+		counc.setColor(CouncilorColor.WHITE);
+		shiftCouncMainAction = new ShiftCouncilMainDTO();
+		shiftCouncMainAction.setCouncilor(counc);
 	}
 
 	public void dragWhiteDone(){
@@ -1628,8 +1649,7 @@ public class GUIController extends Observable implements Observer{
 			councSea2.setImage(councSea1.getImage());
 			councSea1.setImage(councToShift);
 			shiftCouncMainAction.setBalconyIndex(0);
-			this.setChanged();
-			this.notifyObservers(shiftCouncMainAction);
+			sendAction(shiftCouncMainAction);
 			isAskingForShift = false;
 		}
 		if(isAskingForSatisfy){
@@ -1644,7 +1664,6 @@ public class GUIController extends Observable implements Observer{
 			for(ImageView card: selectedCards){
 				toGarbage(card);
 			}
-			printMsg("Ok!");
 		}
 	}
 
@@ -1654,13 +1673,22 @@ public class GUIController extends Observable implements Observer{
 			councHill3.setImage(councHill2.getImage());
 			councHill2.setImage(councHill1.getImage());
 			councHill1.setImage(councToShift);
+			shiftCouncMainAction.setBalconyIndex(1);
+			sendAction(shiftCouncMainAction);
 			isAskingForShift = false;
 		}
 		if(isAskingForSatisfy){
+			obtainPermAction = new ObtainPermitDTO();
+			ArrayList<PoliticsCardDTO> chosenPolitics = new ArrayList<PoliticsCardDTO>();
+			for(ImageView card: selectedCards)
+				chosenPolitics.add(gameDTO.getActualPlayer().getHand().get(handArray.indexOf(card)));
+			PoliticsCardDTO[] polArray = new PoliticsCardDTO[chosenPolitics.size()];
+			chosenPolitics.toArray(polArray);
+			obtainPermAction.setPolitics(polArray);
+			obtainPermAction.setRegionIndex(regIndex);
 			for(ImageView card: selectedCards){
 				toGarbage(card);
 			}
-			printMsg("Ok!");
 		}
 	}
 
@@ -1670,13 +1698,22 @@ public class GUIController extends Observable implements Observer{
 			councMount3.setImage(councMount2.getImage());
 			councMount2.setImage(councMount1.getImage());
 			councMount1.setImage(councToShift);
+			shiftCouncMainAction.setBalconyIndex(2);
+			sendAction(shiftCouncMainAction);
 			isAskingForShift = false;
 		}
 		if(isAskingForSatisfy){
+			obtainPermAction = new ObtainPermitDTO();
+			ArrayList<PoliticsCardDTO> chosenPolitics = new ArrayList<PoliticsCardDTO>();
+			for(ImageView card: selectedCards)
+				chosenPolitics.add(gameDTO.getActualPlayer().getHand().get(handArray.indexOf(card)));
+			PoliticsCardDTO[] polArray = new PoliticsCardDTO[chosenPolitics.size()];
+			chosenPolitics.toArray(polArray);
+			obtainPermAction.setPolitics(polArray);
+			obtainPermAction.setRegionIndex(regIndex);
 			for(ImageView card: selectedCards){
 				toGarbage(card);
 			}
-			printMsg("Ok!");
 		}
 	}
 
@@ -1686,13 +1723,22 @@ public class GUIController extends Observable implements Observer{
 			councKing3.setImage(councKing2.getImage());
 			councKing2.setImage(councKing1.getImage());
 			councKing1.setImage(councToShift);
+			shiftCouncMainAction.setBalconyIndex(3);
+			sendAction(shiftCouncMainAction);
 			isAskingForShift = false;
 		}
 		if(isAskingForSatisfy){
+			obtainPermAction = new ObtainPermitDTO();
+			ArrayList<PoliticsCardDTO> chosenPolitics = new ArrayList<PoliticsCardDTO>();
+			for(ImageView card: selectedCards)
+				chosenPolitics.add(gameDTO.getActualPlayer().getHand().get(handArray.indexOf(card)));
+			PoliticsCardDTO[] polArray = new PoliticsCardDTO[chosenPolitics.size()];
+			chosenPolitics.toArray(polArray);
+			obtainPermAction.setPolitics(polArray);
+			obtainPermAction.setRegionIndex(regIndex);
 			for(ImageView card: selectedCards){
 				toGarbage(card);
 			}
-			printMsg("Ok!");
 		}
 	}
 
