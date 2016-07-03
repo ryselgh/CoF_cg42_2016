@@ -16,6 +16,8 @@ public class ActionReturnTest {
 	public void setUp()
 		throws Exception {
 		
+		//setUp for the test
+		
 		b = new Bonus[2];
 		b[0] = new Bonus(BonusType.ASSISTANT,2);
 		b[1] = new Bonus(BonusType.CARD,3);
