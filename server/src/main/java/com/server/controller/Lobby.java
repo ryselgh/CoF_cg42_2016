@@ -75,17 +75,20 @@ public class Lobby extends Observable implements Runnable, Observer, RMILobbyRem
 	 */
 	@Override
 	public void run() { 
-		if(RMI)
+		if(RMI){
 			try {
 				this.setUpRMI();
 			} catch (RemoteException | AlreadyBoundException e) {
 				e.printStackTrace();
 			}
+			System.out.println("RMI successfully set up");
+		}
 		else{
 		clients = new ArrayList<ClientHandler>();
 		SocketAcceptor acceptor = new SocketAcceptor(this);
 		Thread thread = new Thread(acceptor);
 		thread.start();
+		System.out.println("Socket server successfully set up");
 		}
 	}
 	 

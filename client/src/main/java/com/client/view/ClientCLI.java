@@ -43,6 +43,7 @@ public class ClientCLI {
 	/** The abort flag. */
 	private boolean abortFlag = false;
 
+	ClientController clientController;
 	/**
 	 * constructor of the class.
 	 *
@@ -51,6 +52,7 @@ public class ClientCLI {
 	 */
 	
 	public ClientCLI(ClientController clientController, ArrayBlockingQueue<String> q){
+		this.clientController = clientController;
 		this.cliQueue = q;
 		this.out = System.out;
 	}
@@ -60,10 +62,10 @@ public class ClientCLI {
 	 *
 	 * @param game the new game(DTO) 
 	 */
-	public void setGameAndBuildMap(GameDTO game){
+	public void setGameAndBuildMap(GameDTO game, PlayerDTO player){
 		this.game = game;
 		constructMap();
-		printGameStatus();
+		printGameStatus(player);
 	}
 	
 	/**
@@ -397,11 +399,12 @@ public class ClientCLI {
 	 * print all the gamestatus.
 	 */
 
-	public void printGameStatus(){
+	
+	public void printGameStatus(PlayerDTO player){
 		out.print("\n\n\n\n\n");  
 		this.printMap();
 		this.printCouncils();
-		this.printPlayerHand(game.getActualPlayer());
+		this.printPlayerHand(player);
 		this.printPlacedEmporiums();
 		this.printNobilityTrack();
 		this.printKingLocation();
@@ -833,7 +836,7 @@ public class ClientCLI {
 			if(Integer.parseInt(c)-1>compare)
 				compare = Integer.parseInt(c)-1;
 		}
-		if(compare>=hand.size())
+		if(compare>hand.size())
 			return false;
 		return true;
 	}

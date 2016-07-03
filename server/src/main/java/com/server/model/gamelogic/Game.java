@@ -103,13 +103,7 @@ public class Game {
 		ArrayList<String> covered = new ArrayList<String>();
 		covered.addAll(Arrays.asList(cardSea.getCityLetter()));
 		covered.addAll(Arrays.asList(cardHill.getCityLetter()));
-		covered.addAll(Arrays.asList(cardHill.getCityLetter()));
-		for(int i=0;i<covered.size();i++){
-			for(int j=i+1;j<covered.size();j++){
-				if(covered.get(i).equals(covered.get(j)))
-						covered.remove(j);
-			}
-		}
+		covered.addAll(Arrays.asList(cardMount.getCityLetter()));
 		Player fakePlayer = new Player("_FakePlayer_");
 		Pawn fakePawn = new Pawn(fakePlayer,map.getEmpColor());
 		fakePlayer.setPawn(fakePawn);

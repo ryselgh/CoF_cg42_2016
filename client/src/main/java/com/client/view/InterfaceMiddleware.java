@@ -24,6 +24,7 @@ import com.communication.board.CouncilorDTO;
 import com.communication.decks.PermitsCardDTO;
 import com.communication.decks.PoliticsCardDTO;
 import com.communication.gamelogic.GameDTO;
+import com.communication.gamelogic.PlayerDTO;
 import com.communication.market.OnSaleDTO;
 import com.communication.values.CouncilorColor;
 
@@ -136,8 +137,8 @@ public class InterfaceMiddleware extends Observable implements Observer{
 	 * communication.gamelogic.GameDTO) updates the game status through the
 	 * received object
 	 */
-	private void CLIupdateGame(GameDTO game) {
-		this.cli.setGameAndBuildMap(game);
+	private void CLIupdateGame(GameDTO game, PlayerDTO player) {
+		this.cli.setGameAndBuildMap(game, player);
 	}
 
 	private String CLIgetUserName(){
@@ -316,6 +317,7 @@ public class InterfaceMiddleware extends Observable implements Observer{
 		int slot = cli.waitCorrectIntInput("Insert slot number: 0= left  1=right", 0, 1);
 		if(abortFlag)
 			return null;
+		ArrayList<PoliticsCardDTO> tmp = game.getActualPlayer().getHand();
 		ArrayList<PoliticsCardDTO> polCards = cli.waitInputCards(game.getActualPlayer().getHand());
 		if(abortFlag)
 			return null;
@@ -424,12 +426,12 @@ public class InterfaceMiddleware extends Observable implements Observer{
 			this.CLIupdateLobby(lobbyStatus);
 	}
 
-	public void updateGame(GameDTO game) {
+	public void updateGame(GameDTO game, PlayerDTO player) {
 		if (isGUI) {
 			this.setChanged();
 			this.notifyObservers(game);
 		} else
-			this.CLIupdateGame(game);
+			this.CLIupdateGame(game, player);
 	}
 
 	public void printMsg(String msg) {
