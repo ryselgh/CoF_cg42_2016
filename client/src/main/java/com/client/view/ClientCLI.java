@@ -873,7 +873,6 @@ public class ClientCLI {
 			for (String c : choice) {
 				chosenCards.add(hand.get(Integer.parseInt(c) - 1));
 			}
-			hand.removeAll(chosenCards);
 			return chosenCards;
 		} else {
 			out.print("Wrong input or some of the selected cards are not in your hand. Try again\n");

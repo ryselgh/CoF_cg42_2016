@@ -48,10 +48,6 @@ public class SatisfyKing extends Action {
    */
   //ActionReturn(boolean success, String error, boolean disable, boolean addMainBonus)
 	public SatisfyKing(PoliticsCard[] politics, City destination){
-		if(politics==null)
-			throw new NullPointerException();
-		else if(destination == null)
-			throw new NullPointerException();
 		this.politics = politics;
 		this.destination=destination;
 		errors = new ArrayList<String>();

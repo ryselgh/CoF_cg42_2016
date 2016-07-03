@@ -75,7 +75,7 @@ public class ObtainPermit extends Action {
 		for(PoliticsCard c: politics){
 			found = false;
 			for(int i=0;i<tempHand.size();i++)
-				if(c.equals(tempHand.get(i))){
+				if(isPoliticEquals(c,tempHand.get(i))){
 					tempHand.remove(i);
 					found = true;
 					break;
@@ -85,6 +85,11 @@ public class ObtainPermit extends Action {
 		}
 	}
 	
+	private boolean isPoliticEquals(PoliticsCard p1, PoliticsCard p2){
+		if(p1.getColor().equals(p2.getColor()))
+			return true;
+		return false;
+	}
 	/**
 	 * Checks if is operation valid.
 	 * it counts how many cards match the balcony
