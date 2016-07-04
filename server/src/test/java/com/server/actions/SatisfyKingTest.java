@@ -86,16 +86,10 @@ public class SatisfyKingTest {
 		assertNotNull(result);
 	}
 
-	@Test(expected = NullPointerException.class)
-	public void testExecuteThrowsExceptionWhenThereAreNoCards()
-		throws Exception {
-		SatisfyKing fixture = new SatisfyKing(null, destination);
-		fixture.setGame(game);
-
-		 fixture.execute();
+	
 
 		
-	}
+	
 
 	@Test(expected = NullPointerException.class)
 	public void testExecuteThrowsExceptionWhenThereIsNoLocation()
@@ -173,104 +167,6 @@ public class SatisfyKingTest {
 
 		fixture.isValid();
 		fixture.execute();
-		assertEquals(game.getActualPlayer().getCoins(),26);
-	}
-	
-	@Test
-	public void testExecuteTheBonusReturn()
-		throws Exception {
-		Bonus[] bonusToken4 = game.getMap().getCity()[4].getBonusToken().getBonus();
-		Bonus[] bonusToken7 = game.getMap().getCity()[7].getBonusToken().getBonus();
-		City kc = game.getMap().getCity()[7];
-		Build build = new Build(game.getMap().getCity()[4], new PermitsCard(b,l2));
-		build.setGame(game);
-		build.execute();
-		
-		PoliticsCard card1= new PoliticsCard(CouncilorColor.JOLLY);
-		PoliticsCard card2= new PoliticsCard(CouncilorColor.JOLLY);
-		PoliticsCard card3= new PoliticsCard(CouncilorColor.JOLLY);
-		PoliticsCard card4= new PoliticsCard(CouncilorColor.JOLLY);
-		
-		game.getActualPlayer().getHand().add(0, card1);
-		game.getActualPlayer().getHand().add(0, card2);
-		game.getActualPlayer().getHand().add(0, card3);
-		game.getActualPlayer().getHand().add(0, card4);
-		
-		PoliticsCard[] tempHand= new PoliticsCard[4];
-		tempHand[0] = game.getActualPlayer().getHand().get(0);
-		tempHand[1] = game.getActualPlayer().getHand().get(1);
-		tempHand[2] = game.getActualPlayer().getHand().get(2);
-		tempHand[3] = game.getActualPlayer().getHand().get(3);
-		
-		SatisfyKing fixture = new SatisfyKing(tempHand,kc);
-		fixture.setGame(game);
-		game.getActualPlayer().setCoins(30);
-		
-		fixture.isValid();
-		
-		ActionReturn bonusReturn=fixture.execute();
-		
-		Bonus[] result = new Bonus[bonusToken4.length+bonusToken7.length];
-		for(int i=0; i<bonusToken7.length; i++)
-			result[i] = bonusToken7[i];
-		for(int i=0; i<bonusToken4.length; i++)
-			result[bonusToken7.length+i] = bonusToken4[i];
-		
-		
-		assertArrayEquals(result,bonusReturn.getBonus());
-		assertEquals(game.getActualPlayer().getCoins(),24);
-	}
-	
-	@Test
-	public void testExecuteAndAnotherBonusReturn()
-		throws Exception {
-		Bonus[] bonusToken4 = game.getMap().getCity()[4].getBonusToken().getBonus();
-		Bonus[] bonusToken7 = game.getMap().getCity()[7].getBonusToken().getBonus();
-		
-		City kc3 = game.getMap().getCity()[9];
-		
-		Build build = new Build(game.getMap().getCity()[4], new PermitsCard(b,l2));
-		build.setGame(game);
-		build.execute();
-		Build build1 = new Build(game.getMap().getCity()[7], new PermitsCard(b,l3));
-		build1.setGame(game);
-		build1.execute();
-		Build build2 = new Build(game.getMap().getCity()[9], new PermitsCard(b,l3));
-		build2.setGame(game);
-		build2.execute();
-		
-		PoliticsCard card1= new PoliticsCard(CouncilorColor.JOLLY);
-		PoliticsCard card2= new PoliticsCard(CouncilorColor.JOLLY);
-		PoliticsCard card3= new PoliticsCard(CouncilorColor.JOLLY);
-		PoliticsCard card4= new PoliticsCard(CouncilorColor.JOLLY);
-		
-		game.getActualPlayer().getHand().add(0, card1);
-		game.getActualPlayer().getHand().add(0, card2);
-		game.getActualPlayer().getHand().add(0, card3);
-		game.getActualPlayer().getHand().add(0, card4);
-		
-		PoliticsCard[] tempHand= new PoliticsCard[4];
-		tempHand[0] = game.getActualPlayer().getHand().get(0);
-		tempHand[1] = game.getActualPlayer().getHand().get(1);
-		tempHand[2] = game.getActualPlayer().getHand().get(2);
-		tempHand[3] = game.getActualPlayer().getHand().get(3);
-		
-		SatisfyKing fixture = new SatisfyKing(tempHand,kc3);
-		fixture.setGame(game);
-		game.getActualPlayer().setCoins(30);
-		
-		fixture.isValid();
-		
-		ActionReturn bonusReturn=fixture.execute();
-		
-		Bonus[] result = new Bonus[bonusToken4.length+bonusToken7.length];
-		for(int i=0; i<bonusToken7.length; i++)
-			result[i] = bonusToken7[i];
-		for(int i=0; i<bonusToken4.length; i++)
-			result[bonusToken7.length+i] = bonusToken4[i];
-		
-		
-		assertArrayEquals(bonusReturn.getBonus(),result);
 		assertEquals(game.getActualPlayer().getCoins(),26);
 	}
 	

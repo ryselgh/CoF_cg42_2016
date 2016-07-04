@@ -38,11 +38,11 @@ public class PlayerTest {
 		
 
 		Player result = game.getActualPlayer();
+		
 
 		assertNotNull(result);
 		assertEquals("1", result.getID());
 		assertEquals(0, result.getScore());
-		assertEquals(null, result.getPawn());
 		assertEquals(10, result.getCoins());
 		assertEquals(false, result.hasUncoveredPermits());
 	}
@@ -259,7 +259,7 @@ public class PlayerTest {
 
 		Pawn result = fixture.getPawn();
 
-		assertEquals(null, result);
+		assertNotNull(result);
 	}
 
 	@Test
@@ -386,7 +386,6 @@ public class PlayerTest {
 
 		assertNotNull(result);
 		assertEquals(0, result.getScore());
-		assertEquals(null, result.getPawn());
 		assertEquals(10, result.getCoins());
 		assertEquals("1", result.getPlayerID());
 		

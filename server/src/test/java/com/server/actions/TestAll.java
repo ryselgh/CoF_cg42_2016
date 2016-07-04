@@ -8,15 +8,15 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
 	BuyMainActionTest.class,
 	ChangeCardsTest.class,
-//	ShiftCouncilSpeedTest.class,
+	ShiftCouncilSpeedTest.class,
 	ActionReturnTest.class,
 	ActionTest.class,
 	ObtainPermitTest.class,
 	BuildTest.class,
 	PassTest.class,
-//	SatisfyKingTest.class,
-//	ShiftCouncilMainTest.class,
-//	BuyAssistantTest.class,
+	SatisfyKingTest.class,
+	ShiftCouncilMainTest.class,
+	BuyAssistantTest.class,
 })
 public class TestAll {
 
