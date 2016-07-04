@@ -658,7 +658,10 @@ public class Lobby extends Observable implements Runnable, Observer, RMILobbyRem
 			return  "Room " + ret[1] + " successfully created. You are the Admin";
 		case "\\JOINROOM":
 			Room rTmp = findRoomByClient(sender);
-			r = findRoom(ret[1]);
+			if(ret.length>1)
+				r = findRoom(ret[1]);
+			else
+				return "Wrong input format";
 			if(rTmp != null && rTmp != r)
 				return commandResponse[8];
 			if(r==null)

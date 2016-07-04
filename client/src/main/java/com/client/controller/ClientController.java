@@ -343,7 +343,8 @@ public class ClientController extends Observable implements Observer, RMIClientC
 				return;
 			String[] split = inStr.split("_");
 			if(split[0].equals("\\SETMAP")){
-				this.changeMap(split[1]);
+				if(split.length>1)
+					this.changeMap(split[1]);
 			}
 		else{
 			if(RMI)

@@ -179,6 +179,8 @@ public class ClientCLI {
 		ArrayList<CityDTO> cities = new ArrayList<CityDTO>(Arrays.asList(game.getMap().getCity()));
 		for(CityDTO c: cities){
 			ArrayList<String> bounsTypes = new ArrayList<String>();
+			BonusTokenDTO bt = c.getToken();
+			if(bt!=null)
 				for(BonusDTO b: c.getToken().getBonus())
 					if(b != null)
 						bounsTypes.add(b.getType().toString()+"("+Integer.toString(b.getQnt())+")");
@@ -405,6 +407,7 @@ public class ClientCLI {
 		this.printMap();
 		this.printCouncils();
 		this.printPlayerHand(player);
+		this.printCityBonus();
 		this.printPlacedEmporiums();
 		this.printNobilityTrack();
 		this.printKingLocation();
