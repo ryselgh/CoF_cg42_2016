@@ -154,7 +154,15 @@ public class Lobby extends Observable implements Runnable, Observer, RMILobbyRem
 				sendToClient(sender, "lobby_msg-" + "Wrong input format");
 				break;
 			}
-			else if(Integer.parseInt(ret[2])<Integer.parseInt(ret[3])){
+			int max=0, min=0;
+			try{
+				max = Integer.parseInt(ret[2]);
+				min = Integer.parseInt(ret[3]);
+			} catch(Exception e){
+				sendToClient(sender, "lobby_msg-" + "Wrong input format");
+				return 0;
+			}
+			if(max<min){
 				sendToClient(sender, "lobby_msg-" + "MaxPlayers can't be lower than MinPlayers");
 				break;
 			}
@@ -646,10 +654,21 @@ public class Lobby extends Observable implements Runnable, Observer, RMILobbyRem
 			broadcastLobbyStatus();
 			return "Map successfully changed";
 		case "\\NEWROOM":
+			r = findRoomByClient(sender);
+			if(r!=null){
+				return "Leave the room first";
+			}
 			if(ret.length!=4){
 				return "Wrong input format";
 			}
-			else if(Integer.parseInt(ret[2])<Integer.parseInt(ret[3])){
+			int max=0, min=0;
+			try{
+				max = Integer.parseInt(ret[2]);
+				min = Integer.parseInt(ret[3]);
+			} catch(Exception e){
+				return "Wrong input format";
+			}
+			if(max<min){
 				return  "MaxPlayers can't be lower than MinPlayers";
 			}
 			createRoom(ret[1], sender, Integer.parseInt(ret[2]),Integer.parseInt(ret[3]));
