@@ -47,7 +47,12 @@ public class ShiftCouncilSpeed extends Action{
 			if(c.isEquals(councilor)){
 				councilor = c;//aggiorno l'istanza per l'execute
 				game.getMap().getCouncilorsPool().remove(c);
-				return true;
+				if(game.getActualPlayer().getAvailableAssistants().size()>0)
+					return true;
+				else{
+					errors.add("You have not enought assistants");
+					return false;
+				}
 			}
 		}
 		errors.add("Invalid input councilor");

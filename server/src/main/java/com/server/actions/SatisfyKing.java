@@ -85,8 +85,8 @@ public class SatisfyKing extends Action {
 	 * check if the action is valid
 	 */
 	public boolean isValid(){
-		isInputDataValid();
 		isOperationValid();
+		isInputDataValid();
 		if(errors.size()>0)
 			return false;
 		return true;
@@ -97,7 +97,7 @@ public class SatisfyKing extends Action {
 	 * if the input is not valid adds an error
 	 */
 	private void isInputDataValid(){
-		ArrayList<PoliticsCard> tempHand = game.getActualPlayer().getHand();
+		ArrayList<PoliticsCard> tempHand = new ArrayList<PoliticsCard>(game.getActualPlayer().getHand());
 		boolean found;
 		for(PoliticsCard c: politics){
 			found = false;
@@ -108,7 +108,11 @@ public class SatisfyKing extends Action {
 					break;
 				}
 			if(found==false)
-				errors.add("Invalid input cards");//anche questa da levare quando certi che funziona
+				errors.add("Invalid input cards");
+		}
+		if(errors.size()==0){
+			game.getActualPlayer().getHand().clear();
+			game.getActualPlayer().getHand().addAll(tempHand);
 		}
 	}
 	

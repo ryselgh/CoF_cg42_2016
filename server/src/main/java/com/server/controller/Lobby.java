@@ -172,7 +172,12 @@ public class Lobby extends Observable implements Runnable, Observer, RMILobbyRem
 			break;
 		case "\\JOINROOM":
 			Room rTmp = findRoomByClient(sender);
-			r = findRoom(ret[1]);
+			if(ret.length>1)
+				r = findRoom(ret[1]);
+			else{
+				sendToClient(sender, "lobby_msg-" + "Wrong input format");
+				return 0;
+			}
 			if(rTmp != null && rTmp != r)
 				return 8;
 			if(r==null)

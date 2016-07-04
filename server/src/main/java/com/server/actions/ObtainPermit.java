@@ -58,8 +58,8 @@ public class ObtainPermit extends Action {
 	 * returns true if it's valid
 	 */
 	public boolean isValid(){
-		isInputDataValid();
 		isOperationValid();
+		isInputDataValid();
 		if(errors.size()>0)
 			return false;
 		return true;
@@ -82,6 +82,10 @@ public class ObtainPermit extends Action {
 				}
 			if(found==false)
 				errors.add("Invalid input cards");
+		}
+		if(errors.size()==0){
+			game.getActualPlayer().getHand().clear();
+			game.getActualPlayer().getHand().addAll(tempHand);
 		}
 	}
 	
