@@ -28,7 +28,7 @@ and choose what connection the server has to receive :
 `/client/src/main/java/com/client/controller/MainClient.java`
 
 First of all you have to choose an interface beetween
-> - **GUI**
+> - **GUI** (only socket)
 > - **CLI**
 
  Then choose the connection type adapting to the server one
