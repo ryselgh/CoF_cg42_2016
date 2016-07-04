@@ -19,6 +19,7 @@ Usage Info
 >In order to play, you first need to start the server, to do that run 
 `/server/src/main/java/com/server/controller/MainServer.java`
 and choose what connection the server has to receive :
+
 > - **Socket**
 > - **RMI**
 
