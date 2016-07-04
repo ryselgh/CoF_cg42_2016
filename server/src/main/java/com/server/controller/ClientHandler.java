@@ -86,9 +86,10 @@ public class ClientHandler extends Observable implements Observer, Runnable{
 		clListThread.start();
 	}
 	
-	public void observerGame(GameHandler gh){
-		//this.listener.addObserver(gh);
+	public void setGameInListener(GameHandler gh){
+		this.listener.setGameHandler(gh);
 	}
+	
 	/**
 	 * Gets the user name.
 	 *

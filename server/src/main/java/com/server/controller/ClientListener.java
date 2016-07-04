@@ -30,6 +30,7 @@ public class ClientListener extends Observable implements Runnable{
 	private Logger logger;
 	
 	private ClientHandler clientController;
+	private GameHandler gameHandler;
 	/**
 	 * Instantiates a new client listener.
 	 *
@@ -56,8 +57,16 @@ public class ClientListener extends Observable implements Runnable{
 				}
 			} 
 			catch(SocketException e){
-				setChanged();
-			    notifyObservers(new CommunicationObject("DisconnectedFromLobby",this.clientController));
+			    if(this.clientController.inGame && this.gameHandler != null){
+			    	this.addObserver(gameHandler);
+			    	setChanged();
+				    notifyObservers(new CommunicationObject("DisconnectedFromLobby",this.clientController));
+			    	this.deleteObserver(gameHandler);
+			    }
+			    else{
+					setChanged();
+				    notifyObservers(new CommunicationObject("DisconnectedFromLobby",this.clientController));
+			    }
 			    return;
 			}
 			catch (ClassNotFoundException | IOException e) {
@@ -73,6 +82,10 @@ public class ClientListener extends Observable implements Runnable{
 	public void run() {
 		startListen();
 		
+	}
+	
+	public void setGameHandler(GameHandler gh){
+		this.gameHandler = gh;
 	}
 	
 }

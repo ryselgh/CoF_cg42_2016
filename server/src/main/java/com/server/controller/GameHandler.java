@@ -116,7 +116,7 @@ public class GameHandler extends Observable implements Runnable, Observer{
 				}
 		else
 			for(ClientHandler ch : pl){
-				ch.observerGame(this);
+				ch.setGameInListener(this);
 				ch.addObserver(this);
 				ch.sendToClient("STARTGAME", gameDTO);
 			}
