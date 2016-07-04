@@ -2708,47 +2708,11 @@ public class GUIController extends Observable implements Observer{
 		}
 	}
 	
-	public void startMarket(GameDTO game){
+	public void startMarket(){
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
-				gameDTO = game;
 				flipMap();
-				String onSaleUID;
-				ArrayList<OnSaleDTO> availableOnSale = new ArrayList<OnSaleDTO>(game.getMarket().getObjectsOnSale());
-				String UIDs[] = new String[availableOnSale.size()];
-				int count =0;
-				String whatIs = "";
-				for(OnSaleDTO osDTO : availableOnSale){
-					if(osDTO instanceof AssistantOnSaleDTO){
-						whatIs = "Assistant";
-						UIDs[count]= ((AssistantOnSaleDTO) osDTO).getUID();
-						count++;
-					}
-					else if(osDTO instanceof PermitOnSaleDTO){
-						PermitOnSaleDTO posDTO = (PermitOnSaleDTO) osDTO;
-						PermitsCardDTO pcDTO = posDTO.getPermit();
-						String pcBonus = "";
-						String pcLetters = "";
-						for(BonusDTO bDTO : pcDTO.getBonuses())
-							pcBonus += bDTO.getType().toString() + "x" + bDTO.getQnt() + ", ";
-						for(int i=0;i<pcDTO.getCityLetter().length; i++){
-							pcLetters += pcDTO.getCityLetter()[i];
-							if(i!=pcDTO.getCityLetter().length-1)
-								pcLetters += ", ";
-						}
-						whatIs = "PermitCard, Bonus: " + pcBonus + " Letters: " + pcLetters;
-						UIDs[count]= ((PermitOnSaleDTO) osDTO).getUID();
-						count++;
-					}
-					else if(osDTO instanceof PoliticsOnSaleDTO){
-						PoliticsOnSaleDTO posDTO = (PoliticsOnSaleDTO) osDTO;
-						PoliticsCardDTO pcDTO = posDTO.getPoliticsCard();
-						whatIs = "PoliticCard, Color: " + pcDTO.getColor().toString();
-						UIDs[count]= ((PoliticsOnSaleDTO) osDTO).getUID();
-						count++;
-					}
-				}
 			}
 		});
 	}

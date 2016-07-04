@@ -539,16 +539,9 @@ public class InterfaceMiddleware extends Observable implements Observer{
 			return this.CLIBonusCard(game);
 	}
 
-	public ItemOnSale toSell() {
+	public synchronized ItemOnSale toSell() {
 		if (isGUI) {
-			return null;
-		} else
-			return this.CLIToSell();
-	}
-
-	public synchronized String toBuy(GameDTO game) {
-		if (isGUI) {
-			gui.startMarket(game);
+			gui.startMarket();
 			while(true){
 				try {
 					wait(5000);
@@ -556,7 +549,13 @@ public class InterfaceMiddleware extends Observable implements Observer{
 					e.printStackTrace();
 				}
 			}
+		} else
+			return this.CLIToSell();
+	}
 
+	public synchronized String toBuy(GameDTO game) {
+		if (isGUI) {
+			return null;
 		} else
 			return this.CLIToBuy(game);
 	}
