@@ -288,7 +288,11 @@ public class InterfaceMiddleware extends Observable implements Observer{
 		int bPermIndex = cli.getBuildPermit();
 		if(abortFlag)
 			return null;
-		PermitsCardDTO usedPermit = game.getActualPlayer().getPermits().get(bPermIndex);
+		ArrayList<PermitsCardDTO> availPerm = new ArrayList<PermitsCardDTO>();
+		for(PermitsCardDTO pcDTO: game.getActualPlayer().getPermits())
+			if(!pcDTO.isFaceDown())
+				availPerm.add(pcDTO);
+		PermitsCardDTO usedPermit = availPerm.get(bPermIndex);
 		if(abortFlag)
 			return null;
 		CityDTO[] avCity = new CityDTO[usedPermit.getCityLetter().length];

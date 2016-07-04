@@ -353,7 +353,7 @@ public class ClientCLI {
 				else{
 					singlePermit.addAll(Arrays.asList(pc.getCityLetter()));
 					activePermits.add(singlePermit.toString());
-//					singlePermit.removeAll(singlePermit);
+					singlePermit.clear();
 				}
 			int nobilityPos = game.getMap().getNobilityTrack().getPawns()[i].getPos();
 			tb.addRow(p.getPlayerID(), Integer.toString(p.getAvailableEmporiums().size()),

@@ -37,10 +37,18 @@ public class ChangeCards extends Action{
 	
 	public boolean isValid(){
 		if(game.getActualPlayer().getAvailableAssistants().size()>0)
-			return true;
-		errors.add("You have not enought assistants");
-		disable=true;
-		return false;
+			if(balconyIndex>=0 && balconyIndex<=2){
+				return true;
+			}else{
+				disable=true;
+				errors.add("Wrong balcony index selected.");
+				return false;
+			}
+		else{
+			errors.add("You have not enought assistants");
+			disable=true;
+			return false;
+		}
 	}
 	
 	/**
