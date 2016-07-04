@@ -259,7 +259,7 @@ public class GameHandler extends Observable implements Runnable, Observer{
 		for(ClientHandler ch : this.players){
 			if(RMI && ch.isActive())
 				RMISubscribed.getRemoteController(this.remoteControllers, ch).RMIupdateGame(gameDTO);
-			else
+			else if (!RMI)
 				ch.sendToClient("GAMEDTO", (Object) gameDTO);
 		}
 	}
