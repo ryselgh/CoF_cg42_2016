@@ -43,6 +43,8 @@ ScreenShots
 ![enter image description here](https://lh3.googleusercontent.com/-GRDivHdSE4Q/V3bFHoWjM0I/AAAAAAAAAMw/hrDidd9Udg4NZ1cqbEILq1RTxqj4fZGIwCLcB/s0/Senza+titolo.tiff "Senza titolo.tiff")
 the main window 
 
+![enter image description here](https://i.gyazo.com/a671a5d8d4389b9448b03576d96a9864.jpg)
+
 ![enter image description here](https://lh3.googleusercontent.com/-eiN_tu3s_A8/V3ovmrYYR1I/AAAAAAAAAOo/04yjA7afOYAb8LukYPspbTSoS4TDV8TQgCLcB/s0/CLI12.tiff "CLI12.tiff")![enter image description here](https://lh3.googleusercontent.com/-5D0Rhw0tSIg/V3ov1w-8SuI/AAAAAAAAAOw/CdmLjdpC2hYyRJhN-zEH9-COTQl2ce6jwCLcB/s0/CLI22.tiff "CLI22.tiff")
 
 
