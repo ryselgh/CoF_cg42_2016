@@ -191,7 +191,7 @@ public class GUIController extends Observable implements Observer{
 	@FXML
 	private Group actionsGroup, msgGroup, boardGroup, marketGroup, mapGroup;
 	@FXML
-	private Pane handPane;
+	private Pane handPane, permPane;
 	@FXML
 	private ImageView main1, main2, main3, main4, speed1, speed2, speed3, speed4;
 	@FXML
@@ -210,8 +210,11 @@ public class GUIController extends Observable implements Observer{
 	private boolean switchedMap = false;
 	private Image councToShift;
 	private ArrayList<ImageView> handArray;
+	private ArrayList<ImageView> permArray;
 	private ArrayList<ImageView> selectedCards;
 	private ArrayList<ImageView> councilors;
+	private ArrayList<ImageView> selectedPerms;
+	private ArrayList<PermitsCardDTO> realPerms;
 	private String kingPreviousLoc = null;
 	private String chosenMap;
 	private boolean isFirstCards = true;
@@ -228,7 +231,8 @@ public class GUIController extends Observable implements Observer{
 	private boolean enableShiftSpeed = false;
 	private boolean enableChangeCards = false;
 	private boolean isAskingChangeCards = false;
-
+	private boolean enableBuild;
+	
 	private String userName = null;
 	
 	private GameDTO gameDTO;
@@ -1229,7 +1233,10 @@ public class GUIController extends Observable implements Observer{
 		msgGroup.setLayoutY(0.0);
 		msgGroup.toBack();
 		handArray = new ArrayList<ImageView>();
+		permArray = new ArrayList<ImageView>();
+	    selectedPerms = new ArrayList<ImageView>();
 		selectedCards = new ArrayList<ImageView>();
+		realPerms = new ArrayList<PermitsCardDTO>();
 		main1.addEventHandler(MouseEvent.MOUSE_CLICKED, new SelectActionEvent());
 		main2.addEventHandler(MouseEvent.MOUSE_CLICKED, new SelectActionEvent());
 		main3.addEventHandler(MouseEvent.MOUSE_CLICKED, new SelectActionEvent());
@@ -2518,7 +2525,7 @@ public class GUIController extends Observable implements Observer{
 				}else{
 					garbagePlaceHolder.setOpacity(0.0);
 				}
-				
+				//Update "myself" player
 				for(PlayerDTO p: game.getPlayers())
 					if(p.getPlayerID().equals(myNickname)){
 						lblMyAssistants.setText(Integer.toString(p.getAvailableAssistants().size()));
@@ -2538,6 +2545,10 @@ public class GUIController extends Observable implements Observer{
 							for(PoliticsCardDTO pc: p.getHand())
 								draw(pc);
 							isFirstCards = false;
+						}
+						for(PermitsCardDTO perm: p.getPermits()){
+							permPane.getChildren().clear();
+							updatePermit(new ImageView(new Image(getClass().getResourceAsStream("img/board/"+parsePermitImg(perm)))), perm);
 						}
 					}
 			}
@@ -2709,6 +2720,43 @@ public class GUIController extends Observable implements Observer{
 		}
 	}
 	
+	private void updatePermit(ImageView perm, PermitsCardDTO realPerm){
+    	ImageView permit = perm;
+    	realPerms.add(realPerm);
+		permArray.add(new ImageView(permit.getImage()));
+		ImageView drawnPerm = permArray.get(permArray.size()-1);
+    	permPane.getChildren().add(drawnPerm);
+    	drawnPerm.setPreserveRatio(true);
+    	drawnPerm.setFitHeight(72);
+    	drawnPerm.setTranslateX(-60*((permArray.size()-1)%6));
+    	drawnPerm.setTranslateY(((permArray.size()-1)/6)*22);
+    	drawnPerm.addEventHandler(MouseEvent.MOUSE_CLICKED, new SelectPermitEvent());
+    }
+	
+	private void toggleBuild(){
+		if(!enableBuild){
+			enableBuild = true;
+		}else if(enableBuild){
+			enableBuild = false;
+		}
+	}
+	
+	private class SelectPermitEvent implements EventHandler<Event>{
+        @Override
+        public void handle(Event e) {
+        	ImageView perm = ((ImageView)(e.getSource()));
+        	if(enableBuild){
+        		if(!selectedPerms.contains(perm) && selectedPerms.size()<1){
+	        		highlightObject(perm,true);
+	        		selectedPerms.add(perm);
+        		}else if(selectedPerms.contains(perm)){
+        			highlightObject(perm,false);
+	        		selectedPerms.remove(perm);
+        		}
+        	}
+        }
+    }
+	
 	
 	// --------------- COMMUNICATION WITH SERVER ---------------- //
 	
@@ -2737,8 +2785,8 @@ public class GUIController extends Observable implements Observer{
 						selectedAction = 2;
 						sendAction(selectedAction);
 					}
-					if(action.equals(main4) && main4.getOpacity() == 1.0){
-						//Commands
+					if(action.equals(main4) /*&& main4.getOpacity() == 1.0*/){
+						toggleBuild();
 						disableActions();
 						selectedAction = 3;
 						sendAction(selectedAction);

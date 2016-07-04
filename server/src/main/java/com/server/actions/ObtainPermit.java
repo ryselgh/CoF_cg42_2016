@@ -70,7 +70,7 @@ public class ObtainPermit extends Action {
 	 * if it's false adds an error
 	 */
 	private void isInputDataValid(){
-		ArrayList<PoliticsCard> tempHand = game.getActualPlayer().getHand();
+		ArrayList<PoliticsCard> tempHand = new ArrayList<PoliticsCard>(game.getActualPlayer().getHand());
 		boolean found;
 		for(PoliticsCard c: politics){
 			found = false;
