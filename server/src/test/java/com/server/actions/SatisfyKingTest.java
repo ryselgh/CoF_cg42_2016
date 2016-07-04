@@ -10,6 +10,7 @@ import com.communication.decks.PoliticsCardDTO;
 import com.communication.gamelogic.PlayerDTO;
 import com.communication.values.BonusType;
 import com.communication.values.CouncilorColor;
+import com.server.model.board.Assistant;
 import com.server.model.board.Bonus;
 import com.server.model.board.City;
 import com.server.model.board.Councilor;
@@ -52,7 +53,7 @@ public class SatisfyKingTest {
 		players[1] = "2";
 		players[2] = "3";
 		
-		game= new Game(3,"Default map1.xml",null,players);
+		game= new Game(3,"Default1",null,players);
 		
 		destination = game.getMap().getCity()[2];
 		politics = new PoliticsCard[4];
@@ -86,16 +87,8 @@ public class SatisfyKingTest {
 		assertNotNull(result);
 	}
 
-	@Test(expected = NullPointerException.class)
-	public void testExecuteThrowsExceptionWhenThereAreNoCards()
-		throws Exception {
-		SatisfyKing fixture = new SatisfyKing(null, destination);
-		fixture.setGame(game);
-
-		 fixture.execute();
-
 		
-	}
+	
 
 	@Test(expected = NullPointerException.class)
 	public void testExecuteThrowsExceptionWhenThereIsNoLocation()
@@ -179,6 +172,11 @@ public class SatisfyKingTest {
 	@Test
 	public void testExecuteTheBonusReturn()
 		throws Exception {
+		Assistant ass = new Assistant();
+		Assistant ass1 = new Assistant();
+		
+		game.getActualPlayer().addAssistant(ass);
+		game.getActualPlayer().addAssistant(ass1);
 		Bonus[] bonusToken4 = game.getMap().getCity()[4].getBonusToken().getBonus();
 		Bonus[] bonusToken7 = game.getMap().getCity()[7].getBonusToken().getBonus();
 		City kc = game.getMap().getCity()[7];
@@ -226,7 +224,11 @@ public class SatisfyKingTest {
 		throws Exception {
 		Bonus[] bonusToken4 = game.getMap().getCity()[4].getBonusToken().getBonus();
 		Bonus[] bonusToken7 = game.getMap().getCity()[7].getBonusToken().getBonus();
+		Assistant ass = new Assistant();
+		Assistant ass1 = new Assistant();
 		
+		game.getActualPlayer().addAssistant(ass);
+		game.getActualPlayer().addAssistant(ass1);
 		City kc3 = game.getMap().getCity()[9];
 		
 		Build build = new Build(game.getMap().getCity()[4], new PermitsCard(b,l2));
@@ -235,9 +237,7 @@ public class SatisfyKingTest {
 		Build build1 = new Build(game.getMap().getCity()[7], new PermitsCard(b,l3));
 		build1.setGame(game);
 		build1.execute();
-		Build build2 = new Build(game.getMap().getCity()[9], new PermitsCard(b,l3));
-		build2.setGame(game);
-		build2.execute();
+		
 		
 		PoliticsCard card1= new PoliticsCard(CouncilorColor.JOLLY);
 		PoliticsCard card2= new PoliticsCard(CouncilorColor.JOLLY);

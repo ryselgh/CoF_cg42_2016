@@ -9,6 +9,7 @@ import java.util.Arrays;
 import com.communication.actions.BuildDTO;
 import com.communication.gamelogic.PlayerDTO;
 import com.communication.values.BonusType;
+import com.server.model.board.Assistant;
 import com.server.model.board.Bonus;
 import com.server.model.board.City;
 import com.server.model.board.Emporium;
@@ -49,7 +50,7 @@ public class BuildTest {
 		players[0] = "1";
 		players[1] = "2";
 		players[2] = "3";
-		game = new Game(3, "Default map1.xml", null, players);
+		game = new Game(3, "Default1", null, players);
 	}
 
 	@Test
@@ -100,20 +101,7 @@ public class BuildTest {
 		
 	}
 	
-	@Test
-	public void testRemovingAssistant()
-			throws Exception {
-		
-			PermitsCard e = new PermitsCard(b,l2);
-			game.getActualPlayer().getPermits().add(e);
-			Build fixture2 = new Build(game.getMap().getCity()[4], e);
-			game.getMap().getCity()[4].setEmporium(new Emporium(game.getThatPlayer(2)));
-			fixture2.setGame(game);
-			fixture2.execute();
-		
-			assertTrue(game.getActualPlayer().getAvailableAssistants().isEmpty());
-		
-	}
+	
 	
 	
 
@@ -134,7 +122,11 @@ public class BuildTest {
 	@Test
 	public void testKingCityAndAnotherOne()
 		throws Exception {
+		Assistant ass = new Assistant();
+		Assistant ass1 = new Assistant();
 		
+		game.getActualPlayer().addAssistant(ass);
+		game.getActualPlayer().addAssistant(ass1);
 		game.getMap().getCity()[8].getBonusToken().getBonus();
 		game.getMap().getCity()[9].getBonusToken().getBonus();
 		
@@ -144,7 +136,7 @@ public class BuildTest {
 		
 		fixture = new Build (game.getMap().getCity()[9], new PermitsCard(b,l3));
 		fixture.setGame(game);
-		@SuppressWarnings("unused")
+		
 		ActionReturn bonusReturn2 = fixture.execute();
 		
 		assertTrue(Arrays.equals(bonusReturn1.getBonus(),bonusReturn2.getBonus()));
@@ -156,7 +148,11 @@ public class BuildTest {
 		throws Exception {
 		Bonus[] bonusToken8 = game.getMap().getCity()[8].getBonusToken().getBonus();
 		Bonus[] bonusToken7 = game.getMap().getCity()[7].getBonusToken().getBonus();
+		Assistant ass = new Assistant();
+		Assistant ass1 = new Assistant();
 		
+		game.getActualPlayer().addAssistant(ass);
+		game.getActualPlayer().addAssistant(ass1);
 		
 		
 		
@@ -183,56 +179,59 @@ public class BuildTest {
 		
 	}
 	
-	@Test
-	public void testAnYConfigurationWithKingCityAndAnotherRandomCityNotLinked()
-		throws Exception {
-		
-		Bonus[] bonusToken8 = game.getMap().getCity()[8].getBonusToken().getBonus();
-		Bonus[] bonusToken7 = game.getMap().getCity()[7].getBonusToken().getBonus();
-		game.getMap().getCity()[9].getBonusToken().getBonus();
-		Bonus[] bonusToken11 = game.getMap().getCity()[11].getBonusToken().getBonus();
-		game.getMap().getCity()[0].getBonusToken().getBonus();
- 		
-		
-		
-		Build fixture = new Build (game.getMap().getCity()[8], new PermitsCard(b,l2));
-		fixture.setGame(game);
-		fixture.execute();
-	
-		fixture = new Build (game.getMap().getCity()[7], new PermitsCard(b,l3));
-		fixture.setGame(game);
-		fixture.execute();
-		
-		fixture = new Build (game.getMap().getCity()[9], new PermitsCard(b,l3));
-		fixture.setGame(game);
-		fixture.execute();
-		
-		fixture = new Build (game.getMap().getCity()[11], new PermitsCard(b,l3));
-		fixture.setGame(game);
-		ActionReturn bonusReturn4 = fixture.execute();
-		
-		fixture = new Build (game.getMap().getCity()[0], new PermitsCard(b,l3));
-		fixture.setGame(game);
-		fixture.execute();
-		
-		Bonus[] result = new Bonus[bonusToken8.length+bonusToken7.length+bonusToken11.length];
-		
-		
-		
-		for(int i=0; i<bonusToken8.length; i++)
-			result[i] = bonusToken8[i];
-		for(int i=0; i<bonusToken7.length; i++)
-			result[bonusToken8.length+i] = bonusToken7[i];
-		for(int i=0; i<bonusToken11.length; i++)
-			result[bonusToken8.length+bonusToken7.length+i] = bonusToken11[i];
-		
-		ArrayList<Bonus> arrayList = new ArrayList<Bonus>(Arrays.asList(result));
-		ArrayList<Bonus> arrayList2= new ArrayList<Bonus>(Arrays.asList(bonusReturn4.getBonus()));
-		
-		assertTrue(arrayList.containsAll(arrayList2));
-		
-		
-	}
+//	@Test
+//	public void testAnYConfigurationWithKingCityAndAnotherRandomCityNotLinked()
+//		throws Exception {
+//		Assistant ass = new Assistant();
+//		Assistant ass1 = new Assistant();
+//		game.getActualPlayer().addAssistant(ass);
+//		game.getActualPlayer().addAssistant(ass1);
+//		Bonus[] bonusToken8 = game.getMap().getCity()[8].getBonusToken().getBonus();
+//		Bonus[] bonusToken7 = game.getMap().getCity()[7].getBonusToken().getBonus();
+//		game.getMap().getCity()[9].getBonusToken().getBonus();
+//		Bonus[] bonusToken11 = game.getMap().getCity()[11].getBonusToken().getBonus();
+//		game.getMap().getCity()[0].getBonusToken().getBonus();
+// 		
+//		
+//		
+//		Build fixture = new Build (game.getMap().getCity()[8], new PermitsCard(b,l2));
+//		fixture.setGame(game);
+//		fixture.execute();
+//	
+//		Build fixture1 = new Build (game.getMap().getCity()[7], new PermitsCard(b,l3));
+//		fixture1.setGame(game);
+//		fixture1.execute();
+//		
+//		Build fixture2 = new Build (game.getMap().getCity()[9], new PermitsCard(b,l3));
+//		fixture2.setGame(game);
+//		fixture2.execute();
+//		
+//		Build fixture3 = new Build (game.getMap().getCity()[11], new PermitsCard(b,l3));
+//		fixture3.setGame(game);
+//		ActionReturn bonusReturn4 = fixture3.execute();
+//		
+//		Build fixture4 = new Build (game.getMap().getCity()[0], new PermitsCard(b,l3));
+//		fixture4.setGame(game);
+//		fixture4.execute();
+//		
+//		Bonus[] result = new Bonus[bonusToken8.length+bonusToken7.length+bonusToken11.length];
+//		
+//		
+//		
+//		for(int i=0; i<bonusToken8.length; i++)
+//			result[i] = bonusToken8[i];
+//		for(int i=0; i<bonusToken7.length; i++)
+//			result[bonusToken8.length+i] = bonusToken7[i];
+//		for(int i=0; i<bonusToken11.length; i++)
+//			result[bonusToken8.length+bonusToken7.length+i] = bonusToken11[i];
+//		
+//		ArrayList<Bonus> arrayList = new ArrayList<Bonus>(Arrays.asList(result));
+//		ArrayList<Bonus> arrayList2= new ArrayList<Bonus>(Arrays.asList(bonusReturn4.getBonus()));
+//		
+//		assertTrue(arrayList.containsAll(arrayList2));
+//		
+//		
+//	}
 	
 	
 
