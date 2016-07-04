@@ -785,14 +785,6 @@
                   </Group>
                </children>
             </Group>
-            <Group>
-               <children>
-                  <ChoiceBox fx:id="selectTest" layoutX="855.0" layoutY="11.0" prefHeight="25.0" prefWidth="178.0" />
-                  <Button fx:id="testButton" layoutX="1034.0" layoutY="11.0" mnemonicParsing="false" text="Test" />
-                  <ToggleButton fx:id="btnToggleShift" layoutX="856.0" layoutY="49.0" mnemonicParsing="false" onAction="#toggleShift" text="Toggle ShiftCouncilor" />
-                  <ToggleButton fx:id="btnToggleSatisfy" layoutX="993.0" layoutY="49.0" mnemonicParsing="false" onAction="#toggleSatisfy" text="Toggle SatisfyCouncil" />
-               </children>
-            </Group>
             <Label fx:id="lblActualPlayer" layoutX="855.0" layoutY="118.0" prefHeight="30.0" prefWidth="159.0" text="Turn of: " textFill="WHITE">
                <font>
                   <Font name="Segoe UI" size="20.0" />
@@ -900,11 +892,15 @@
             </ImageView>
          </children>
       </Pane>
-      <ImageView fx:id="myActivePerms" fitHeight="72.0" fitWidth="68.0" layoutX="1187.0" layoutY="413.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@img/board/ab-coin3card1.png" />
-         </image>
-      </ImageView>
+      <Pane fx:id="permPane" layoutX="1187.0" layoutY="413.0">
+         <children>
+            <ImageView fx:id="myActivePerms" fitHeight="72.0" fitWidth="68.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@img/board/ab-coin3card1.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
       <Group fx:id="actionsGroup">
          <children>
             <ImageView fitHeight="223.0" fitWidth="337.0" layoutX="945.0" layoutY="426.0" pickOnBounds="true" preserveRatio="true">
@@ -913,22 +909,6 @@
                </image>
             </ImageView>
             <ToggleButton fx:id="btnToggleActions" layoutX="951.0" layoutY="490.0" mnemonicParsing="false" onAction="#toggleActions" opacity="0.0" prefHeight="92.0" prefWidth="27.0" />
-            <Label fx:id="lblMyMainActions" alignment="CENTER" layoutX="1082.0" layoutY="472.0" prefHeight="24.0" prefWidth="35.0" text="2" textAlignment="CENTER" textFill="WHITE">
-               <effect>
-                  <DropShadow blurType="ONE_PASS_BOX" spread="0.85" />
-               </effect>
-               <font>
-                  <Font name="Segoe UI" size="14.0" />
-               </font>
-            </Label>
-            <Label fx:id="lblMySpeedActions" alignment="CENTER" layoutX="1240.0" layoutY="472.0" prefHeight="24.0" prefWidth="35.0" text="1" textAlignment="CENTER" textFill="WHITE">
-               <effect>
-                  <DropShadow blurType="ONE_PASS_BOX" spread="0.85" />
-               </effect>
-               <font>
-                  <Font name="Segoe UI" size="14.0" />
-               </font>
-            </Label>
             <ImageView fx:id="main4" fitHeight="49.0" fitWidth="154.0" layoutX="978.0" layoutY="600.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@img/board/action-select.png" />
@@ -949,27 +929,32 @@
                   <Image url="@img/board/action-select.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="speed2" fitHeight="49.0" fitWidth="154.0" layoutX="1124.0" layoutY="516.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="speed2" fitHeight="49.0" fitWidth="154.0" layoutX="1122.0" layoutY="516.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@img/board/action-select.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="speed4" fitHeight="49.0" fitWidth="154.0" layoutX="1124.0" layoutY="600.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="speed4" fitHeight="49.0" fitWidth="154.0" layoutX="1122.0" layoutY="600.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@img/board/action-select.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="speed1" fitHeight="49.0" fitWidth="154.0" layoutX="1124.0" layoutY="475.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="speed1" fitHeight="49.0" fitWidth="154.0" layoutX="1122.0" layoutY="475.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@img/board/action-select.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="speed3" fitHeight="49.0" fitWidth="154.0" layoutX="1124.0" layoutY="558.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="speed3" fitHeight="49.0" fitWidth="154.0" layoutX="1122.0" layoutY="558.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@img/board/action-select.png" />
                </image>
             </ImageView>
          </children>
       </Group>
+      <ImageView fx:id="passBtn" fitHeight="80.0" fitWidth="79.0" layoutX="1159.0" layoutY="254.0" opacity="0.9" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@img/board/pass-btn.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>

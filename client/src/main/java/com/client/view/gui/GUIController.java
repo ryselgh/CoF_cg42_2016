@@ -12,8 +12,13 @@ import com.client.controller.ClientController;
 import com.client.view.InterfaceMiddleware;
 import com.communication.LobbyStatus;
 import com.communication.RoomStatus;
+import com.communication.actions.BuildDTO;
+import com.communication.actions.BuyAssistantDTO;
+import com.communication.actions.ChangeCardsDTO;
 import com.communication.actions.ObtainPermitDTO;
+import com.communication.actions.SatisfyKingDTO;
 import com.communication.actions.ShiftCouncilMainDTO;
+import com.communication.actions.ShiftCouncilSpeedDTO;
 import com.communication.board.BonusDTO;
 import com.communication.board.BonusTokenDTO;
 import com.communication.board.CityDTO;
@@ -23,6 +28,10 @@ import com.communication.decks.PermitsCardDTO;
 import com.communication.decks.PoliticsCardDTO;
 import com.communication.gamelogic.GameDTO;
 import com.communication.gamelogic.PlayerDTO;
+import com.communication.market.AssistantOnSaleDTO;
+import com.communication.market.OnSaleDTO;
+import com.communication.market.PermitOnSaleDTO;
+import com.communication.market.PoliticsOnSaleDTO;
 import com.communication.values.CouncilorColor;
 
 import javafx.application.Platform;
@@ -71,9 +80,8 @@ import javafx.util.Duration;
 
 public class GUIController extends Observable implements Observer{
 
-	private FXMLLoader loader;
+	/* ------------- SelectConnection fields ------------- *///TODO
 
-	/*SelectConnection fields*///TODO
 	private ObservableList<String> connectionList = FXCollections.observableArrayList("Socket","RMI");
 
 	@FXML
@@ -82,7 +90,10 @@ public class GUIController extends Observable implements Observer{
 	private Button btnLaunch;
 	private boolean isConnecting = true;
 
-	/*MainMenu (Lobby) fields*///TODO
+
+
+
+	/* ------------- MainMenu (Lobby) fields ------------- *///TODO
 	private MediaPlayer mediaPlayer = null;
 	@FXML
 	private ImageView mainTitle;
@@ -147,27 +158,14 @@ public class GUIController extends Observable implements Observer{
 	@FXML
 	private Label lblRoomName1, lblRoomName2, lblRoomName3, lblRoomName4, lblRoomName5, lblRoomName6, lblRoomName7, lblRoomName8, lblPlMin1, lblPlMin2, lblPlMin3, lblPlMin4, lblPlMin5, lblPlMin6, lblPlMin7, lblPlMin8, lblPlMax1, lblPlMax2, lblPlMax3, lblPlMax4, lblPlMax5, lblPlMax6, lblPlMax7, lblPlMax8, lblMap1, lblMap2, lblMap3, lblMap4, lblMap5, lblMap6, lblMap7, lblMap8, lblPlayers1, lblPlayers2, lblPlayers3, lblPlayers4, lblPlayers5, lblPlayers6, lblPlayers7, lblPlayers8, lblStatus1, lblStatus2, lblStatus3, lblStatus4, lblStatus5, lblStatus6, lblStatus7, lblStatus8, lblErrorsLobby;
 	private boolean isInLobby = false;
-	private boolean isInRoom = false;
 	private boolean isInGame = false;
 	private String lobbyCommand;
 	private String myNickname;
 	private String roomAdmin;
-	
-	
-	
-	/*GameWindow fields*///TODO
 
-	//TEST AREA
-	@FXML
-	private Button testButton, btnSetMapTest, btnPlaceEmporium, btnPrint;
-	@FXML
-	private TextField txtCitySlot, txtHexColor, txtMsg;
-	@FXML
-	private ChoiceBox<String> selectTest;
-	private ObservableList<String> testList = FXCollections.observableArrayList("setupTokens()","draw(1)","draw(5)","flipDownCardAnimation()","flipUpCardAnimation()","flipMap()","moveKing(Arkon)","moveKing(Castrum)","moveKing(Hellar)");
-	@FXML
-	private ToggleButton btnToggleShift, btnToggleSatisfy;
-	//TEST AREA
+
+
+	/* ------------- GameWindow fields ------------- *///TODO
 
 
 	@FXML
@@ -198,9 +196,11 @@ public class GUIController extends Observable implements Observer{
 	@FXML
 	private Group actionsGroup, msgGroup, boardGroup, marketGroup, mapGroup;
 	@FXML
-	private Pane handPane;
+	private Pane handPane, permPane;
 	@FXML
 	private ImageView main1, main2, main3, main4, speed1, speed2, speed3, speed4;
+	@FXML
+	private ImageView passBtn;
 	@FXML
 	private Rectangle trickActions;
 	@FXML
@@ -213,64 +213,65 @@ public class GUIController extends Observable implements Observer{
 	private boolean enableSatisfy = false;
 	private boolean isAskingForShift = false;
 	private boolean isAskingForSatisfy = false;
-	private boolean deckIsEmpty = false;
-	private boolean handIsEmpty = true;
-	private boolean garbageIsEmpty = true;
 	private boolean expanded = false;
 	private boolean switchedMap = false;
 	private Image councToShift;
 	private ArrayList<ImageView> handArray;
+	private ArrayList<ImageView> permArray;
 	private ArrayList<ImageView> selectedCards;
 	private ArrayList<ImageView> councilors;
+	private ArrayList<ImageView> selectedPerms;
+	private ArrayList<PermitsCardDTO> realPerms;
 	private String kingPreviousLoc = null;
 	private String chosenMap;
 	private boolean isFirstCards = true;
 	private String[] tokens = new String[15];
 	private int kingCityIndex = 9;
-	private boolean isAskingAction = false;
 	private int regIndex;
 	private int slotIndex;
 	private int selectedAction = -1;
+	private boolean isAskingForSatisfyKing = false;
+	private boolean enableSatisfyKing = false;
+	private ImageView[] tokenArray = new ImageView[15];
+	private int selectedCity;
+	private boolean isAskingForShiftSpeed = false;
+	private boolean enableShiftSpeed = false;
+	private boolean enableChangeCards = false;
+	private boolean isAskingChangeCards = false;
+	private boolean enableBuild;
 
-	//istanza del ClientController, a cui passa tipoConnessione e userName
-	private ClientController clientController;
+	private String userName = null;
 
-	//istanza dell'username da gettare
-	private String userName=null;
-	
 	private GameDTO gameDTO;
-	
+
 	private ObtainPermitDTO obtainPermAction;
-	
+
+	private SatisfyKingDTO satisfyKingAction;
+
 	private ShiftCouncilMainDTO shiftCouncMainAction;
 
+	private ShiftCouncilSpeedDTO shiftCouncSpeedAction;
 
-	public void setClientController(ClientController c){
-		this.clientController=c;
-	}
+	private ChangeCardsDTO changeCardsAction;
 
-	public void updateLoader(FXMLLoader loader){
-		this.loader = loader;
-	}
+	private BuildDTO buildAction;
+
+	private PermitsCardDTO selectedRealPerm;
 
 
-	/*SelectConnection methods*///TODO
+
+	// -------------------------- METHODS -------------------------- //
+
+
+
+
+	/* ------------- SelectConnection methods ------------- *///TODO
 
 	public void initializeSC(){
 		connectionChoice.setItems(connectionList);
 		connectionChoice.setValue("Socket");
 	}
 
-	private void sendConnection(){
-		Platform.runLater(new Runnable() {
-
-			@Override
-			public void run() {
-				// TODO Auto-generated method stub
-
-			}
-		});
-	}
 	public void launchMM(ActionEvent e) throws Exception{
 		if(connectionChoice.getValue().toString().equals("Socket")){
 			this.setChanged();
@@ -305,7 +306,8 @@ public class GUIController extends Observable implements Observer{
 
 
 
-	/*MainMenu methods*///TODO
+
+	/* ------------- MainMenu methods ------------- *///TODO
 
 	public void initializeMM(){
 		Label txtSubmit = new Label("Submit");
@@ -374,11 +376,11 @@ public class GUIController extends Observable implements Observer{
 
 		playMainSoundtrack();
 		animateNickname();
-		
+
 		roomMask.toBack();
 		newFormGroup.toBack();
 		roomTxtGroup.toBack();
-		
+
 		groupRoom1.addEventHandler(MouseEvent.MOUSE_CLICKED, new SelectRoomEvent());
 		groupRoom2.addEventHandler(MouseEvent.MOUSE_CLICKED, new SelectRoomEvent());
 		groupRoom3.addEventHandler(MouseEvent.MOUSE_CLICKED, new SelectRoomEvent());
@@ -600,10 +602,12 @@ public class GUIController extends Observable implements Observer{
 		this.setChanged();
 		this.notifyObservers("LOBBYCMD_"+lobbyCommand);
 		lobbyCommand = "";
-		try {
-			launchGW();
-		} catch (Exception e) {
-			e.printStackTrace();
+		if(Integer.parseInt(lblClients.getText().substring(0, 1))>=Integer.parseInt(lblMinPl.getText())){
+			try {
+				launchGW();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -725,7 +729,7 @@ public class GUIController extends Observable implements Observer{
 	}
 
 	private void animateNewRoomForm() {
-		
+
 		newFormGroup.toFront();
 		lblErrorsLobby.toFront();
 
@@ -762,7 +766,7 @@ public class GUIController extends Observable implements Observer{
 	}
 
 	private void invertAnimateNewRoomForm() {
-		
+
 		newFormGroup.toBack();
 
 		FadeTransition ft = new FadeTransition(Duration.millis(1000), formNewRoom);
@@ -798,7 +802,7 @@ public class GUIController extends Observable implements Observer{
 	}
 
 	public void animateRoom(){
-		
+
 		roomMask.toFront();
 		lobbyGroup.toFront();
 		btnCancelNewRoom.toFront();
@@ -861,12 +865,12 @@ public class GUIController extends Observable implements Observer{
 		ft8.setFromValue(0.0);
 		ft8.setToValue(1.0);
 		ft8.play();
-		
+
 		FadeTransition ft9 = new FadeTransition(Duration.millis(1000), btnSetTimer);
 		ft9.setFromValue(0.0);
 		ft9.setToValue(1.0);
 		ft9.play();
-		
+
 		FadeTransition ft10 = new FadeTransition(Duration.millis(1000), btnSetMap);
 		ft10.setFromValue(0.0);
 		ft10.setToValue(1.0);
@@ -875,7 +879,7 @@ public class GUIController extends Observable implements Observer{
 
 
 	public void invertAnimateRoom(){
-		
+
 		roomMask.toBack();
 		roomTxtGroup.toBack();
 		lblTimer.setDisable(true);
@@ -886,7 +890,7 @@ public class GUIController extends Observable implements Observer{
 		btnSetTimer.setDisable(true);
 		btnSetMap.toBack();
 		btnSetTimer.toBack();
-		
+
 		FadeTransition returnLobby = new FadeTransition(Duration.millis(1000), lobbyGroup);
 		returnLobby.setFromValue(0.0);
 		returnLobby.setToValue(1.0);
@@ -931,12 +935,12 @@ public class GUIController extends Observable implements Observer{
 		ft8.setFromValue(1.0);
 		ft8.setToValue(0.0);
 		ft8.play();
-		
+
 		FadeTransition ft9 = new FadeTransition(Duration.millis(1000), btnSetTimer);
 		ft9.setFromValue(1.0);
 		ft9.setToValue(0.0);
 		ft9.play();
-		
+
 		FadeTransition ft10 = new FadeTransition(Duration.millis(1000), btnSetMap);
 		ft10.setFromValue(1.0);
 		ft10.setToValue(0.0);
@@ -952,30 +956,30 @@ public class GUIController extends Observable implements Observer{
 				txtPlayersInLobby.setText("");
 				for(int i = rooms.size();i<=8;i++)
 					switch(i){
-						case 1:
-							groupRoom1.setOpacity(0.0);
-							break;
-						case 2:
-							groupRoom2.setOpacity(0.0);
-							break;
-						case 3:
-							groupRoom3.setOpacity(0.0);
-							break;
-						case 4:
-							groupRoom4.setOpacity(0.0);
-							break;
-						case 5:
-							groupRoom5.setOpacity(0.0);
-							break;
-						case 6:
-							groupRoom6.setOpacity(0.0);
-							break;
-						case 7:
-							groupRoom7.setOpacity(0.0);
-							break;
-						case 8:
-							groupRoom8.setOpacity(0.0);
-							break;
+					case 1:
+						groupRoom1.setOpacity(0.0);
+						break;
+					case 2:
+						groupRoom2.setOpacity(0.0);
+						break;
+					case 3:
+						groupRoom3.setOpacity(0.0);
+						break;
+					case 4:
+						groupRoom4.setOpacity(0.0);
+						break;
+					case 5:
+						groupRoom5.setOpacity(0.0);
+						break;
+					case 6:
+						groupRoom6.setOpacity(0.0);
+						break;
+					case 7:
+						groupRoom7.setOpacity(0.0);
+						break;
+					case 8:
+						groupRoom8.setOpacity(0.0);
+						break;
 					}
 				for(String c: freeClients){
 					txtPlayersInLobby.setText(txtPlayersInLobby.getText()+c+"\n");
@@ -1085,7 +1089,7 @@ public class GUIController extends Observable implements Observer{
 				updateActualRoom(rooms);
 			}
 		});
-		
+
 	}
 
 	public void updateActualRoom(ArrayList<RoomStatus> rooms){
@@ -1103,8 +1107,8 @@ public class GUIController extends Observable implements Observer{
 						btnStartGame.setDisable(true);
 				}
 		}
-			
-		
+
+
 		if (myRoom!=null) {
 			lblRoomName.setText(myRoom.getRoomName());
 			lblMap.setValue(myRoom.getMapName());
@@ -1117,7 +1121,7 @@ public class GUIController extends Observable implements Observer{
 				lblTimer.setValue(Integer.toString(myRoom.getTimerDelay()) + " sec");
 		}
 	}
-	
+
 	private class SelectRoomEvent implements EventHandler<Event>{
 		@Override
 		public void handle(Event e) {
@@ -1140,44 +1144,46 @@ public class GUIController extends Observable implements Observer{
 			}
 		}
 	}
-	
+
 	public void setMap(){
 		lobbyCommand = "\\SETMAP_"+lblMap.getValue();
 		this.setChanged();
 		this.notifyObservers("LOBBYCMD_"+lobbyCommand);
 		lobbyCommand = "";
 	}
-	
+
 	public void setTimer(){
 		lobbyCommand = "\\SETTIMEOUT_";
 		String sec = lblTimer.getValue();
 		switch(sec){
-			case "Disabled":
-				lobbyCommand+="0";
-				break;
-			case "30 sec":
-				lobbyCommand+="30";
-				break;
-			case "1 min":
-				lobbyCommand+="60";
-				break;
-			case "2 min":
-				lobbyCommand+="120";
-				break;
-			case "5 min":
-				lobbyCommand+="300";
-				break;
-			case "10 min":
-				lobbyCommand+="600";
-				break;
+		case "Disabled":
+			lobbyCommand+="0";
+			break;
+		case "30 sec":
+			lobbyCommand+="30";
+			break;
+		case "1 min":
+			lobbyCommand+="60";
+			break;
+		case "2 min":
+			lobbyCommand+="120";
+			break;
+		case "5 min":
+			lobbyCommand+="300";
+			break;
+		case "10 min":
+			lobbyCommand+="600";
+			break;
 		}
 		this.setChanged();
 		this.notifyObservers("LOBBYCMD_"+lobbyCommand);
 		lobbyCommand = "";
 	}
-	
 
-	/*GameWindow methods*///TODO
+
+
+
+	/* ------------- GameWindow methods ------------- *///TODO
 
 	public void initializeGW(){
 		try {
@@ -1216,6 +1222,12 @@ public class GUIController extends Observable implements Observer{
 				Field field = this.getClass().getDeclaredField(start+region+num);
 				councilors.add((ImageView) field.get(this));
 			}
+			for(int k=0; k<15; k++){
+				String start = "tok";
+				String letter = Character.toString((char)('A'+k));
+				Field field = this.getClass().getDeclaredField(start+letter);
+				tokenArray[k] = (ImageView) field.get(this);
+			}
 		} catch (NoSuchFieldException e) {
 			e.printStackTrace();
 		} catch (SecurityException e) {
@@ -1225,21 +1237,17 @@ public class GUIController extends Observable implements Observer{
 		} catch (IllegalAccessException e) {
 			e.printStackTrace();
 		}
-		//TEST AREA
-		selectTest.setItems(testList);
-		String[] councImgPaths = {"img/board/counc-black.png","img/board/counc-orange.png","img/board/counc-blue.png","img/board/counc-pink.png","img/board/counc-purple.png","img/board/counc-white.png"};
-		for(ImageView c: councilors){
-			int rnd = new Random().nextInt(councImgPaths.length);
-			c.setImage(new Image(getClass().getResourceAsStream(councImgPaths[rnd])));
-		}
-		//TEST AREA
 
 		actionsGroup.setTranslateX(306);
 		trickActions.setTranslateX(-306);
 		msgGroup.setLayoutX(0.0);
 		msgGroup.setLayoutY(0.0);
+		msgGroup.toBack();
 		handArray = new ArrayList<ImageView>();
+		permArray = new ArrayList<ImageView>();
+		selectedPerms = new ArrayList<ImageView>();
 		selectedCards = new ArrayList<ImageView>();
+		realPerms = new ArrayList<PermitsCardDTO>();
 		main1.addEventHandler(MouseEvent.MOUSE_CLICKED, new SelectActionEvent());
 		main2.addEventHandler(MouseEvent.MOUSE_CLICKED, new SelectActionEvent());
 		main3.addEventHandler(MouseEvent.MOUSE_CLICKED, new SelectActionEvent());
@@ -1248,6 +1256,7 @@ public class GUIController extends Observable implements Observer{
 		speed2.addEventHandler(MouseEvent.MOUSE_CLICKED, new SelectActionEvent());
 		speed3.addEventHandler(MouseEvent.MOUSE_CLICKED, new SelectActionEvent());
 		speed4.addEventHandler(MouseEvent.MOUSE_CLICKED, new SelectActionEvent());
+		passBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, new SelectActionEvent());
 		seaBalcony.addEventHandler(MouseEvent.MOUSE_ENTERED_TARGET, new SetBalconyEvent());
 		hillBalcony.addEventHandler(MouseEvent.MOUSE_ENTERED_TARGET, new SetBalconyEvent());
 		mountainBalcony.addEventHandler(MouseEvent.MOUSE_ENTERED_TARGET, new SetBalconyEvent());
@@ -1258,7 +1267,13 @@ public class GUIController extends Observable implements Observer{
 		hillSlot2.addEventHandler(MouseEvent.MOUSE_CLICKED, new SetSlotEvent());
 		mountainSlot1.addEventHandler(MouseEvent.MOUSE_CLICKED, new SetSlotEvent());
 		mountainSlot2.addEventHandler(MouseEvent.MOUSE_CLICKED, new SetSlotEvent());
-		
+		seaDeck.addEventHandler(MouseEvent.MOUSE_CLICKED, new ChangeCardsEvent());
+		hillDeck.addEventHandler(MouseEvent.MOUSE_CLICKED, new ChangeCardsEvent());
+		mountainDeck.addEventHandler(MouseEvent.MOUSE_CLICKED, new ChangeCardsEvent());
+		for(ImageView tok: tokenArray){
+			tok.addEventHandler(MouseEvent.MOUSE_CLICKED, new SelectCityEvent());
+		}
+
 	}
 
 	public void printMsg(String message){
@@ -1268,6 +1283,7 @@ public class GUIController extends Observable implements Observer{
 			Platform.runLater(new Runnable() {
 				@Override
 				public void run() {
+					msgGroup.toFront();
 					int msgSize = ((1000+msg.length())/4)/(msg.length()+3) + 10;
 					ScaleTransition st = new ScaleTransition(Duration.millis(1000), msgGroup);
 					msgGroup.setOpacity(1.0);
@@ -1279,7 +1295,6 @@ public class GUIController extends Observable implements Observer{
 					st.setToY(1.0);
 					st.play();
 					st.setOnFinished(new EventHandler<ActionEvent>() {
-			
 						@Override
 						public void handle(ActionEvent event) {
 							try {
@@ -1290,6 +1305,12 @@ public class GUIController extends Observable implements Observer{
 							FadeTransition ft = new FadeTransition(Duration.millis(500), msgGroup);
 							ft.setToValue(0.0);
 							ft.play();
+							ft.setOnFinished(new EventHandler<ActionEvent>() {
+								@Override
+								public void handle(ActionEvent event) {
+									msgGroup.toBack();
+								}
+							});
 						}
 					});
 				}
@@ -1519,6 +1540,13 @@ public class GUIController extends Observable implements Observer{
 			enableShift = false;
 	}
 
+	public void toggleShiftSpeed(){
+		if(!enableShiftSpeed)
+			enableShiftSpeed = true;
+		else
+			enableShiftSpeed = false;
+	}
+
 	public void toggleSatisfy(){
 		if(!enableSatisfy){
 			enableSatisfy = true;
@@ -1529,29 +1557,49 @@ public class GUIController extends Observable implements Observer{
 		}
 	}
 
+	public void toggleSatisfyKing(){
+		if(!enableSatisfyKing){
+			enableSatisfyKing = true;
+			expandHand();
+		}else{
+			enableSatisfyKing = false;
+			retractHand();
+		}
+	}
+
 	private void dragCouncilor(ImageView councilor){
 		if(enableShift){
 			councilor.getScene().setCursor(new ImageCursor(councilor.getImage(),32,32));
 			balconyHighlight(true);
 			isAskingForShift = true;
 		}
+		if(enableShiftSpeed){
+			councilor.getScene().setCursor(new ImageCursor(councilor.getImage(),32,32));
+			balconyHighlight(true);
+			isAskingForShiftSpeed = true;
+		}
 	}
 
 	private void dropCouncilor(ImageView councilor){
 		councilor.getScene().setCursor(new ImageCursor(new Image(getClass().getResourceAsStream("img/cof-cursor.png"))));
 		balconyHighlight(false);
-		isAskingForShift = true;
+		if(enableShift)
+			isAskingForShift = true;
+		else if(enableShiftSpeed)
+			isAskingForShiftSpeed = true;
 		councToShift = councilor.getImage();
 		map.setOnMouseEntered(new EventHandler<Event>() {
 			@Override
 			public void handle(Event event) {
 				isAskingForShift = false;
+				isAskingForShiftSpeed = false;
 			}
 		});
 		rightPane.setOnMouseEntered(new EventHandler<Event>() {
 			@Override
 			public void handle(Event event) {
 				isAskingForShift = false;
+				isAskingForShiftSpeed = false;
 			}
 		});
 	}
@@ -1560,7 +1608,13 @@ public class GUIController extends Observable implements Observer{
 		dragCouncilor(councToDragBlack);
 		CouncilorDTO counc = new CouncilorDTO();
 		counc.setColor(CouncilorColor.BLACK);
-		shiftCouncMainAction.setCouncilor(counc);
+		if(enableShift){
+			shiftCouncMainAction = new ShiftCouncilMainDTO();
+			shiftCouncMainAction.setCouncilor(counc);
+		}else if(enableShiftSpeed){
+			shiftCouncSpeedAction = new ShiftCouncilSpeedDTO();
+			shiftCouncSpeedAction.setCouncilor(counc);
+		}
 	}
 
 	public void dragBlackDone(){
@@ -1569,6 +1623,15 @@ public class GUIController extends Observable implements Observer{
 
 	public void dragBlue(){
 		dragCouncilor(councToDragBlue);
+		CouncilorDTO counc = new CouncilorDTO();
+		counc.setColor(CouncilorColor.BLUESKY);
+		if(enableShift){
+			shiftCouncMainAction = new ShiftCouncilMainDTO();
+			shiftCouncMainAction.setCouncilor(counc);
+		}else if(enableShiftSpeed){
+			shiftCouncSpeedAction = new ShiftCouncilSpeedDTO();
+			shiftCouncSpeedAction.setCouncilor(counc);
+		}
 	}
 
 	public void dragBlueDone(){
@@ -1577,6 +1640,15 @@ public class GUIController extends Observable implements Observer{
 
 	public void dragOrange(){
 		dragCouncilor(councToDragOrange);
+		CouncilorDTO counc = new CouncilorDTO();
+		counc.setColor(CouncilorColor.ORANGE);
+		if(enableShift){
+			shiftCouncMainAction = new ShiftCouncilMainDTO();
+			shiftCouncMainAction.setCouncilor(counc);
+		}else if(enableShiftSpeed){
+			shiftCouncSpeedAction = new ShiftCouncilSpeedDTO();
+			shiftCouncSpeedAction.setCouncilor(counc);
+		}
 	}
 
 	public void dragOrangeDone(){
@@ -1585,6 +1657,15 @@ public class GUIController extends Observable implements Observer{
 
 	public void dragPink(){
 		dragCouncilor(councToDragPink);
+		CouncilorDTO counc = new CouncilorDTO();
+		counc.setColor(CouncilorColor.PINK);
+		if(enableShift){
+			shiftCouncMainAction = new ShiftCouncilMainDTO();
+			shiftCouncMainAction.setCouncilor(counc);
+		}else if(enableShiftSpeed){
+			shiftCouncSpeedAction = new ShiftCouncilSpeedDTO();
+			shiftCouncSpeedAction.setCouncilor(counc);
+		}
 	}
 
 	public void dragPinkDone(){
@@ -1593,6 +1674,15 @@ public class GUIController extends Observable implements Observer{
 
 	public void dragPurple(){
 		dragCouncilor(councToDragPurple);
+		CouncilorDTO counc = new CouncilorDTO();
+		counc.setColor(CouncilorColor.PURPLE);
+		if(enableShift){
+			shiftCouncMainAction = new ShiftCouncilMainDTO();
+			shiftCouncMainAction.setCouncilor(counc);
+		}else if(enableShiftSpeed){
+			shiftCouncSpeedAction = new ShiftCouncilSpeedDTO();
+			shiftCouncSpeedAction.setCouncilor(counc);
+		}
 	}
 
 	public void dragPurpleDone(){
@@ -1601,6 +1691,15 @@ public class GUIController extends Observable implements Observer{
 
 	public void dragWhite(){
 		dragCouncilor(councToDragWhite);
+		CouncilorDTO counc = new CouncilorDTO();
+		counc.setColor(CouncilorColor.WHITE);
+		if(enableShift){
+			shiftCouncMainAction = new ShiftCouncilMainDTO();
+			shiftCouncMainAction.setCouncilor(counc);
+		}else if(enableShiftSpeed){
+			shiftCouncSpeedAction = new ShiftCouncilSpeedDTO();
+			shiftCouncSpeedAction.setCouncilor(counc);
+		}
 	}
 
 	public void dragWhiteDone(){
@@ -1623,14 +1722,16 @@ public class GUIController extends Observable implements Observer{
 
 	public void seaBalconyActionRequest(){
 		if(isAskingForShift){
-			councSea4.setImage(councSea3.getImage());
-			councSea3.setImage(councSea2.getImage());
-			councSea2.setImage(councSea1.getImage());
-			councSea1.setImage(councToShift);
 			shiftCouncMainAction.setBalconyIndex(0);
-			this.setChanged();
-			this.notifyObservers(shiftCouncMainAction);
+			sendAction(shiftCouncMainAction);
 			isAskingForShift = false;
+			toggleShift();
+		}
+		if(isAskingForShiftSpeed){
+			shiftCouncSpeedAction.setBalconyIndex(0);
+			sendAction(shiftCouncSpeedAction);
+			isAskingForShiftSpeed = false;
+			toggleShiftSpeed();
 		}
 		if(isAskingForSatisfy){
 			obtainPermAction = new ObtainPermitDTO();
@@ -1644,56 +1745,100 @@ public class GUIController extends Observable implements Observer{
 			for(ImageView card: selectedCards){
 				toGarbage(card);
 			}
-			printMsg("Ok!");
 		}
 	}
 
 	public void hillBalconyActionRequest(){
 		if(isAskingForShift){
-			councHill4.setImage(councHill3.getImage());
-			councHill3.setImage(councHill2.getImage());
-			councHill2.setImage(councHill1.getImage());
-			councHill1.setImage(councToShift);
+			shiftCouncMainAction.setBalconyIndex(1);
+			sendAction(shiftCouncMainAction);
 			isAskingForShift = false;
+			toggleShift();
+		}
+		if(isAskingForShiftSpeed){
+			shiftCouncSpeedAction.setBalconyIndex(1);
+			sendAction(shiftCouncSpeedAction);
+			isAskingForShiftSpeed = false;
+			toggleShiftSpeed();
 		}
 		if(isAskingForSatisfy){
+			obtainPermAction = new ObtainPermitDTO();
+			ArrayList<PoliticsCardDTO> chosenPolitics = new ArrayList<PoliticsCardDTO>();
+			for(ImageView card: selectedCards)
+				chosenPolitics.add(gameDTO.getActualPlayer().getHand().get(handArray.indexOf(card)));
+			PoliticsCardDTO[] polArray = new PoliticsCardDTO[chosenPolitics.size()];
+			chosenPolitics.toArray(polArray);
+			obtainPermAction.setPolitics(polArray);
+			obtainPermAction.setRegionIndex(regIndex);
 			for(ImageView card: selectedCards){
 				toGarbage(card);
 			}
-			printMsg("Ok!");
 		}
 	}
 
 	public void mountainBalconyActionRequest(){
 		if(isAskingForShift){
-			councMount4.setImage(councMount3.getImage());
-			councMount3.setImage(councMount2.getImage());
-			councMount2.setImage(councMount1.getImage());
-			councMount1.setImage(councToShift);
+			shiftCouncMainAction.setBalconyIndex(2);
+			sendAction(shiftCouncMainAction);
 			isAskingForShift = false;
+			toggleShift();
+		}
+		if(isAskingForShiftSpeed){
+			shiftCouncSpeedAction.setBalconyIndex(2);
+			sendAction(shiftCouncSpeedAction);
+			isAskingForShiftSpeed = false;
+			toggleShiftSpeed();
 		}
 		if(isAskingForSatisfy){
+			obtainPermAction = new ObtainPermitDTO();
+			ArrayList<PoliticsCardDTO> chosenPolitics = new ArrayList<PoliticsCardDTO>();
+			for(ImageView card: selectedCards)
+				chosenPolitics.add(gameDTO.getActualPlayer().getHand().get(handArray.indexOf(card)));
+			PoliticsCardDTO[] polArray = new PoliticsCardDTO[chosenPolitics.size()];
+			chosenPolitics.toArray(polArray);
+			obtainPermAction.setPolitics(polArray);
+			obtainPermAction.setRegionIndex(regIndex);
 			for(ImageView card: selectedCards){
 				toGarbage(card);
 			}
-			printMsg("Ok!");
 		}
 	}
 
 	public void kingBalconyActionRequest(){
-		if(isAskingForShift){
-			councKing4.setImage(councKing3.getImage());
-			councKing3.setImage(councKing2.getImage());
-			councKing2.setImage(councKing1.getImage());
-			councKing1.setImage(councToShift);
-			isAskingForShift = false;
-		}
-		if(isAskingForSatisfy){
-			for(ImageView card: selectedCards){
-				toGarbage(card);
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				if(isAskingForShift){
+					shiftCouncMainAction.setBalconyIndex(3);
+					sendAction(shiftCouncMainAction);
+					isAskingForShift = false;
+					toggleShift();
+				}
+				if(isAskingForShiftSpeed){
+					shiftCouncSpeedAction.setBalconyIndex(3);
+					sendAction(shiftCouncSpeedAction);
+					isAskingForShiftSpeed = false;
+					toggleShiftSpeed();
+				}
+				if(isAskingForSatisfyKing){
+					satisfyKingAction = new SatisfyKingDTO();
+					ArrayList<PoliticsCardDTO> chosenPolitics = new ArrayList<PoliticsCardDTO>();
+					for(ImageView card: selectedCards)
+						chosenPolitics.add(gameDTO.getActualPlayer().getHand().get(handArray.indexOf(card)));
+					PoliticsCardDTO[] polArray = new PoliticsCardDTO[chosenPolitics.size()];
+					chosenPolitics.toArray(polArray);
+					satisfyKingAction = new SatisfyKingDTO();
+					satisfyKingAction.setPolitics(polArray);
+					for(ImageView card: selectedCards){
+						toGarbage(card);
+					}
+					printMsg("Where do you\nwant to move\nthe king?");
+					for(ImageView tok: tokenArray){
+						highlightObject(tok, true);
+					}
+				}
 			}
-			printMsg("Ok!");
-		}
+		});
 	}
 
 	private void draw(PoliticsCardDTO card){
@@ -1764,7 +1909,7 @@ public class GUIController extends Observable implements Observer{
 	}
 
 	public void retractHand(){
-		if(expanded && !enableSatisfy){
+		if(expanded && !enableSatisfy && !enableSatisfyKing){
 			for(int i=1; i<handArray.size();i++){
 				ImageView card = handArray.get(i);
 				TranslateTransition tt = new TranslateTransition(Duration.millis(500),card);
@@ -1785,7 +1930,7 @@ public class GUIController extends Observable implements Observer{
 		@Override
 		public void handle(Event e) {
 			ImageView card = ((ImageView)(e.getSource()));
-			if(enableSatisfy){
+			if(enableSatisfy || enableSatisfyKing){
 				if(!selectedCards.contains(card) && selectedCards.size()<4){
 					highlightObject(card,true);
 					card.setTranslateY(-10);
@@ -1800,33 +1945,26 @@ public class GUIController extends Observable implements Observer{
 	}
 
 	public void startDrag(){
-		if(enableSatisfy && selectedCards.size()>0)
+		if((enableSatisfy || enableSatisfyKing) && selectedCards.size()>0)
 			dragCards(selectedCards);
 	}
 
 	private void dragCards(ArrayList<ImageView> selectedCards){
 		handPane.getScene().setCursor(new ImageCursor(new Image(getClass().getResourceAsStream("img/drag-cards-cursor.png"))));
-		balconyHighlight(true);
-		isAskingForSatisfy = true;
+		if(enableSatisfy){
+			balconyHighlight(true);
+			highlightObject(kingBalcony, false);
+			isAskingForSatisfy = true;
+		}else if(enableSatisfyKing){
+			highlightObject(kingBalcony, true);
+			isAskingForSatisfyKing = true;
+		}
 	}
 
 	public void dropCards(){
-		if(enableSatisfy){
+		if(enableSatisfy || enableSatisfyKing){
 			handPane.getScene().setCursor(new ImageCursor(new Image(getClass().getResourceAsStream("img/cof-cursor.png"))));
 			balconyHighlight(false);
-			isAskingForSatisfy = true;
-//			map.setOnMouseEntered(new EventHandler<Event>() {
-//				@Override
-//				public void handle(Event event) {
-//					isAskingForSatisfy = false;
-//				}
-//			});
-//			rightPane.setOnMouseEntered(new EventHandler<Event>() {
-//				@Override
-//				public void handle(Event event) {
-//					isAskingForSatisfy = false;
-//				}
-//			});
 		}
 	}
 
@@ -1898,10 +2036,6 @@ public class GUIController extends Observable implements Observer{
 			rt.play();
 			switchedMap = true;
 		}
-	}
-
-	private void startMarket(){
-
 	}
 
 	private void moveKing(String cityName) {
@@ -2018,7 +2152,7 @@ public class GUIController extends Observable implements Observer{
 			}
 		});
 	}
-	
+
 	public void updateGame(GameDTO game){
 		Platform.runLater(new Runnable() {
 			@Override
@@ -2054,66 +2188,66 @@ public class GUIController extends Observable implements Observer{
 					i++;
 					String councCol = c.getColor().toString();
 					switch(councCol){
-						case "BLACK":
-							if(i==4)
-								councSea1.setImage(new Image(getClass().getResourceAsStream("img/board/counc-black.png")));
-							if(i==3)
-								councSea2.setImage(new Image(getClass().getResourceAsStream("img/board/counc-black.png")));
-							if(i==2)
-								councSea3.setImage(new Image(getClass().getResourceAsStream("img/board/counc-black.png")));
-							if(i==1)
-								councSea4.setImage(new Image(getClass().getResourceAsStream("img/board/counc-black.png")));
-							break;
-						case "PURPLE":
-							if(i==4)
-								councSea1.setImage(new Image(getClass().getResourceAsStream("img/board/counc-purple.png")));
-							if(i==3)
-								councSea2.setImage(new Image(getClass().getResourceAsStream("img/board/counc-purple.png")));
-							if(i==2)
-								councSea3.setImage(new Image(getClass().getResourceAsStream("img/board/counc-purple.png")));
-							if(i==1)
-								councSea4.setImage(new Image(getClass().getResourceAsStream("img/board/counc-purple.png")));
-							break;
-						case "WHITE":
-							if(i==4)
-								councSea1.setImage(new Image(getClass().getResourceAsStream("img/board/counc-white.png")));
-							if(i==3)
-								councSea2.setImage(new Image(getClass().getResourceAsStream("img/board/counc-white.png")));
-							if(i==2)
-								councSea3.setImage(new Image(getClass().getResourceAsStream("img/board/counc-white.png")));
-							if(i==1)
-								councSea4.setImage(new Image(getClass().getResourceAsStream("img/board/counc-white.png")));
-							break;
-						case "BLUESKY":
-							if(i==4)
-								councSea1.setImage(new Image(getClass().getResourceAsStream("img/board/counc-blue.png")));
-							if(i==3)
-								councSea2.setImage(new Image(getClass().getResourceAsStream("img/board/counc-blue.png")));
-							if(i==2)
-								councSea3.setImage(new Image(getClass().getResourceAsStream("img/board/counc-blue.png")));
-							if(i==1)
-								councSea4.setImage(new Image(getClass().getResourceAsStream("img/board/counc-blue.png")));
-							break;
-						case "PINK":
-							if(i==4)
-								councSea1.setImage(new Image(getClass().getResourceAsStream("img/board/counc-pink.png")));
-							if(i==3)
-								councSea2.setImage(new Image(getClass().getResourceAsStream("img/board/counc-pink.png")));
-							if(i==2)
-								councSea3.setImage(new Image(getClass().getResourceAsStream("img/board/counc-pink.png")));
-							if(i==1)
-								councSea4.setImage(new Image(getClass().getResourceAsStream("img/board/counc-pink.png")));
-							break;
-						case "ORANGE":
-							if(i==4)
-								councSea1.setImage(new Image(getClass().getResourceAsStream("img/board/counc-orange.png")));
-							if(i==3)
-								councSea2.setImage(new Image(getClass().getResourceAsStream("img/board/counc-orange.png")));
-							if(i==2)
-								councSea3.setImage(new Image(getClass().getResourceAsStream("img/board/counc-orange.png")));
-							if(i==1)
-								councSea4.setImage(new Image(getClass().getResourceAsStream("img/board/counc-orange.png")));
-							break;
+					case "BLACK":
+						if(i==4)
+							councSea1.setImage(new Image(getClass().getResourceAsStream("img/board/counc-black.png")));
+						if(i==3)
+							councSea2.setImage(new Image(getClass().getResourceAsStream("img/board/counc-black.png")));
+						if(i==2)
+							councSea3.setImage(new Image(getClass().getResourceAsStream("img/board/counc-black.png")));
+						if(i==1)
+							councSea4.setImage(new Image(getClass().getResourceAsStream("img/board/counc-black.png")));
+						break;
+					case "PURPLE":
+						if(i==4)
+							councSea1.setImage(new Image(getClass().getResourceAsStream("img/board/counc-purple.png")));
+						if(i==3)
+							councSea2.setImage(new Image(getClass().getResourceAsStream("img/board/counc-purple.png")));
+						if(i==2)
+							councSea3.setImage(new Image(getClass().getResourceAsStream("img/board/counc-purple.png")));
+						if(i==1)
+							councSea4.setImage(new Image(getClass().getResourceAsStream("img/board/counc-purple.png")));
+						break;
+					case "WHITE":
+						if(i==4)
+							councSea1.setImage(new Image(getClass().getResourceAsStream("img/board/counc-white.png")));
+						if(i==3)
+							councSea2.setImage(new Image(getClass().getResourceAsStream("img/board/counc-white.png")));
+						if(i==2)
+							councSea3.setImage(new Image(getClass().getResourceAsStream("img/board/counc-white.png")));
+						if(i==1)
+							councSea4.setImage(new Image(getClass().getResourceAsStream("img/board/counc-white.png")));
+						break;
+					case "BLUESKY":
+						if(i==4)
+							councSea1.setImage(new Image(getClass().getResourceAsStream("img/board/counc-blue.png")));
+						if(i==3)
+							councSea2.setImage(new Image(getClass().getResourceAsStream("img/board/counc-blue.png")));
+						if(i==2)
+							councSea3.setImage(new Image(getClass().getResourceAsStream("img/board/counc-blue.png")));
+						if(i==1)
+							councSea4.setImage(new Image(getClass().getResourceAsStream("img/board/counc-blue.png")));
+						break;
+					case "PINK":
+						if(i==4)
+							councSea1.setImage(new Image(getClass().getResourceAsStream("img/board/counc-pink.png")));
+						if(i==3)
+							councSea2.setImage(new Image(getClass().getResourceAsStream("img/board/counc-pink.png")));
+						if(i==2)
+							councSea3.setImage(new Image(getClass().getResourceAsStream("img/board/counc-pink.png")));
+						if(i==1)
+							councSea4.setImage(new Image(getClass().getResourceAsStream("img/board/counc-pink.png")));
+						break;
+					case "ORANGE":
+						if(i==4)
+							councSea1.setImage(new Image(getClass().getResourceAsStream("img/board/counc-orange.png")));
+						if(i==3)
+							councSea2.setImage(new Image(getClass().getResourceAsStream("img/board/counc-orange.png")));
+						if(i==2)
+							councSea3.setImage(new Image(getClass().getResourceAsStream("img/board/counc-orange.png")));
+						if(i==1)
+							councSea4.setImage(new Image(getClass().getResourceAsStream("img/board/counc-orange.png")));
+						break;
 					}
 				}
 				i = 0;
@@ -2121,66 +2255,66 @@ public class GUIController extends Observable implements Observer{
 					i++;
 					String councCol = c.getColor().toString();
 					switch(councCol){
-						case "BLACK":
-							if(i==4)
-								councHill1.setImage(new Image(getClass().getResourceAsStream("img/board/counc-black.png")));
-							if(i==3)
-								councHill2.setImage(new Image(getClass().getResourceAsStream("img/board/counc-black.png")));
-							if(i==2)
-								councHill3.setImage(new Image(getClass().getResourceAsStream("img/board/counc-black.png")));
-							if(i==1)
-								councHill4.setImage(new Image(getClass().getResourceAsStream("img/board/counc-black.png")));
-							break;
-						case "PURPLE":
-							if(i==4)
-								councHill1.setImage(new Image(getClass().getResourceAsStream("img/board/counc-purple.png")));
-							if(i==3)
-								councHill2.setImage(new Image(getClass().getResourceAsStream("img/board/counc-purple.png")));
-							if(i==2)
-								councHill3.setImage(new Image(getClass().getResourceAsStream("img/board/counc-purple.png")));
-							if(i==1)
-								councHill4.setImage(new Image(getClass().getResourceAsStream("img/board/counc-purple.png")));
-							break;
-						case "WHITE":
-							if(i==4)
-								councHill1.setImage(new Image(getClass().getResourceAsStream("img/board/counc-white.png")));
-							if(i==3)
-								councHill2.setImage(new Image(getClass().getResourceAsStream("img/board/counc-white.png")));
-							if(i==2)
-								councHill3.setImage(new Image(getClass().getResourceAsStream("img/board/counc-white.png")));
-							if(i==1)
-								councHill4.setImage(new Image(getClass().getResourceAsStream("img/board/counc-white.png")));
-							break;
-						case "BLUESKY":
-							if(i==4)
-								councHill1.setImage(new Image(getClass().getResourceAsStream("img/board/counc-blue.png")));
-							if(i==3)
-								councHill2.setImage(new Image(getClass().getResourceAsStream("img/board/counc-blue.png")));
-							if(i==2)
-								councHill3.setImage(new Image(getClass().getResourceAsStream("img/board/counc-blue.png")));
-							if(i==1)
-								councHill4.setImage(new Image(getClass().getResourceAsStream("img/board/counc-blue.png")));
-							break;
-						case "PINK":
-							if(i==4)
-								councHill1.setImage(new Image(getClass().getResourceAsStream("img/board/counc-pink.png")));
-							if(i==3)
-								councHill2.setImage(new Image(getClass().getResourceAsStream("img/board/counc-pink.png")));
-							if(i==2)
-								councHill3.setImage(new Image(getClass().getResourceAsStream("img/board/counc-pink.png")));
-							if(i==1)
-								councHill4.setImage(new Image(getClass().getResourceAsStream("img/board/counc-pink.png")));
-							break;
-						case "ORANGE":
-							if(i==4)
-								councHill1.setImage(new Image(getClass().getResourceAsStream("img/board/counc-orange.png")));
-							if(i==3)
-								councHill2.setImage(new Image(getClass().getResourceAsStream("img/board/counc-orange.png")));
-							if(i==2)
-								councHill3.setImage(new Image(getClass().getResourceAsStream("img/board/counc-orange.png")));
-							if(i==1)
-								councHill4.setImage(new Image(getClass().getResourceAsStream("img/board/counc-orange.png")));
-							break;
+					case "BLACK":
+						if(i==4)
+							councHill1.setImage(new Image(getClass().getResourceAsStream("img/board/counc-black.png")));
+						if(i==3)
+							councHill2.setImage(new Image(getClass().getResourceAsStream("img/board/counc-black.png")));
+						if(i==2)
+							councHill3.setImage(new Image(getClass().getResourceAsStream("img/board/counc-black.png")));
+						if(i==1)
+							councHill4.setImage(new Image(getClass().getResourceAsStream("img/board/counc-black.png")));
+						break;
+					case "PURPLE":
+						if(i==4)
+							councHill1.setImage(new Image(getClass().getResourceAsStream("img/board/counc-purple.png")));
+						if(i==3)
+							councHill2.setImage(new Image(getClass().getResourceAsStream("img/board/counc-purple.png")));
+						if(i==2)
+							councHill3.setImage(new Image(getClass().getResourceAsStream("img/board/counc-purple.png")));
+						if(i==1)
+							councHill4.setImage(new Image(getClass().getResourceAsStream("img/board/counc-purple.png")));
+						break;
+					case "WHITE":
+						if(i==4)
+							councHill1.setImage(new Image(getClass().getResourceAsStream("img/board/counc-white.png")));
+						if(i==3)
+							councHill2.setImage(new Image(getClass().getResourceAsStream("img/board/counc-white.png")));
+						if(i==2)
+							councHill3.setImage(new Image(getClass().getResourceAsStream("img/board/counc-white.png")));
+						if(i==1)
+							councHill4.setImage(new Image(getClass().getResourceAsStream("img/board/counc-white.png")));
+						break;
+					case "BLUESKY":
+						if(i==4)
+							councHill1.setImage(new Image(getClass().getResourceAsStream("img/board/counc-blue.png")));
+						if(i==3)
+							councHill2.setImage(new Image(getClass().getResourceAsStream("img/board/counc-blue.png")));
+						if(i==2)
+							councHill3.setImage(new Image(getClass().getResourceAsStream("img/board/counc-blue.png")));
+						if(i==1)
+							councHill4.setImage(new Image(getClass().getResourceAsStream("img/board/counc-blue.png")));
+						break;
+					case "PINK":
+						if(i==4)
+							councHill1.setImage(new Image(getClass().getResourceAsStream("img/board/counc-pink.png")));
+						if(i==3)
+							councHill2.setImage(new Image(getClass().getResourceAsStream("img/board/counc-pink.png")));
+						if(i==2)
+							councHill3.setImage(new Image(getClass().getResourceAsStream("img/board/counc-pink.png")));
+						if(i==1)
+							councHill4.setImage(new Image(getClass().getResourceAsStream("img/board/counc-pink.png")));
+						break;
+					case "ORANGE":
+						if(i==4)
+							councHill1.setImage(new Image(getClass().getResourceAsStream("img/board/counc-orange.png")));
+						if(i==3)
+							councHill2.setImage(new Image(getClass().getResourceAsStream("img/board/counc-orange.png")));
+						if(i==2)
+							councHill3.setImage(new Image(getClass().getResourceAsStream("img/board/counc-orange.png")));
+						if(i==1)
+							councHill4.setImage(new Image(getClass().getResourceAsStream("img/board/counc-orange.png")));
+						break;
 					}
 				}
 				i = 0;
@@ -2188,66 +2322,66 @@ public class GUIController extends Observable implements Observer{
 					i++;
 					String councCol = c.getColor().toString();
 					switch(councCol){
-						case "BLACK":
-							if(i==4)
-								councMount1.setImage(new Image(getClass().getResourceAsStream("img/board/counc-black.png")));
-							if(i==3)
-								councMount2.setImage(new Image(getClass().getResourceAsStream("img/board/counc-black.png")));
-							if(i==2)
-								councMount3.setImage(new Image(getClass().getResourceAsStream("img/board/counc-black.png")));
-							if(i==1)
-								councMount4.setImage(new Image(getClass().getResourceAsStream("img/board/counc-black.png")));
-							break;
-						case "PURPLE":
-							if(i==4)
-								councMount1.setImage(new Image(getClass().getResourceAsStream("img/board/counc-purple.png")));
-							if(i==3)
-								councMount2.setImage(new Image(getClass().getResourceAsStream("img/board/counc-purple.png")));
-							if(i==2)
-								councMount3.setImage(new Image(getClass().getResourceAsStream("img/board/counc-purple.png")));
-							if(i==1)
-								councMount4.setImage(new Image(getClass().getResourceAsStream("img/board/counc-purple.png")));
-							break;
-						case "WHITE":
-							if(i==4)
-								councMount1.setImage(new Image(getClass().getResourceAsStream("img/board/counc-white.png")));
-							if(i==3)
-								councMount2.setImage(new Image(getClass().getResourceAsStream("img/board/counc-white.png")));
-							if(i==2)
-								councMount3.setImage(new Image(getClass().getResourceAsStream("img/board/counc-white.png")));
-							if(i==1)
-								councMount4.setImage(new Image(getClass().getResourceAsStream("img/board/counc-white.png")));
-							break;
-						case "BLUESKY":
-							if(i==4)
-								councMount1.setImage(new Image(getClass().getResourceAsStream("img/board/counc-blue.png")));
-							if(i==3)
-								councMount2.setImage(new Image(getClass().getResourceAsStream("img/board/counc-blue.png")));
-							if(i==2)
-								councMount3.setImage(new Image(getClass().getResourceAsStream("img/board/counc-blue.png")));
-							if(i==1)
-								councMount4.setImage(new Image(getClass().getResourceAsStream("img/board/counc-blue.png")));
-							break;
-						case "PINK":
-							if(i==4)
-								councMount1.setImage(new Image(getClass().getResourceAsStream("img/board/counc-pink.png")));
-							if(i==3)
-								councMount2.setImage(new Image(getClass().getResourceAsStream("img/board/counc-pink.png")));
-							if(i==2)
-								councMount3.setImage(new Image(getClass().getResourceAsStream("img/board/counc-pink.png")));
-							if(i==1)
-								councMount4.setImage(new Image(getClass().getResourceAsStream("img/board/counc-pink.png")));
-							break;
-						case "ORANGE":
-							if(i==4)
-								councMount1.setImage(new Image(getClass().getResourceAsStream("img/board/counc-orange.png")));
-							if(i==3)
-								councMount2.setImage(new Image(getClass().getResourceAsStream("img/board/counc-orange.png")));
-							if(i==2)
-								councMount3.setImage(new Image(getClass().getResourceAsStream("img/board/counc-orange.png")));
-							if(i==1)
-								councMount4.setImage(new Image(getClass().getResourceAsStream("img/board/counc-orange.png")));
-							break;
+					case "BLACK":
+						if(i==4)
+							councMount1.setImage(new Image(getClass().getResourceAsStream("img/board/counc-black.png")));
+						if(i==3)
+							councMount2.setImage(new Image(getClass().getResourceAsStream("img/board/counc-black.png")));
+						if(i==2)
+							councMount3.setImage(new Image(getClass().getResourceAsStream("img/board/counc-black.png")));
+						if(i==1)
+							councMount4.setImage(new Image(getClass().getResourceAsStream("img/board/counc-black.png")));
+						break;
+					case "PURPLE":
+						if(i==4)
+							councMount1.setImage(new Image(getClass().getResourceAsStream("img/board/counc-purple.png")));
+						if(i==3)
+							councMount2.setImage(new Image(getClass().getResourceAsStream("img/board/counc-purple.png")));
+						if(i==2)
+							councMount3.setImage(new Image(getClass().getResourceAsStream("img/board/counc-purple.png")));
+						if(i==1)
+							councMount4.setImage(new Image(getClass().getResourceAsStream("img/board/counc-purple.png")));
+						break;
+					case "WHITE":
+						if(i==4)
+							councMount1.setImage(new Image(getClass().getResourceAsStream("img/board/counc-white.png")));
+						if(i==3)
+							councMount2.setImage(new Image(getClass().getResourceAsStream("img/board/counc-white.png")));
+						if(i==2)
+							councMount3.setImage(new Image(getClass().getResourceAsStream("img/board/counc-white.png")));
+						if(i==1)
+							councMount4.setImage(new Image(getClass().getResourceAsStream("img/board/counc-white.png")));
+						break;
+					case "BLUESKY":
+						if(i==4)
+							councMount1.setImage(new Image(getClass().getResourceAsStream("img/board/counc-blue.png")));
+						if(i==3)
+							councMount2.setImage(new Image(getClass().getResourceAsStream("img/board/counc-blue.png")));
+						if(i==2)
+							councMount3.setImage(new Image(getClass().getResourceAsStream("img/board/counc-blue.png")));
+						if(i==1)
+							councMount4.setImage(new Image(getClass().getResourceAsStream("img/board/counc-blue.png")));
+						break;
+					case "PINK":
+						if(i==4)
+							councMount1.setImage(new Image(getClass().getResourceAsStream("img/board/counc-pink.png")));
+						if(i==3)
+							councMount2.setImage(new Image(getClass().getResourceAsStream("img/board/counc-pink.png")));
+						if(i==2)
+							councMount3.setImage(new Image(getClass().getResourceAsStream("img/board/counc-pink.png")));
+						if(i==1)
+							councMount4.setImage(new Image(getClass().getResourceAsStream("img/board/counc-pink.png")));
+						break;
+					case "ORANGE":
+						if(i==4)
+							councMount1.setImage(new Image(getClass().getResourceAsStream("img/board/counc-orange.png")));
+						if(i==3)
+							councMount2.setImage(new Image(getClass().getResourceAsStream("img/board/counc-orange.png")));
+						if(i==2)
+							councMount3.setImage(new Image(getClass().getResourceAsStream("img/board/counc-orange.png")));
+						if(i==1)
+							councMount4.setImage(new Image(getClass().getResourceAsStream("img/board/counc-orange.png")));
+						break;
 					}
 				}
 				i = 0;
@@ -2255,66 +2389,66 @@ public class GUIController extends Observable implements Observer{
 					i++;
 					String councCol = c.getColor().toString();
 					switch(councCol){
-						case "BLACK":
-							if(i==4)
-								councKing1.setImage(new Image(getClass().getResourceAsStream("img/board/counc-black.png")));
-							if(i==3)
-								councKing2.setImage(new Image(getClass().getResourceAsStream("img/board/counc-black.png")));
-							if(i==2)
-								councKing3.setImage(new Image(getClass().getResourceAsStream("img/board/counc-black.png")));
-							if(i==1)
-								councKing4.setImage(new Image(getClass().getResourceAsStream("img/board/counc-black.png")));
-							break;
-						case "PURPLE":
-							if(i==4)
-								councKing1.setImage(new Image(getClass().getResourceAsStream("img/board/counc-purple.png")));
-							if(i==3)
-								councKing2.setImage(new Image(getClass().getResourceAsStream("img/board/counc-purple.png")));
-							if(i==2)
-								councKing3.setImage(new Image(getClass().getResourceAsStream("img/board/counc-purple.png")));
-							if(i==1)
-								councKing4.setImage(new Image(getClass().getResourceAsStream("img/board/counc-purple.png")));
-							break;
-						case "WHITE":
-							if(i==4)
-								councKing1.setImage(new Image(getClass().getResourceAsStream("img/board/counc-white.png")));
-							if(i==3)
-								councKing2.setImage(new Image(getClass().getResourceAsStream("img/board/counc-white.png")));
-							if(i==2)
-								councKing3.setImage(new Image(getClass().getResourceAsStream("img/board/counc-white.png")));
-							if(i==1)
-								councKing4.setImage(new Image(getClass().getResourceAsStream("img/board/counc-white.png")));
-							break;
-						case "BLUESKY":
-							if(i==4)
-								councKing1.setImage(new Image(getClass().getResourceAsStream("img/board/counc-blue.png")));
-							if(i==3)
-								councKing2.setImage(new Image(getClass().getResourceAsStream("img/board/counc-blue.png")));
-							if(i==2)
-								councKing3.setImage(new Image(getClass().getResourceAsStream("img/board/counc-blue.png")));
-							if(i==1)
-								councKing4.setImage(new Image(getClass().getResourceAsStream("img/board/counc-blue.png")));
-							break;
-						case "PINK":
-							if(i==4)
-								councKing1.setImage(new Image(getClass().getResourceAsStream("img/board/counc-pink.png")));
-							if(i==3)
-								councKing2.setImage(new Image(getClass().getResourceAsStream("img/board/counc-pink.png")));
-							if(i==2)
-								councKing3.setImage(new Image(getClass().getResourceAsStream("img/board/counc-pink.png")));
-							if(i==1)
-								councKing4.setImage(new Image(getClass().getResourceAsStream("img/board/counc-pink.png")));
-							break;
-						case "ORANGE":
-							if(i==4)
-								councKing1.setImage(new Image(getClass().getResourceAsStream("img/board/counc-orange.png")));
-							if(i==3)
-								councKing2.setImage(new Image(getClass().getResourceAsStream("img/board/counc-orange.png")));
-							if(i==2)
-								councKing3.setImage(new Image(getClass().getResourceAsStream("img/board/counc-orange.png")));
-							if(i==1)
-								councKing4.setImage(new Image(getClass().getResourceAsStream("img/board/counc-orange.png")));
-							break;
+					case "BLACK":
+						if(i==4)
+							councKing1.setImage(new Image(getClass().getResourceAsStream("img/board/counc-black.png")));
+						if(i==3)
+							councKing2.setImage(new Image(getClass().getResourceAsStream("img/board/counc-black.png")));
+						if(i==2)
+							councKing3.setImage(new Image(getClass().getResourceAsStream("img/board/counc-black.png")));
+						if(i==1)
+							councKing4.setImage(new Image(getClass().getResourceAsStream("img/board/counc-black.png")));
+						break;
+					case "PURPLE":
+						if(i==4)
+							councKing1.setImage(new Image(getClass().getResourceAsStream("img/board/counc-purple.png")));
+						if(i==3)
+							councKing2.setImage(new Image(getClass().getResourceAsStream("img/board/counc-purple.png")));
+						if(i==2)
+							councKing3.setImage(new Image(getClass().getResourceAsStream("img/board/counc-purple.png")));
+						if(i==1)
+							councKing4.setImage(new Image(getClass().getResourceAsStream("img/board/counc-purple.png")));
+						break;
+					case "WHITE":
+						if(i==4)
+							councKing1.setImage(new Image(getClass().getResourceAsStream("img/board/counc-white.png")));
+						if(i==3)
+							councKing2.setImage(new Image(getClass().getResourceAsStream("img/board/counc-white.png")));
+						if(i==2)
+							councKing3.setImage(new Image(getClass().getResourceAsStream("img/board/counc-white.png")));
+						if(i==1)
+							councKing4.setImage(new Image(getClass().getResourceAsStream("img/board/counc-white.png")));
+						break;
+					case "BLUESKY":
+						if(i==4)
+							councKing1.setImage(new Image(getClass().getResourceAsStream("img/board/counc-blue.png")));
+						if(i==3)
+							councKing2.setImage(new Image(getClass().getResourceAsStream("img/board/counc-blue.png")));
+						if(i==2)
+							councKing3.setImage(new Image(getClass().getResourceAsStream("img/board/counc-blue.png")));
+						if(i==1)
+							councKing4.setImage(new Image(getClass().getResourceAsStream("img/board/counc-blue.png")));
+						break;
+					case "PINK":
+						if(i==4)
+							councKing1.setImage(new Image(getClass().getResourceAsStream("img/board/counc-pink.png")));
+						if(i==3)
+							councKing2.setImage(new Image(getClass().getResourceAsStream("img/board/counc-pink.png")));
+						if(i==2)
+							councKing3.setImage(new Image(getClass().getResourceAsStream("img/board/counc-pink.png")));
+						if(i==1)
+							councKing4.setImage(new Image(getClass().getResourceAsStream("img/board/counc-pink.png")));
+						break;
+					case "ORANGE":
+						if(i==4)
+							councKing1.setImage(new Image(getClass().getResourceAsStream("img/board/counc-orange.png")));
+						if(i==3)
+							councKing2.setImage(new Image(getClass().getResourceAsStream("img/board/counc-orange.png")));
+						if(i==2)
+							councKing3.setImage(new Image(getClass().getResourceAsStream("img/board/counc-orange.png")));
+						if(i==1)
+							councKing4.setImage(new Image(getClass().getResourceAsStream("img/board/counc-orange.png")));
+						break;
 					}
 				}
 				//Update emporiums
@@ -2332,26 +2466,26 @@ public class GUIController extends Observable implements Observer{
 				int countBlack = 0, countPurple = 0, countOrange = 0, countWhite = 0, countPink = 0, countBlue = 0;
 				for(CouncilorDTO c: game.getMap().getCouncilors()){
 					String councCol = c.getColor().toString();
-						switch(councCol){
-							case "BLACK":
-								countBlack++;
-								break;
-							case "PURPLE":
-								countPurple++;
-								break;
-							case "WHITE":
-								countWhite++;
-								break;
-							case "BLUESKY":
-								countBlue++;
-								break;
-							case "PINK":
-								countPink++;
-								break;
-							case "ORANGE":
-								countOrange++;
-								break;
-						}
+					switch(councCol){
+					case "BLACK":
+						countBlack++;
+						break;
+					case "PURPLE":
+						countPurple++;
+						break;
+					case "WHITE":
+						countWhite++;
+						break;
+					case "BLUESKY":
+						countBlue++;
+						break;
+					case "PINK":
+						countPink++;
+						break;
+					case "ORANGE":
+						countOrange++;
+						break;
+					}
 				}
 				lblCouncPoolBlack.setText(Integer.toString(countBlack));
 				lblCouncPoolBlue.setText(Integer.toString(countBlue));
@@ -2361,7 +2495,7 @@ public class GUIController extends Observable implements Observer{
 				lblCouncPoolPink.setText(Integer.toString(countPink));
 				//Update king location
 				moveKing(game.getMap().getKing().getLocation().getName());
-				
+
 				game.getMap().getNobilityTrack(); //aggiorna pedine //TODO
 				game.getMap().getPawn();
 				//Update permits decks
@@ -2371,7 +2505,7 @@ public class GUIController extends Observable implements Observer{
 				hillSlot2.setImage(new Image(getClass().getResourceAsStream("img/board/"+parsePermitImg(game.getMap().getPermitsDeck(1).getSlot(1)))));
 				mountainSlot1.setImage(new Image(getClass().getResourceAsStream("img/board/"+parsePermitImg(game.getMap().getPermitsDeck(2).getSlot(0)))));
 				mountainSlot2.setImage(new Image(getClass().getResourceAsStream("img/board/"+parsePermitImg(game.getMap().getPermitsDeck(2).getSlot(1)))));
-				
+
 				//Update garbage
 				if(game.getMap().getPoliticsDeck().getGarbage().size()!=0){
 					String garbCol = game.getMap().getPoliticsDeck().getGarbage().get(0).getColor().toString();
@@ -2399,7 +2533,7 @@ public class GUIController extends Observable implements Observer{
 				}else{
 					garbagePlaceHolder.setOpacity(0.0);
 				}
-				
+				//Update "myself" player
 				for(PlayerDTO p: game.getPlayers())
 					if(p.getPlayerID().equals(myNickname)){
 						lblMyAssistants.setText(Integer.toString(p.getAvailableAssistants().size()));
@@ -2420,11 +2554,15 @@ public class GUIController extends Observable implements Observer{
 								draw(pc);
 							isFirstCards = false;
 						}
+						for(PermitsCardDTO perm: p.getPermits()){
+							permPane.getChildren().clear();
+							updatePermit(new ImageView(new Image(getClass().getResourceAsStream("img/board/"+parsePermitImg(perm)))), perm);
+						}
 					}
 			}
 		});
 	}
-	
+
 	public int getActionIndex(boolean[] availableActions) {
 		Platform.runLater(new Runnable() {
 			@Override
@@ -2446,11 +2584,15 @@ public class GUIController extends Observable implements Observer{
 					speed3.setOpacity(1.0);
 				if(availableActions[7])
 					speed4.setOpacity(1.0);
+				if(availableActions[8]){
+					passBtn.setOpacity(1.0);
+					highlightObject(passBtn, true);
+				}
 			}
 		});
 		return 0;
 	}
-	
+
 	private void disableActions(){
 		highlightObject(actionsGroup, false);
 		main1.setOpacity(0.0);
@@ -2461,28 +2603,10 @@ public class GUIController extends Observable implements Observer{
 		speed2.setOpacity(0.0);
 		speed3.setOpacity(0.0);
 		speed4.setOpacity(0.0);
+		passBtn.setOpacity(0.9);
+		highlightObject(passBtn, false);
 	}
-	
-	private class SelectActionEvent implements EventHandler<Event>{
-		@Override
-		public void handle(Event e) {
-			ImageView action = ((ImageView)(e.getSource()));
-			if(action.equals(main1) && main1.getOpacity() == 1.0){
-				toggleSatisfy();
-				disableActions();
-				selectedAction = 0;
-				sendAction(selectedAction);
-			}
-			if(action.equals(main3) && main3.getOpacity() == 1.0){
-				toggleShift();
-				disableActions();
-				selectedAction = 2;
-				sendAction(selectedAction);
-			}
-			
-		}
-	}
-	
+
 	private class SetBalconyEvent implements EventHandler<Event>{
 		@Override
 		public void handle(Event e) {
@@ -2507,8 +2631,8 @@ public class GUIController extends Observable implements Observer{
 					if(balcony.equals(mountainBalcony)){
 						regIndex = 2;
 						if(isAskingForSatisfy){
-							highlightObject(hillSlot1, true);
-							highlightObject(hillSlot2, true);
+							highlightObject(mountainSlot1, true);
+							highlightObject(mountainSlot2, true);
 						}
 					}
 					if(isAskingForSatisfy){
@@ -2518,7 +2642,7 @@ public class GUIController extends Observable implements Observer{
 			});
 		}
 	}
-	
+
 	private class SetSlotEvent implements EventHandler<Event>{
 		@Override
 		public void handle(Event e) {
@@ -2545,12 +2669,246 @@ public class GUIController extends Observable implements Observer{
 			});
 		}
 	}
+
+	private class SelectCityEvent implements EventHandler<Event>{
+		@Override
+		public void handle(Event e) {
+			Platform.runLater(new Runnable() {
+				@Override
+				public void run() {
+					ImageView city = (ImageView)(e.getSource());
+					int i = 0;
+					if(isAskingForSatisfyKing){
+						for(ImageView tok: tokenArray){
+							if(city.equals(tok)){
+								satisfyKingAction.setDestination(gameDTO.getMap().getCity()[i]);
+								sendAction(satisfyKingAction);
+								isAskingForSatisfyKing = false;
+								enableSatisfyKing = false;
+								break;
+							}
+							i++;
+						}
+						for(ImageView tok: tokenArray)
+							highlightObject(tok, false);
+					}
+					if(enableBuild){
+						for(ImageView tok: tokenArray){
+							if(city.equals(tok)){
+								buildAction = new BuildDTO();
+								buildAction.setCity(gameDTO.getMap().getCity()[i]);
+								buildAction.setPermit(selectedRealPerm);
+								sendAction(buildAction);
+							}
+							i++;
+						}
+					}
+				}
+			});
+		}
+	}
 	
-	private void sendAction(Object action){
+	public void startMarket(GameDTO game){
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				gameDTO = game;
+				flipMap();
+				String onSaleUID;
+				ArrayList<OnSaleDTO> availableOnSale = new ArrayList<OnSaleDTO>(game.getMarket().getObjectsOnSale());
+				String UIDs[] = new String[availableOnSale.size()];
+				int count =0;
+				String whatIs = "";
+				for(OnSaleDTO osDTO : availableOnSale){
+					if(osDTO instanceof AssistantOnSaleDTO){
+						whatIs = "Assistant";
+						UIDs[count]= ((AssistantOnSaleDTO) osDTO).getUID();
+						count++;
+					}
+					else if(osDTO instanceof PermitOnSaleDTO){
+						PermitOnSaleDTO posDTO = (PermitOnSaleDTO) osDTO;
+						PermitsCardDTO pcDTO = posDTO.getPermit();
+						String pcBonus = "";
+						String pcLetters = "";
+						for(BonusDTO bDTO : pcDTO.getBonuses())
+							pcBonus += bDTO.getType().toString() + "x" + bDTO.getQnt() + ", ";
+						for(int i=0;i<pcDTO.getCityLetter().length; i++){
+							pcLetters += pcDTO.getCityLetter()[i];
+							if(i!=pcDTO.getCityLetter().length-1)
+								pcLetters += ", ";
+						}
+						whatIs = "PermitCard, Bonus: " + pcBonus + " Letters: " + pcLetters;
+						UIDs[count]= ((PermitOnSaleDTO) osDTO).getUID();
+						count++;
+					}
+					else if(osDTO instanceof PoliticsOnSaleDTO){
+						PoliticsOnSaleDTO posDTO = (PoliticsOnSaleDTO) osDTO;
+						PoliticsCardDTO pcDTO = posDTO.getPoliticsCard();
+						whatIs = "PoliticCard, Color: " + pcDTO.getColor().toString();
+						UIDs[count]= ((PoliticsOnSaleDTO) osDTO).getUID();
+						count++;
+					}
+				}
+			}
+		});
+	}
+
+	public void toggleChangeCards(){
+		if(!enableChangeCards){
+			enableChangeCards = true;
+			highlightObject(seaDeck, true);
+			highlightObject(hillDeck, true);
+			highlightObject(mountainDeck, true);
+		}else if(enableChangeCards){
+			enableChangeCards = false;
+			highlightObject(seaDeck, false);
+			highlightObject(hillDeck, false);
+			highlightObject(mountainDeck, false);
+		}
+	}
+
+	private class ChangeCardsEvent implements EventHandler<Event>{
+		@Override
+		public void handle(Event e) {
+			Platform.runLater(new Runnable() {
+				@Override
+				public void run() {
+					if(enableChangeCards){
+						changeCardsAction = new ChangeCardsDTO();
+						ImageView deck = (ImageView)(e.getSource());
+						if(deck.equals(seaDeck))
+							changeCardsAction.setBalconyIndex(0);
+						else if(deck.equals(hillDeck))
+							changeCardsAction.setBalconyIndex(1);
+						else if(deck.equals(mountainDeck))
+							changeCardsAction.setBalconyIndex(2);
+						sendAction(changeCardsAction);
+						toggleChangeCards();
+					}
+				}
+			});
+		}
+	}
+
+	private void updatePermit(ImageView perm, PermitsCardDTO realPerm){
+		ImageView permit = perm;
+		realPerms.add(realPerm);
+		permArray.add(new ImageView(permit.getImage()));
+		ImageView drawnPerm = permArray.get(permArray.size()-1);
+		permPane.getChildren().add(drawnPerm);
+		drawnPerm.setPreserveRatio(true);
+		drawnPerm.setFitHeight(72);
+		drawnPerm.setTranslateX(-60*((permArray.size()-1)%6));
+		drawnPerm.setTranslateY(((permArray.size()-1)/6)*22);
+		drawnPerm.addEventHandler(MouseEvent.MOUSE_CLICKED, new SelectPermitEvent());
+	}
+
+	private void toggleBuild(){
+		if(!enableBuild){
+			enableBuild = true;
+		}else if(enableBuild){
+			enableBuild = false;
+		}
+	}
+
+	private class SelectPermitEvent implements EventHandler<Event>{
+		@Override
+		public void handle(Event e) {
+			Platform.runLater(new Runnable() {
+				@Override
+				public void run() {
+					ImageView perm = ((ImageView)(e.getSource()));
+					if(enableBuild){
+						if(!selectedPerms.contains(perm) && selectedPerms.size()<1){
+							highlightObject(perm,true);
+							selectedPerms.add(perm);
+							selectedRealPerm = realPerms.get(permArray.indexOf(selectedPerms.get(0)));
+							for(String cityName: selectedRealPerm.getCityLetter())
+								highlightObject(tokenArray[cityName.charAt(0)-'a'], true);
+						}else if(selectedPerms.contains(perm)){
+							highlightObject(perm,false);
+							selectedPerms.remove(perm);
+							for(String cityName: selectedRealPerm.getCityLetter())
+								highlightObject(tokenArray[cityName.charAt(0)-'a'], false);
+							selectedRealPerm = null;
+						}
+					}
+				}
+			});
+		}
+	}
+
+
+	// --------------- COMMUNICATION WITH SERVER ---------------- //
+
+	private class SelectActionEvent implements EventHandler<Event>{
+		@Override
+		public void handle(Event e) {
+			Platform.runLater(new Runnable() {
+				@Override
+				public void run() {
+					ImageView action = ((ImageView)(e.getSource()));
+					if(action.equals(main1) && main1.getOpacity() == 1.0){
+						toggleSatisfy();
+						disableActions();
+						selectedAction = 0;
+						sendAction(selectedAction);
+					}
+					if(action.equals(main2) && main2.getOpacity() == 1.0){
+						toggleSatisfyKing();
+						disableActions();
+						selectedAction = 1;
+						sendAction(selectedAction);
+					}
+					if(action.equals(main3) && main3.getOpacity() == 1.0){
+						toggleShift();
+						disableActions();
+						selectedAction = 2;
+						sendAction(selectedAction);
+					}
+					if(action.equals(main4) && main4.getOpacity() == 1.0){
+						toggleBuild();
+						disableActions();
+						selectedAction = 3;
+						sendAction(selectedAction);
+					}
+					if(action.equals(speed1) && speed1.getOpacity() == 1.0){
+						disableActions();
+						selectedAction = 4;
+						sendAction(selectedAction);
+					}
+					if(action.equals(speed2) && speed2.getOpacity() == 1.0){
+						toggleChangeCards();
+						disableActions();
+						selectedAction = 5;
+						sendAction(selectedAction);
+					}
+					if(action.equals(speed3) && speed3.getOpacity() == 1.0){
+						toggleShiftSpeed();
+						disableActions();
+						selectedAction = 6;
+						sendAction(selectedAction);
+					}
+					if(action.equals(speed4) && speed4.getOpacity() == 1.0){
+						disableActions();
+						selectedAction = 7;
+						sendAction(selectedAction);
+					}
+					if(action.equals(passBtn) && passBtn.getOpacity() == 1.0){
+						disableActions();
+						selectedAction = 8;
+						sendAction(selectedAction);
+					}
+				}
+			});
+		}
+	}
+
+	private synchronized void sendAction(Object action){
 		this.setChanged();
 		this.notifyObservers(action);
 	}
-	
+
 	@Override
 	public void update(Observable arg0, Object arg1) {
 		if(arg0 instanceof ClientController){
@@ -2560,9 +2918,8 @@ public class GUIController extends Observable implements Observer{
 				if(info[1].equals("LOGINSUCCESS"))
 					this.animateLobby();
 			}
-			
-		}
-		else if(arg0 instanceof InterfaceMiddleware){
+
+		}else if(arg0 instanceof InterfaceMiddleware){
 			if(arg1 instanceof LobbyStatus){
 				this.updateLobby((LobbyStatus) arg1);
 			}
