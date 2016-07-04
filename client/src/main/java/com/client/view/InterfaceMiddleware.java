@@ -41,8 +41,11 @@ public class InterfaceMiddleware extends Observable implements Observer{
 	
 	/** GUI fields */
 	private int selectedAction = -1;
-	private ObtainPermitDTO GUIObtainPermitDTO;
-	private ShiftCouncilMainDTO GUIShiftMainDTO;
+	private ObtainPermitDTO guiObtainPermitDTO;
+	private ShiftCouncilMainDTO guiShiftMainDTO;
+	private SatisfyKingDTO guiSatisfyKingDTO;
+	private ShiftCouncilSpeedDTO guiShiftSpeedDTO;
+	private ChangeCardsDTO guiChangeCardsDTO;
 
 	public InterfaceMiddleware(ClientController controller, boolean isGui, ArrayBlockingQueue<String> cliQueue, GUIController guiController) {
 		this.controller = controller;
@@ -402,16 +405,28 @@ public class InterfaceMiddleware extends Observable implements Observer{
 		return shiftSpeed;
 	}
 	
-	private void GUISaveObtainPermit(ObtainPermitDTO opDTO){
-		GUIObtainPermitDTO = opDTO;
+	private synchronized void GUISaveObtainPermit(ObtainPermitDTO opDTO){
+		guiObtainPermitDTO = opDTO;
 	}
 	
-	private void GUISaveShiftMain(ShiftCouncilMainDTO smDTO) {
-		GUIShiftMainDTO = smDTO;
+	private synchronized void GUISaveShiftMain(ShiftCouncilMainDTO smDTO) {
+		guiShiftMainDTO = smDTO;
 	}
 	
-	private void GUISaveSelectedAction(int selAction) {
+	private synchronized void GUISaveShiftSpeed(ShiftCouncilSpeedDTO ssDTO) {
+		guiShiftSpeedDTO = ssDTO;
+	}
+	
+	private synchronized void GUISaveSelectedAction(int selAction) {
 		selectedAction = selAction;
+	}
+	
+	private synchronized void GUISaveSatisfyKingAction(SatisfyKingDTO satKing) {
+		guiSatisfyKingDTO = satKing;
+	}
+	
+	private synchronized void GUISaveChangeCardsAction(ChangeCardsDTO ccDTO) {
+		guiChangeCardsDTO = ccDTO;
 	}
 
 	// -----------PUBLIC FUNCS-------------
@@ -424,8 +439,13 @@ public class InterfaceMiddleware extends Observable implements Observer{
 			this.CLIupdateLobby(lobbyStatus);
 	}
 
-	public void updateGame(GameDTO game) {
+	public synchronized void updateGame(GameDTO game) {
 		if (isGUI) {
+			try {
+				wait(500);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 			this.setChanged();
 			this.notifyObservers(game);
 		} else
@@ -442,7 +462,13 @@ public class InterfaceMiddleware extends Observable implements Observer{
 	public synchronized int getActionIndex(boolean[] availableActions) {
 		if (isGUI) {
 			gui.getActionIndex(availableActions);
-			while(selectedAction == -1){}
+			while(selectedAction == -1){
+				try {
+					wait(1000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
 			int toReturn = selectedAction;
 			selectedAction = -1;
 			return toReturn;
@@ -452,8 +478,11 @@ public class InterfaceMiddleware extends Observable implements Observer{
 
 	public void startTurn(PoliticsCardDTO polcDTO) {
 		if (isGUI){
-			GUIObtainPermitDTO = null;
-			GUIShiftMainDTO = null;
+			guiObtainPermitDTO = null;
+			guiShiftMainDTO = null;
+			guiSatisfyKingDTO = null;
+			guiShiftSpeedDTO = null;
+			guiChangeCardsDTO = null;
 			this.setChanged();
 			this.notifyObservers(polcDTO);
 		} else
@@ -502,39 +531,72 @@ public class InterfaceMiddleware extends Observable implements Observer{
 			return this.CLIToBuy(game);
 	}
 
-	public ShiftCouncilSpeedDTO CompileShiftSpeedAction(GameDTO game) {
+	public synchronized ShiftCouncilSpeedDTO CompileShiftSpeedAction(GameDTO game) {
 		if (isGUI) {
-			return null;
+			while(guiShiftSpeedDTO == null){
+				try {
+					wait(1000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+			return guiShiftSpeedDTO;
 		} else
 			return this.CLICompileShiftSpeedAction(game);
 	}
 
-	public ChangeCardsDTO CompileChangeAction() {
+	public synchronized ChangeCardsDTO CompileChangeAction() {
 		if (isGUI) {
-			return null;
+			while(guiChangeCardsDTO == null){
+				try {
+					wait(1000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+			return guiChangeCardsDTO;
 		} else
 			return this.CLICompileChangeAction();
 	}
 
-	public ShiftCouncilMainDTO CompileShiftMainAction(GameDTO game) {
+	public synchronized ShiftCouncilMainDTO CompileShiftMainAction(GameDTO game) {
 		if (isGUI) {
-			while(GUIShiftMainDTO == null){}
-			return GUIShiftMainDTO;
+			while(guiShiftMainDTO == null){
+				try {
+					wait(1000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+			return guiShiftMainDTO;
 		} else
 			return this.CLICompileShiftMainAction(game);
 	}
 
-	public SatisfyKingDTO CompileSatisfyKingAction(GameDTO game) {
+	public synchronized SatisfyKingDTO CompileSatisfyKingAction(GameDTO game) {
 		if (isGUI) {
-			return null;
+			while(guiSatisfyKingDTO == null){
+				try {
+					wait(1000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+			return guiSatisfyKingDTO;
 		} else
 			return this.CLICompileSatisfyKingAction(game);
 	}
 
 	public synchronized ObtainPermitDTO CompileObtainAction(GameDTO game) {
 		if (isGUI) {
-			while(GUIObtainPermitDTO == null){}
-			return GUIObtainPermitDTO;
+			while(guiObtainPermitDTO == null){
+				try {
+					wait(1000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+			return guiObtainPermitDTO;
 		} else
 			return this.CLICompileObtainAction(game);
 	}
@@ -588,6 +650,15 @@ public class InterfaceMiddleware extends Observable implements Observer{
 			}
 			if(arg instanceof ShiftCouncilMainDTO){
 				this.GUISaveShiftMain((ShiftCouncilMainDTO) arg);
+			}
+			if(arg instanceof ShiftCouncilSpeedDTO){
+				this.GUISaveShiftSpeed((ShiftCouncilSpeedDTO) arg);
+			}
+			if(arg instanceof SatisfyKingDTO){
+				this.GUISaveSatisfyKingAction((SatisfyKingDTO) arg);
+			}
+			if(arg instanceof ChangeCardsDTO){
+				this.GUISaveChangeCardsAction((ChangeCardsDTO) arg);
 			}
 		}
 	}

@@ -12,8 +12,12 @@ import com.client.controller.ClientController;
 import com.client.view.InterfaceMiddleware;
 import com.communication.LobbyStatus;
 import com.communication.RoomStatus;
+import com.communication.actions.BuyAssistantDTO;
+import com.communication.actions.ChangeCardsDTO;
 import com.communication.actions.ObtainPermitDTO;
+import com.communication.actions.SatisfyKingDTO;
 import com.communication.actions.ShiftCouncilMainDTO;
+import com.communication.actions.ShiftCouncilSpeedDTO;
 import com.communication.board.BonusDTO;
 import com.communication.board.BonusTokenDTO;
 import com.communication.board.CityDTO;
@@ -71,9 +75,8 @@ import javafx.util.Duration;
 
 public class GUIController extends Observable implements Observer{
 
-	private FXMLLoader loader;
-
-	/*SelectConnection fields*///TODO
+	/* ------------- SelectConnection fields ------------- *///TODO
+	
 	private ObservableList<String> connectionList = FXCollections.observableArrayList("Socket","RMI");
 
 	@FXML
@@ -82,7 +85,10 @@ public class GUIController extends Observable implements Observer{
 	private Button btnLaunch;
 	private boolean isConnecting = true;
 
-	/*MainMenu (Lobby) fields*///TODO
+	
+	
+	
+	/* ------------- MainMenu (Lobby) fields ------------- *///TODO
 	private MediaPlayer mediaPlayer = null;
 	@FXML
 	private ImageView mainTitle;
@@ -147,7 +153,6 @@ public class GUIController extends Observable implements Observer{
 	@FXML
 	private Label lblRoomName1, lblRoomName2, lblRoomName3, lblRoomName4, lblRoomName5, lblRoomName6, lblRoomName7, lblRoomName8, lblPlMin1, lblPlMin2, lblPlMin3, lblPlMin4, lblPlMin5, lblPlMin6, lblPlMin7, lblPlMin8, lblPlMax1, lblPlMax2, lblPlMax3, lblPlMax4, lblPlMax5, lblPlMax6, lblPlMax7, lblPlMax8, lblMap1, lblMap2, lblMap3, lblMap4, lblMap5, lblMap6, lblMap7, lblMap8, lblPlayers1, lblPlayers2, lblPlayers3, lblPlayers4, lblPlayers5, lblPlayers6, lblPlayers7, lblPlayers8, lblStatus1, lblStatus2, lblStatus3, lblStatus4, lblStatus5, lblStatus6, lblStatus7, lblStatus8, lblErrorsLobby;
 	private boolean isInLobby = false;
-	private boolean isInRoom = false;
 	private boolean isInGame = false;
 	private String lobbyCommand;
 	private String myNickname;
@@ -155,19 +160,7 @@ public class GUIController extends Observable implements Observer{
 	
 	
 	
-	/*GameWindow fields*///TODO
-
-	//TEST AREA
-	@FXML
-	private Button testButton, btnSetMapTest, btnPlaceEmporium, btnPrint;
-	@FXML
-	private TextField txtCitySlot, txtHexColor, txtMsg;
-	@FXML
-	private ChoiceBox<String> selectTest;
-	private ObservableList<String> testList = FXCollections.observableArrayList("setupTokens()","draw(1)","draw(5)","flipDownCardAnimation()","flipUpCardAnimation()","flipMap()","moveKing(Arkon)","moveKing(Castrum)","moveKing(Hellar)");
-	@FXML
-	private ToggleButton btnToggleShift, btnToggleSatisfy;
-	//TEST AREA
+	/* ------------- GameWindow fields ------------- *///TODO
 
 
 	@FXML
@@ -213,9 +206,6 @@ public class GUIController extends Observable implements Observer{
 	private boolean enableSatisfy = false;
 	private boolean isAskingForShift = false;
 	private boolean isAskingForSatisfy = false;
-	private boolean deckIsEmpty = false;
-	private boolean handIsEmpty = true;
-	private boolean garbageIsEmpty = true;
 	private boolean expanded = false;
 	private boolean switchedMap = false;
 	private Image councToShift;
@@ -227,50 +217,46 @@ public class GUIController extends Observable implements Observer{
 	private boolean isFirstCards = true;
 	private String[] tokens = new String[15];
 	private int kingCityIndex = 9;
-	private boolean isAskingAction = false;
 	private int regIndex;
 	private int slotIndex;
 	private int selectedAction = -1;
+	private boolean isAskingForSatisfyKing = false;
+	private boolean enableSatisfyKing = false;
+	private ImageView[] tokenArray = new ImageView[15];
+	private int selectedCity;
+	private boolean isAskingForShiftSpeed = false;
+	private boolean enableShiftSpeed = false;
+	private boolean enableChangeCards = false;
+	private boolean isAskingChangeCards = false;
 
-	//istanza del ClientController, a cui passa tipoConnessione e userName
-	private ClientController clientController;
-
-	//istanza dell'username da gettare
-	private String userName=null;
+	private String userName = null;
 	
 	private GameDTO gameDTO;
 	
 	private ObtainPermitDTO obtainPermAction;
 	
+	private SatisfyKingDTO satisfyKingAction;
+	
 	private ShiftCouncilMainDTO shiftCouncMainAction;
+	
+	private ShiftCouncilSpeedDTO shiftCouncSpeedAction;
+	
+	private ChangeCardsDTO changeCardsAction;
+	
+	
+	
+	// -------------------------- METHODS -------------------------- //
+	
+	
 
 
-	public void setClientController(ClientController c){
-		this.clientController=c;
-	}
-
-	public void updateLoader(FXMLLoader loader){
-		this.loader = loader;
-	}
-
-
-	/*SelectConnection methods*///TODO
+	/* ------------- SelectConnection methods ------------- *///TODO
 
 	public void initializeSC(){
 		connectionChoice.setItems(connectionList);
 		connectionChoice.setValue("Socket");
 	}
-
-	private void sendConnection(){
-		Platform.runLater(new Runnable() {
-
-			@Override
-			public void run() {
-				// TODO Auto-generated method stub
-
-			}
-		});
-	}
+	
 	public void launchMM(ActionEvent e) throws Exception{
 		if(connectionChoice.getValue().toString().equals("Socket")){
 			this.setChanged();
@@ -303,9 +289,10 @@ public class GUIController extends Observable implements Observer{
 
 	}
 
+	
 
 
-	/*MainMenu methods*///TODO
+	/* ------------- MainMenu methods ------------- *///TODO
 
 	public void initializeMM(){
 		Label txtSubmit = new Label("Submit");
@@ -426,7 +413,7 @@ public class GUIController extends Observable implements Observer{
 			stage.setY(bounds.getMaxY()/16);
 			stage.setWidth(bounds.getWidth()/1.2);
 			stage.setHeight(bounds.getHeight()/1.2);
-			stage.setFullScreen(true);
+			//stage.setFullScreen(true);
 			stage.setFullScreenExitHint("");
 			stage.setResizable(false);
 			launcher.close();
@@ -600,10 +587,12 @@ public class GUIController extends Observable implements Observer{
 		this.setChanged();
 		this.notifyObservers("LOBBYCMD_"+lobbyCommand);
 		lobbyCommand = "";
-		try {
-			launchGW();
-		} catch (Exception e) {
-			e.printStackTrace();
+		if(Integer.parseInt(lblClients.getText().substring(0, 1))>=Integer.parseInt(lblMinPl.getText())){
+			try {
+				launchGW();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -1176,8 +1165,10 @@ public class GUIController extends Observable implements Observer{
 		lobbyCommand = "";
 	}
 	
+	
+	
 
-	/*GameWindow methods*///TODO
+	/* ------------- GameWindow methods ------------- *///TODO
 
 	public void initializeGW(){
 		try {
@@ -1216,6 +1207,12 @@ public class GUIController extends Observable implements Observer{
 				Field field = this.getClass().getDeclaredField(start+region+num);
 				councilors.add((ImageView) field.get(this));
 			}
+			for(int k=0; k<15; k++){
+				String start = "tok";
+				String letter = Character.toString((char)('A'+k));
+				Field field = this.getClass().getDeclaredField(start+letter);
+				tokenArray[k] = (ImageView) field.get(this);
+			}
 		} catch (NoSuchFieldException e) {
 			e.printStackTrace();
 		} catch (SecurityException e) {
@@ -1225,19 +1222,12 @@ public class GUIController extends Observable implements Observer{
 		} catch (IllegalAccessException e) {
 			e.printStackTrace();
 		}
-		//TEST AREA
-		selectTest.setItems(testList);
-		String[] councImgPaths = {"img/board/counc-black.png","img/board/counc-orange.png","img/board/counc-blue.png","img/board/counc-pink.png","img/board/counc-purple.png","img/board/counc-white.png"};
-		for(ImageView c: councilors){
-			int rnd = new Random().nextInt(councImgPaths.length);
-			c.setImage(new Image(getClass().getResourceAsStream(councImgPaths[rnd])));
-		}
-		//TEST AREA
 
 		actionsGroup.setTranslateX(306);
 		trickActions.setTranslateX(-306);
 		msgGroup.setLayoutX(0.0);
 		msgGroup.setLayoutY(0.0);
+		msgGroup.toBack();
 		handArray = new ArrayList<ImageView>();
 		selectedCards = new ArrayList<ImageView>();
 		main1.addEventHandler(MouseEvent.MOUSE_CLICKED, new SelectActionEvent());
@@ -1258,6 +1248,12 @@ public class GUIController extends Observable implements Observer{
 		hillSlot2.addEventHandler(MouseEvent.MOUSE_CLICKED, new SetSlotEvent());
 		mountainSlot1.addEventHandler(MouseEvent.MOUSE_CLICKED, new SetSlotEvent());
 		mountainSlot2.addEventHandler(MouseEvent.MOUSE_CLICKED, new SetSlotEvent());
+		seaDeck.addEventHandler(MouseEvent.MOUSE_CLICKED, new ChangeCardsEvent());
+		hillDeck.addEventHandler(MouseEvent.MOUSE_CLICKED, new ChangeCardsEvent());
+		mountainDeck.addEventHandler(MouseEvent.MOUSE_CLICKED, new ChangeCardsEvent());
+		for(ImageView tok: tokenArray){
+			tok.addEventHandler(MouseEvent.MOUSE_CLICKED, new SelectCityEvent());
+		}
 		
 	}
 
@@ -1268,6 +1264,7 @@ public class GUIController extends Observable implements Observer{
 			Platform.runLater(new Runnable() {
 				@Override
 				public void run() {
+					msgGroup.toFront();
 					int msgSize = ((1000+msg.length())/4)/(msg.length()+3) + 10;
 					ScaleTransition st = new ScaleTransition(Duration.millis(1000), msgGroup);
 					msgGroup.setOpacity(1.0);
@@ -1279,7 +1276,6 @@ public class GUIController extends Observable implements Observer{
 					st.setToY(1.0);
 					st.play();
 					st.setOnFinished(new EventHandler<ActionEvent>() {
-			
 						@Override
 						public void handle(ActionEvent event) {
 							try {
@@ -1290,6 +1286,12 @@ public class GUIController extends Observable implements Observer{
 							FadeTransition ft = new FadeTransition(Duration.millis(500), msgGroup);
 							ft.setToValue(0.0);
 							ft.play();
+							ft.setOnFinished(new EventHandler<ActionEvent>() {
+								@Override
+								public void handle(ActionEvent event) {
+									msgGroup.toBack();
+								}
+							});
 						}
 					});
 				}
@@ -1518,6 +1520,13 @@ public class GUIController extends Observable implements Observer{
 		else
 			enableShift = false;
 	}
+	
+	public void toggleShiftSpeed(){
+		if(!enableShiftSpeed)
+			enableShiftSpeed = true;
+		else
+			enableShiftSpeed = false;
+	}
 
 	public void toggleSatisfy(){
 		if(!enableSatisfy){
@@ -1528,6 +1537,16 @@ public class GUIController extends Observable implements Observer{
 			retractHand();
 		}
 	}
+	
+	public void toggleSatisfyKing(){
+		if(!enableSatisfyKing){
+			enableSatisfyKing = true;
+			expandHand();
+		}else{
+			enableSatisfyKing = false;
+			retractHand();
+		}
+	}
 
 	private void dragCouncilor(ImageView councilor){
 		if(enableShift){
@@ -1535,23 +1554,33 @@ public class GUIController extends Observable implements Observer{
 			balconyHighlight(true);
 			isAskingForShift = true;
 		}
+		if(enableShiftSpeed){
+			councilor.getScene().setCursor(new ImageCursor(councilor.getImage(),32,32));
+			balconyHighlight(true);
+			isAskingForShiftSpeed = true;
+		}
 	}
 
 	private void dropCouncilor(ImageView councilor){
 		councilor.getScene().setCursor(new ImageCursor(new Image(getClass().getResourceAsStream("img/cof-cursor.png"))));
 		balconyHighlight(false);
-		isAskingForShift = true;
+		if(enableShift)
+			isAskingForShift = true;
+		else if(enableShiftSpeed)
+			isAskingForShiftSpeed = true;
 		councToShift = councilor.getImage();
 		map.setOnMouseEntered(new EventHandler<Event>() {
 			@Override
 			public void handle(Event event) {
 				isAskingForShift = false;
+				isAskingForShiftSpeed = false;
 			}
 		});
 		rightPane.setOnMouseEntered(new EventHandler<Event>() {
 			@Override
 			public void handle(Event event) {
 				isAskingForShift = false;
+				isAskingForShiftSpeed = false;
 			}
 		});
 	}
@@ -1560,8 +1589,13 @@ public class GUIController extends Observable implements Observer{
 		dragCouncilor(councToDragBlack);
 		CouncilorDTO counc = new CouncilorDTO();
 		counc.setColor(CouncilorColor.BLACK);
-		shiftCouncMainAction = new ShiftCouncilMainDTO();
-		shiftCouncMainAction.setCouncilor(counc);
+		if(enableShift){
+			shiftCouncMainAction = new ShiftCouncilMainDTO();
+			shiftCouncMainAction.setCouncilor(counc);
+		}else if(enableShiftSpeed){
+			shiftCouncSpeedAction = new ShiftCouncilSpeedDTO();
+			shiftCouncSpeedAction.setCouncilor(counc);
+		}
 	}
 
 	public void dragBlackDone(){
@@ -1572,8 +1606,13 @@ public class GUIController extends Observable implements Observer{
 		dragCouncilor(councToDragBlue);
 		CouncilorDTO counc = new CouncilorDTO();
 		counc.setColor(CouncilorColor.BLUESKY);
-		shiftCouncMainAction = new ShiftCouncilMainDTO();
-		shiftCouncMainAction.setCouncilor(counc);
+		if(enableShift){
+			shiftCouncMainAction = new ShiftCouncilMainDTO();
+			shiftCouncMainAction.setCouncilor(counc);
+		}else if(enableShiftSpeed){
+			shiftCouncSpeedAction = new ShiftCouncilSpeedDTO();
+			shiftCouncSpeedAction.setCouncilor(counc);
+		}
 	}
 
 	public void dragBlueDone(){
@@ -1584,8 +1623,13 @@ public class GUIController extends Observable implements Observer{
 		dragCouncilor(councToDragOrange);
 		CouncilorDTO counc = new CouncilorDTO();
 		counc.setColor(CouncilorColor.ORANGE);
-		shiftCouncMainAction = new ShiftCouncilMainDTO();
-		shiftCouncMainAction.setCouncilor(counc);
+		if(enableShift){
+			shiftCouncMainAction = new ShiftCouncilMainDTO();
+			shiftCouncMainAction.setCouncilor(counc);
+		}else if(enableShiftSpeed){
+			shiftCouncSpeedAction = new ShiftCouncilSpeedDTO();
+			shiftCouncSpeedAction.setCouncilor(counc);
+		}
 	}
 
 	public void dragOrangeDone(){
@@ -1596,8 +1640,13 @@ public class GUIController extends Observable implements Observer{
 		dragCouncilor(councToDragPink);
 		CouncilorDTO counc = new CouncilorDTO();
 		counc.setColor(CouncilorColor.PINK);
-		shiftCouncMainAction = new ShiftCouncilMainDTO();
-		shiftCouncMainAction.setCouncilor(counc);
+		if(enableShift){
+			shiftCouncMainAction = new ShiftCouncilMainDTO();
+			shiftCouncMainAction.setCouncilor(counc);
+		}else if(enableShiftSpeed){
+			shiftCouncSpeedAction = new ShiftCouncilSpeedDTO();
+			shiftCouncSpeedAction.setCouncilor(counc);
+		}
 	}
 
 	public void dragPinkDone(){
@@ -1608,8 +1657,13 @@ public class GUIController extends Observable implements Observer{
 		dragCouncilor(councToDragPurple);
 		CouncilorDTO counc = new CouncilorDTO();
 		counc.setColor(CouncilorColor.PURPLE);
-		shiftCouncMainAction = new ShiftCouncilMainDTO();
-		shiftCouncMainAction.setCouncilor(counc);
+		if(enableShift){
+			shiftCouncMainAction = new ShiftCouncilMainDTO();
+			shiftCouncMainAction.setCouncilor(counc);
+		}else if(enableShiftSpeed){
+			shiftCouncSpeedAction = new ShiftCouncilSpeedDTO();
+			shiftCouncSpeedAction.setCouncilor(counc);
+		}
 	}
 
 	public void dragPurpleDone(){
@@ -1620,8 +1674,13 @@ public class GUIController extends Observable implements Observer{
 		dragCouncilor(councToDragWhite);
 		CouncilorDTO counc = new CouncilorDTO();
 		counc.setColor(CouncilorColor.WHITE);
-		shiftCouncMainAction = new ShiftCouncilMainDTO();
-		shiftCouncMainAction.setCouncilor(counc);
+		if(enableShift){
+			shiftCouncMainAction = new ShiftCouncilMainDTO();
+			shiftCouncMainAction.setCouncilor(counc);
+		}else if(enableShiftSpeed){
+			shiftCouncSpeedAction = new ShiftCouncilSpeedDTO();
+			shiftCouncSpeedAction.setCouncilor(counc);
+		}
 	}
 
 	public void dragWhiteDone(){
@@ -1644,13 +1703,16 @@ public class GUIController extends Observable implements Observer{
 
 	public void seaBalconyActionRequest(){
 		if(isAskingForShift){
-			councSea4.setImage(councSea3.getImage());
-			councSea3.setImage(councSea2.getImage());
-			councSea2.setImage(councSea1.getImage());
-			councSea1.setImage(councToShift);
 			shiftCouncMainAction.setBalconyIndex(0);
 			sendAction(shiftCouncMainAction);
 			isAskingForShift = false;
+			toggleShift();
+		}
+		if(isAskingForShiftSpeed){
+			shiftCouncSpeedAction.setBalconyIndex(0);
+			sendAction(shiftCouncSpeedAction);
+			isAskingForShiftSpeed = false;
+			toggleShiftSpeed();
 		}
 		if(isAskingForSatisfy){
 			obtainPermAction = new ObtainPermitDTO();
@@ -1669,13 +1731,16 @@ public class GUIController extends Observable implements Observer{
 
 	public void hillBalconyActionRequest(){
 		if(isAskingForShift){
-			councHill4.setImage(councHill3.getImage());
-			councHill3.setImage(councHill2.getImage());
-			councHill2.setImage(councHill1.getImage());
-			councHill1.setImage(councToShift);
 			shiftCouncMainAction.setBalconyIndex(1);
 			sendAction(shiftCouncMainAction);
 			isAskingForShift = false;
+			toggleShift();
+		}
+		if(isAskingForShiftSpeed){
+			shiftCouncSpeedAction.setBalconyIndex(1);
+			sendAction(shiftCouncSpeedAction);
+			isAskingForShiftSpeed = false;
+			toggleShiftSpeed();
 		}
 		if(isAskingForSatisfy){
 			obtainPermAction = new ObtainPermitDTO();
@@ -1694,13 +1759,16 @@ public class GUIController extends Observable implements Observer{
 
 	public void mountainBalconyActionRequest(){
 		if(isAskingForShift){
-			councMount4.setImage(councMount3.getImage());
-			councMount3.setImage(councMount2.getImage());
-			councMount2.setImage(councMount1.getImage());
-			councMount1.setImage(councToShift);
 			shiftCouncMainAction.setBalconyIndex(2);
 			sendAction(shiftCouncMainAction);
 			isAskingForShift = false;
+			toggleShift();
+		}
+		if(isAskingForShiftSpeed){
+			shiftCouncSpeedAction.setBalconyIndex(2);
+			sendAction(shiftCouncSpeedAction);
+			isAskingForShiftSpeed = false;
+			toggleShiftSpeed();
 		}
 		if(isAskingForSatisfy){
 			obtainPermAction = new ObtainPermitDTO();
@@ -1718,28 +1786,40 @@ public class GUIController extends Observable implements Observer{
 	}
 
 	public void kingBalconyActionRequest(){
-		if(isAskingForShift){
-			councKing4.setImage(councKing3.getImage());
-			councKing3.setImage(councKing2.getImage());
-			councKing2.setImage(councKing1.getImage());
-			councKing1.setImage(councToShift);
-			shiftCouncMainAction.setBalconyIndex(3);
-			sendAction(shiftCouncMainAction);
-			isAskingForShift = false;
-		}
-		if(isAskingForSatisfy){
-			obtainPermAction = new ObtainPermitDTO();
-			ArrayList<PoliticsCardDTO> chosenPolitics = new ArrayList<PoliticsCardDTO>();
-			for(ImageView card: selectedCards)
-				chosenPolitics.add(gameDTO.getActualPlayer().getHand().get(handArray.indexOf(card)));
-			PoliticsCardDTO[] polArray = new PoliticsCardDTO[chosenPolitics.size()];
-			chosenPolitics.toArray(polArray);
-			obtainPermAction.setPolitics(polArray);
-			obtainPermAction.setRegionIndex(regIndex);
-			for(ImageView card: selectedCards){
-				toGarbage(card);
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				if(isAskingForShift){
+					shiftCouncMainAction.setBalconyIndex(3);
+					sendAction(shiftCouncMainAction);
+					isAskingForShift = false;
+					toggleShift();
+				}
+				if(isAskingForShiftSpeed){
+					shiftCouncSpeedAction.setBalconyIndex(3);
+					sendAction(shiftCouncSpeedAction);
+					isAskingForShiftSpeed = false;
+					toggleShiftSpeed();
+				}
+				if(isAskingForSatisfyKing){
+					satisfyKingAction = new SatisfyKingDTO();
+					ArrayList<PoliticsCardDTO> chosenPolitics = new ArrayList<PoliticsCardDTO>();
+					for(ImageView card: selectedCards)
+						chosenPolitics.add(gameDTO.getActualPlayer().getHand().get(handArray.indexOf(card)));
+					PoliticsCardDTO[] polArray = new PoliticsCardDTO[chosenPolitics.size()];
+					chosenPolitics.toArray(polArray);
+					satisfyKingAction = new SatisfyKingDTO();
+					satisfyKingAction.setPolitics(polArray);
+					for(ImageView card: selectedCards){
+						toGarbage(card);
+					}
+					printMsg("Where do you\nwant to move\nthe king?");
+					for(ImageView tok: tokenArray){
+						highlightObject(tok, true);
+					}
+				}
 			}
-		}
+		});
 	}
 
 	private void draw(PoliticsCardDTO card){
@@ -1810,7 +1890,7 @@ public class GUIController extends Observable implements Observer{
 	}
 
 	public void retractHand(){
-		if(expanded && !enableSatisfy){
+		if(expanded && !enableSatisfy && !enableSatisfyKing){
 			for(int i=1; i<handArray.size();i++){
 				ImageView card = handArray.get(i);
 				TranslateTransition tt = new TranslateTransition(Duration.millis(500),card);
@@ -1831,7 +1911,7 @@ public class GUIController extends Observable implements Observer{
 		@Override
 		public void handle(Event e) {
 			ImageView card = ((ImageView)(e.getSource()));
-			if(enableSatisfy){
+			if(enableSatisfy || enableSatisfyKing){
 				if(!selectedCards.contains(card) && selectedCards.size()<4){
 					highlightObject(card,true);
 					card.setTranslateY(-10);
@@ -1846,33 +1926,26 @@ public class GUIController extends Observable implements Observer{
 	}
 
 	public void startDrag(){
-		if(enableSatisfy && selectedCards.size()>0)
+		if((enableSatisfy || enableSatisfyKing) && selectedCards.size()>0)
 			dragCards(selectedCards);
 	}
 
 	private void dragCards(ArrayList<ImageView> selectedCards){
 		handPane.getScene().setCursor(new ImageCursor(new Image(getClass().getResourceAsStream("img/drag-cards-cursor.png"))));
-		balconyHighlight(true);
-		isAskingForSatisfy = true;
+		if(enableSatisfy){
+			balconyHighlight(true);
+			highlightObject(kingBalcony, false);
+			isAskingForSatisfy = true;
+		}else if(enableSatisfyKing){
+			highlightObject(kingBalcony, true);
+			isAskingForSatisfyKing = true;
+		}
 	}
 
 	public void dropCards(){
-		if(enableSatisfy){
+		if(enableSatisfy || enableSatisfyKing){
 			handPane.getScene().setCursor(new ImageCursor(new Image(getClass().getResourceAsStream("img/cof-cursor.png"))));
 			balconyHighlight(false);
-			isAskingForSatisfy = true;
-//			map.setOnMouseEntered(new EventHandler<Event>() {
-//				@Override
-//				public void handle(Event event) {
-//					isAskingForSatisfy = false;
-//				}
-//			});
-//			rightPane.setOnMouseEntered(new EventHandler<Event>() {
-//				@Override
-//				public void handle(Event event) {
-//					isAskingForSatisfy = false;
-//				}
-//			});
 		}
 	}
 
@@ -2509,26 +2582,6 @@ public class GUIController extends Observable implements Observer{
 		speed4.setOpacity(0.0);
 	}
 	
-	private class SelectActionEvent implements EventHandler<Event>{
-		@Override
-		public void handle(Event e) {
-			ImageView action = ((ImageView)(e.getSource()));
-			if(action.equals(main1) && main1.getOpacity() == 1.0){
-				toggleSatisfy();
-				disableActions();
-				selectedAction = 0;
-				sendAction(selectedAction);
-			}
-			if(action.equals(main3) && main3.getOpacity() == 1.0){
-				toggleShift();
-				disableActions();
-				selectedAction = 2;
-				sendAction(selectedAction);
-			}
-			
-		}
-	}
-	
 	private class SetBalconyEvent implements EventHandler<Event>{
 		@Override
 		public void handle(Event e) {
@@ -2553,8 +2606,8 @@ public class GUIController extends Observable implements Observer{
 					if(balcony.equals(mountainBalcony)){
 						regIndex = 2;
 						if(isAskingForSatisfy){
-							highlightObject(hillSlot1, true);
-							highlightObject(hillSlot2, true);
+							highlightObject(mountainSlot1, true);
+							highlightObject(mountainSlot2, true);
 						}
 					}
 					if(isAskingForSatisfy){
@@ -2592,7 +2645,132 @@ public class GUIController extends Observable implements Observer{
 		}
 	}
 	
-	private void sendAction(Object action){
+	private class SelectCityEvent implements EventHandler<Event>{
+		@Override
+		public void handle(Event e) {
+			Platform.runLater(new Runnable() {
+				@Override
+				public void run() {
+					ImageView city = (ImageView)(e.getSource());
+					int i = 0;
+					if(isAskingForSatisfyKing){
+						for(ImageView tok: tokenArray){
+							if(city.equals(tok)){
+								satisfyKingAction.setDestination(gameDTO.getMap().getCity()[i]);
+								sendAction(satisfyKingAction);
+								isAskingForSatisfyKing = false;
+								enableSatisfyKing = false;
+								break;
+							}
+							i++;
+						}
+						for(ImageView tok: tokenArray)
+							highlightObject(tok, false);
+					}
+				}
+			});
+		}
+	}
+	
+	public void toggleChangeCards(){
+		if(!enableChangeCards){
+			enableChangeCards = true;
+			highlightObject(seaDeck, true);
+			highlightObject(hillDeck, true);
+			highlightObject(mountainDeck, true);
+		}else if(enableChangeCards){
+			enableChangeCards = false;
+			highlightObject(seaDeck, false);
+			highlightObject(hillDeck, false);
+			highlightObject(mountainDeck, false);
+		}
+	}
+	
+	private class ChangeCardsEvent implements EventHandler<Event>{
+		@Override
+		public void handle(Event e) {
+			Platform.runLater(new Runnable() {
+				@Override
+				public void run() {
+					if(enableChangeCards){
+						changeCardsAction = new ChangeCardsDTO();
+						ImageView deck = (ImageView)(e.getSource());
+						if(deck.equals(seaDeck))
+							changeCardsAction.setBalconyIndex(0);
+						else if(deck.equals(hillDeck))
+							changeCardsAction.setBalconyIndex(1);
+						else if(deck.equals(mountainDeck))
+							changeCardsAction.setBalconyIndex(2);
+						sendAction(changeCardsAction);
+						toggleChangeCards();
+					}
+				}
+			});
+		}
+	}
+	
+	
+	// --------------- COMMUNICATION WITH SERVER ---------------- //
+	
+	private class SelectActionEvent implements EventHandler<Event>{
+		@Override
+		public void handle(Event e) {
+			Platform.runLater(new Runnable() {
+				@Override
+				public void run() {
+					ImageView action = ((ImageView)(e.getSource()));
+					if(action.equals(main1) && main1.getOpacity() == 1.0){
+						toggleSatisfy();
+						disableActions();
+						selectedAction = 0;
+						sendAction(selectedAction);
+					}
+					if(action.equals(main2) && main2.getOpacity() == 1.0){
+						toggleSatisfyKing();
+						disableActions();
+						selectedAction = 1;
+						sendAction(selectedAction);
+					}
+					if(action.equals(main3) && main3.getOpacity() == 1.0){
+						toggleShift();
+						disableActions();
+						selectedAction = 2;
+						sendAction(selectedAction);
+					}
+					if(action.equals(main4) && main4.getOpacity() == 1.0){
+						//Commands
+						disableActions();
+						selectedAction = 3;
+						sendAction(selectedAction);
+					}
+					if(action.equals(speed1) && speed1.getOpacity() == 1.0){
+						disableActions();
+						selectedAction = 4;
+						sendAction(selectedAction);
+					}
+					if(action.equals(speed2) && speed2.getOpacity() == 1.0){
+						toggleChangeCards();
+						disableActions();
+						selectedAction = 5;
+						sendAction(selectedAction);
+					}
+					if(action.equals(speed3) && speed3.getOpacity() == 1.0){
+						toggleShiftSpeed();
+						disableActions();
+						selectedAction = 6;
+						sendAction(selectedAction);
+					}
+					if(action.equals(speed4) && speed4.getOpacity() == 1.0){
+						disableActions();
+						selectedAction = 7;
+						sendAction(selectedAction);
+					}
+				}
+			});
+		}
+	}
+	
+	private synchronized void sendAction(Object action){
 		this.setChanged();
 		this.notifyObservers(action);
 	}

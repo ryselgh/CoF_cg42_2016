@@ -516,7 +516,7 @@ public class ClientController extends Observable implements Observer, RMIClientC
 				if(!isGUI)
 					consoleListener.deleteObserver(this);
 				this.inGame = true;
-				//consoleListener.deleteObserver(this);//in gioco gli input sono ad invocazione  
+				//consoleListener.deleteObserver(this);//in gioco gli input sono ad invocazione 
 				view.updateGame((GameDTO) obj);
 				this.game = (GameDTO) obj;
 				break;
