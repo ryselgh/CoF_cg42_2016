@@ -41,7 +41,8 @@ Follow the instructions on screen and join the game!
 ScreenShots
 -----------------
 
-**For mac users: it's recommended to run the guy in windowed mode (ESC)
+**For mac users: it's recommended to run the guy in windowed mode (ESC)**
+
 ![enter image description here](https://lh3.googleusercontent.com/-GRDivHdSE4Q/V3bFHoWjM0I/AAAAAAAAAMw/hrDidd9Udg4NZ1cqbEILq1RTxqj4fZGIwCLcB/s0/Senza+titolo.tiff "Senza titolo.tiff")
 The main window 
 
